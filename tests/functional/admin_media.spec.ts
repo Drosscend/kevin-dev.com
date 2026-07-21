@@ -33,7 +33,7 @@ test.group('Admin media', (group) => {
     assert.equal(media.originalName, 'photo-test.png')
     assert.equal(media.mimeType, 'image/webp')
     assert.equal(media.width, 800)
-    // 800px de large → variantes 320 et 640 uniquement
+    // An 800px-wide source only yields the 320 and 640 variants
     assert.deepEqual(
       media.variants.map((variant) => variant.width),
       [320, 640]

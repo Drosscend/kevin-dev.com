@@ -11,14 +11,15 @@ const ORIGINAL_MAX_WIDTH = 1920
 const WEBP_QUALITY = 82
 
 /**
- * Le fichier uploadé n'est pas une image décodable par sharp.
+ * Raised when the uploaded file cannot be decoded as an image by sharp.
  */
 export class InvalidImageError extends Error {}
 
 /**
- * Bibliothèque média : réencodage systématique en webp par sharp
- * (neutralise les fichiers malveillants), variantes responsive,
- * stockage sous des noms générés (aucun nom client sur le disque).
+ * Media library: every upload is re-encoded to webp by sharp
+ * (neutralizes crafted files), responsive variants are generated,
+ * and files are stored under generated names (no client-provided
+ * name ever reaches the disk).
  */
 export default class MediaService {
   static storagePath(...paths: string[]) {

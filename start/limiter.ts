@@ -3,14 +3,14 @@
 | Rate limiters
 |--------------------------------------------------------------------------
 |
-| Limiteurs nommés, à attacher aux routes sensibles.
+| Named limiters attached to sensitive routes.
 |
 */
 
 import limiter from '@adonisjs/limiter/services/main'
 
 /**
- * Login admin : 10 tentatives par minute et par IP.
+ * Admin login: 10 attempts per minute per IP.
  */
 export const loginThrottle = limiter.define('login', ({ request }) => {
   return limiter.allowRequests(10).every('1 minute').usingKey(`login_${request.ip()}`)

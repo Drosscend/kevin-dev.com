@@ -3,7 +3,7 @@
 | Health checks
 |--------------------------------------------------------------------------
 |
-| Checks exposés sur /health, consommés par Uptime Kuma.
+| Checks exposed on /health, consumed by Uptime Kuma.
 |
 */
 

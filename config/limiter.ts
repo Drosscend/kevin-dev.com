@@ -2,8 +2,8 @@ import { defineConfig, stores } from '@adonisjs/limiter'
 import type { InferLimiters } from '@adonisjs/limiter/types'
 
 /**
- * Store mémoire : suffisant tant que l'app tourne dans un
- * conteneur unique (VPS Dokploy).
+ * In-memory store: counters are per-process, which is enough
+ * as long as the app runs as a single container.
  */
 const limiterConfig = defineConfig({
   default: 'memory',

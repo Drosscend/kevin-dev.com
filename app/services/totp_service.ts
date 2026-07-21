@@ -3,7 +3,7 @@ import { Secret, TOTP } from 'otpauth'
 const ISSUER = 'kevin-dev.com'
 
 /**
- * Encapsule la génération et la vérification des codes TOTP (RFC 6238).
+ * Generates and verifies TOTP codes (RFC 6238).
  */
 export default class TotpService {
   static generateSecret() {
@@ -21,14 +21,14 @@ export default class TotpService {
   }
 
   /**
-   * URI otpauth:// à encoder en QR code pour l'enrôlement.
+   * otpauth:// URI to encode as a QR code during enrollment.
    */
   static uri(email: string, secret: string) {
     return this.#build(email, secret).toString()
   }
 
   /**
-   * Vérifie un code avec une fenêtre de ±1 période (tolérance d'horloge).
+   * Verifies a code with a ±1 period window (clock drift tolerance).
    */
   static verify(email: string, secret: string, code: string) {
     return this.#build(email, secret).validate({ token: code, window: 1 }) !== null

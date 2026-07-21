@@ -1,7 +1,7 @@
 import vine from '@vinejs/vine'
 
 /**
- * Validator du login admin (première étape, email + mot de passe).
+ * Admin login validator (first step, email + password).
  */
 export const loginValidator = vine.create({
   email: vine.string().email().maxLength(254),
@@ -9,7 +9,7 @@ export const loginValidator = vine.create({
 })
 
 /**
- * Validator d'un code TOTP à 6 chiffres (challenge et enrôlement).
+ * Six-digit TOTP code validator (challenge and enrollment).
  */
 export const totpCodeValidator = vine.create({
   code: vine

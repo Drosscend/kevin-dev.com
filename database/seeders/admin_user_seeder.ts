@@ -4,8 +4,8 @@ import env from '#start/env'
 import User from '#models/user'
 
 /**
- * Crée le compte admin unique (pas d'inscription publique).
- * Idempotent : ne touche pas au compte s'il existe déjà.
+ * Creates the single admin account (there is no public signup).
+ * Idempotent: leaves the account untouched when it already exists.
  */
 export default class extends BaseSeeder {
   async run() {

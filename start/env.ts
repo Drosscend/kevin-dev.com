@@ -32,7 +32,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   DB_PASSWORD: Env.schema.string.optional(),
   DB_DATABASE: Env.schema.string(),
 
-  // Compte admin (seed uniquement)
+  // Admin account (seeder only)
   ADMIN_EMAIL: Env.schema.string.optional({ format: 'email' }),
   ADMIN_PASSWORD: Env.schema.string.optional(),
 })

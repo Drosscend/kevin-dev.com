@@ -10,7 +10,7 @@ const dbConfig = defineConfig({
 
   connections: {
     /**
-     * PostgreSQL connection (service Dokploy dédié en production).
+     * PostgreSQL connection (dedicated Dokploy service in production).
      */
     postgres: {
       client: 'pg',

@@ -10,8 +10,8 @@ export interface MediaVariant {
 
 export default class Media extends MediaSchema {
   /**
-   * jsonb : sans prepare, node-postgres sérialiserait le tableau JS
-   * en tableau Postgres au lieu de JSON.
+   * Serialized to a JSON string so the jsonb column receives JSON
+   * (node-postgres maps plain JS arrays to Postgres arrays).
    */
   @column({
     prepare: (value: MediaVariant[]) => JSON.stringify(value),

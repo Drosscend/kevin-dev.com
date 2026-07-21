@@ -1,8 +1,9 @@
 import vine from '@vinejs/vine'
 
 /**
- * Validator de l'upload média : le fichier lui-même est validé via
- * request.file() (taille, extension), l'alt est obligatoire (accessibilité).
+ * Media upload validator: the file itself is validated through
+ * request.file() (size, extension); alt text is required for
+ * accessibility.
  */
 export const mediaValidator = vine.create({
   alt: vine.string().trim().minLength(3).maxLength(255),

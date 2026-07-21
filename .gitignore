@@ -4,10 +4,10 @@ build
 tmp/*
 !tmp/.gitkeep
 
-# Uploads (volume persistant en production)
+# Uploads (persistent volume in production)
 storage
 
-# Documents internes non publiés
+# Internal documents (not published)
 docs/SPEC.md
 
 # Secrets

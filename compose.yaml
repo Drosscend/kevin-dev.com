@@ -1,5 +1,5 @@
-# Postgres local pour le développement uniquement.
-# En production, la base est un service Dokploy dédié (voir docs/SPEC.md).
+# Local development Postgres only.
+# In production the database is a dedicated Dokploy service (see README).
 services:
   postgres:
     image: postgres:17-alpine

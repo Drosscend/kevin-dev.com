@@ -11,8 +11,8 @@ export default class SessionController {
   }
 
   /**
-   * Première étape : email + mot de passe. Si le compte a la 2FA,
-   * la session n'est PAS ouverte : on passe au challenge TOTP.
+   * First step: email + password. When the account has TOTP enabled,
+   * no session is opened yet: the user is sent to the TOTP challenge.
    */
   async store({ request, auth, response, session }: HttpContext) {
     const { email, password } = await request.validateUsing(loginValidator)

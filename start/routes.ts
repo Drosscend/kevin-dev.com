@@ -17,12 +17,12 @@ router.on('/').renderInertia('home', {}).as('home')
 router.get('/health', [controllers.HealthChecks, 'handle']).as('health')
 
 /**
- * Fichiers de la bibliothèque média (noms générés, immutables).
+ * Media library files (generated names, immutable).
  */
 router.get('/uploads/:key/:file', [controllers.Uploads, 'show']).as('uploads.show')
 
 /**
- * Login admin en deux étapes (mot de passe puis TOTP).
+ * Two-step admin login (password then TOTP).
  */
 router
   .group(() => {
@@ -42,7 +42,7 @@ router
   .use(middleware.guest())
 
 /**
- * Administration (session requise).
+ * Administration (authenticated session required).
  */
 router
   .group(() => {

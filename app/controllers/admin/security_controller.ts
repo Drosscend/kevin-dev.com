@@ -7,9 +7,9 @@ const TOTP_SETUP_KEY = 'totp_setup_secret'
 
 export default class SecurityController {
   /**
-   * Page sécurité : si la 2FA n'est pas active, propose l'enrôlement.
-   * Le secret candidat vit en session tant qu'il n'est pas confirmé
-   * par un code valide — rien n'est persisté avant.
+   * Security page: offers TOTP enrollment when 2FA is inactive.
+   * The candidate secret lives in the session until it is confirmed
+   * with a valid code — nothing is persisted before that.
    */
   async show({ inertia, auth, session }: HttpContext) {
     const user = auth.user!
