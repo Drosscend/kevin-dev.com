@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ContactMessage from '#models/contact_message'
 import TelegramService from '#services/telegram_service'
+import SeoService from '#services/seo_service'
 import { contactValidator } from '#validators/contact'
 import type { Locale } from '#types/i18n'
 
@@ -18,6 +19,13 @@ export default class ContactController {
         message: i18n.t('messages.contact.message'),
         submit: i18n.t('messages.contact.submit'),
       },
+      meta: SeoService.build({
+        title: i18n.t('messages.contact.title'),
+        description: i18n.t('messages.contact.intro'),
+        locale,
+        path: locale === 'en' ? '/en/contact' : '/contact',
+        alternates: { fr: '/contact', en: '/en/contact' },
+      }),
     })
   }
 

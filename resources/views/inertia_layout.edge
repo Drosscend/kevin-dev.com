@@ -1,16 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ i18n ? i18n.locale : 'fr' }}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title inertia>
-      AdonisJS
+      kevin-dev.com
     </title>
+
+    <link rel="alternate" type="application/rss+xml" title="Blog (FR)" href="/blog/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Blog (EN)" href="/en/blog/rss.xml" />
 
     @viteReactRefresh()
     @vite(['inertia/app.tsx'])
     @inertiaHead()
     @stack('dumper')
+
+    @if(umamiScriptUrl && umamiWebsiteId)
+      <script defer src="{{ umamiScriptUrl }}" data-website-id="{{ umamiWebsiteId }}"></script>
+    @end
   </head>
 
   <body>

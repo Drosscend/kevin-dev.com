@@ -65,6 +65,7 @@ export class ArticleTranslationSchema extends BaseModel {
 export class ArticleSchema extends BaseModel {
   static $columns = [
     'categoryId',
+    'coverMediaId',
     'createdAt',
     'id',
     'publishedAt',
@@ -76,6 +77,8 @@ export class ArticleSchema extends BaseModel {
   $columns = ArticleSchema.$columns
   @column()
   declare categoryId: number | null
+  @column()
+  declare coverMediaId: number | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column({ isPrimary: true })

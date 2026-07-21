@@ -18,6 +18,7 @@ export const articleValidator = vine.create({
   slug: slug(),
   status: vine.enum(['draft', 'published'] as const),
   categoryId: vine.number().positive().nullable().optional(),
+  coverMediaId: vine.number().positive().nullable().optional(),
   tagIds: vine.array(vine.number().positive()).optional(),
   fr: translation(),
   en: translation().optional(),

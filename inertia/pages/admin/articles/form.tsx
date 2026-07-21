@@ -18,6 +18,7 @@ type ArticleData = {
   slug: string
   status: 'draft' | 'published'
   categoryId: number | null
+  coverMediaId: number | null
   tagIds: number[]
   publishedAt: string | null
   fr: TranslationValues
@@ -25,10 +26,11 @@ type ArticleData = {
 }
 
 type Option = { id: number; name: string }
+type MediaOption = { id: number; alt: string }
 
 type ArticleFormProps = {
   article: ArticleData | null
-  options: { categories: Option[]; tags: Option[] }
+  options: { categories: Option[]; tags: Option[]; media: MediaOption[] }
 }
 
 const EMPTY_TRANSLATION: TranslationValues = { title: '', summary: '', contentMarkdown: '' }
@@ -105,6 +107,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
     slug: article?.slug ?? '',
     status: article?.status ?? ('draft' as 'draft' | 'published'),
     categoryId: article?.categoryId ?? null,
+    coverMediaId: article?.coverMediaId ?? null,
     tagIds: article?.tagIds ?? [],
     fr: article?.fr ?? { ...EMPTY_TRANSLATION },
     en: article?.en,
@@ -213,6 +216,27 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
                   {options.categories.map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="cover">Image de couverture (Open Graph)</Label>
+                <select
+                  id="cover"
+                  className="border-input h-9 w-full rounded-md border bg-transparent px-3 text-sm"
+                  value={form.data.coverMediaId ?? ''}
+                  onChange={(event) =>
+                    form.setData(
+                      'coverMediaId',
+                      event.target.value === '' ? null : Number(event.target.value)
+                    )
+                  }
+                >
+                  <option value="">Aucune</option>
+                  {options.media.map((media) => (
+                    <option key={media.id} value={media.id}>
+                      {media.alt}
                     </option>
                   ))}
                 </select>

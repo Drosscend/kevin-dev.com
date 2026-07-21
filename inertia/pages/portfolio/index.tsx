@@ -1,4 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
+import Seo, { type SeoMeta } from '~/components/seo'
 
 type ProjectCard = {
   slug: string
@@ -13,13 +14,15 @@ type PortfolioIndexProps = {
   locale: 'fr' | 'en'
   projects: ProjectCard[]
   labels: { title: string; empty: string }
+  meta: SeoMeta
 }
 
-export default function PortfolioIndex({ locale, projects, labels }: PortfolioIndexProps) {
+export default function PortfolioIndex({ locale, projects, labels, meta }: PortfolioIndexProps) {
   const base = locale === 'en' ? '/en' : ''
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-6 py-10">
+      <Seo meta={meta} />
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-3xl font-bold tracking-tight">{labels.title}</h1>
         <Link

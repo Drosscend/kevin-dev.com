@@ -3,6 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { Exception } from '@adonisjs/core/exceptions'
 import Article from '#models/article'
 import Category from '#models/category'
+import SeoService from '#services/seo_service'
 import type { Locale } from '#types/i18n'
 
 const PER_PAGE = 9
@@ -73,6 +74,13 @@ export default class BlogController {
         previous: i18n.t('messages.blog.previous'),
         next: i18n.t('messages.blog.next'),
       },
+      meta: SeoService.build({
+        title: i18n.t('messages.blog.title'),
+        description: i18n.t('messages.blog.metaDescription'),
+        locale,
+        path: locale === 'en' ? '/en/blog' : '/blog',
+        alternates: { fr: '/blog', en: '/en/blog' },
+      }),
     })
   }
 
@@ -82,6 +90,7 @@ export default class BlogController {
     const article = await Article.query()
       .where('slug', params.slug)
       .preload('translations')
+      .preload('cover')
       .preload('category', (category) => category.preload('translations'))
       .preload('tags', (tags) => tags.preload('translations'))
       .firstOrFail()
@@ -119,6 +128,35 @@ export default class BlogController {
         draft: i18n.t('messages.blog.draft'),
         backToList: i18n.t('messages.blog.backToList'),
       },
+      meta: SeoService.build({
+        title: translation.title,
+        description: translation.summary || i18n.t('messages.blog.metaDescription'),
+        locale,
+        path: `${locale === 'en' ? '/en' : ''}/blog/${article.slug}`,
+        alternates:
+          article.translation('en') !== undefined
+            ? { fr: `/blog/${article.slug}`, en: `/en/blog/${article.slug}` }
+            : null,
+        ogType: 'article',
+        ogImage: SeoService.mediaUrl(article.cover),
+        jsonLd: [
+          SeoService.article({
+            title: translation.title,
+            description: translation.summary,
+            path: `${locale === 'en' ? '/en' : ''}/blog/${article.slug}`,
+            locale,
+            publishedAt: article.publishedAt?.toISODate() ?? null,
+            image: SeoService.mediaUrl(article.cover),
+          }),
+          SeoService.breadcrumbs([
+            { name: 'Blog', path: locale === 'en' ? '/en/blog' : '/blog' },
+            {
+              name: translation.title,
+              path: `${locale === 'en' ? '/en' : ''}/blog/${article.slug}`,
+            },
+          ]),
+        ],
+      }),
     })
   }
 }

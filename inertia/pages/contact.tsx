@@ -2,6 +2,7 @@ import { Form } from '@adonisjs/inertia/react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import Seo, { type SeoMeta } from '~/components/seo'
 
 type ContactProps = {
   locale: 'fr' | 'en'
@@ -13,11 +14,13 @@ type ContactProps = {
     message: string
     submit: string
   }
+  meta: SeoMeta
 }
 
-export default function Contact({ locale, labels }: ContactProps) {
+export default function Contact({ locale, labels, meta }: ContactProps) {
   return (
     <div className="mx-auto max-w-xl space-y-8 px-6 py-10">
+      <Seo meta={meta} />
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">{labels.title}</h1>
         <p className="text-muted-foreground">{labels.intro}</p>

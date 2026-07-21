@@ -1,5 +1,6 @@
 import { router } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
+import Seo, { type SeoMeta } from '~/components/seo'
 
 type ArticleCard = {
   slug: string
@@ -24,6 +25,7 @@ type BlogIndexProps = {
     previous: string
     next: string
   }
+  meta: SeoMeta
 }
 
 function pageUrl(
@@ -46,6 +48,7 @@ export default function BlogIndex({
   pagination,
   categories,
   labels,
+  meta,
 }: BlogIndexProps) {
   const base = locale === 'en' ? '/en/blog' : '/blog'
 
@@ -55,6 +58,7 @@ export default function BlogIndex({
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">
+      <Seo meta={meta} />
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-3xl font-bold tracking-tight">{labels.title}</h1>
         <div className="flex items-center gap-3">

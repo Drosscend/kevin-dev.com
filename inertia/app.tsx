@@ -9,10 +9,10 @@ import { createInertiaApp } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
-const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
+const appName = 'kevin-dev.com'
 
 createInertiaApp({
-  title: (title) => (title ? `${title} - ${appName}` : appName),
+  title: (title) => (title && title !== appName ? `${title} — ${appName}` : appName),
   resolve: (name) => {
     return resolvePageComponent(
       `./pages/${name}.tsx`,

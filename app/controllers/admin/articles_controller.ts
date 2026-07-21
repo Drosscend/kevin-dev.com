@@ -2,19 +2,22 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Article from '#models/article'
 import Category from '#models/category'
 import Tag from '#models/tag'
+import Media from '#models/media'
 import ArticleService from '#services/article_service'
 import MarkdownService from '#services/markdown_service'
 import { articleValidator, previewValidator } from '#validators/blog'
 
 async function formOptions() {
-  const [categories, tags] = await Promise.all([
+  const [categories, tags, media] = await Promise.all([
     Category.query().preload('translations').orderBy('slug'),
     Tag.query().preload('translations').orderBy('slug'),
+    Media.query().orderBy('created_at', 'desc'),
   ])
 
   return {
     categories: categories.map((category) => ({ id: category.id, name: category.name('fr') })),
     tags: tags.map((tag) => ({ id: tag.id, name: tag.name('fr') })),
+    media: media.map((item) => ({ id: item.id, alt: item.alt })),
   }
 }
 
@@ -58,6 +61,7 @@ export default class ArticlesController {
       slug: payload.slug,
       status: payload.status,
       categoryId: payload.categoryId ?? null,
+      coverMediaId: payload.coverMediaId ?? null,
       tagIds: payload.tagIds ?? [],
       fr: { summary: '', ...payload.fr },
       en: payload.en ? { summary: '', ...payload.en } : null,
@@ -83,6 +87,7 @@ export default class ArticlesController {
         slug: article.slug,
         status: article.status,
         categoryId: article.categoryId,
+        coverMediaId: article.coverMediaId,
         tagIds: article.tags.map((tag) => tag.id),
         publishedAt: article.publishedAt?.toISODate() ?? null,
         fr: {
@@ -115,6 +120,7 @@ export default class ArticlesController {
       slug: payload.slug,
       status: payload.status,
       categoryId: payload.categoryId ?? null,
+      coverMediaId: payload.coverMediaId ?? null,
       tagIds: payload.tagIds ?? [],
       fr: { summary: '', ...payload.fr },
       en: payload.en ? { summary: '', ...payload.en } : null,

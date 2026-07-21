@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs'
 import type { HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import SettingsService from '#services/settings_service'
+import SeoService from '#services/seo_service'
 import type { Locale } from '#types/i18n'
 
 export const CV_PDF_PATH = () => app.makePath('storage', 'cv', 'cv.pdf')
@@ -21,6 +22,14 @@ export default class CvController {
         download: i18n.t('messages.cv.download'),
         empty: i18n.t('messages.cv.empty'),
       },
+      meta: SeoService.build({
+        title: i18n.t('messages.cv.title'),
+        description: i18n.t('messages.cv.metaDescription'),
+        locale,
+        path: locale === 'en' ? '/en/cv' : '/cv',
+        alternates: settings.cv_html_en ? { fr: '/cv', en: '/en/cv' } : null,
+        jsonLd: [SeoService.person()],
+      }),
     })
   }
 

@@ -7,6 +7,10 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'en.home': { paramsTuple?: []; params?: {} }
     'health': { paramsTuple?: []; params?: {} }
+    'seo.sitemap': { paramsTuple?: []; params?: {} }
+    'seo.robots': { paramsTuple?: []; params?: {} }
+    'seo.rss': { paramsTuple?: []; params?: {} }
+    'en.seo.rss': { paramsTuple?: []; params?: {} }
     'blog.index': { paramsTuple?: []; params?: {} }
     'blog.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'en.blog.index': { paramsTuple?: []; params?: {} }
@@ -77,6 +81,10 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'en.home': { paramsTuple?: []; params?: {} }
     'health': { paramsTuple?: []; params?: {} }
+    'seo.sitemap': { paramsTuple?: []; params?: {} }
+    'seo.robots': { paramsTuple?: []; params?: {} }
+    'seo.rss': { paramsTuple?: []; params?: {} }
+    'en.seo.rss': { paramsTuple?: []; params?: {} }
     'blog.index': { paramsTuple?: []; params?: {} }
     'blog.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'en.blog.index': { paramsTuple?: []; params?: {} }
@@ -118,6 +126,10 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'en.home': { paramsTuple?: []; params?: {} }
     'health': { paramsTuple?: []; params?: {} }
+    'seo.sitemap': { paramsTuple?: []; params?: {} }
+    'seo.robots': { paramsTuple?: []; params?: {} }
+    'seo.rss': { paramsTuple?: []; params?: {} }
+    'en.seo.rss': { paramsTuple?: []; params?: {} }
     'blog.index': { paramsTuple?: []; params?: {} }
     'blog.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'en.blog.index': { paramsTuple?: []; params?: {} }

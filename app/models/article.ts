@@ -5,6 +5,7 @@ import ArticleTranslation from '#models/article_translation'
 import Category from '#models/category'
 import Tag from '#models/tag'
 import Project from '#models/project'
+import Media from '#models/media'
 import type { Locale } from '#types/i18n'
 
 export type ArticleStatus = 'draft' | 'published'
@@ -17,6 +18,9 @@ export default class Article extends ArticleSchema {
 
   @belongsTo(() => Category)
   declare category: BelongsTo<typeof Category>
+
+  @belongsTo(() => Media, { foreignKey: 'coverMediaId' })
+  declare cover: BelongsTo<typeof Media>
 
   @manyToMany(() => Tag, { pivotTable: 'article_tag' })
   declare tags: ManyToMany<typeof Tag>

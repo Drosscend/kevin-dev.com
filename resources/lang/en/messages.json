@@ -1,6 +1,15 @@
 {
+  "home": {
+    "intro": "Data Migration consultant by day, web developer by night. I write about AdonisJS, React and self-hosting, and share my projects here.",
+    "metaDescription": "Kévin Véronési's personal site: tech blog (AdonisJS, React, self-hosting), project portfolio and resume.",
+    "latestArticles": "Latest articles",
+    "featuredProjects": "Featured projects",
+    "allArticles": "All articles →",
+    "allProjects": "All projects →"
+  },
   "blog": {
     "title": "Blog",
+    "metaDescription": "Technical articles about AdonisJS, React, self-hosting and web development, by Kévin Véronési.",
     "readingTime": "{minutes} min read",
     "publishedOn": "Published on",
     "draft": "Draft — only visible while signed in",
@@ -12,6 +21,7 @@
   },
   "portfolio": {
     "title": "Portfolio",
+    "metaDescription": "Development projects by Kévin Véronési: web applications, tools and experiments.",
     "empty": "No projects yet.",
     "backToList": "← All projects",
     "technologies": "Technologies used",
@@ -19,6 +29,7 @@
   },
   "cv": {
     "title": "Resume",
+    "metaDescription": "Background, education and experience of Kévin Véronési, Data Migration consultant and web developer.",
     "download": "Download the resume (PDF)",
     "empty": "The resume is not available in this language yet."
   },
@@ -37,6 +48,7 @@
   },
   "technologies": {
     "title": "Technologies",
+    "metaDescription": "The languages, frameworks and tools used across Kévin Véronési's projects.",
     "empty": "No technologies yet.",
     "backToList": "← All technologies",
     "usedIn": "Projects using this technology",

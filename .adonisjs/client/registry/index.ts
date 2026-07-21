@@ -24,6 +24,30 @@ const routes = {
     tokens: [{"old":"/health","type":0,"val":"health","end":""}],
     types: placeholder as Registry['health']['types'],
   },
+  'seo.sitemap': {
+    methods: ["GET","HEAD"],
+    pattern: '/sitemap.xml',
+    tokens: [{"old":"/sitemap.xml","type":0,"val":"sitemap.xml","end":""}],
+    types: placeholder as Registry['seo.sitemap']['types'],
+  },
+  'seo.robots': {
+    methods: ["GET","HEAD"],
+    pattern: '/robots.txt',
+    tokens: [{"old":"/robots.txt","type":0,"val":"robots.txt","end":""}],
+    types: placeholder as Registry['seo.robots']['types'],
+  },
+  'seo.rss': {
+    methods: ["GET","HEAD"],
+    pattern: '/blog/rss.xml',
+    tokens: [{"old":"/blog/rss.xml","type":0,"val":"blog","end":""},{"old":"/blog/rss.xml","type":0,"val":"rss.xml","end":""}],
+    types: placeholder as Registry['seo.rss']['types'],
+  },
+  'en.seo.rss': {
+    methods: ["GET","HEAD"],
+    pattern: '/en/blog/rss.xml',
+    tokens: [{"old":"/en/blog/rss.xml","type":0,"val":"en","end":""},{"old":"/en/blog/rss.xml","type":0,"val":"blog","end":""},{"old":"/en/blog/rss.xml","type":0,"val":"rss.xml","end":""}],
+    types: placeholder as Registry['en.seo.rss']['types'],
+  },
   'blog.index': {
     methods: ["GET","HEAD"],
     pattern: '/blog',

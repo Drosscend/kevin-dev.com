@@ -12,10 +12,19 @@ import { contactThrottle, loginThrottle } from '#start/limiter'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
-router.on('/').renderInertia('home', {}).as('home')
-router.on('/en').renderInertia('home', {}).as('en.home')
+router.get('/', [controllers.Home, 'handle']).as('home')
+router.get('/en', [controllers.Home, 'handle']).as('en.home')
 
 router.get('/health', [controllers.HealthChecks, 'handle']).as('health')
+
+/**
+ * Crawling endpoints: sitemap with hreflang alternates, per-locale
+ * RSS feeds and robots.txt.
+ */
+router.get('/sitemap.xml', [controllers.Seo, 'sitemap']).as('seo.sitemap')
+router.get('/robots.txt', [controllers.Seo, 'robots']).as('seo.robots')
+router.get('/blog/rss.xml', [controllers.Seo, 'rss']).as('seo.rss')
+router.get('/en/blog/rss.xml', [controllers.Seo, 'rss']).as('en.seo.rss')
 
 /**
  * Public blog. French lives at the root, English under /en,

@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
 import Technology from '#models/technology'
+import SeoService from '#services/seo_service'
 import type { Locale } from '#types/i18n'
 
 function logoUrl(technology: Technology) {
@@ -42,6 +43,13 @@ export default class TechnologiesController {
           infra: i18n.t('messages.technologies.categories.infra'),
         },
       },
+      meta: SeoService.build({
+        title: i18n.t('messages.technologies.title'),
+        description: i18n.t('messages.technologies.metaDescription'),
+        locale,
+        path: locale === 'en' ? '/en/technologies' : '/technologies',
+        alternates: { fr: '/technologies', en: '/en/technologies' },
+      }),
     })
   }
 
@@ -80,6 +88,29 @@ export default class TechnologiesController {
         usedIn: i18n.t('messages.technologies.usedIn'),
         noProjects: i18n.t('messages.technologies.noProjects'),
       },
+      meta: SeoService.build({
+        title: technology.name,
+        description:
+          technology.description(locale) || i18n.t('messages.technologies.metaDescription'),
+        locale,
+        path: `${locale === 'en' ? '/en' : ''}/technologies/${technology.slug}`,
+        alternates: {
+          fr: `/technologies/${technology.slug}`,
+          en: `/en/technologies/${technology.slug}`,
+        },
+        jsonLd: [
+          SeoService.breadcrumbs([
+            {
+              name: i18n.t('messages.technologies.title'),
+              path: locale === 'en' ? '/en/technologies' : '/technologies',
+            },
+            {
+              name: technology.name,
+              path: `${locale === 'en' ? '/en' : ''}/technologies/${technology.slug}`,
+            },
+          ]),
+        ],
+      }),
     })
   }
 }

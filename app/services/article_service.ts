@@ -13,6 +13,7 @@ export interface ArticlePayload {
   slug: string
   status: ArticleStatus
   categoryId: number | null
+  coverMediaId: number | null
   tagIds: number[]
   fr: TranslationPayload
   en: TranslationPayload | null
@@ -27,6 +28,7 @@ export default class ArticleService {
   static async save(article: Article, payload: ArticlePayload) {
     article.slug = payload.slug
     article.categoryId = payload.categoryId
+    article.coverMediaId = payload.coverMediaId
     article.readingTime = MarkdownService.readingTime(payload.fr.contentMarkdown)
 
     if (payload.status === 'published' && !article.publishedAt) {

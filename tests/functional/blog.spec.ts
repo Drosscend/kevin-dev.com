@@ -1,4 +1,4 @@
-import { test } from '@japa/runner'
+﻿import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
 import Article from '#models/article'
 import User from '#models/user'
@@ -13,11 +13,12 @@ function makeArticle(
     slug,
     status,
     categoryId: null,
+    coverMediaId: null,
     tagIds: [],
     fr: {
       title: `Titre ${slug}`,
-      summary: 'Résumé de test',
-      contentMarkdown: '# Bonjour\n\nContenu **français**.',
+      summary: 'RÃ©sumÃ© de test',
+      contentMarkdown: '# Bonjour\n\nContenu **franÃ§ais**.',
     },
     en: options.english
       ? { title: `Title ${slug}`, summary: 'Test summary', contentMarkdown: '# Hello' }
@@ -28,7 +29,7 @@ function makeArticle(
 test.group('Blog public', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
-  test('la liste FR montre les articles publiés', async ({ client, assert }) => {
+  test('la liste FR montre les articles publiÃ©s', async ({ client, assert }) => {
     await makeArticle('article-publie', 'published')
     await makeArticle('article-brouillon', 'draft')
 
@@ -57,7 +58,7 @@ test.group('Blog public', (group) => {
     assert.equal(articles[0].title, 'Title fr-et-en')
   })
 
-  test('la page article rend le HTML pré-rendu', async ({ client, assert }) => {
+  test('la page article rend le HTML prÃ©-rendu', async ({ client, assert }) => {
     await makeArticle('mon-article', 'published')
 
     const response = await client.get('/blog/mon-article').withInertia()
@@ -75,7 +76,7 @@ test.group('Blog public', (group) => {
     response.assertStatus(404)
   })
 
-  test('un brouillon est prévisualisable connecté', async ({ client }) => {
+  test('un brouillon est prÃ©visualisable connectÃ©', async ({ client }) => {
     const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
     await makeArticle('brouillon-secret', 'draft')
 
@@ -86,7 +87,7 @@ test.group('Blog public', (group) => {
     response.assertInertiaPropsContains({ isDraftPreview: true })
   })
 
-  test('publishedAt est figé à la première publication', async ({ assert }) => {
+  test('publishedAt est figÃ© Ã  la premiÃ¨re publication', async ({ assert }) => {
     const article = await makeArticle('mon-article', 'published')
     const firstPublishedAt = article.publishedAt!.toISO()
 
@@ -94,6 +95,7 @@ test.group('Blog public', (group) => {
       slug: 'mon-article',
       status: 'draft',
       categoryId: null,
+      coverMediaId: null,
       tagIds: [],
       fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
       en: null,
@@ -102,6 +104,7 @@ test.group('Blog public', (group) => {
       slug: 'mon-article',
       status: 'published',
       categoryId: null,
+      coverMediaId: null,
       tagIds: [],
       fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
       en: null,

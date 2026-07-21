@@ -1,4 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
+import Seo, { type SeoMeta } from '~/components/seo'
 
 type TechnologyShowProps = {
   locale: 'fr' | 'en'
@@ -15,13 +16,15 @@ type TechnologyShowProps = {
     usedIn: string
     noProjects: string
   }
+  meta: SeoMeta
 }
 
-export default function TechnologyShow({ locale, technology, labels }: TechnologyShowProps) {
+export default function TechnologyShow({ locale, technology, labels, meta }: TechnologyShowProps) {
   const base = locale === 'en' ? '/en' : ''
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">
+      <Seo meta={meta} />
       <div className="flex items-center justify-between gap-4 text-sm">
         <Link href={`${base}/technologies`} className="text-muted-foreground hover:underline">
           {labels.backToList}

@@ -4,6 +4,7 @@ import { Exception } from '@adonisjs/core/exceptions'
 import router from '@adonisjs/core/services/router'
 import Project from '#models/project'
 import type Media from '#models/media'
+import SeoService from '#services/seo_service'
 import type { Locale } from '#types/i18n'
 
 function coverUrl(cover: Media | null) {
@@ -51,6 +52,13 @@ export default class ProjectsController {
         title: i18n.t('messages.portfolio.title'),
         empty: i18n.t('messages.portfolio.empty'),
       },
+      meta: SeoService.build({
+        title: i18n.t('messages.portfolio.title'),
+        description: i18n.t('messages.portfolio.metaDescription'),
+        locale,
+        path: locale === 'en' ? '/en/projets' : '/projets',
+        alternates: { fr: '/projets', en: '/en/projets' },
+      }),
     })
   }
 
@@ -112,6 +120,30 @@ export default class ProjectsController {
         technologies: i18n.t('messages.portfolio.technologies'),
         relatedArticles: i18n.t('messages.portfolio.relatedArticles'),
       },
+      meta: SeoService.build({
+        title: translation.title,
+        description: translation.summary || i18n.t('messages.portfolio.metaDescription'),
+        locale,
+        path: `${locale === 'en' ? '/en' : ''}/projets/${project.slug}`,
+        alternates:
+          project.translation('en') !== undefined
+            ? { fr: `/projets/${project.slug}`, en: `/en/projets/${project.slug}` }
+            : null,
+        ogType: 'article',
+        ogImage: SeoService.mediaUrl(project.cover),
+        jsonLd: [
+          SeoService.breadcrumbs([
+            {
+              name: i18n.t('messages.portfolio.title'),
+              path: locale === 'en' ? '/en/projets' : '/projets',
+            },
+            {
+              name: translation.title,
+              path: `${locale === 'en' ? '/en' : ''}/projets/${project.slug}`,
+            },
+          ]),
+        ],
+      }),
     })
   }
 }

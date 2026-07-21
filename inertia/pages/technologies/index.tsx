@@ -1,4 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
+import Seo, { type SeoMeta } from '~/components/seo'
 
 type TechnologyCard = {
   slug: string
@@ -17,6 +18,7 @@ type TechnologiesIndexProps = {
     empty: string
     categories: Record<TechnologyCard['category'], string>
   }
+  meta: SeoMeta
 }
 
 const CATEGORY_ORDER: TechnologyCard['category'][] = ['langage', 'framework', 'outil', 'infra']
@@ -25,6 +27,7 @@ export default function TechnologiesIndex({
   locale,
   technologies,
   labels,
+  meta,
 }: TechnologiesIndexProps) {
   const base = locale === 'en' ? '/en' : ''
   const grouped = CATEGORY_ORDER.map((category) => ({
@@ -34,6 +37,7 @@ export default function TechnologiesIndex({
 
   return (
     <div className="mx-auto max-w-5xl space-y-10 px-6 py-10">
+      <Seo meta={meta} />
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-3xl font-bold tracking-tight">{labels.title}</h1>
         <Link

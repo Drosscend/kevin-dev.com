@@ -21,8 +21,10 @@ export const controllers = {
   Contact: () => import('#controllers/contact_controller'),
   Cv: () => import('#controllers/cv_controller'),
   HealthChecks: () => import('#controllers/health_checks_controller'),
+  Home: () => import('#controllers/home_controller'),
   Legal: () => import('#controllers/legal_controller'),
   Projects: () => import('#controllers/projects_controller'),
+  Seo: () => import('#controllers/seo_controller'),
   Technologies: () => import('#controllers/technologies_controller'),
   Uploads: () => import('#controllers/uploads_controller'),
 }

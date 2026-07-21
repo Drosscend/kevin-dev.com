@@ -5,6 +5,9 @@ export interface ApiDefinition {
   home: typeof routes['home']
   en: {
     home: typeof routes['en.home']
+    seo: {
+      rss: typeof routes['en.seo.rss']
+    }
     blog: {
       index: typeof routes['en.blog.index']
       show: typeof routes['en.blog.show']
@@ -29,6 +32,11 @@ export interface ApiDefinition {
     }
   }
   health: typeof routes['health']
+  seo: {
+    sitemap: typeof routes['seo.sitemap']
+    robots: typeof routes['seo.robots']
+    rss: typeof routes['seo.rss']
+  }
   blog: {
     index: typeof routes['blog.index']
     show: typeof routes['blog.show']

@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import SettingsService from '#services/settings_service'
+import SeoService from '#services/seo_service'
 import type { Locale } from '#types/i18n'
 
 export default class LegalController {
@@ -14,6 +15,15 @@ export default class LegalController {
         title: i18n.t('messages.legal.title'),
         empty: i18n.t('messages.legal.empty'),
       },
+      meta: SeoService.build({
+        title: i18n.t('messages.legal.title'),
+        description: i18n.t('messages.legal.title'),
+        locale,
+        path: locale === 'en' ? '/en/mentions-legales' : '/mentions-legales',
+        alternates: settings.legal_html_en
+          ? { fr: '/mentions-legales', en: '/en/mentions-legales' }
+          : null,
+      }),
     })
   }
 }

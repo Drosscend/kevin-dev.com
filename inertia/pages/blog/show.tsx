@@ -1,5 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import ArticleContent from '~/components/article_content'
+import Seo, { type SeoMeta } from '~/components/seo'
 
 type BlogShowProps = {
   locale: 'fr' | 'en'
@@ -20,6 +21,7 @@ type BlogShowProps = {
     draft: string
     backToList: string
   }
+  meta: SeoMeta
 }
 
 export default function BlogShow({
@@ -28,12 +30,14 @@ export default function BlogShow({
   article,
   hasOtherLocale,
   labels,
+  meta,
 }: BlogShowProps) {
   const base = locale === 'en' ? '/en/blog' : '/blog'
   const otherBase = locale === 'en' ? '/blog' : '/en/blog'
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">
+      <Seo meta={meta} />
       {isDraftPreview && (
         <p className="border-destructive text-destructive rounded-md border px-4 py-2 text-sm">
           {labels.draft}
