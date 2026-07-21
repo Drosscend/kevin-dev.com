@@ -5,6 +5,7 @@ import router from '@adonisjs/core/services/router'
 import Project from '#models/project'
 import type Media from '#models/media'
 import SeoService from '#services/seo_service'
+import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
 import type { Locale } from '#types/i18n'
 
 function coverUrl(cover: Media | null) {
@@ -62,8 +63,17 @@ export default class ProjectsController {
     })
   }
 
-  async show({ params, inertia, auth, i18n }: HttpContext) {
+  async show({ params, inertia, auth, i18n, response }: HttpContext) {
     const locale = i18n.locale as Locale
+
+    if (params.slug.endsWith('.md')) {
+      const markdown = await LlmsService.projectMarkdown(params.slug.slice(0, -3), locale)
+      if (!markdown) {
+        return response.notFound('Not found')
+      }
+      response.header('content-type', MARKDOWN_CONTENT_TYPE)
+      return markdown
+    }
 
     const project = await Project.query()
       .where('slug', params.slug)

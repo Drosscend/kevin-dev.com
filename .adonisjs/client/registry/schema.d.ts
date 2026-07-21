@@ -91,6 +91,66 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['rss']>>>
     }
   }
+  'llms.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/llms.txt'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['index']>>>
+    }
+  }
+  'llms.cv': {
+    methods: ["GET","HEAD"]
+    pattern: '/cv.md'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['cv']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['cv']>>>
+    }
+  }
+  'en.llms.cv': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/cv.md'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['cv']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['cv']>>>
+    }
+  }
+  'llms.legal': {
+    methods: ["GET","HEAD"]
+    pattern: '/mentions-legales.md'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['legal']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['legal']>>>
+    }
+  }
+  'en.llms.legal': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/mentions-legales.md'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['legal']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['legal']>>>
+    }
+  }
   'blog.index': {
     methods: ["GET","HEAD"]
     pattern: '/blog'

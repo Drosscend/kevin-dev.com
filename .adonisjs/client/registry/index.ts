@@ -48,6 +48,36 @@ const routes = {
     tokens: [{"old":"/en/blog/rss.xml","type":0,"val":"en","end":""},{"old":"/en/blog/rss.xml","type":0,"val":"blog","end":""},{"old":"/en/blog/rss.xml","type":0,"val":"rss.xml","end":""}],
     types: placeholder as Registry['en.seo.rss']['types'],
   },
+  'llms.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/llms.txt',
+    tokens: [{"old":"/llms.txt","type":0,"val":"llms.txt","end":""}],
+    types: placeholder as Registry['llms.index']['types'],
+  },
+  'llms.cv': {
+    methods: ["GET","HEAD"],
+    pattern: '/cv.md',
+    tokens: [{"old":"/cv.md","type":0,"val":"cv.md","end":""}],
+    types: placeholder as Registry['llms.cv']['types'],
+  },
+  'en.llms.cv': {
+    methods: ["GET","HEAD"],
+    pattern: '/en/cv.md',
+    tokens: [{"old":"/en/cv.md","type":0,"val":"en","end":""},{"old":"/en/cv.md","type":0,"val":"cv.md","end":""}],
+    types: placeholder as Registry['en.llms.cv']['types'],
+  },
+  'llms.legal': {
+    methods: ["GET","HEAD"],
+    pattern: '/mentions-legales.md',
+    tokens: [{"old":"/mentions-legales.md","type":0,"val":"mentions-legales.md","end":""}],
+    types: placeholder as Registry['llms.legal']['types'],
+  },
+  'en.llms.legal': {
+    methods: ["GET","HEAD"],
+    pattern: '/en/mentions-legales.md',
+    tokens: [{"old":"/en/mentions-legales.md","type":0,"val":"en","end":""},{"old":"/en/mentions-legales.md","type":0,"val":"mentions-legales.md","end":""}],
+    types: placeholder as Registry['en.llms.legal']['types'],
+  },
   'blog.index': {
     methods: ["GET","HEAD"],
     pattern: '/blog',

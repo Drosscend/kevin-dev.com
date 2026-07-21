@@ -11,6 +11,11 @@ export type ScannedRoutes = {
     'seo.robots': { paramsTuple?: []; params?: {} }
     'seo.rss': { paramsTuple?: []; params?: {} }
     'en.seo.rss': { paramsTuple?: []; params?: {} }
+    'llms.index': { paramsTuple?: []; params?: {} }
+    'llms.cv': { paramsTuple?: []; params?: {} }
+    'en.llms.cv': { paramsTuple?: []; params?: {} }
+    'llms.legal': { paramsTuple?: []; params?: {} }
+    'en.llms.legal': { paramsTuple?: []; params?: {} }
     'blog.index': { paramsTuple?: []; params?: {} }
     'blog.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'en.blog.index': { paramsTuple?: []; params?: {} }
@@ -85,6 +90,11 @@ export type ScannedRoutes = {
     'seo.robots': { paramsTuple?: []; params?: {} }
     'seo.rss': { paramsTuple?: []; params?: {} }
     'en.seo.rss': { paramsTuple?: []; params?: {} }
+    'llms.index': { paramsTuple?: []; params?: {} }
+    'llms.cv': { paramsTuple?: []; params?: {} }
+    'en.llms.cv': { paramsTuple?: []; params?: {} }
+    'llms.legal': { paramsTuple?: []; params?: {} }
+    'en.llms.legal': { paramsTuple?: []; params?: {} }
     'blog.index': { paramsTuple?: []; params?: {} }
     'blog.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'en.blog.index': { paramsTuple?: []; params?: {} }
@@ -130,6 +140,11 @@ export type ScannedRoutes = {
     'seo.robots': { paramsTuple?: []; params?: {} }
     'seo.rss': { paramsTuple?: []; params?: {} }
     'en.seo.rss': { paramsTuple?: []; params?: {} }
+    'llms.index': { paramsTuple?: []; params?: {} }
+    'llms.cv': { paramsTuple?: []; params?: {} }
+    'en.llms.cv': { paramsTuple?: []; params?: {} }
+    'llms.legal': { paramsTuple?: []; params?: {} }
+    'en.llms.legal': { paramsTuple?: []; params?: {} }
     'blog.index': { paramsTuple?: []; params?: {} }
     'blog.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'en.blog.index': { paramsTuple?: []; params?: {} }

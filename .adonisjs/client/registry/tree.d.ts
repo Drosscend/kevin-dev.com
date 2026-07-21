@@ -8,6 +8,10 @@ export interface ApiDefinition {
     seo: {
       rss: typeof routes['en.seo.rss']
     }
+    llms: {
+      cv: typeof routes['en.llms.cv']
+      legal: typeof routes['en.llms.legal']
+    }
     blog: {
       index: typeof routes['en.blog.index']
       show: typeof routes['en.blog.show']
@@ -36,6 +40,11 @@ export interface ApiDefinition {
     sitemap: typeof routes['seo.sitemap']
     robots: typeof routes['seo.robots']
     rss: typeof routes['seo.rss']
+  }
+  llms: {
+    index: typeof routes['llms.index']
+    cv: typeof routes['llms.cv']
+    legal: typeof routes['llms.legal']
   }
   blog: {
     index: typeof routes['blog.index']

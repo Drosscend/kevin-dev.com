@@ -27,6 +27,17 @@ router.get('/blog/rss.xml', [controllers.Seo, 'rss']).as('seo.rss')
 router.get('/en/blog/rss.xml', [controllers.Seo, 'rss']).as('en.seo.rss')
 
 /**
+ * Markdown endpoints for LLM consumers. Content pages get their .md
+ * variant through the regular blog/portfolio controllers (a ".md"
+ * slug suffix switches the response to the stored Markdown).
+ */
+router.get('/llms.txt', [controllers.Llms, 'index']).as('llms.index')
+router.get('/cv.md', [controllers.Llms, 'cv']).as('llms.cv')
+router.get('/en/cv.md', [controllers.Llms, 'cv']).as('en.llms.cv')
+router.get('/mentions-legales.md', [controllers.Llms, 'legal']).as('llms.legal')
+router.get('/en/mentions-legales.md', [controllers.Llms, 'legal']).as('en.llms.legal')
+
+/**
  * Public blog. French lives at the root, English under /en,
  * both served by the same controller (locale comes from the URL
  * prefix through the detect-user-locale middleware).

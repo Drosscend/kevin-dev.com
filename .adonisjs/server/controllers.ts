@@ -23,6 +23,7 @@ export const controllers = {
   HealthChecks: () => import('#controllers/health_checks_controller'),
   Home: () => import('#controllers/home_controller'),
   Legal: () => import('#controllers/legal_controller'),
+  Llms: () => import('#controllers/llms_controller'),
   Projects: () => import('#controllers/projects_controller'),
   Seo: () => import('#controllers/seo_controller'),
   Technologies: () => import('#controllers/technologies_controller'),
