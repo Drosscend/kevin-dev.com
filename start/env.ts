@@ -43,4 +43,14 @@ export default await Env.create(new URL('../', import.meta.url), {
   // Umami analytics (self-hosted instance)
   UMAMI_SCRIPT_URL: Env.schema.string.optional(),
   UMAMI_WEBSITE_ID: Env.schema.string.optional(),
+
+  // Restricts the detailed /health report when set
+  MONITORING_SECRET: Env.schema.string.optional(),
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring the drive package
+  |----------------------------------------------------------
+  */
+  DRIVE_DISK: Env.schema.enum(['fs'] as const),
 })

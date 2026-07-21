@@ -1,11 +1,10 @@
-import { existsSync } from 'node:fs'
 import type { HttpContext } from '@adonisjs/core/http'
-import app from '@adonisjs/core/services/app'
+import drive from '@adonisjs/drive/services/main'
 import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
 import type { Locale } from '#types/i18n'
 
-export const CV_PDF_PATH = () => app.makePath('storage', 'cv', 'cv.pdf')
+export const CV_PDF_KEY = 'cv/cv.pdf'
 
 export default class CvController {
   async show({ inertia, i18n }: HttpContext) {
@@ -16,7 +15,7 @@ export default class CvController {
     return inertia.render('cv', {
       locale,
       contentHtml,
-      pdfAvailable: existsSync(CV_PDF_PATH()),
+      pdfAvailable: await drive.use().exists(CV_PDF_KEY),
       labels: {
         title: i18n.t('messages.cv.title'),
         download: i18n.t('messages.cv.download'),
@@ -34,12 +33,13 @@ export default class CvController {
   }
 
   async pdf({ response }: HttpContext) {
-    const path = CV_PDF_PATH()
-    if (!existsSync(path)) {
+    const disk = drive.use()
+    if (!(await disk.exists(CV_PDF_KEY))) {
       return response.notFound('Not found')
     }
 
+    response.header('content-type', 'application/pdf')
     response.header('content-disposition', 'attachment; filename="CV-Kevin-Veronesi.pdf"')
-    return response.download(path)
+    return response.stream(await disk.getStream(CV_PDF_KEY))
   }
 }

@@ -20,16 +20,31 @@ export default function Security({ totpEnabled, qrCode, secret }: SecurityProps)
           <CardHeader>
             <CardTitle>Double authentification active</CardTitle>
             <CardDescription>
-              Un code TOTP est demandé à chaque connexion. La désactiver supprime le secret : il
-              faudra re-scanner un QR code pour la réactiver.
+              Un code TOTP est demandé à chaque connexion. La désactiver exige un code valide et
+              supprime le secret : il faudra re-scanner un QR code pour la réactiver.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Form route="admin.security.destroy">
-              {({ processing }) => (
-                <Button type="submit" variant="destructive" disabled={processing}>
-                  Désactiver la 2FA
-                </Button>
+            <Form route="admin.security.destroy" className="space-y-4">
+              {({ errors, processing }) => (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="disable-code">Code TOTP actuel</Label>
+                    <Input
+                      type="text"
+                      name="code"
+                      id="disable-code"
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      maxLength={6}
+                      aria-invalid={errors.code ? true : undefined}
+                    />
+                    {errors.code && <p className="text-destructive text-sm">{errors.code}</p>}
+                  </div>
+                  <Button type="submit" variant="destructive" disabled={processing}>
+                    Désactiver la 2FA
+                  </Button>
+                </>
               )}
             </Form>
           </CardContent>

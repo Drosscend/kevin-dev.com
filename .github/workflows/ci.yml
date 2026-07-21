@@ -38,6 +38,7 @@ jobs:
       DB_USER: kevin_dev
       DB_PASSWORD: password
       DB_DATABASE: kevin_dev_test
+      DRIVE_DISK: fs
 
     steps:
       - uses: actions/checkout@v5

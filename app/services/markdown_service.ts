@@ -3,6 +3,7 @@ import { visit } from 'unist-util-visit'
 import remarkParse from 'remark-parse'
 import remarkGfm from 'remark-gfm'
 import remarkRehype from 'remark-rehype'
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import rehypeSlug from 'rehype-slug'
 import rehypeShiki from '@shikijs/rehype'
 import rehypeStringify from 'rehype-stringify'
@@ -46,11 +47,28 @@ function rehypeMermaid() {
 }
 
 /**
+ * GitHub-style sanitize schema extended for the pipeline's own
+ * output: mermaid containers and language-tagged code blocks.
+ * Sanitize runs before slug and shiki, so their generated markup
+ * (heading ids, inline styles) is preserved.
+ */
+const sanitizeSchema: typeof defaultSchema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    div: [...(defaultSchema.attributes?.div ?? []), ['className', 'mermaid']],
+    code: [...(defaultSchema.attributes?.code ?? []), ['className', /^language-/]],
+  },
+}
+
+/**
  * Renders Markdown to HTML: GFM syntax, slugged headings, mermaid
  * diagram blocks, and code blocks highlighted by shiki with dual
  * light/dark themes and a data-language attribute (used by the
- * client toolbar for copy/download). Articles store the resulting
- * HTML, so nothing is rendered at request time on the public site.
+ * client toolbar for copy/download). The tree is sanitized before
+ * rendering, so raw HTML and unsafe attributes never reach the
+ * stored output. Articles store the resulting HTML, so nothing is
+ * rendered at request time on the public site.
  */
 export default class MarkdownService {
   static #processor = unified()
@@ -58,6 +76,7 @@ export default class MarkdownService {
     .use(remarkGfm)
     .use(remarkRehype)
     .use(rehypeMermaid)
+    .use(rehypeSanitize, sanitizeSchema)
     .use(rehypeSlug)
     .use(rehypeShiki, {
       themes: { light: 'github-light', dark: 'github-dark' },

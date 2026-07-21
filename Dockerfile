@@ -24,10 +24,12 @@ FROM base AS production
 ENV NODE_ENV=production
 ENV PORT=3333
 ENV HOST=0.0.0.0
+ENV DRIVE_DISK=fs
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/build ./
 # Uploads directory, mounted as a persistent volume in Dokploy
-RUN mkdir -p storage/media
+RUN mkdir -p storage/media && chown -R node:node /app/storage
+USER node
 EXPOSE 3333
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s \

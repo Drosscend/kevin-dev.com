@@ -16,7 +16,14 @@ export default class SessionController {
    */
   async store({ request, auth, response, session }: HttpContext) {
     const { email, password } = await request.validateUsing(loginValidator)
-    const user = await User.verifyCredentials(email, password)
+
+    let user: User
+    try {
+      user = await User.verifyCredentials(email, password)
+    } catch {
+      session.flash('errors', { email: ['Identifiants invalides'] })
+      return response.redirect().back()
+    }
 
     if (user.totpEnabled) {
       session.put(TOTP_PENDING_KEY, user.id)

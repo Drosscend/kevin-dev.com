@@ -84,6 +84,35 @@ test.group('Admin auth', (group) => {
     verify.assertSessionMissing('totp_pending_user_id')
   })
 
+  test('désactiver la 2FA exige un code TOTP valide', async ({ client, assert }) => {
+    const secret = TotpService.generateSecret()
+    const user = await User.create({
+      email: 'admin@example.com',
+      password: 'motdepasse',
+      totpSecret: secret,
+    })
+
+    const refused = await client
+      .delete('/admin/security')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .form({ code: '000000' })
+    refused.assertStatus(302)
+    await user.refresh()
+    assert.isNotNull(user.totpSecret)
+
+    const accepted = await client
+      .delete('/admin/security')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .form({ code: currentCode(secret, user.email) })
+    accepted.assertStatus(302)
+    await user.refresh()
+    assert.isNull(user.totpSecret)
+  })
+
   test('un mauvais code TOTP ne connecte pas', async ({ client }) => {
     const secret = TotpService.generateSecret()
     const user = await User.create({

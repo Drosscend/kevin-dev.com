@@ -1,11 +1,9 @@
-import { existsSync, statSync } from 'node:fs'
-import { mkdir } from 'node:fs/promises'
-import { dirname } from 'node:path'
 import type { HttpContext } from '@adonisjs/core/http'
+import drive from '@adonisjs/drive/services/main'
 import SettingsService from '#services/settings_service'
 import MarkdownService from '#services/markdown_service'
 import { pagesValidator } from '#validators/contact'
-import { CV_PDF_PATH } from '#controllers/cv_controller'
+import { CV_PDF_KEY } from '#controllers/cv_controller'
 
 /**
  * Renders and stores a settings-backed markdown page in one locale.
@@ -28,20 +26,19 @@ export default class PagesController {
       'legal_markdown_en',
     ])
 
-    const pdfPath = CV_PDF_PATH()
-    const pdfExists = existsSync(pdfPath)
+    const disk = drive.use()
+    let pdf: { size: number } | null = null
+    if (await disk.exists(CV_PDF_KEY)) {
+      const metadata = await disk.getMetaData(CV_PDF_KEY)
+      pdf = { size: metadata.contentLength }
+    }
 
     return inertia.render('admin/pages', {
       cvFr: settings.cv_markdown_fr,
       cvEn: settings.cv_markdown_en,
       legalFr: settings.legal_markdown_fr,
       legalEn: settings.legal_markdown_en,
-      pdf: pdfExists
-        ? {
-            size: statSync(pdfPath).size,
-            updatedAt: statSync(pdfPath).mtime.toISOString(),
-          }
-        : null,
+      pdf,
     })
   }
 
@@ -67,9 +64,7 @@ export default class PagesController {
       return response.redirect().back()
     }
 
-    const path = CV_PDF_PATH()
-    await mkdir(dirname(path), { recursive: true })
-    await file.move(dirname(path), { name: 'cv.pdf', overwrite: true })
+    await file.moveToDisk(CV_PDF_KEY)
 
     session.flash('success', 'CV PDF mis à jour')
     response.redirect().toRoute('admin.pages')

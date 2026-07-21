@@ -32,12 +32,4 @@ export default class TelegramService {
       logger.error({ err: error }, 'Telegram notification failed')
     }
   }
-
-  /**
-   * Fire-and-forget variant: schedules the call without making the
-   * caller wait for the Telegram API.
-   */
-  static notifyInBackground(text: string) {
-    void this.send(text)
-  }
 }

@@ -61,6 +61,7 @@ export default defineConfig({
     () => import('@adonisjs/limiter/limiter_provider'),
     () => import('#providers/api_provider'),
     () => import('@adonisjs/i18n/i18n_provider'),
+    () => import('@adonisjs/drive/drive_provider'),
   ],
 
   /*
@@ -76,6 +77,7 @@ export default defineConfig({
     () => import('#start/kernel'),
     () => import('#start/validator'),
     () => import('#start/view'),
+    () => import('#start/events'),
   ],
 
   /*

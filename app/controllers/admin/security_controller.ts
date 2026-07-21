@@ -50,8 +50,19 @@ export default class SecurityController {
     response.redirect().toRoute('admin.security')
   }
 
-  async destroy({ auth, session, response }: HttpContext) {
+  /**
+   * Disabling 2FA requires a valid current TOTP code, so a stolen
+   * session alone cannot remove the second factor.
+   */
+  async destroy({ request, auth, session, response }: HttpContext) {
     const user = auth.user!
+    const { code } = await request.validateUsing(totpCodeValidator)
+
+    if (!user.totpSecret || !TotpService.verify(user.email, user.totpSecret, code)) {
+      session.flash('errors', { code: ['Code invalide, réessayez'] })
+      return response.redirect().back()
+    }
+
     user.totpSecret = null
     await user.save()
     session.flash('success', 'Double authentification désactivée')

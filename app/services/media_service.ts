@@ -1,8 +1,6 @@
-import { join } from 'node:path'
 import { randomBytes } from 'node:crypto'
-import { mkdir, rm } from 'node:fs/promises'
 import sharp from 'sharp'
-import app from '@adonisjs/core/services/app'
+import drive from '@adonisjs/drive/services/main'
 import type { MultipartFile } from '@adonisjs/core/bodyparser'
 import Media, { type MediaVariant } from '#models/media'
 
@@ -16,20 +14,20 @@ const WEBP_QUALITY = 82
 export class InvalidImageError extends Error {}
 
 /**
- * Media library: every upload is re-encoded to webp by sharp
- * (neutralizes crafted files), responsive variants are generated,
- * and files are stored under generated names (no client-provided
- * name ever reaches the disk).
+ * Media library backed by Drive (fs disk under storage/): every
+ * upload is re-encoded to webp by sharp (neutralizes crafted
+ * files), responsive variants are generated, and files are stored
+ * under generated keys (no client-provided name ever reaches the
+ * disk).
  */
 export default class MediaService {
-  static storagePath(...paths: string[]) {
-    return app.makePath('storage/media', ...paths)
+  static key(mediaKey: string, file: string) {
+    return `media/${mediaKey}/${file}`
   }
 
   static async store(file: MultipartFile, alt: string) {
-    const key = randomBytes(12).toString('hex')
-    const dir = this.storagePath(key)
-    await mkdir(dir, { recursive: true })
+    const mediaKey = randomBytes(12).toString('hex')
+    const disk = drive.use()
 
     let original
     try {
@@ -37,49 +35,51 @@ export default class MediaService {
         .rotate()
         .resize({ width: ORIGINAL_MAX_WIDTH, withoutEnlargement: true })
         .webp({ quality: WEBP_QUALITY })
-        .toFile(join(dir, 'original.webp'))
+        .toBuffer({ resolveWithObject: true })
     } catch {
-      await rm(dir, { recursive: true, force: true })
       throw new InvalidImageError()
     }
 
     try {
+      await disk.put(this.key(mediaKey, 'original.webp'), original.data)
+
       const variants: MediaVariant[] = []
       for (const width of VARIANT_WIDTHS) {
-        if (original.width <= width) {
+        if (original.info.width <= width) {
           continue
         }
         const variant = await sharp(file.tmpPath!)
           .rotate()
           .resize({ width })
           .webp({ quality: WEBP_QUALITY })
-          .toFile(join(dir, `w${width}.webp`))
+          .toBuffer({ resolveWithObject: true })
+        await disk.put(this.key(mediaKey, `w${width}.webp`), variant.data)
         variants.push({
           file: `w${width}.webp`,
-          width: variant.width,
-          height: variant.height,
-          size: variant.size,
+          width: variant.info.width,
+          height: variant.info.height,
+          size: variant.info.size,
         })
       }
 
       return await Media.create({
-        key,
+        key: mediaKey,
         originalName: file.clientName,
         alt,
         mimeType: 'image/webp',
-        width: original.width,
-        height: original.height,
-        size: original.size,
+        width: original.info.width,
+        height: original.info.height,
+        size: original.info.size,
         variants,
       })
     } catch (error) {
-      await rm(dir, { recursive: true, force: true })
+      await disk.deleteAll(`media/${mediaKey}`)
       throw error
     }
   }
 
   static async delete(media: Media) {
-    await rm(this.storagePath(media.key), { recursive: true, force: true })
+    await drive.use().deleteAll(`media/${media.key}`)
     await media.delete()
   }
 }

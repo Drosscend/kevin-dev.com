@@ -12,7 +12,7 @@ type PagesProps = {
   cvEn: string
   legalFr: string
   legalEn: string
-  pdf: { size: number; updatedAt: string } | null
+  pdf: { size: number } | null
 }
 
 function xsrfToken() {
@@ -77,7 +77,7 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
           <CardTitle>CV PDF</CardTitle>
           <CardDescription>
             {pdf
-              ? `PDF en ligne — ${Math.round(pdf.size / 1024)} Ko, remplacé le ${new Date(pdf.updatedAt).toLocaleString('fr-FR')}`
+              ? `PDF en ligne — ${Math.round(pdf.size / 1024)} Ko`
               : 'Aucun PDF en ligne pour l’instant.'}
           </CardDescription>
         </CardHeader>
