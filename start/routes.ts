@@ -8,6 +8,7 @@
 */
 
 import { middleware } from '#start/kernel'
+import { loginThrottle } from '#start/limiter'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
@@ -15,18 +16,46 @@ router.on('/').renderInertia('home', {}).as('home')
 
 router.get('/health', [controllers.HealthChecks, 'handle']).as('health')
 
+/**
+ * Fichiers de la bibliothèque média (noms générés, immutables).
+ */
+router.get('/uploads/:key/:file', [controllers.Uploads, 'show']).as('uploads.show')
+
+/**
+ * Login admin en deux étapes (mot de passe puis TOTP).
+ */
 router
   .group(() => {
-    router.get('signup', [controllers.NewAccount, 'create'])
-    router.post('signup', [controllers.NewAccount, 'store'])
+    router.get('login', [controllers.admin.Session, 'create']).as('admin.login')
+    router
+      .post('login', [controllers.admin.Session, 'store'])
+      .as('admin.login.store')
+      .use(loginThrottle)
 
-    router.get('login', [controllers.Session, 'create'])
-    router.post('login', [controllers.Session, 'store'])
+    router.get('login/verify', [controllers.admin.Session, 'totpCreate']).as('admin.totp')
+    router
+      .post('login/verify', [controllers.admin.Session, 'totpStore'])
+      .as('admin.totp.store')
+      .use(loginThrottle)
   })
+  .prefix('/admin')
   .use(middleware.guest())
 
+/**
+ * Administration (session requise).
+ */
 router
   .group(() => {
-    router.post('logout', [controllers.Session, 'destroy'])
+    router.get('/', [controllers.admin.Dashboard, 'handle']).as('admin.dashboard')
+    router.post('logout', [controllers.admin.Session, 'destroy']).as('admin.logout')
+
+    router.get('security', [controllers.admin.Security, 'show']).as('admin.security')
+    router.post('security', [controllers.admin.Security, 'store']).as('admin.security.store')
+    router.delete('security', [controllers.admin.Security, 'destroy']).as('admin.security.destroy')
+
+    router.get('media', [controllers.admin.Media, 'index']).as('admin.media.index')
+    router.post('media', [controllers.admin.Media, 'store']).as('admin.media.store')
+    router.delete('media/:id', [controllers.admin.Media, 'destroy']).as('admin.media.destroy')
   })
+  .prefix('/admin')
   .use(middleware.auth())

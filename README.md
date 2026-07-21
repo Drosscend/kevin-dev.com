@@ -32,9 +32,25 @@ Les composants shadcn s'ajoutent avec `npx shadcn@latest add <composant>`
 | `npm run typecheck`               | TypeScript serveur + front                         |
 | `node ace test unit functional`   | Tests Japa (la suite functional requiert Postgres) |
 
+## Administration
+
+Interface privée sur `/admin` (utilisateur unique, pas d'inscription
+publique). Le compte est créé par seed à partir des variables
+`ADMIN_EMAIL` / `ADMIN_PASSWORD` :
+
+```sh
+node ace db:seed
+```
+
+La double authentification TOTP s'active depuis `/admin/security`
+(QR code à scanner, confirmation par code). La bibliothèque média
+réencode les images en webp (variantes 320/640/1280) dans
+`storage/media/`, servies sous `/uploads/…`.
+
 ## Production
 
 Build Docker multi-stage ([Dockerfile](Dockerfile)) ; les migrations sont
 jouées au démarrage du conteneur. Endpoint de monitoring : `/health`.
+Le dossier `/app/storage` doit être monté en volume persistant (uploads).
 Variables d'environnement : voir [.env.example](.env.example) (configurées
 dans l'onglet Environment de Dokploy, jamais commitées).

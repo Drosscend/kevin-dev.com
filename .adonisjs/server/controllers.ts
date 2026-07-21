@@ -4,7 +4,12 @@
  */
 
 export const controllers = {
+  admin: {
+    Dashboard: () => import('#controllers/admin/dashboard_controller'),
+    Media: () => import('#controllers/admin/media_controller'),
+    Security: () => import('#controllers/admin/security_controller'),
+    Session: () => import('#controllers/admin/session_controller'),
+  },
   HealthChecks: () => import('#controllers/health_checks_controller'),
-  NewAccount: () => import('#controllers/new_account_controller'),
-  Session: () => import('#controllers/session_controller'),
+  Uploads: () => import('#controllers/uploads_controller'),
 }

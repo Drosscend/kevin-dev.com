@@ -2,6 +2,7 @@ import './css/app.css'
 import { type ReactElement } from 'react'
 import { client } from './client'
 import Layout from '~/layouts/default'
+import AdminLayout from '~/layouts/admin'
 import { type Data } from '@generated/data'
 import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
@@ -16,7 +17,8 @@ createInertiaApp({
     return resolvePageComponent(
       `./pages/${name}.tsx`,
       import.meta.glob('./pages/**/*.tsx'),
-      (page: ReactElement<Data.SharedProps>) => <Layout children={page} />
+      (page: ReactElement<Data.SharedProps>) =>
+        name.startsWith('admin/') ? <AdminLayout children={page} /> : <Layout children={page} />
     )
   },
   setup({ el, App, props }) {

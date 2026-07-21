@@ -26,6 +26,8 @@ ENV PORT=3333
 ENV HOST=0.0.0.0
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/build ./
+# Uploads : à monter en volume persistant dans Dokploy
+RUN mkdir -p storage/media
 EXPOSE 3333
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s \

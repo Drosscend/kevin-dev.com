@@ -7,8 +7,55 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class MediaSchema extends BaseModel {
+  static $columns = [
+    'alt',
+    'createdAt',
+    'height',
+    'id',
+    'key',
+    'mimeType',
+    'originalName',
+    'size',
+    'updatedAt',
+    'variants',
+    'width',
+  ] as const
+  $columns = MediaSchema.$columns
+  @column()
+  declare alt: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare height: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare key: string
+  @column()
+  declare mimeType: string
+  @column()
+  declare originalName: string
+  @column()
+  declare size: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare variants: any
+  @column()
+  declare width: number
+}
+
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
+  static $columns = [
+    'createdAt',
+    'email',
+    'fullName',
+    'id',
+    'password',
+    'totpSecret',
+    'updatedAt',
+  ] as const
   $columns = UserSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -20,6 +67,8 @@ export class UserSchema extends BaseModel {
   declare id: number
   @column({ serializeAs: null })
   declare password: string
+  @column()
+  declare totpSecret: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }

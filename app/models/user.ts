@@ -4,6 +4,10 @@ import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 
 export default class User extends compose(UserSchema, withAuthFinder(hash)) {
+  get totpEnabled() {
+    return this.totpSecret !== null
+  }
+
   get initials() {
     const [first, last] = this.fullName ? this.fullName.split(' ') : this.email.split('@')
     if (first && last) {
