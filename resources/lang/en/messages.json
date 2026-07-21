@@ -17,6 +17,24 @@
     "technologies": "Technologies used",
     "relatedArticles": "Related articles"
   },
+  "cv": {
+    "title": "Resume",
+    "download": "Download the resume (PDF)",
+    "empty": "The resume is not available in this language yet."
+  },
+  "legal": {
+    "title": "Legal notice",
+    "empty": "Content coming soon."
+  },
+  "contact": {
+    "title": "Contact",
+    "intro": "A question or a proposal? Drop me a line through this form.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send",
+    "sent": "Message sent, thank you! I will reply by email."
+  },
   "technologies": {
     "title": "Technologies",
     "empty": "No technologies yet.",

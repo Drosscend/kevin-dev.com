@@ -8,7 +8,7 @@
 */
 
 import { middleware } from '#start/kernel'
-import { loginThrottle } from '#start/limiter'
+import { contactThrottle, loginThrottle } from '#start/limiter'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
@@ -39,6 +39,25 @@ router.get('/technologies', [controllers.Technologies, 'index']).as('technologie
 router.get('/technologies/:slug', [controllers.Technologies, 'show']).as('technologies.show')
 router.get('/en/technologies', [controllers.Technologies, 'index']).as('en.technologies.index')
 router.get('/en/technologies/:slug', [controllers.Technologies, 'show']).as('en.technologies.show')
+
+/**
+ * CV (settings-backed page + downloadable PDF), legal notice and
+ * contact form, same locale scheme as the blog.
+ */
+router.get('/cv', [controllers.Cv, 'show']).as('cv.show')
+router.get('/en/cv', [controllers.Cv, 'show']).as('en.cv.show')
+router.get('/cv.pdf', [controllers.Cv, 'pdf']).as('cv.pdf')
+
+router.get('/mentions-legales', [controllers.Legal, 'show']).as('legal.show')
+router.get('/en/mentions-legales', [controllers.Legal, 'show']).as('en.legal.show')
+
+router.get('/contact', [controllers.Contact, 'show']).as('contact.show')
+router.post('/contact', [controllers.Contact, 'store']).as('contact.store').use(contactThrottle)
+router.get('/en/contact', [controllers.Contact, 'show']).as('en.contact.show')
+router
+  .post('/en/contact', [controllers.Contact, 'store'])
+  .as('en.contact.store')
+  .use(contactThrottle)
 
 /**
  * Media library files (generated names, immutable).
@@ -132,6 +151,18 @@ router
     router
       .delete('projects/:id', [controllers.admin.Projects, 'destroy'])
       .as('admin.projects.destroy')
+
+    router.get('pages', [controllers.admin.Pages, 'show']).as('admin.pages')
+    router.put('pages', [controllers.admin.Pages, 'update']).as('admin.pages.update')
+    router.post('pages/cv-pdf', [controllers.admin.Pages, 'uploadPdf']).as('admin.pages.pdf')
+
+    router.get('messages', [controllers.admin.Messages, 'index']).as('admin.messages.index')
+    router
+      .put('messages/:id/read', [controllers.admin.Messages, 'toggleRead'])
+      .as('admin.messages.read')
+    router
+      .delete('messages/:id', [controllers.admin.Messages, 'destroy'])
+      .as('admin.messages.destroy')
   })
   .prefix('/admin')
   .use(middleware.auth())

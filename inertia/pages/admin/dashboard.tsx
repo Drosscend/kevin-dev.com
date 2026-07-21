@@ -4,9 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 interface DashboardProps {
   totpEnabled: boolean
   mediaCount: number
+  unreadMessages: number
 }
 
-export default function Dashboard({ totpEnabled, mediaCount }: DashboardProps) {
+export default function Dashboard({ totpEnabled, mediaCount, unreadMessages }: DashboardProps) {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
@@ -34,6 +35,17 @@ export default function Dashboard({ totpEnabled, mediaCount }: DashboardProps) {
           </CardHeader>
           <CardContent className="text-muted-foreground text-sm">
             images dans la bibliothèque
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardDescription>Messages non lus</CardDescription>
+            <CardTitle className="text-3xl">{unreadMessages}</CardTitle>
+          </CardHeader>
+          <CardContent className="text-muted-foreground text-sm">
+            <Link route="admin.messages.index" className="underline">
+              voir la boîte de réception
+            </Link>
           </CardContent>
         </Card>
       </div>

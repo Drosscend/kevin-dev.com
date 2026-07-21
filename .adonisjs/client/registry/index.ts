@@ -96,6 +96,60 @@ const routes = {
     tokens: [{"old":"/en/technologies/:slug","type":0,"val":"en","end":""},{"old":"/en/technologies/:slug","type":0,"val":"technologies","end":""},{"old":"/en/technologies/:slug","type":1,"val":"slug","end":""}],
     types: placeholder as Registry['en.technologies.show']['types'],
   },
+  'cv.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/cv',
+    tokens: [{"old":"/cv","type":0,"val":"cv","end":""}],
+    types: placeholder as Registry['cv.show']['types'],
+  },
+  'en.cv.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/en/cv',
+    tokens: [{"old":"/en/cv","type":0,"val":"en","end":""},{"old":"/en/cv","type":0,"val":"cv","end":""}],
+    types: placeholder as Registry['en.cv.show']['types'],
+  },
+  'cv.pdf': {
+    methods: ["GET","HEAD"],
+    pattern: '/cv.pdf',
+    tokens: [{"old":"/cv.pdf","type":0,"val":"cv.pdf","end":""}],
+    types: placeholder as Registry['cv.pdf']['types'],
+  },
+  'legal.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/mentions-legales',
+    tokens: [{"old":"/mentions-legales","type":0,"val":"mentions-legales","end":""}],
+    types: placeholder as Registry['legal.show']['types'],
+  },
+  'en.legal.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/en/mentions-legales',
+    tokens: [{"old":"/en/mentions-legales","type":0,"val":"en","end":""},{"old":"/en/mentions-legales","type":0,"val":"mentions-legales","end":""}],
+    types: placeholder as Registry['en.legal.show']['types'],
+  },
+  'contact.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/contact',
+    tokens: [{"old":"/contact","type":0,"val":"contact","end":""}],
+    types: placeholder as Registry['contact.show']['types'],
+  },
+  'contact.store': {
+    methods: ["POST"],
+    pattern: '/contact',
+    tokens: [{"old":"/contact","type":0,"val":"contact","end":""}],
+    types: placeholder as Registry['contact.store']['types'],
+  },
+  'en.contact.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/en/contact',
+    tokens: [{"old":"/en/contact","type":0,"val":"en","end":""},{"old":"/en/contact","type":0,"val":"contact","end":""}],
+    types: placeholder as Registry['en.contact.show']['types'],
+  },
+  'en.contact.store': {
+    methods: ["POST"],
+    pattern: '/en/contact',
+    tokens: [{"old":"/en/contact","type":0,"val":"en","end":""},{"old":"/en/contact","type":0,"val":"contact","end":""}],
+    types: placeholder as Registry['en.contact.store']['types'],
+  },
   'uploads.show': {
     methods: ["GET","HEAD"],
     pattern: '/uploads/:key/:file',
@@ -323,6 +377,42 @@ const routes = {
     pattern: '/admin/projects/:id',
     tokens: [{"old":"/admin/projects/:id","type":0,"val":"admin","end":""},{"old":"/admin/projects/:id","type":0,"val":"projects","end":""},{"old":"/admin/projects/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['admin.projects.destroy']['types'],
+  },
+  'admin.pages': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/pages',
+    tokens: [{"old":"/admin/pages","type":0,"val":"admin","end":""},{"old":"/admin/pages","type":0,"val":"pages","end":""}],
+    types: placeholder as Registry['admin.pages']['types'],
+  },
+  'admin.pages.update': {
+    methods: ["PUT"],
+    pattern: '/admin/pages',
+    tokens: [{"old":"/admin/pages","type":0,"val":"admin","end":""},{"old":"/admin/pages","type":0,"val":"pages","end":""}],
+    types: placeholder as Registry['admin.pages.update']['types'],
+  },
+  'admin.pages.pdf': {
+    methods: ["POST"],
+    pattern: '/admin/pages/cv-pdf',
+    tokens: [{"old":"/admin/pages/cv-pdf","type":0,"val":"admin","end":""},{"old":"/admin/pages/cv-pdf","type":0,"val":"pages","end":""},{"old":"/admin/pages/cv-pdf","type":0,"val":"cv-pdf","end":""}],
+    types: placeholder as Registry['admin.pages.pdf']['types'],
+  },
+  'admin.messages.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/messages',
+    tokens: [{"old":"/admin/messages","type":0,"val":"admin","end":""},{"old":"/admin/messages","type":0,"val":"messages","end":""}],
+    types: placeholder as Registry['admin.messages.index']['types'],
+  },
+  'admin.messages.read': {
+    methods: ["PUT"],
+    pattern: '/admin/messages/:id/read',
+    tokens: [{"old":"/admin/messages/:id/read","type":0,"val":"admin","end":""},{"old":"/admin/messages/:id/read","type":0,"val":"messages","end":""},{"old":"/admin/messages/:id/read","type":1,"val":"id","end":""},{"old":"/admin/messages/:id/read","type":0,"val":"read","end":""}],
+    types: placeholder as Registry['admin.messages.read']['types'],
+  },
+  'admin.messages.destroy': {
+    methods: ["DELETE"],
+    pattern: '/admin/messages/:id',
+    tokens: [{"old":"/admin/messages/:id","type":0,"val":"admin","end":""},{"old":"/admin/messages/:id","type":0,"val":"messages","end":""},{"old":"/admin/messages/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.messages.destroy']['types'],
   },
 } as const satisfies Record<string, AdonisEndpoint>
 

@@ -19,6 +19,15 @@ export type ScannedRoutes = {
     'technologies.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'en.technologies.index': { paramsTuple?: []; params?: {} }
     'en.technologies.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'cv.show': { paramsTuple?: []; params?: {} }
+    'en.cv.show': { paramsTuple?: []; params?: {} }
+    'cv.pdf': { paramsTuple?: []; params?: {} }
+    'legal.show': { paramsTuple?: []; params?: {} }
+    'en.legal.show': { paramsTuple?: []; params?: {} }
+    'contact.show': { paramsTuple?: []; params?: {} }
+    'contact.store': { paramsTuple?: []; params?: {} }
+    'en.contact.show': { paramsTuple?: []; params?: {} }
+    'en.contact.store': { paramsTuple?: []; params?: {} }
     'uploads.show': { paramsTuple: [ParamValue,ParamValue]; params: {'key': ParamValue,'file': ParamValue} }
     'admin.login': { paramsTuple?: []; params?: {} }
     'admin.login.store': { paramsTuple?: []; params?: {} }
@@ -57,6 +66,12 @@ export type ScannedRoutes = {
     'admin.projects.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.projects.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.projects.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.pages': { paramsTuple?: []; params?: {} }
+    'admin.pages.update': { paramsTuple?: []; params?: {} }
+    'admin.pages.pdf': { paramsTuple?: []; params?: {} }
+    'admin.messages.index': { paramsTuple?: []; params?: {} }
+    'admin.messages.read': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.messages.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
@@ -74,6 +89,13 @@ export type ScannedRoutes = {
     'technologies.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'en.technologies.index': { paramsTuple?: []; params?: {} }
     'en.technologies.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'cv.show': { paramsTuple?: []; params?: {} }
+    'en.cv.show': { paramsTuple?: []; params?: {} }
+    'cv.pdf': { paramsTuple?: []; params?: {} }
+    'legal.show': { paramsTuple?: []; params?: {} }
+    'en.legal.show': { paramsTuple?: []; params?: {} }
+    'contact.show': { paramsTuple?: []; params?: {} }
+    'en.contact.show': { paramsTuple?: []; params?: {} }
     'uploads.show': { paramsTuple: [ParamValue,ParamValue]; params: {'key': ParamValue,'file': ParamValue} }
     'admin.login': { paramsTuple?: []; params?: {} }
     'admin.totp': { paramsTuple?: []; params?: {} }
@@ -89,6 +111,8 @@ export type ScannedRoutes = {
     'admin.projects.index': { paramsTuple?: []; params?: {} }
     'admin.projects.create': { paramsTuple?: []; params?: {} }
     'admin.projects.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.pages': { paramsTuple?: []; params?: {} }
+    'admin.messages.index': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
@@ -106,6 +130,13 @@ export type ScannedRoutes = {
     'technologies.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
     'en.technologies.index': { paramsTuple?: []; params?: {} }
     'en.technologies.show': { paramsTuple: [ParamValue]; params: {'slug': ParamValue} }
+    'cv.show': { paramsTuple?: []; params?: {} }
+    'en.cv.show': { paramsTuple?: []; params?: {} }
+    'cv.pdf': { paramsTuple?: []; params?: {} }
+    'legal.show': { paramsTuple?: []; params?: {} }
+    'en.legal.show': { paramsTuple?: []; params?: {} }
+    'contact.show': { paramsTuple?: []; params?: {} }
+    'en.contact.show': { paramsTuple?: []; params?: {} }
     'uploads.show': { paramsTuple: [ParamValue,ParamValue]; params: {'key': ParamValue,'file': ParamValue} }
     'admin.login': { paramsTuple?: []; params?: {} }
     'admin.totp': { paramsTuple?: []; params?: {} }
@@ -121,8 +152,12 @@ export type ScannedRoutes = {
     'admin.projects.index': { paramsTuple?: []; params?: {} }
     'admin.projects.create': { paramsTuple?: []; params?: {} }
     'admin.projects.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.pages': { paramsTuple?: []; params?: {} }
+    'admin.messages.index': { paramsTuple?: []; params?: {} }
   }
   POST: {
+    'contact.store': { paramsTuple?: []; params?: {} }
+    'en.contact.store': { paramsTuple?: []; params?: {} }
     'admin.login.store': { paramsTuple?: []; params?: {} }
     'admin.totp.store': { paramsTuple?: []; params?: {} }
     'admin.logout': { paramsTuple?: []; params?: {} }
@@ -134,6 +169,7 @@ export type ScannedRoutes = {
     'admin.articles.preview': { paramsTuple?: []; params?: {} }
     'admin.technologies.store': { paramsTuple?: []; params?: {} }
     'admin.projects.store': { paramsTuple?: []; params?: {} }
+    'admin.pages.pdf': { paramsTuple?: []; params?: {} }
   }
   DELETE: {
     'admin.security.destroy': { paramsTuple?: []; params?: {} }
@@ -143,6 +179,7 @@ export type ScannedRoutes = {
     'admin.articles.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.technologies.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.projects.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.messages.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
   PUT: {
     'admin.categories.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -150,6 +187,8 @@ export type ScannedRoutes = {
     'admin.articles.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.technologies.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.projects.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.pages.update': { paramsTuple?: []; params?: {} }
+    'admin.messages.read': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

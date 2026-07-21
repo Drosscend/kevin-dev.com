@@ -17,6 +17,16 @@ export interface ApiDefinition {
       index: typeof routes['en.technologies.index']
       show: typeof routes['en.technologies.show']
     }
+    cv: {
+      show: typeof routes['en.cv.show']
+    }
+    legal: {
+      show: typeof routes['en.legal.show']
+    }
+    contact: {
+      show: typeof routes['en.contact.show']
+      store: typeof routes['en.contact.store']
+    }
   }
   health: typeof routes['health']
   blog: {
@@ -30,6 +40,17 @@ export interface ApiDefinition {
   technologies: {
     index: typeof routes['technologies.index']
     show: typeof routes['technologies.show']
+  }
+  cv: {
+    show: typeof routes['cv.show']
+    pdf: typeof routes['cv.pdf']
+  }
+  legal: {
+    show: typeof routes['legal.show']
+  }
+  contact: {
+    show: typeof routes['contact.show']
+    store: typeof routes['contact.store']
   }
   uploads: {
     show: typeof routes['uploads.show']
@@ -86,6 +107,15 @@ export interface ApiDefinition {
       edit: typeof routes['admin.projects.edit']
       update: typeof routes['admin.projects.update']
       destroy: typeof routes['admin.projects.destroy']
+    }
+    pages: typeof routes['admin.pages'] & {
+      update: typeof routes['admin.pages.update']
+      pdf: typeof routes['admin.pages.pdf']
+    }
+    messages: {
+      index: typeof routes['admin.messages.index']
+      read: typeof routes['admin.messages.read']
+      destroy: typeof routes['admin.messages.destroy']
     }
   }
 }

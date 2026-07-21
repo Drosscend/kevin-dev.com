@@ -17,6 +17,24 @@
     "technologies": "Technologies utilisées",
     "relatedArticles": "Articles liés"
   },
+  "cv": {
+    "title": "CV",
+    "download": "Télécharger le CV (PDF)",
+    "empty": "Le CV n'est pas encore disponible dans cette langue."
+  },
+  "legal": {
+    "title": "Mentions légales",
+    "empty": "Contenu à venir."
+  },
+  "contact": {
+    "title": "Contact",
+    "intro": "Une question, une proposition ? Écrivez-moi via ce formulaire.",
+    "name": "Nom",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Envoyer",
+    "sent": "Message envoyé, merci ! Je vous répondrai par email."
+  },
   "technologies": {
     "title": "Technologies",
     "empty": "Aucune technologie pour l'instant.",

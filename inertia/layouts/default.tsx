@@ -37,10 +37,21 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
             <Link route="technologies.index" className="hover:underline">
               Technos
             </Link>
+            <Link route="cv.show" className="hover:underline">
+              CV
+            </Link>
+            <Link route="contact.show" className="hover:underline">
+              Contact
+            </Link>
           </nav>
         </div>
       </header>
       <main>{children}</main>
+      <footer className="text-muted-foreground border-t py-6 text-center text-xs">
+        <Link route="legal.show" className="hover:underline">
+          Mentions légales
+        </Link>
+      </footer>
       <Toaster position="top-center" richColors />
     </>
   )

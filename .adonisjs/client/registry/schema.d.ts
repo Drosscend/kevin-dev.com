@@ -187,6 +187,114 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['show']>>>
     }
   }
+  'cv.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/cv'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['show']>>>
+    }
+  }
+  'en.cv.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/cv'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['show']>>>
+    }
+  }
+  'cv.pdf': {
+    methods: ["GET","HEAD"]
+    pattern: '/cv.pdf'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['pdf']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['pdf']>>>
+    }
+  }
+  'legal.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/mentions-legales'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
+    }
+  }
+  'en.legal.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/mentions-legales'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
+    }
+  }
+  'contact.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/contact'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['show']>>>
+    }
+  }
+  'contact.store': {
+    methods: ["POST"]
+    pattern: '/contact'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/contact').contactValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/contact').contactValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'en.contact.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/contact'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['show']>>>
+    }
+  }
+  'en.contact.store': {
+    methods: ["POST"]
+    pattern: '/en/contact'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/contact').contactValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/contact').contactValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'uploads.show': {
     methods: ["GET","HEAD"]
     pattern: '/uploads/:key/:file'
@@ -641,6 +749,78 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['destroy']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['destroy']>>>
+    }
+  }
+  'admin.pages': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/pages'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/pages_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/pages_controller').default['show']>>>
+    }
+  }
+  'admin.pages.update': {
+    methods: ["PUT"]
+    pattern: '/admin/pages'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/contact').pagesValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/contact').pagesValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/pages_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/pages_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.pages.pdf': {
+    methods: ["POST"]
+    pattern: '/admin/pages/cv-pdf'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/pages_controller').default['uploadPdf']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/pages_controller').default['uploadPdf']>>>
+    }
+  }
+  'admin.messages.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/messages'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['index']>>>
+    }
+  }
+  'admin.messages.read': {
+    methods: ["PUT"]
+    pattern: '/admin/messages/:id/read'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['toggleRead']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['toggleRead']>>>
+    }
+  }
+  'admin.messages.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/messages/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['destroy']>>>
     }
   }
 }

@@ -122,6 +122,25 @@ export class CategoryTranslationSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class ContactMessageSchema extends BaseModel {
+  static $columns = ['body', 'createdAt', 'email', 'id', 'name', 'readAt', 'updatedAt'] as const
+  $columns = ContactMessageSchema.$columns
+  @column()
+  declare body: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare email: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column.dateTime()
+  declare readAt: DateTime | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class MediaSchema extends BaseModel {
   static $columns = [
     'alt',
@@ -256,6 +275,21 @@ export class ProjectSchema extends BaseModel {
   declare status: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+}
+
+export class SettingSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'key', 'updatedAt', 'value'] as const
+  $columns = SettingSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare key: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare value: string
 }
 
 export class TagTranslationSchema extends BaseModel {
