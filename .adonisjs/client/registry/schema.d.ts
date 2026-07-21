@@ -129,7 +129,7 @@ export interface Registry {
   }
   'llms.legal': {
     methods: ["GET","HEAD"]
-    pattern: '/mentions-legales.md'
+    pattern: '/legal.md'
     types: {
       body: {}
       paramsTuple: []
@@ -141,7 +141,7 @@ export interface Registry {
   }
   'en.llms.legal': {
     methods: ["GET","HEAD"]
-    pattern: '/en/mentions-legales.md'
+    pattern: '/en/legal.md'
     types: {
       body: {}
       paramsTuple: []
@@ -201,7 +201,7 @@ export interface Registry {
   }
   'projects.index': {
     methods: ["GET","HEAD"]
-    pattern: '/projets'
+    pattern: '/projects'
     types: {
       body: {}
       paramsTuple: []
@@ -213,7 +213,7 @@ export interface Registry {
   }
   'projects.show': {
     methods: ["GET","HEAD"]
-    pattern: '/projets/:slug'
+    pattern: '/projects/:slug'
     types: {
       body: {}
       paramsTuple: [ParamValue]
@@ -225,7 +225,7 @@ export interface Registry {
   }
   'en.projects.index': {
     methods: ["GET","HEAD"]
-    pattern: '/en/projets'
+    pattern: '/en/projects'
     types: {
       body: {}
       paramsTuple: []
@@ -237,7 +237,7 @@ export interface Registry {
   }
   'en.projects.show': {
     methods: ["GET","HEAD"]
-    pattern: '/en/projets/:slug'
+    pattern: '/en/projects/:slug'
     types: {
       body: {}
       paramsTuple: [ParamValue]
@@ -333,7 +333,7 @@ export interface Registry {
   }
   'legal.show': {
     methods: ["GET","HEAD"]
-    pattern: '/mentions-legales'
+    pattern: '/legal'
     types: {
       body: {}
       paramsTuple: []
@@ -345,7 +345,7 @@ export interface Registry {
   }
   'en.legal.show': {
     methods: ["GET","HEAD"]
-    pattern: '/en/mentions-legales'
+    pattern: '/en/legal'
     types: {
       body: {}
       paramsTuple: []

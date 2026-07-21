@@ -38,7 +38,7 @@ export default function Home({
           <div className="flex items-baseline justify-between">
             <h2 className="text-2xl font-semibold">{labels.featuredProjects}</h2>
             <Link
-              href={`${base}/projets`}
+              href={`${base}/projects`}
               className="text-muted-foreground text-sm hover:underline"
             >
               {labels.allProjects}
@@ -48,7 +48,7 @@ export default function Home({
             {featuredProjects.map((project) => (
               <Link
                 key={project.slug}
-                href={`${base}/projets/${project.slug}`}
+                href={`${base}/projects/${project.slug}`}
                 className="group overflow-hidden rounded-lg border transition-shadow hover:shadow-md"
               >
                 {project.coverUrl ? (

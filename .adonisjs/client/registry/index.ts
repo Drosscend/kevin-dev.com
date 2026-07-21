@@ -68,14 +68,14 @@ const routes = {
   },
   'llms.legal': {
     methods: ["GET","HEAD"],
-    pattern: '/mentions-legales.md',
-    tokens: [{"old":"/mentions-legales.md","type":0,"val":"mentions-legales.md","end":""}],
+    pattern: '/legal.md',
+    tokens: [{"old":"/legal.md","type":0,"val":"legal.md","end":""}],
     types: placeholder as Registry['llms.legal']['types'],
   },
   'en.llms.legal': {
     methods: ["GET","HEAD"],
-    pattern: '/en/mentions-legales.md',
-    tokens: [{"old":"/en/mentions-legales.md","type":0,"val":"en","end":""},{"old":"/en/mentions-legales.md","type":0,"val":"mentions-legales.md","end":""}],
+    pattern: '/en/legal.md',
+    tokens: [{"old":"/en/legal.md","type":0,"val":"en","end":""},{"old":"/en/legal.md","type":0,"val":"legal.md","end":""}],
     types: placeholder as Registry['en.llms.legal']['types'],
   },
   'blog.index': {
@@ -104,26 +104,26 @@ const routes = {
   },
   'projects.index': {
     methods: ["GET","HEAD"],
-    pattern: '/projets',
-    tokens: [{"old":"/projets","type":0,"val":"projets","end":""}],
+    pattern: '/projects',
+    tokens: [{"old":"/projects","type":0,"val":"projects","end":""}],
     types: placeholder as Registry['projects.index']['types'],
   },
   'projects.show': {
     methods: ["GET","HEAD"],
-    pattern: '/projets/:slug',
-    tokens: [{"old":"/projets/:slug","type":0,"val":"projets","end":""},{"old":"/projets/:slug","type":1,"val":"slug","end":""}],
+    pattern: '/projects/:slug',
+    tokens: [{"old":"/projects/:slug","type":0,"val":"projects","end":""},{"old":"/projects/:slug","type":1,"val":"slug","end":""}],
     types: placeholder as Registry['projects.show']['types'],
   },
   'en.projects.index': {
     methods: ["GET","HEAD"],
-    pattern: '/en/projets',
-    tokens: [{"old":"/en/projets","type":0,"val":"en","end":""},{"old":"/en/projets","type":0,"val":"projets","end":""}],
+    pattern: '/en/projects',
+    tokens: [{"old":"/en/projects","type":0,"val":"en","end":""},{"old":"/en/projects","type":0,"val":"projects","end":""}],
     types: placeholder as Registry['en.projects.index']['types'],
   },
   'en.projects.show': {
     methods: ["GET","HEAD"],
-    pattern: '/en/projets/:slug',
-    tokens: [{"old":"/en/projets/:slug","type":0,"val":"en","end":""},{"old":"/en/projets/:slug","type":0,"val":"projets","end":""},{"old":"/en/projets/:slug","type":1,"val":"slug","end":""}],
+    pattern: '/en/projects/:slug',
+    tokens: [{"old":"/en/projects/:slug","type":0,"val":"en","end":""},{"old":"/en/projects/:slug","type":0,"val":"projects","end":""},{"old":"/en/projects/:slug","type":1,"val":"slug","end":""}],
     types: placeholder as Registry['en.projects.show']['types'],
   },
   'technologies.index': {
@@ -170,14 +170,14 @@ const routes = {
   },
   'legal.show': {
     methods: ["GET","HEAD"],
-    pattern: '/mentions-legales',
-    tokens: [{"old":"/mentions-legales","type":0,"val":"mentions-legales","end":""}],
+    pattern: '/legal',
+    tokens: [{"old":"/legal","type":0,"val":"legal","end":""}],
     types: placeholder as Registry['legal.show']['types'],
   },
   'en.legal.show': {
     methods: ["GET","HEAD"],
-    pattern: '/en/mentions-legales',
-    tokens: [{"old":"/en/mentions-legales","type":0,"val":"en","end":""},{"old":"/en/mentions-legales","type":0,"val":"mentions-legales","end":""}],
+    pattern: '/en/legal',
+    tokens: [{"old":"/en/legal","type":0,"val":"en","end":""},{"old":"/en/legal","type":0,"val":"legal","end":""}],
     types: placeholder as Registry['en.legal.show']['types'],
   },
   'contact.show': {

@@ -17,6 +17,7 @@ import {
   Inbox,
 } from 'lucide-react'
 import { Button } from '~/components/ui/button'
+import ThemeToggle from '~/components/theme_toggle'
 
 const navigation = [
   { route: 'admin.dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -70,8 +71,9 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
         </nav>
 
         <div className="border-t p-3">
-          <div className="text-muted-foreground mb-2 px-3 text-xs">
-            {children.props.user?.email}
+          <div className="text-muted-foreground mb-2 flex items-center justify-between px-3 text-xs">
+            <span>{children.props.user?.email}</span>
+            <ThemeToggle />
           </div>
           <Form route="admin.logout">
             <Button type="submit" variant="ghost" size="sm" className="w-full justify-start gap-2">

@@ -48,12 +48,12 @@ export default function PortfolioShow({
       )}
 
       <div className="flex items-center justify-between gap-4 text-sm">
-        <Link href={`${base}/projets`} className="text-muted-foreground hover:underline">
+        <Link href={`${base}/projects`} className="text-muted-foreground hover:underline">
           {labels.backToList}
         </Link>
         {hasOtherLocale && (
           <Link
-            href={`${locale === 'en' ? '' : '/en'}/projets/${project.slug}`}
+            href={`${locale === 'en' ? '' : '/en'}/projects/${project.slug}`}
             className="text-muted-foreground hover:underline"
           >
             {locale === 'en' ? 'FR' : 'EN'}

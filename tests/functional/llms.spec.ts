@@ -51,7 +51,7 @@ test.group('LLM markdown', (group) => {
     assert.include(text, '# kevin-dev.com')
     assert.include(text, '/blog/guide-adonis.md')
     assert.include(text, '/en/blog/guide-adonis.md')
-    assert.include(text, '/projets/mon-projet.md')
+    assert.include(text, '/projects/mon-projet.md')
     assert.notInclude(text, 'brouillon-cache')
   })
 

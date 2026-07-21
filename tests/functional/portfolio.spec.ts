@@ -40,7 +40,7 @@ test.group('Portfolio public', (group) => {
     await makeProject('projet-publie', 'published')
     await makeProject('projet-brouillon', 'draft')
 
-    const response = await client.get('/projets').withInertia()
+    const response = await client.get('/projects').withInertia()
 
     response.assertStatus(200)
     response.assertInertiaComponent('portfolio/index')
@@ -54,7 +54,7 @@ test.group('Portfolio public', (group) => {
     await makeProject('fr-seulement', 'published')
     await makeProject('fr-et-en', 'published', { english: true })
 
-    const response = await client.get('/en/projets').withInertia()
+    const response = await client.get('/en/projects').withInertia()
 
     response.assertStatus(200)
     const projects = response.inertiaProps.projects as { slug: string; title: string }[]
@@ -72,7 +72,7 @@ test.group('Portfolio public', (group) => {
       links: true,
     })
 
-    const response = await client.get('/projets/mon-projet').withInertia()
+    const response = await client.get('/projects/mon-projet').withInertia()
 
     response.assertStatus(200)
     response.assertInertiaComponent('portfolio/show')
@@ -95,7 +95,7 @@ test.group('Portfolio public', (group) => {
   test('un projet brouillon est introuvable pour un visiteur', async ({ client }) => {
     await makeProject('secret', 'draft')
 
-    const response = await client.get('/projets/secret')
+    const response = await client.get('/projects/secret')
     response.assertStatus(404)
   })
 
@@ -103,7 +103,7 @@ test.group('Portfolio public', (group) => {
     const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
     await makeProject('secret', 'draft')
 
-    const response = await client.get('/projets/secret').loginAs(user).withInertia()
+    const response = await client.get('/projects/secret').loginAs(user).withInertia()
 
     response.assertStatus(200)
     response.assertInertiaPropsContains({ isDraftPreview: true })

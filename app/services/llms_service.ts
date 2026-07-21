@@ -56,7 +56,9 @@ export default class LlmsService {
         continue
       }
       const summary = fr.summary ? `: ${fr.summary}` : ''
-      lines.push(`- [${fr.title}](${SeoService.absolute(`/projets/${project.slug}.md`)})${summary}`)
+      lines.push(
+        `- [${fr.title}](${SeoService.absolute(`/projects/${project.slug}.md`)})${summary}`
+      )
     }
 
     lines.push('', '## Pages', '')
@@ -64,7 +66,7 @@ export default class LlmsService {
       lines.push(`- [CV](${SeoService.absolute('/cv.md')})`)
     }
     if (settings.legal_markdown_fr) {
-      lines.push(`- [Mentions légales](${SeoService.absolute('/mentions-legales.md')})`)
+      lines.push(`- [Mentions légales](${SeoService.absolute('/legal.md')})`)
     }
     lines.push(`- [Flux RSS du blog](${SeoService.absolute('/blog/rss.xml')})`)
 
@@ -121,7 +123,7 @@ export default class LlmsService {
       `# ${translation.title}`,
       '',
       ...(translation.summary ? [`> ${translation.summary}`, ''] : []),
-      `- URL : ${SeoService.absolute(`${locale === 'en' ? '/en' : ''}/projets/${project.slug}`)}`,
+      `- URL : ${SeoService.absolute(`${locale === 'en' ? '/en' : ''}/projects/${project.slug}`)}`,
       ...(project.technologies.length > 0
         ? [`- Technologies : ${project.technologies.map((item) => item.name).join(', ')}`]
         : []),

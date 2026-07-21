@@ -26,7 +26,7 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-3xl font-bold tracking-tight">{labels.title}</h1>
         <Link
-          href={locale === 'en' ? '/projets' : '/en/projets'}
+          href={locale === 'en' ? '/projects' : '/en/projects'}
           className="text-muted-foreground text-sm hover:underline"
         >
           {locale === 'en' ? 'FR' : 'EN'}
@@ -40,7 +40,7 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
           {projects.map((project) => (
             <Link
               key={project.slug}
-              href={`${base}/projets/${project.slug}`}
+              href={`${base}/projects/${project.slug}`}
               className="group overflow-hidden rounded-lg border transition-shadow hover:shadow-md"
             >
               {project.coverUrl ? (

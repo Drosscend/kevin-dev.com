@@ -34,8 +34,8 @@ router.get('/en/blog/rss.xml', [controllers.Seo, 'rss']).as('en.seo.rss')
 router.get('/llms.txt', [controllers.Llms, 'index']).as('llms.index')
 router.get('/cv.md', [controllers.Llms, 'cv']).as('llms.cv')
 router.get('/en/cv.md', [controllers.Llms, 'cv']).as('en.llms.cv')
-router.get('/mentions-legales.md', [controllers.Llms, 'legal']).as('llms.legal')
-router.get('/en/mentions-legales.md', [controllers.Llms, 'legal']).as('en.llms.legal')
+router.get('/legal.md', [controllers.Llms, 'legal']).as('llms.legal')
+router.get('/en/legal.md', [controllers.Llms, 'legal']).as('en.llms.legal')
 
 /**
  * Public blog. French lives at the root, English under /en,
@@ -50,10 +50,10 @@ router.get('/en/blog/:slug', [controllers.Blog, 'show']).as('en.blog.show')
 /**
  * Public portfolio and technologies, same locale scheme as the blog.
  */
-router.get('/projets', [controllers.Projects, 'index']).as('projects.index')
-router.get('/projets/:slug', [controllers.Projects, 'show']).as('projects.show')
-router.get('/en/projets', [controllers.Projects, 'index']).as('en.projects.index')
-router.get('/en/projets/:slug', [controllers.Projects, 'show']).as('en.projects.show')
+router.get('/projects', [controllers.Projects, 'index']).as('projects.index')
+router.get('/projects/:slug', [controllers.Projects, 'show']).as('projects.show')
+router.get('/en/projects', [controllers.Projects, 'index']).as('en.projects.index')
+router.get('/en/projects/:slug', [controllers.Projects, 'show']).as('en.projects.show')
 
 router.get('/technologies', [controllers.Technologies, 'index']).as('technologies.index')
 router.get('/technologies/:slug', [controllers.Technologies, 'show']).as('technologies.show')
@@ -68,8 +68,8 @@ router.get('/cv', [controllers.Cv, 'show']).as('cv.show')
 router.get('/en/cv', [controllers.Cv, 'show']).as('en.cv.show')
 router.get('/cv.pdf', [controllers.Cv, 'pdf']).as('cv.pdf')
 
-router.get('/mentions-legales', [controllers.Legal, 'show']).as('legal.show')
-router.get('/en/mentions-legales', [controllers.Legal, 'show']).as('en.legal.show')
+router.get('/legal', [controllers.Legal, 'show']).as('legal.show')
+router.get('/en/legal', [controllers.Legal, 'show']).as('en.legal.show')
 
 router.get('/contact', [controllers.Contact, 'show']).as('contact.show')
 router.post('/contact', [controllers.Contact, 'store']).as('contact.store').use(contactThrottle)

@@ -57,8 +57,8 @@ export default class ProjectsController {
         title: i18n.t('messages.portfolio.title'),
         description: i18n.t('messages.portfolio.metaDescription'),
         locale,
-        path: locale === 'en' ? '/en/projets' : '/projets',
-        alternates: { fr: '/projets', en: '/en/projets' },
+        path: locale === 'en' ? '/en/projects' : '/projects',
+        alternates: { fr: '/projects', en: '/en/projects' },
       }),
     })
   }
@@ -134,10 +134,10 @@ export default class ProjectsController {
         title: translation.title,
         description: translation.summary || i18n.t('messages.portfolio.metaDescription'),
         locale,
-        path: `${locale === 'en' ? '/en' : ''}/projets/${project.slug}`,
+        path: `${locale === 'en' ? '/en' : ''}/projects/${project.slug}`,
         alternates:
           project.translation('en') !== undefined
-            ? { fr: `/projets/${project.slug}`, en: `/en/projets/${project.slug}` }
+            ? { fr: `/projects/${project.slug}`, en: `/en/projects/${project.slug}` }
             : null,
         ogType: 'article',
         ogImage: SeoService.mediaUrl(project.cover),
@@ -145,11 +145,11 @@ export default class ProjectsController {
           SeoService.breadcrumbs([
             {
               name: i18n.t('messages.portfolio.title'),
-              path: locale === 'en' ? '/en/projets' : '/projets',
+              path: locale === 'en' ? '/en/projects' : '/projects',
             },
             {
               name: translation.title,
-              path: `${locale === 'en' ? '/en' : ''}/projets/${project.slug}`,
+              path: `${locale === 'en' ? '/en' : ''}/projects/${project.slug}`,
             },
           ]),
         ],

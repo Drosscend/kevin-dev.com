@@ -13,6 +13,7 @@ type ContactProps = {
     email: string
     message: string
     submit: string
+    privacy: string
   }
   meta: SeoMeta
 }
@@ -77,6 +78,8 @@ export default function Contact({ locale, labels, meta }: ContactProps) {
             <Button type="submit" disabled={processing}>
               {labels.submit}
             </Button>
+
+            <p className="text-muted-foreground text-xs">{labels.privacy}</p>
           </>
         )}
       </Form>

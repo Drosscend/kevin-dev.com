@@ -1,4 +1,4 @@
-﻿import env from '#start/env'
+import env from '#start/env'
 import router from '@adonisjs/core/services/router'
 import type Media from '#models/media'
 import type { Locale } from '#types/i18n'
@@ -75,7 +75,7 @@ export default class SeoService {
     return {
       '@context': 'https://schema.org',
       '@type': 'Person',
-      'name': 'KÃ©vin VÃ©ronÃ©si',
+      'name': 'Kévin Véronési',
       'url': this.absolute('/'),
       'jobTitle': 'Consultant Data Migration',
       'sameAs': ['https://github.com/Drosscend', 'https://www.linkedin.com/in/kveronesi'],
@@ -112,8 +112,8 @@ export default class SeoService {
       'inLanguage': options.locale,
       ...(options.publishedAt ? { datePublished: options.publishedAt } : {}),
       ...(options.image ? { image: options.image } : {}),
-      'author': { '@type': 'Person', 'name': 'KÃ©vin VÃ©ronÃ©si', 'url': this.absolute('/') },
-      'publisher': { '@type': 'Person', 'name': 'KÃ©vin VÃ©ronÃ©si' },
+      'author': { '@type': 'Person', 'name': 'Kévin Véronési', 'url': this.absolute('/') },
+      'publisher': { '@type': 'Person', 'name': 'Kévin Véronési' },
     }
   }
 

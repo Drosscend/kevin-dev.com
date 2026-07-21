@@ -58,7 +58,7 @@ export default function TechnologyShow({ locale, technology, labels, meta }: Tec
             {technology.projects.map((project) => (
               <article key={project.slug} className="space-y-1">
                 <h3 className="font-semibold">
-                  <Link href={`${base}/projets/${project.slug}`} className="hover:underline">
+                  <Link href={`${base}/projects/${project.slug}`} className="hover:underline">
                     {project.title}
                   </Link>
                 </h3>

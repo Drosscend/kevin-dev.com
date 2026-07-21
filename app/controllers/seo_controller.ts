@@ -45,8 +45,8 @@ export default class SeoController {
       { path: '/en', alternates: { fr: '/', en: '/en' } },
       { path: '/blog', alternates: { fr: '/blog', en: '/en/blog' } },
       { path: '/en/blog', alternates: { fr: '/blog', en: '/en/blog' } },
-      { path: '/projets', alternates: { fr: '/projets', en: '/en/projets' } },
-      { path: '/en/projets', alternates: { fr: '/projets', en: '/en/projets' } },
+      { path: '/projects', alternates: { fr: '/projects', en: '/en/projects' } },
+      { path: '/en/projects', alternates: { fr: '/projects', en: '/en/projects' } },
       { path: '/technologies', alternates: { fr: '/technologies', en: '/en/technologies' } },
       { path: '/en/technologies', alternates: { fr: '/technologies', en: '/en/technologies' } },
       { path: '/contact', alternates: { fr: '/contact', en: '/en/contact' } },
@@ -60,10 +60,10 @@ export default class SeoController {
       entries.push({ path: '/en/cv' })
     }
     if (settings.legal_html_fr) {
-      entries.push({ path: '/mentions-legales' })
+      entries.push({ path: '/legal' })
     }
     if (settings.legal_html_en) {
-      entries.push({ path: '/en/mentions-legales' })
+      entries.push({ path: '/en/legal' })
     }
 
     for (const article of articles) {
@@ -82,11 +82,11 @@ export default class SeoController {
       const hasEnglish = project.translations.some((translation) => translation.locale === 'en')
       const lastmod = project.updatedAt?.toISODate() ?? project.publishedAt?.toISODate()
       const alternates = hasEnglish
-        ? { fr: `/projets/${project.slug}`, en: `/en/projets/${project.slug}` }
+        ? { fr: `/projects/${project.slug}`, en: `/en/projects/${project.slug}` }
         : null
-      entries.push({ path: `/projets/${project.slug}`, lastmod, alternates })
+      entries.push({ path: `/projects/${project.slug}`, lastmod, alternates })
       if (hasEnglish) {
-        entries.push({ path: `/en/projets/${project.slug}`, lastmod, alternates })
+        entries.push({ path: `/en/projects/${project.slug}`, lastmod, alternates })
       }
     }
 

@@ -44,7 +44,8 @@
     "email": "Email",
     "message": "Message",
     "submit": "Envoyer",
-    "sent": "Message envoyé, merci ! Je vous répondrai par email."
+    "sent": "Message envoyé, merci ! Je vous répondrai par email.",
+    "privacy": "Vos nom et email ne servent qu'à vous répondre. Ils ne sont ni partagés ni utilisés autrement, et sont supprimés sur simple demande."
   },
   "technologies": {
     "title": "Technologies",

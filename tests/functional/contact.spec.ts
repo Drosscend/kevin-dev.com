@@ -101,7 +101,7 @@ test.group('CV et mentions légales', (group) => {
   test('les mentions légales rendent le contenu seedé', async ({ client, assert }) => {
     await SettingsService.set('legal_html_fr', '<p>Contenu légal</p>')
 
-    const response = await client.get('/mentions-legales').withInertia()
+    const response = await client.get('/legal').withInertia()
 
     response.assertStatus(200)
     assert.include(response.inertiaProps.contentHtml as string, 'Contenu légal')

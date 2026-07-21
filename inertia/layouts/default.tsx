@@ -3,6 +3,7 @@ import { toast, Toaster } from 'sonner'
 import { usePage } from '@inertiajs/react'
 import { type ReactElement, useEffect } from 'react'
 import { Link } from '@adonisjs/inertia/react'
+import ThemeToggle from '~/components/theme_toggle'
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const { url } = usePage()
@@ -43,6 +44,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
             <Link route="contact.show" className="hover:underline">
               Contact
             </Link>
+            <ThemeToggle />
           </nav>
         </div>
       </header>

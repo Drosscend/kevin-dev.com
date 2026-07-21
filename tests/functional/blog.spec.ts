@@ -1,4 +1,4 @@
-﻿import { test } from '@japa/runner'
+import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
 import Article from '#models/article'
 import User from '#models/user'
@@ -17,8 +17,8 @@ function makeArticle(
     tagIds: [],
     fr: {
       title: `Titre ${slug}`,
-      summary: 'RÃ©sumÃ© de test',
-      contentMarkdown: '# Bonjour\n\nContenu **franÃ§ais**.',
+      summary: 'Résumé de test',
+      contentMarkdown: '# Bonjour\n\nContenu **français**.',
     },
     en: options.english
       ? { title: `Title ${slug}`, summary: 'Test summary', contentMarkdown: '# Hello' }
@@ -29,7 +29,7 @@ function makeArticle(
 test.group('Blog public', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
-  test('la liste FR montre les articles publiÃ©s', async ({ client, assert }) => {
+  test('la liste FR montre les articles publiés', async ({ client, assert }) => {
     await makeArticle('article-publie', 'published')
     await makeArticle('article-brouillon', 'draft')
 
@@ -58,7 +58,7 @@ test.group('Blog public', (group) => {
     assert.equal(articles[0].title, 'Title fr-et-en')
   })
 
-  test('la page article rend le HTML prÃ©-rendu', async ({ client, assert }) => {
+  test('la page article rend le HTML pré-rendu', async ({ client, assert }) => {
     await makeArticle('mon-article', 'published')
 
     const response = await client.get('/blog/mon-article').withInertia()
@@ -76,7 +76,7 @@ test.group('Blog public', (group) => {
     response.assertStatus(404)
   })
 
-  test('un brouillon est prÃ©visualisable connectÃ©', async ({ client }) => {
+  test('un brouillon est prévisualisable connecté', async ({ client }) => {
     const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
     await makeArticle('brouillon-secret', 'draft')
 
@@ -87,7 +87,7 @@ test.group('Blog public', (group) => {
     response.assertInertiaPropsContains({ isDraftPreview: true })
   })
 
-  test('publishedAt est figÃ© Ã  la premiÃ¨re publication', async ({ assert }) => {
+  test('publishedAt est figé à la première publication', async ({ assert }) => {
     const article = await makeArticle('mon-article', 'published')
     const firstPublishedAt = article.publishedAt!.toISO()
 

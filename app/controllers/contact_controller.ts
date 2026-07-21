@@ -18,6 +18,7 @@ export default class ContactController {
         email: i18n.t('messages.contact.email'),
         message: i18n.t('messages.contact.message'),
         submit: i18n.t('messages.contact.submit'),
+        privacy: i18n.t('messages.contact.privacy'),
       },
       meta: SeoService.build({
         title: i18n.t('messages.contact.title'),
