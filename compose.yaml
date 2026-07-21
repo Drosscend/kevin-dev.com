@@ -1,0 +1,16 @@
+# Postgres local pour le développement uniquement.
+# En production, la base est un service Dokploy dédié (voir docs/SPEC.md).
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: kevin_dev
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: kevin_dev
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
