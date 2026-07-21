@@ -3,11 +3,22 @@ import { toast, Toaster } from 'sonner'
 import { usePage } from '@inertiajs/react'
 import { type ReactElement, useEffect } from 'react'
 import { Form, Link } from '@adonisjs/inertia/react'
-import { LayoutDashboard, Image, ShieldCheck, LogOut } from 'lucide-react'
+import {
+  LayoutDashboard,
+  Image,
+  ShieldCheck,
+  LogOut,
+  Newspaper,
+  FolderOpen,
+  Tags,
+} from 'lucide-react'
 import { Button } from '~/components/ui/button'
 
 const navigation = [
   { route: 'admin.dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { route: 'admin.articles.index', label: 'Articles', icon: Newspaper },
+  { route: 'admin.categories.index', label: 'Catégories', icon: FolderOpen },
+  { route: 'admin.tags.index', label: 'Tags', icon: Tags },
   { route: 'admin.media.index', label: 'Médias', icon: Image },
   { route: 'admin.security', label: 'Sécurité', icon: ShieldCheck },
 ] as const

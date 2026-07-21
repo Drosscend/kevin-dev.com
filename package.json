@@ -20,6 +20,7 @@
     "#controllers/*": "./app/controllers/*.js",
     "#exceptions/*": "./app/exceptions/*.js",
     "#models/*": "./app/models/*.js",
+    "#types/*": "./app/types/*.js",
     "#mails/*": "./app/mails/*.js",
     "#services/*": "./app/services/*.js",
     "#listeners/*": "./app/listeners/*.js",
@@ -70,6 +71,7 @@
     "@adonisjs/auth": "^10.1.0",
     "@adonisjs/core": "^7.3.3",
     "@adonisjs/cors": "^3.0.0",
+    "@adonisjs/i18n": "^3.0.1",
     "@adonisjs/inertia": "^4.2.0",
     "@adonisjs/limiter": "^3.0.1",
     "@adonisjs/lucid": "^22.4.2",
@@ -78,6 +80,7 @@
     "@adonisjs/static": "^2.0.1",
     "@adonisjs/vite": "^5.1.1",
     "@inertiajs/react": "^2.3.24",
+    "@shikijs/rehype": "^4.3.1",
     "@tuyau/core": "^1.2.2",
     "@vinejs/vine": "^4.4.0",
     "class-variance-authority": "^0.7.1",
@@ -92,9 +95,15 @@
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "reflect-metadata": "^0.2.2",
+    "rehype-slug": "^6.0.0",
+    "rehype-stringify": "^10.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
     "sharp": "^0.35.3",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^3.6.0"
+    "tailwind-merge": "^3.6.0",
+    "unified": "^11.0.5"
   },
   "hotHook": {
     "boundaries": [

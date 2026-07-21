@@ -5,11 +5,15 @@
 
 export const controllers = {
   admin: {
+    Articles: () => import('#controllers/admin/articles_controller'),
+    Categories: () => import('#controllers/admin/categories_controller'),
     Dashboard: () => import('#controllers/admin/dashboard_controller'),
     Media: () => import('#controllers/admin/media_controller'),
     Security: () => import('#controllers/admin/security_controller'),
     Session: () => import('#controllers/admin/session_controller'),
+    Tags: () => import('#controllers/admin/tags_controller'),
   },
+  Blog: () => import('#controllers/blog_controller'),
   HealthChecks: () => import('#controllers/health_checks_controller'),
   Uploads: () => import('#controllers/uploads_controller'),
 }

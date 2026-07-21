@@ -1,0 +1,13 @@
+{
+  "blog": {
+    "title": "Blog",
+    "readingTime": "{minutes} min de lecture",
+    "publishedOn": "Publié le",
+    "draft": "Brouillon — visible uniquement connecté",
+    "empty": "Aucun article pour l'instant.",
+    "allCategories": "Toutes les catégories",
+    "backToList": "← Tous les articles",
+    "previous": "← Précédent",
+    "next": "Suivant →"
+  }
+}

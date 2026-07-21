@@ -27,6 +27,11 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
           <Link route="home" className="font-semibold tracking-tight">
             kevin-dev.com
           </Link>
+          <nav className="flex items-center gap-4 text-sm">
+            <Link route="blog.index" className="hover:underline">
+              Blog
+            </Link>
+          </nav>
         </div>
       </header>
       <main>{children}</main>

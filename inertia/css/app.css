@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import './typeset.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -78,4 +79,12 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Shiki dual themes: switch code blocks to the dark palette
+   when the .dark class is active */
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
 }

@@ -12,11 +12,17 @@ type ExtractProps<T> =
 
 declare module '@adonisjs/inertia/types' {
   export interface InertiaPages {
+    'admin/articles/form': ExtractProps<(typeof import('../../inertia/pages/admin/articles/form.tsx'))['default']>
+    'admin/articles/index': ExtractProps<(typeof import('../../inertia/pages/admin/articles/index.tsx'))['default']>
+    'admin/categories': ExtractProps<(typeof import('../../inertia/pages/admin/categories.tsx'))['default']>
     'admin/dashboard': ExtractProps<(typeof import('../../inertia/pages/admin/dashboard.tsx'))['default']>
     'admin/media': ExtractProps<(typeof import('../../inertia/pages/admin/media.tsx'))['default']>
     'admin/security': ExtractProps<(typeof import('../../inertia/pages/admin/security.tsx'))['default']>
+    'admin/tags': ExtractProps<(typeof import('../../inertia/pages/admin/tags.tsx'))['default']>
     'auth/login': ExtractProps<(typeof import('../../inertia/pages/auth/login.tsx'))['default']>
     'auth/verify': ExtractProps<(typeof import('../../inertia/pages/auth/verify.tsx'))['default']>
+    'blog/index': ExtractProps<(typeof import('../../inertia/pages/blog/index.tsx'))['default']>
+    'blog/show': ExtractProps<(typeof import('../../inertia/pages/blog/show.tsx'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
     'home': ExtractProps<(typeof import('../../inertia/pages/home.tsx'))['default']>

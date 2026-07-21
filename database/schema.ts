@@ -7,6 +7,110 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class ArticleTagSchema extends BaseModel {
+  static $columns = ['articleId', 'id', 'tagId'] as const
+  $columns = ArticleTagSchema.$columns
+  @column()
+  declare articleId: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare tagId: number
+}
+
+export class ArticleTranslationSchema extends BaseModel {
+  static $columns = [
+    'articleId',
+    'contentHtml',
+    'contentMarkdown',
+    'createdAt',
+    'id',
+    'locale',
+    'summary',
+    'title',
+    'updatedAt',
+  ] as const
+  $columns = ArticleTranslationSchema.$columns
+  @column()
+  declare articleId: number
+  @column()
+  declare contentHtml: string
+  @column()
+  declare contentMarkdown: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare locale: string
+  @column()
+  declare summary: string
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class ArticleSchema extends BaseModel {
+  static $columns = [
+    'categoryId',
+    'createdAt',
+    'id',
+    'publishedAt',
+    'readingTime',
+    'slug',
+    'status',
+    'updatedAt',
+  ] as const
+  $columns = ArticleSchema.$columns
+  @column()
+  declare categoryId: number | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime()
+  declare publishedAt: DateTime | null
+  @column()
+  declare readingTime: number
+  @column()
+  declare slug: string
+  @column()
+  declare status: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class CategorySchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'slug', 'updatedAt'] as const
+  $columns = CategorySchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare slug: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class CategoryTranslationSchema extends BaseModel {
+  static $columns = ['categoryId', 'createdAt', 'id', 'locale', 'name', 'updatedAt'] as const
+  $columns = CategoryTranslationSchema.$columns
+  @column()
+  declare categoryId: number
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare locale: string
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class MediaSchema extends BaseModel {
   static $columns = [
     'alt',
@@ -44,6 +148,36 @@ export class MediaSchema extends BaseModel {
   declare variants: any
   @column()
   declare width: number
+}
+
+export class TagTranslationSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'locale', 'name', 'tagId', 'updatedAt'] as const
+  $columns = TagTranslationSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare locale: string
+  @column()
+  declare name: string
+  @column()
+  declare tagId: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class TagSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'slug', 'updatedAt'] as const
+  $columns = TagSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare slug: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
 }
 
 export class UserSchema extends BaseModel {

@@ -1,0 +1,124 @@
+import { DateTime } from 'luxon'
+import type { HttpContext } from '@adonisjs/core/http'
+import { Exception } from '@adonisjs/core/exceptions'
+import Article from '#models/article'
+import Category from '#models/category'
+import type { Locale } from '#types/i18n'
+
+const PER_PAGE = 9
+
+function formatDate(date: DateTime | null, locale: Locale) {
+  return date?.setLocale(locale).toLocaleString(DateTime.DATE_FULL) ?? null
+}
+
+export default class BlogController {
+  async index({ inertia, request, i18n }: HttpContext) {
+    const locale = i18n.locale as Locale
+    const page = Math.max(1, Number(request.input('page', 1)) || 1)
+    const categorySlug = request.input('category') as string | null
+    const tagSlug = request.input('tag') as string | null
+
+    const query = Article.query()
+      .where('status', 'published')
+      .whereHas('translations', (translations) => translations.where('locale', locale))
+      .preload('translations')
+      .preload('category', (category) => category.preload('translations'))
+      .preload('tags', (tags) => tags.preload('translations'))
+      .orderBy('published_at', 'desc')
+
+    if (categorySlug) {
+      query.whereHas('category', (category) => category.where('slug', categorySlug))
+    }
+    if (tagSlug) {
+      query.whereHas('tags', (tags) => tags.where('slug', tagSlug))
+    }
+
+    const [paginated, categories] = await Promise.all([
+      query.paginate(page, PER_PAGE),
+      Category.query().preload('translations').orderBy('slug'),
+    ])
+
+    return inertia.render('blog/index', {
+      locale,
+      filters: { category: categorySlug, tag: tagSlug },
+      articles: paginated.all().map((article) => {
+        const translation = article.translation(locale)!
+        return {
+          slug: article.slug,
+          title: translation.title,
+          summary: translation.summary,
+          publishedAt: formatDate(article.publishedAt, locale),
+          readingTimeLabel: i18n.t('messages.blog.readingTime', {
+            minutes: article.readingTime,
+          }),
+          category: article.category
+            ? { slug: article.category.slug, name: article.category.name(locale) }
+            : null,
+          tags: article.tags.map((tag) => ({ slug: tag.slug, name: tag.name(locale) })),
+        }
+      }),
+      pagination: {
+        currentPage: paginated.currentPage,
+        lastPage: paginated.lastPage,
+        total: paginated.total,
+      },
+      categories: categories.map((category) => ({
+        slug: category.slug,
+        name: category.name(locale),
+      })),
+      labels: {
+        title: i18n.t('messages.blog.title'),
+        empty: i18n.t('messages.blog.empty'),
+        allCategories: i18n.t('messages.blog.allCategories'),
+        previous: i18n.t('messages.blog.previous'),
+        next: i18n.t('messages.blog.next'),
+      },
+    })
+  }
+
+  async show({ params, inertia, auth, i18n }: HttpContext) {
+    const locale = i18n.locale as Locale
+
+    const article = await Article.query()
+      .where('slug', params.slug)
+      .preload('translations')
+      .preload('category', (category) => category.preload('translations'))
+      .preload('tags', (tags) => tags.preload('translations'))
+      .firstOrFail()
+
+    const translation = article.translation(locale)
+    if (!translation) {
+      throw new Exception('Not found', { status: 404 })
+    }
+
+    const isDraftPreview = !article.isPublished
+    if (isDraftPreview && !auth.user) {
+      throw new Exception('Not found', { status: 404 })
+    }
+
+    return inertia.render('blog/show', {
+      locale,
+      isDraftPreview,
+      article: {
+        slug: article.slug,
+        title: translation.title,
+        summary: translation.summary,
+        contentHtml: translation.contentHtml,
+        publishedAt: formatDate(article.publishedAt, locale),
+        readingTimeLabel: i18n.t('messages.blog.readingTime', {
+          minutes: article.readingTime,
+        }),
+        category: article.category
+          ? { slug: article.category.slug, name: article.category.name(locale) }
+          : null,
+        tags: article.tags.map((tag) => ({ slug: tag.slug, name: tag.name(locale) })),
+      },
+      hasOtherLocale: article.translation(locale === 'fr' ? 'en' : 'fr') !== undefined,
+      labels: {
+        publishedOn: i18n.t('messages.blog.publishedOn'),
+        draft: i18n.t('messages.blog.draft'),
+        backToList: i18n.t('messages.blog.backToList'),
+      },
+    })
+  }
+}
