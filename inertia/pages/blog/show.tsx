@@ -1,4 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
+import ArticleContent from '~/components/article_content'
 
 type BlogShowProps = {
   locale: 'fr' | 'en'
@@ -73,7 +74,7 @@ export default function BlogShow({
         </p>
       </header>
 
-      <div className="typeset" dangerouslySetInnerHTML={{ __html: article.contentHtml }} />
+      <ArticleContent html={article.contentHtml} />
 
       {article.tags.length > 0 && (
         <p className="flex flex-wrap gap-2 border-t pt-4 text-sm">
