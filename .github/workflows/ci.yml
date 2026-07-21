@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: kevin_dev
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: kevin_dev_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      TZ: UTC
+      NODE_ENV: test
+      PORT: 3333
+      HOST: localhost
+      LOG_LEVEL: warn
+      APP_KEY: ci-only-key-0123456789abcdefghij
+      APP_URL: http://localhost:3333
+      SESSION_DRIVER: memory
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USER: kevin_dev
+      DB_PASSWORD: password
+      DB_DATABASE: kevin_dev_test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Run migrations
+        run: node ace migration:run --force
+
+      - name: Tests
+        run: node ace test unit functional

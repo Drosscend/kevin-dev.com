@@ -13,6 +13,8 @@ import router from '@adonisjs/core/services/router'
 
 router.on('/').renderInertia('home', {}).as('home')
 
+router.get('/health', [controllers.HealthChecks, 'handle']).as('health')
+
 router
   .group(() => {
     router.get('signup', [controllers.NewAccount, 'create'])

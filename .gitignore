@@ -4,6 +4,9 @@ build
 tmp/*
 !tmp/.gitkeep
 
+# Documents internes non publiés
+docs/SPEC.md
+
 # Secrets
 .env
 .env.local
@@ -21,6 +24,7 @@ yarn-error.log
 .fleet
 .idea
 .vscode
+.claude
 
 # Platform specific
 .DS_Store
