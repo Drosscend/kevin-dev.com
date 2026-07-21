@@ -28,6 +28,19 @@ router.get('/en/blog', [controllers.Blog, 'index']).as('en.blog.index')
 router.get('/en/blog/:slug', [controllers.Blog, 'show']).as('en.blog.show')
 
 /**
+ * Public portfolio and technologies, same locale scheme as the blog.
+ */
+router.get('/projets', [controllers.Projects, 'index']).as('projects.index')
+router.get('/projets/:slug', [controllers.Projects, 'show']).as('projects.show')
+router.get('/en/projets', [controllers.Projects, 'index']).as('en.projects.index')
+router.get('/en/projets/:slug', [controllers.Projects, 'show']).as('en.projects.show')
+
+router.get('/technologies', [controllers.Technologies, 'index']).as('technologies.index')
+router.get('/technologies/:slug', [controllers.Technologies, 'show']).as('technologies.show')
+router.get('/en/technologies', [controllers.Technologies, 'index']).as('en.technologies.index')
+router.get('/en/technologies/:slug', [controllers.Technologies, 'show']).as('en.technologies.show')
+
+/**
  * Media library files (generated names, immutable).
  */
 router.get('/uploads/:key/:file', [controllers.Uploads, 'show']).as('uploads.show')
@@ -95,6 +108,30 @@ router
     router
       .delete('articles/:id', [controllers.admin.Articles, 'destroy'])
       .as('admin.articles.destroy')
+
+    router
+      .get('technologies', [controllers.admin.Technologies, 'index'])
+      .as('admin.technologies.index')
+    router
+      .post('technologies', [controllers.admin.Technologies, 'store'])
+      .as('admin.technologies.store')
+    router
+      .put('technologies/:id', [controllers.admin.Technologies, 'update'])
+      .as('admin.technologies.update')
+    router
+      .delete('technologies/:id', [controllers.admin.Technologies, 'destroy'])
+      .as('admin.technologies.destroy')
+
+    router.get('projects', [controllers.admin.Projects, 'index']).as('admin.projects.index')
+    router
+      .get('projects/create', [controllers.admin.Projects, 'create'])
+      .as('admin.projects.create')
+    router.post('projects', [controllers.admin.Projects, 'store']).as('admin.projects.store')
+    router.get('projects/:id/edit', [controllers.admin.Projects, 'edit']).as('admin.projects.edit')
+    router.put('projects/:id', [controllers.admin.Projects, 'update']).as('admin.projects.update')
+    router
+      .delete('projects/:id', [controllers.admin.Projects, 'destroy'])
+      .as('admin.projects.destroy')
   })
   .prefix('/admin')
   .use(middleware.auth())

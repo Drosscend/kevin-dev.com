@@ -91,6 +91,102 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/blog_controller').default['show']>>>
     }
   }
+  'projects.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/projets'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['index']>>>
+    }
+  }
+  'projects.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/projets/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['show']>>>
+    }
+  }
+  'en.projects.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/projets'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['index']>>>
+    }
+  }
+  'en.projects.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/projets/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['show']>>>
+    }
+  }
+  'technologies.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/technologies'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['index']>>>
+    }
+  }
+  'technologies.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/technologies/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['show']>>>
+    }
+  }
+  'en.technologies.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/technologies'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['index']>>>
+    }
+  }
+  'en.technologies.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/technologies/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['show']>>>
+    }
+  }
   'uploads.show': {
     methods: ["GET","HEAD"]
     pattern: '/uploads/:key/:file'
@@ -425,6 +521,126 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['destroy']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['destroy']>>>
+    }
+  }
+  'admin.technologies.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/technologies'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['index']>>>
+    }
+  }
+  'admin.technologies.store': {
+    methods: ["POST"]
+    pattern: '/admin/technologies'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').technologyValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').technologyValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.technologies.update': {
+    methods: ["PUT"]
+    pattern: '/admin/technologies/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').technologyValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').technologyValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.technologies.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/technologies/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['destroy']>>>
+    }
+  }
+  'admin.projects.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/projects'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['index']>>>
+    }
+  }
+  'admin.projects.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/projects/create'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['create']>>>
+    }
+  }
+  'admin.projects.store': {
+    methods: ["POST"]
+    pattern: '/admin/projects'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').projectValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').projectValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.projects.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/projects/:id/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['edit']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['edit']>>>
+    }
+  }
+  'admin.projects.update': {
+    methods: ["PUT"]
+    pattern: '/admin/projects/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').projectValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').projectValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.projects.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/projects/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['destroy']>>>
     }
   }
 }

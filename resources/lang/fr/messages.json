@@ -9,5 +9,25 @@
     "backToList": "← Tous les articles",
     "previous": "← Précédent",
     "next": "Suivant →"
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "empty": "Aucun projet pour l'instant.",
+    "backToList": "← Tous les projets",
+    "technologies": "Technologies utilisées",
+    "relatedArticles": "Articles liés"
+  },
+  "technologies": {
+    "title": "Technologies",
+    "empty": "Aucune technologie pour l'instant.",
+    "backToList": "← Toutes les technologies",
+    "usedIn": "Projets utilisant cette technologie",
+    "noProjects": "Aucun projet publié n'utilise cette technologie pour l'instant.",
+    "categories": {
+      "langage": "Langages",
+      "framework": "Frameworks",
+      "outil": "Outils",
+      "infra": "Infrastructure"
+    }
   }
 }

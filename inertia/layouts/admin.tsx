@@ -11,6 +11,8 @@ import {
   Newspaper,
   FolderOpen,
   Tags,
+  FolderGit2,
+  Cpu,
 } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 
@@ -19,6 +21,8 @@ const navigation = [
   { route: 'admin.articles.index', label: 'Articles', icon: Newspaper },
   { route: 'admin.categories.index', label: 'Catégories', icon: FolderOpen },
   { route: 'admin.tags.index', label: 'Tags', icon: Tags },
+  { route: 'admin.projects.index', label: 'Projets', icon: FolderGit2 },
+  { route: 'admin.technologies.index', label: 'Technologies', icon: Cpu },
   { route: 'admin.media.index', label: 'Médias', icon: Image },
   { route: 'admin.security', label: 'Sécurité', icon: ShieldCheck },
 ] as const

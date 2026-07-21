@@ -7,6 +7,17 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class ArticleProjectSchema extends BaseModel {
+  static $columns = ['articleId', 'id', 'projectId'] as const
+  $columns = ArticleProjectSchema.$columns
+  @column()
+  declare articleId: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare projectId: number
+}
+
 export class ArticleTagSchema extends BaseModel {
   static $columns = ['articleId', 'id', 'tagId'] as const
   $columns = ArticleTagSchema.$columns
@@ -150,6 +161,103 @@ export class MediaSchema extends BaseModel {
   declare width: number
 }
 
+export class ProjectLinkSchema extends BaseModel {
+  static $columns = ['id', 'label', 'position', 'projectId', 'type', 'url'] as const
+  $columns = ProjectLinkSchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare label: string
+  @column()
+  declare position: number
+  @column()
+  declare projectId: number
+  @column()
+  declare type: string
+  @column()
+  declare url: string
+}
+
+export class ProjectTechnologySchema extends BaseModel {
+  static $columns = ['id', 'projectId', 'technologyId'] as const
+  $columns = ProjectTechnologySchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare projectId: number
+  @column()
+  declare technologyId: number
+}
+
+export class ProjectTranslationSchema extends BaseModel {
+  static $columns = [
+    'contentHtml',
+    'contentMarkdown',
+    'createdAt',
+    'id',
+    'locale',
+    'projectId',
+    'summary',
+    'title',
+    'updatedAt',
+  ] as const
+  $columns = ProjectTranslationSchema.$columns
+  @column()
+  declare contentHtml: string
+  @column()
+  declare contentMarkdown: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare locale: string
+  @column()
+  declare projectId: number
+  @column()
+  declare summary: string
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class ProjectSchema extends BaseModel {
+  static $columns = [
+    'coverMediaId',
+    'createdAt',
+    'endedAt',
+    'featured',
+    'id',
+    'publishedAt',
+    'slug',
+    'startedAt',
+    'status',
+    'updatedAt',
+  ] as const
+  $columns = ProjectSchema.$columns
+  @column()
+  declare coverMediaId: number | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.date()
+  declare endedAt: DateTime | null
+  @column()
+  declare featured: boolean
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime()
+  declare publishedAt: DateTime | null
+  @column()
+  declare slug: string
+  @column.date()
+  declare startedAt: DateTime | null
+  @column()
+  declare status: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class TagTranslationSchema extends BaseModel {
   static $columns = ['createdAt', 'id', 'locale', 'name', 'tagId', 'updatedAt'] as const
   $columns = TagTranslationSchema.$columns
@@ -176,6 +284,57 @@ export class TagSchema extends BaseModel {
   declare id: number
   @column()
   declare slug: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class TechnologySchema extends BaseModel {
+  static $columns = [
+    'category',
+    'createdAt',
+    'id',
+    'logoMediaId',
+    'name',
+    'slug',
+    'updatedAt',
+  ] as const
+  $columns = TechnologySchema.$columns
+  @column()
+  declare category: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare logoMediaId: number | null
+  @column()
+  declare name: string
+  @column()
+  declare slug: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class TechnologyTranslationSchema extends BaseModel {
+  static $columns = [
+    'createdAt',
+    'description',
+    'id',
+    'locale',
+    'technologyId',
+    'updatedAt',
+  ] as const
+  $columns = TechnologyTranslationSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare description: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare locale: string
+  @column()
+  declare technologyId: number
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }

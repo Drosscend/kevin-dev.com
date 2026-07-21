@@ -9,11 +9,27 @@ export interface ApiDefinition {
       index: typeof routes['en.blog.index']
       show: typeof routes['en.blog.show']
     }
+    projects: {
+      index: typeof routes['en.projects.index']
+      show: typeof routes['en.projects.show']
+    }
+    technologies: {
+      index: typeof routes['en.technologies.index']
+      show: typeof routes['en.technologies.show']
+    }
   }
   health: typeof routes['health']
   blog: {
     index: typeof routes['blog.index']
     show: typeof routes['blog.show']
+  }
+  projects: {
+    index: typeof routes['projects.index']
+    show: typeof routes['projects.show']
+  }
+  technologies: {
+    index: typeof routes['technologies.index']
+    show: typeof routes['technologies.show']
   }
   uploads: {
     show: typeof routes['uploads.show']
@@ -56,6 +72,20 @@ export interface ApiDefinition {
       edit: typeof routes['admin.articles.edit']
       update: typeof routes['admin.articles.update']
       destroy: typeof routes['admin.articles.destroy']
+    }
+    technologies: {
+      index: typeof routes['admin.technologies.index']
+      store: typeof routes['admin.technologies.store']
+      update: typeof routes['admin.technologies.update']
+      destroy: typeof routes['admin.technologies.destroy']
+    }
+    projects: {
+      index: typeof routes['admin.projects.index']
+      create: typeof routes['admin.projects.create']
+      store: typeof routes['admin.projects.store']
+      edit: typeof routes['admin.projects.edit']
+      update: typeof routes['admin.projects.update']
+      destroy: typeof routes['admin.projects.destroy']
     }
   }
 }

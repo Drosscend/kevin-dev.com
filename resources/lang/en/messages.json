@@ -9,5 +9,25 @@
     "backToList": "← All articles",
     "previous": "← Previous",
     "next": "Next →"
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "empty": "No projects yet.",
+    "backToList": "← All projects",
+    "technologies": "Technologies used",
+    "relatedArticles": "Related articles"
+  },
+  "technologies": {
+    "title": "Technologies",
+    "empty": "No technologies yet.",
+    "backToList": "← All technologies",
+    "usedIn": "Projects using this technology",
+    "noProjects": "No published project uses this technology yet.",
+    "categories": {
+      "langage": "Languages",
+      "framework": "Frameworks",
+      "outil": "Tools",
+      "infra": "Infrastructure"
+    }
   }
 }

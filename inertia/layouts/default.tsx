@@ -31,6 +31,12 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
             <Link route="blog.index" className="hover:underline">
               Blog
             </Link>
+            <Link route="projects.index" className="hover:underline">
+              Portfolio
+            </Link>
+            <Link route="technologies.index" className="hover:underline">
+              Technos
+            </Link>
           </nav>
         </div>
       </header>
