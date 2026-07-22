@@ -2,13 +2,19 @@ import app from '@adonisjs/core/services/app'
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 
-function isUniqueViolation(error: unknown): error is { code: string; constraint?: string } {
-  return (
-    typeof error === 'object' &&
-    error !== null &&
-    'code' in error &&
-    (error as any).code === '23505'
-  )
+function isUniqueViolation(error: unknown): error is { code: string; detail?: string } {
+  return typeof error === 'object' && error !== null && 'code' in error && error.code === '23505'
+}
+
+/**
+ * Postgres names the offending columns in the error detail, e.g.
+ * "Key (slug)=(my-post) already exists.". The constraint name cannot
+ * be parsed instead: table names contain underscores too, so
+ * "contact_messages_email_unique" is ambiguous. Composite keys list
+ * several columns and the first one is the field to point at.
+ */
+export function violatedField(detail: string | undefined) {
+  return detail?.match(/^Key \(([^)]+)\)=/)?.[1].split(', ')[0] ?? 'slug'
 }
 
 export default class HttpExceptionHandler extends ExceptionHandler {
@@ -40,14 +46,17 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    */
   async handle(error: unknown, ctx: HttpContext) {
     /**
-     * A unique-constraint violation that slipped past the
-     * pre-checks (concurrent write) becomes a flashed validation
-     * error instead of a 500. The field name is derived from the
-     * Postgres constraint name (e.g. "articles_slug_unique").
+     * A unique-constraint violation that slipped past the validator
+     * (concurrent write) becomes a flashed validation error instead
+     * of a 500, reusing the message the validator would have shown.
      */
     if (isUniqueViolation(error) && ctx.session && ctx.request.method() !== 'GET') {
-      const field = error.constraint?.split('_')[1] ?? 'slug'
-      ctx.session.flash('errors', { [field]: ['Cette valeur est déjà utilisée'] })
+      const fallback = 'Cette valeur est déjà utilisée.'
+      const field = violatedField(error.detail)
+      const message =
+        ctx.i18n?.t('validator.shared.messages.database.unique', {}, fallback) ?? fallback
+
+      ctx.session.flash('errors', { [field]: [message] })
       return ctx.response.redirect().back()
     }
 
