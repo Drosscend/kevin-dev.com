@@ -9,15 +9,14 @@
     "photoAlt": "Kévin speaking at a conference",
     "now": "Right now",
     "featuredProjects": "Projects",
-    "viewProject": "View project",
     "latestArticles": "Latest articles",
-    "allArticles": "All articles →",
-    "allProjects": "All my projects →",
+    "allArticles": "All articles",
+    "allProjects": "All my projects",
     "timeline": "Background",
     "stack": "Stack",
-    "allTechnologies": "All my technologies →",
+    "allTechnologies": "All my technologies",
     "talks": "Speaking",
-    "allTalks": "All my talks →"
+    "allTalks": "All my talks"
   },
   "blog": {
     "title": "Blog",
@@ -45,7 +44,6 @@
     "empty": "No talks yet.",
     "backToList": "← All talks",
     "upcoming": "Upcoming",
-    "readMore": "View talk",
     "technologies": "Technologies covered"
   },
   "cv": {

@@ -60,7 +60,6 @@ export default class TalksController {
         title: i18n.t('messages.talks.title'),
         empty: i18n.t('messages.talks.empty'),
         upcoming: i18n.t('messages.talks.upcoming'),
-        readMore: i18n.t('messages.talks.readMore'),
       },
       meta: SeoService.build({
         title: i18n.t('messages.talks.title'),

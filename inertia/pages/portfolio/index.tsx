@@ -1,4 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
+import { LinkCard } from '~/components/content_link'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { localePath, otherLocalePath } from '~/lib/locale'
 
@@ -39,42 +40,21 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
-            <Link
+            <LinkCard
               key={project.slug}
               href={to(`/projects/${project.slug}`)}
-              className="group bg-card hover:border-primary flex flex-col overflow-hidden rounded-lg border transition-[border-color,transform] hover:-translate-y-0.5 motion-reduce:transform-none"
-            >
-              {project.coverUrl ? (
-                <img
-                  src={project.coverUrl}
-                  alt=""
-                  className="aspect-video w-full object-cover"
-                  loading="lazy"
-                />
-              ) : (
-                <div className="bg-muted aspect-video w-full" />
-              )}
-              <div className="flex grow flex-col p-6">
-                <h2 className="font-semibold">{project.title}</h2>
-                {project.summary && (
-                  <p className="text-muted-foreground mt-2 line-clamp-3 text-sm">
-                    {project.summary}
-                  </p>
-                )}
-                {project.technologies.length > 0 && (
-                  <p className="text-muted-foreground mt-4 flex flex-wrap gap-x-2.5 gap-y-1 font-mono text-xs">
-                    {project.technologies.map((technology) => (
+              title={project.title}
+              summary={project.summary}
+              coverUrl={project.coverUrl}
+              heading="h2"
+              meta={
+                project.technologies.length > 0
+                  ? project.technologies.map((technology) => (
                       <span key={technology.slug}>{technology.name}</span>
-                    ))}
-                  </p>
-                )}
-                <span aria-hidden className="text-primary mt-auto pt-4 text-sm font-medium">
-                  <span className="inline-block transition-transform group-hover:translate-x-0.5">
-                    →
-                  </span>
-                </span>
-              </div>
-            </Link>
+                    ))
+                  : undefined
+              }
+            />
           ))}
         </div>
       )}

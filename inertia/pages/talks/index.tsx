@@ -1,5 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import { ExternalLink } from 'lucide-react'
+import { LinkArrow } from '~/components/content_link'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { localePath, otherLocalePath } from '~/lib/locale'
 
@@ -18,7 +19,7 @@ type TalkCard = {
 type TalksIndexProps = {
   locale: 'fr' | 'en'
   talks: TalkCard[]
-  labels: { title: string; empty: string; upcoming: string; readMore: string }
+  labels: { title: string; empty: string; upcoming: string }
   meta: SeoMeta
 }
 
@@ -62,9 +63,9 @@ export default function TalksIndex({ locale, talks, labels, meta }: TalksIndexPr
               <h2 className="mt-2 text-xl font-semibold">
                 <Link
                   href={to(`/talks/${talk.slug}`)}
-                  className="hover:text-primary transition-colors"
+                  className="group hover:text-primary transition-colors"
                 >
-                  {talk.title}
+                  {talk.title} <LinkArrow />
                 </Link>
               </h2>
 
@@ -78,26 +79,22 @@ export default function TalksIndex({ locale, talks, labels, meta }: TalksIndexPr
                 </p>
               )}
 
-              <p className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-                <Link
-                  href={to(`/talks/${talk.slug}`)}
-                  className="text-primary font-medium hover:underline"
-                >
-                  {labels.readMore} <span aria-hidden>→</span>
-                </Link>
-                {talk.links.map((link) => (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-muted-foreground hover:text-primary inline-flex items-center gap-1.5 transition-colors"
-                  >
-                    <ExternalLink className="size-3.5" />
-                    {link.label}
-                  </a>
-                ))}
-              </p>
+              {talk.links.length > 0 && (
+                <p className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+                  {talk.links.map((link) => (
+                    <a
+                      key={link.url}
+                      href={link.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-muted-foreground hover:text-primary inline-flex items-center gap-1.5 transition-colors"
+                    >
+                      <ExternalLink className="size-3.5" />
+                      {link.label}
+                    </a>
+                  ))}
+                </p>
+              )}
             </li>
           ))}
         </ul>

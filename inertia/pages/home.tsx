@@ -1,4 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
+import { LinkArrow, LinkCard, LinkList, LinkRow } from '~/components/content_link'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { localePath } from '~/lib/locale'
 
@@ -6,7 +7,7 @@ type HomeProps = {
   locale: 'fr' | 'en'
   now: string | null
   cvPdfAvailable: boolean
-  latestArticles: { slug: string; title: string; summary: string }[]
+  latestArticles: { slug: string; title: string; summary: string; publishedAt: string | null }[]
   featuredProjects: { slug: string; title: string; summary: string; coverUrl: string | null }[]
   talks: {
     slug: string
@@ -26,7 +27,6 @@ type HomeProps = {
     photoAlt: string
     now: string
     featuredProjects: string
-    viewProject: string
     latestArticles: string
     allArticles: string
     allProjects: string
@@ -47,9 +47,9 @@ function SectionHead({ title, more }: { title: string; more?: { href: string; la
       {more && (
         <Link
           href={more.href}
-          className="text-muted-foreground hover:text-primary text-sm transition-colors"
+          className="group text-muted-foreground hover:text-primary text-sm transition-colors"
         >
-          {more.label}
+          {more.label} <LinkArrow />
         </Link>
       )}
     </div>
@@ -140,27 +140,12 @@ export default function Home({
           />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {featuredProjects.map((project) => (
-              <Link
+              <LinkCard
                 key={project.slug}
                 href={to(`/projects/${project.slug}`)}
-                className="group bg-card hover:border-primary rounded-lg border p-6 transition-[border-color,transform] hover:-translate-y-0.5 motion-reduce:transform-none"
-              >
-                <h3 className="font-semibold">{project.title}</h3>
-                {project.summary && (
-                  <p className="text-muted-foreground mt-2 line-clamp-3 text-sm">
-                    {project.summary}
-                  </p>
-                )}
-                <span className="text-primary mt-4 inline-block text-sm font-medium">
-                  {labels.viewProject}{' '}
-                  <span
-                    aria-hidden
-                    className="inline-block transition-transform group-hover:translate-x-0.5"
-                  >
-                    →
-                  </span>
-                </span>
-              </Link>
+                title={project.title}
+                summary={project.summary}
+              />
             ))}
           </div>
         </section>
@@ -172,19 +157,16 @@ export default function Home({
             title={labels.latestArticles}
             more={{ href: to('/blog'), label: labels.allArticles }}
           />
-          <ul className="max-w-[720px] divide-y border-y">
+          <LinkList>
             {latestArticles.map((article) => (
-              <li key={article.slug}>
-                <Link
-                  href={to(`/blog/${article.slug}`)}
-                  className="hover:text-primary flex items-baseline justify-between gap-6 px-1 py-4 transition-colors"
-                >
-                  <span className="font-medium">{article.title}</span>
-                  <span aria-hidden>→</span>
-                </Link>
-              </li>
+              <LinkRow
+                key={article.slug}
+                href={to(`/blog/${article.slug}`)}
+                title={article.title}
+                meta={article.publishedAt}
+              />
             ))}
-          </ul>
+          </LinkList>
         </section>
       )}
 
@@ -229,28 +211,17 @@ export default function Home({
       {talks.length > 0 && (
         <section className="pb-24 md:pb-32">
           <SectionHead title={labels.talks} more={{ href: to('/talks'), label: labels.allTalks }} />
-          <ul className="max-w-[720px] divide-y border-y">
+          <LinkList>
             {talks.map((talk) => (
-              <li key={talk.slug}>
-                <Link
-                  href={to(`/talks/${talk.slug}`)}
-                  className="hover:text-primary flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 px-1 py-4 transition-colors"
-                >
-                  <span className="font-medium">
-                    {talk.title}
-                    {talk.upcoming && (
-                      <span className="text-primary ml-2.5 font-mono text-[11px] tracking-wider uppercase">
-                        {labels.upcomingTalk}
-                      </span>
-                    )}
-                  </span>
-                  <span className="text-muted-foreground font-mono text-[13px]">
-                    {talk.eventName} · {talk.eventDate}
-                  </span>
-                </Link>
-              </li>
+              <LinkRow
+                key={talk.slug}
+                href={to(`/talks/${talk.slug}`)}
+                title={talk.title}
+                badge={talk.upcoming ? labels.upcomingTalk : undefined}
+                meta={`${talk.eventName} · ${talk.eventDate}`}
+              />
             ))}
-          </ul>
+          </LinkList>
         </section>
       )}
     </div>

@@ -9,15 +9,14 @@
     "photoAlt": "Kévin en conférence, au micro",
     "now": "En ce moment",
     "featuredProjects": "Projets",
-    "viewProject": "Voir le projet",
     "latestArticles": "Derniers articles",
-    "allArticles": "Tous les articles →",
-    "allProjects": "Tous mes projets →",
+    "allArticles": "Tous les articles",
+    "allProjects": "Tous mes projets",
     "timeline": "Parcours",
     "stack": "Stack",
-    "allTechnologies": "Toutes mes technologies →",
+    "allTechnologies": "Toutes mes technologies",
     "talks": "Interventions",
-    "allTalks": "Toutes mes interventions →"
+    "allTalks": "Toutes mes interventions"
   },
   "blog": {
     "title": "Blog",
@@ -45,7 +44,6 @@
     "empty": "Aucune intervention pour l'instant.",
     "backToList": "← Toutes les interventions",
     "upcoming": "À venir",
-    "readMore": "Voir l'intervention",
     "technologies": "Technologies abordées"
   },
   "cv": {

@@ -1,5 +1,6 @@
 import { router } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
+import { LinkArrow } from '~/components/content_link'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { localePath, otherLocalePath } from '~/lib/locale'
 
@@ -148,13 +149,7 @@ export default function BlogIndex({
                     href={`${base}/${article.slug}`}
                     className="group hover:text-primary transition-colors"
                   >
-                    {article.title}{' '}
-                    <span
-                      aria-hidden
-                      className="inline-block transition-transform group-hover:translate-x-0.5 motion-reduce:transform-none"
-                    >
-                      →
-                    </span>
+                    {article.title} <LinkArrow />
                   </Link>
                 </h2>
                 {article.summary && (

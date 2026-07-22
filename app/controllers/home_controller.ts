@@ -78,6 +78,10 @@ export default class HomeController {
         slug: article.slug,
         title: article.translation(locale)!.title,
         summary: article.translation(locale)!.summary,
+        publishedAt:
+          article.publishedAt
+            ?.setLocale(locale)
+            .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' }) ?? null,
       })),
       featuredProjects: projects.map((project) => ({
         slug: project.slug,
@@ -118,7 +122,6 @@ export default class HomeController {
         photoAlt: i18n.t('messages.home.photoAlt'),
         now: i18n.t('messages.home.now'),
         featuredProjects: i18n.t('messages.home.featuredProjects'),
-        viewProject: i18n.t('messages.home.viewProject'),
         latestArticles: i18n.t('messages.home.latestArticles'),
         allArticles: i18n.t('messages.home.allArticles'),
         allProjects: i18n.t('messages.home.allProjects'),
