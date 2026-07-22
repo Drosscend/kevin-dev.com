@@ -36,10 +36,6 @@ export default await Env.create(new URL('../', import.meta.url), {
   ADMIN_EMAIL: Env.schema.string.optional({ format: 'email' }),
   ADMIN_PASSWORD: Env.schema.string.optional(),
 
-  // Telegram notifications (contact form)
-  TELEGRAM_BOT_TOKEN: Env.schema.string.optional(),
-  TELEGRAM_CHAT_ID: Env.schema.string.optional(),
-
   // Umami analytics (self-hosted instance)
   UMAMI_SCRIPT_URL: Env.schema.string.optional(),
   UMAMI_WEBSITE_ID: Env.schema.string.optional(),

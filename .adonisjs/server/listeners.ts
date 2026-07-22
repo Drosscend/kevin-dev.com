@@ -3,6 +3,4 @@
  * DO NOT EDIT manually
  */
 
-export const listeners = {
-  SendContactNotification: () => import('#listeners/send_contact_notification'),
-}
+export const listeners = {}

@@ -3,8 +3,4 @@
  * DO NOT EDIT manually
  */
 
-import ContactMessageReceived from '#events/contact_message_received'
-
-export const events = {
-  ContactMessageReceived: ContactMessageReceived,
-}
+export const events = {}
