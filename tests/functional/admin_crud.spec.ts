@@ -6,6 +6,7 @@ import Tag from '#models/tag'
 import Technology from '#models/technology'
 import Article from '#models/article'
 import Project from '#models/project'
+import TimelineEntry from '#models/timeline_entry'
 import SettingsService from '#services/settings_service'
 
 async function admin() {
@@ -74,6 +75,22 @@ test.group('Admin CRUD catégories et tags', (group) => {
     assert.equal(Number(total.$extras.total), 1)
   })
 
+  test('modifier une catégorie en gardant son slug est accepté', async ({ client, assert }) => {
+    const user = await admin()
+    const category = await Category.create({ slug: 'dev' })
+
+    const response = await client
+      .put(`/admin/categories/${category.id}`)
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .form({ slug: 'dev', nameFr: 'Développement' })
+
+    response.assertStatus(302)
+    await category.load('translations')
+    assert.equal(category.name('fr'), 'Développement')
+  })
+
   test('créer un tag', async ({ client, assert }) => {
     const user = await admin()
 
@@ -119,6 +136,71 @@ test.group('Admin CRUD technologies', (group) => {
 
     await technology.refresh()
     assert.equal(technology.name, 'React 19')
+
+    await technology.load('translations')
+    assert.isUndefined(
+      technology.translations.find((translation) => translation.locale === 'en'),
+      'vider descriptionEn doit supprimer la traduction anglaise'
+    )
+  })
+})
+
+/**
+ * The timeline is the only place where the English fields fall back
+ * to their French counterpart one by one, on top of the shared
+ * "empty English removes the translation" rule.
+ */
+test.group('Admin parcours', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  const entry = {
+    periodFr: '2024 — aujourd’hui',
+    titleFr: 'Consultant',
+    placeFr: 'Toulouse',
+  }
+
+  test('un anglais partiel est complété par le français', async ({ client, assert }) => {
+    const user = await admin()
+
+    const response = await client
+      .post('/admin/home/timeline')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .form({ ...entry, titleEn: 'Consultant' })
+    response.assertStatus(302)
+
+    // The timeline table is seeded by its migration: the entry just
+    // created is the last one in position order.
+    const created = await TimelineEntry.query()
+      .preload('translations')
+      .orderBy('position', 'desc')
+      .firstOrFail()
+    const en = created.translations.find((item) => item.locale === 'en')
+    assert.isDefined(en)
+    assert.equal(en!.title, 'Consultant')
+    assert.equal(en!.period, entry.periodFr, 'un champ EN vide reprend la valeur française')
+    assert.equal(en!.place, entry.placeFr)
+  })
+
+  test('vider tous les champs anglais supprime la traduction', async ({ client, assert }) => {
+    const user = await admin()
+    const created = await TimelineEntry.create({ position: 1 })
+    await created.related('translations').createMany([
+      { locale: 'fr', ...{ period: entry.periodFr, title: entry.titleFr, place: entry.placeFr } },
+      { locale: 'en', period: '2024 — now', title: 'Consultant', place: 'Toulouse' },
+    ])
+
+    const response = await client
+      .put(`/admin/home/timeline/${created.id}`)
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .form(entry)
+    response.assertStatus(302)
+
+    await created.load('translations')
+    assert.isUndefined(created.translations.find((item) => item.locale === 'en'))
   })
 })
 
@@ -213,6 +295,127 @@ test.group('Admin CRUD articles et projets (HTTP)', (group) => {
     assert.lengthOf(project.links, 1)
     assert.lengthOf(project.technologies, 1)
     assert.isNotNull(project.publishedAt)
+  })
+})
+
+test.group('Admin tableau de bord', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('le dashboard compte les contenus et tolère Umami absent', async ({ client, assert }) => {
+    const user = await admin()
+    await Article.create({ slug: 'publie', status: 'published' })
+    await Article.create({ slug: 'brouillon', status: 'draft' })
+
+    const response = await client.get('/admin').loginAs(user).withInertia()
+
+    response.assertStatus(200)
+    response.assertInertiaComponent('admin/dashboard')
+    assert.equal(response.inertiaProps.stats.articlesPublished, 1)
+    assert.equal(response.inertiaProps.stats.articlesDraft, 1)
+    assert.isNull(
+      response.inertiaProps.umami,
+      'sans les variables UMAMI_API_*, la carte stats est masquée'
+    )
+  })
+})
+
+/**
+ * The admin screens project their preloads down to the columns they
+ * render; these tests pin the resulting props so a missing column can
+ * never silently empty a field (an empty editor would overwrite the
+ * stored content on the next save).
+ */
+test.group('Admin écrans de contenu', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('le formulaire article expose le contenu et ses relations', async ({ client, assert }) => {
+    const user = await admin()
+    const category = await Category.create({ slug: 'dev' })
+    await category.related('translations').create({ locale: 'fr', name: 'Développement' })
+    const tag = await Tag.create({ slug: 'adonisjs' })
+    await tag.related('translations').create({ locale: 'fr', name: 'AdonisJS' })
+
+    const article = await Article.create({
+      slug: 'sujet',
+      status: 'draft',
+      categoryId: category.id,
+    })
+    await article.related('translations').create({
+      locale: 'fr',
+      title: 'Sujet',
+      summary: 'Un résumé',
+      contentMarkdown: '# Contenu source',
+      contentHtml: '<h1>Contenu source</h1>',
+    })
+    await article.related('tags').sync([tag.id])
+
+    const response = await client
+      .get(`/admin/articles/${article.id}/edit`)
+      .loginAs(user)
+      .withInertia()
+
+    response.assertStatus(200)
+    response.assertInertiaComponent('admin/articles/form')
+    const props = response.inertiaProps
+    assert.equal(props.article.fr.title, 'Sujet')
+    assert.equal(props.article.fr.summary, 'Un résumé')
+    assert.equal(props.article.fr.contentMarkdown, '# Contenu source')
+    assert.deepEqual(props.article.tagIds, [tag.id])
+    assert.deepEqual(props.options.categories, [{ id: category.id, name: 'Développement' }])
+  })
+
+  test('le formulaire projet expose le contenu et ses relations', async ({ client, assert }) => {
+    const user = await admin()
+    const technology = await Technology.create({ slug: 'adonisjs', name: 'AdonisJS' })
+
+    const project = await Project.create({ slug: 'mon-projet', status: 'draft' })
+    await project.related('translations').create({
+      locale: 'fr',
+      title: 'Mon projet',
+      summary: 'Un résumé',
+      contentMarkdown: '# Contenu source',
+      contentHtml: '<h1>Contenu source</h1>',
+    })
+    await project.related('technologies').sync([technology.id])
+
+    const response = await client
+      .get(`/admin/projects/${project.id}/edit`)
+      .loginAs(user)
+      .withInertia()
+
+    response.assertStatus(200)
+    const props = response.inertiaProps
+    assert.equal(props.project.fr.contentMarkdown, '# Contenu source')
+    assert.equal(props.project.fr.summary, 'Un résumé')
+    assert.deepEqual(props.project.technologyIds, [technology.id])
+    assert.deepEqual(props.options.technologies, [{ id: technology.id, name: 'AdonisJS' }])
+  })
+
+  test('la liste des articles affiche titre et catégorie', async ({ client, assert }) => {
+    const user = await admin()
+    const category = await Category.create({ slug: 'dev' })
+    await category.related('translations').create({ locale: 'fr', name: 'Développement' })
+
+    const article = await Article.create({
+      slug: 'sujet',
+      status: 'draft',
+      categoryId: category.id,
+    })
+    await article.related('translations').create({
+      locale: 'fr',
+      title: 'Sujet',
+      summary: '',
+      contentMarkdown: 'x',
+      contentHtml: '<p>x</p>',
+    })
+
+    const response = await client.get('/admin/articles').loginAs(user).withInertia()
+
+    response.assertStatus(200)
+    const [row] = response.inertiaProps.articles
+    assert.equal(row.title, 'Sujet')
+    assert.equal(row.category, 'Développement')
+    assert.isFalse(row.hasEnglish)
   })
 })
 
