@@ -1,6 +1,8 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
+import mail from '@adonisjs/mail/services/main'
 import ContactMessage from '#models/contact_message'
+import ContactMessageNotification from '#mails/contact_message_notification'
 import User from '#models/user'
 import SettingsService from '#services/settings_service'
 import MarkdownService from '#services/markdown_service'
@@ -13,7 +15,9 @@ async function messagesCount() {
 test.group('Contact', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
-  test('un message valide est stocké en base', async ({ client, assert }) => {
+  test('un message valide est stocké en base et notifié par email', async ({ client, assert }) => {
+    const { mails } = mail.fake()
+
     const response = await client
       .post('/contact')
       .header('referrer', '/contact')
@@ -30,12 +34,23 @@ test.group('Contact', (group) => {
     assert.equal(message.name, 'Jean Dupont')
     assert.equal(message.email, 'jean@example.com')
     assert.isNull(message.readAt)
+
+    mails.assertQueued(ContactMessageNotification, ({ message: sent }) => {
+      return (
+        sent.hasTo('contact@example.com') &&
+        sent.hasReplyTo('jean@example.com') &&
+        sent.hasSubject('Nouveau message de Jean Dupont')
+      )
+    })
+    mail.restore()
   })
 
   test('le honeypot rempli ne stocke rien mais répond comme un succès', async ({
     client,
     assert,
   }) => {
+    const { mails } = mail.fake()
+
     const response = await client
       .post('/contact')
       .header('referrer', '/contact')
@@ -50,6 +65,8 @@ test.group('Contact', (group) => {
 
     response.assertStatus(302)
     assert.equal(await messagesCount(), 0)
+    mails.assertNoneQueued()
+    mail.restore()
   })
 
   test('un message trop court est rejeté', async ({ client, assert }) => {

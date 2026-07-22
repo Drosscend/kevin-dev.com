@@ -1,5 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import mail from '@adonisjs/mail/services/main'
 import ContactMessage from '#models/contact_message'
+import ContactMessageNotification from '#mails/contact_message_notification'
 import SeoService from '#services/seo_service'
 import { contactValidator } from '#validators/contact'
 import { localePath, type Locale } from '#types/i18n'
@@ -40,7 +42,15 @@ export default class ContactController {
 
     const { name, email, message } = await request.validateUsing(contactValidator)
 
-    await ContactMessage.create({ name, email, body: message })
+    const contactMessage = await ContactMessage.create({ name, email, body: message })
+
+    /**
+     * Queued: delivery must never delay or fail the response, the
+     * message is already stored at this point.
+     */
+    if (ContactMessageNotification.enabled) {
+      await mail.sendLater(new ContactMessageNotification(contactMessage))
+    }
 
     session.flash('success', i18n.t('messages.contact.sent'))
     response.redirect().back()
