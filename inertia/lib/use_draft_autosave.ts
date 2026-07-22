@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type DraftEnvelope = { savedAt: string; data: unknown }
 
@@ -71,7 +71,7 @@ export function useDraftAutosave<T>({
     }
   }, [key, serialized, hasDraft])
 
-  const restoreDraft = useCallback(() => {
+  function restoreDraft() {
     const raw = typeof window === 'undefined' ? null : window.localStorage.getItem(key)
     if (raw !== null) {
       try {
@@ -81,16 +81,16 @@ export function useDraftAutosave<T>({
       }
     }
     setHasDraft(false)
-  }, [key])
+  }
 
-  const discardDraft = useCallback(() => {
+  function discardDraft() {
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem(key)
     }
     setHasDraft(false)
-  }, [key])
+  }
 
-  const clearDraft = useCallback(() => {
+  function clearDraft() {
     if (typeof window === 'undefined') {
       return
     }
@@ -98,7 +98,7 @@ export function useDraftAutosave<T>({
       window.clearTimeout(timerRef.current)
     }
     window.localStorage.removeItem(key)
-  }, [key])
+  }
 
   return { hasDraft, draftSavedAt, restoreDraft, discardDraft, clearDraft }
 }
