@@ -5,6 +5,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import AdminPage from '~/components/admin/admin_page'
 import ArticleContent from '~/components/article_content'
 import { fetchMarkdownPreview } from '~/lib/admin'
 
@@ -62,11 +63,7 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, nowFr, nowEn, pdf 
   }
 
   return (
-    <div className="max-w-4xl space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">
-        Pages (accueil, CV &amp; mentions légales)
-      </h1>
-
+    <AdminPage title="Pages (accueil, CV & mentions légales)">
       <Card>
         <CardHeader>
           <CardTitle>CV PDF</CardTitle>
@@ -195,6 +192,6 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, nowFr, nowEn, pdf 
           Enregistrer les pages
         </Button>
       </form>
-    </div>
+    </AdminPage>
   )
 }

@@ -5,6 +5,9 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import AdminPage from '~/components/admin/admin_page'
+import ConfirmButton from '~/components/admin/confirm_button'
+import EmptyState from '~/components/admin/empty_state'
 
 export type TaxonomyItem = {
   id: number
@@ -98,16 +101,8 @@ function TaxonomyForm({
 export default function TaxonomyPage({ title, baseUrl, items }: TaxonomyPageProps) {
   const [editingId, setEditingId] = useState<number | null>(null)
 
-  function remove(item: TaxonomyItem) {
-    if (confirm(`Supprimer « ${item.nameFr} » ?`)) {
-      router.delete(`${baseUrl}/${item.id}`, { preserveScroll: true })
-    }
-  }
-
   return (
-    <div className="max-w-3xl space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-
+    <AdminPage title={title} className="max-w-3xl">
       <Card>
         <CardHeader>
           <CardTitle>Ajouter</CardTitle>
@@ -117,20 +112,19 @@ export default function TaxonomyPage({ title, baseUrl, items }: TaxonomyPageProp
         </CardContent>
       </Card>
 
-      <div className="space-y-2">
-        {items.length === 0 && (
-          <p className="text-muted-foreground text-sm">Rien pour l’instant.</p>
-        )}
-        {items.map((item) => (
-          <Card key={item.id}>
-            <CardContent className="space-y-3">
+      {items.length === 0 ? (
+        <EmptyState>Rien pour l’instant.</EmptyState>
+      ) : (
+        <ul className="divide-y border-y">
+          {items.map((item) => (
+            <li key={item.id} className="space-y-3 py-3">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <span className="font-medium">{item.nameFr}</span>
                   {item.nameEn && (
                     <span className="text-muted-foreground text-sm"> · {item.nameEn}</span>
                   )}
-                  <span className="text-muted-foreground block text-xs">
+                  <span className="text-muted-foreground block font-mono text-xs">
                     {item.slug} — {item.articlesCount} article(s)
                   </span>
                 </div>
@@ -139,6 +133,9 @@ export default function TaxonomyPage({ title, baseUrl, items }: TaxonomyPageProp
                     type="button"
                     variant="ghost"
                     size="sm"
+                    aria-label={
+                      editingId === item.id ? 'Annuler la modification' : `Modifier ${item.nameFr}`
+                    }
                     onClick={() => setEditingId(editingId === item.id ? null : item.id)}
                   >
                     {editingId === item.id ? (
@@ -147,24 +144,32 @@ export default function TaxonomyPage({ title, baseUrl, items }: TaxonomyPageProp
                       <Pencil className="size-4" />
                     )}
                   </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="text-destructive"
-                    onClick={() => remove(item)}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
+                  <ConfirmButton
+                    description={`Supprimer « ${item.nameFr} » ?`}
+                    onConfirm={() =>
+                      router.delete(`${baseUrl}/${item.id}`, { preserveScroll: true })
+                    }
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive"
+                        aria-label={`Supprimer ${item.nameFr}`}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    }
+                  />
                 </div>
               </div>
               {editingId === item.id && (
                 <TaxonomyForm baseUrl={baseUrl} item={item} onDone={() => setEditingId(null)} />
               )}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </AdminPage>
   )
 }

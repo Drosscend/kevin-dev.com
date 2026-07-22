@@ -2,7 +2,10 @@ import { router } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 import { Plus, Trash2 } from 'lucide-react'
 import { Button } from '~/components/ui/button'
-import { Card, CardContent } from '~/components/ui/card'
+import AdminPage from '~/components/admin/admin_page'
+import ConfirmButton from '~/components/admin/confirm_button'
+import EmptyState from '~/components/admin/empty_state'
+import StatusBadge from '~/components/admin/status_badge'
 
 type ArticleRow = {
   id: number
@@ -19,67 +22,61 @@ type ArticlesIndexProps = {
 }
 
 export default function ArticlesIndex({ articles }: ArticlesIndexProps) {
-  function remove(article: ArticleRow) {
-    if (confirm(`Supprimer « ${article.title} » ? Cette action est définitive.`)) {
-      router.delete(`/admin/articles/${article.id}`, { preserveScroll: true })
-    }
-  }
-
   return (
-    <div className="max-w-4xl space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Articles</h1>
+    <AdminPage
+      title="Articles"
+      action={
         <Button asChild>
-          <Link href="/admin/articles/create">
+          <Link route="admin.articles.create">
             <Plus className="size-4" />
             Nouvel article
           </Link>
         </Button>
-      </div>
-
+      }
+    >
       {articles.length === 0 ? (
-        <p className="text-muted-foreground text-sm">Aucun article pour l’instant.</p>
+        <EmptyState>Aucun article pour l’instant.</EmptyState>
       ) : (
-        <div className="space-y-2">
+        <ul className="divide-y border-y">
           {articles.map((article) => (
-            <Card key={article.id}>
-              <CardContent className="flex items-center justify-between gap-4">
-                <div className="min-w-0">
-                  <Link
-                    href={`/admin/articles/${article.id}/edit`}
-                    className="font-medium hover:underline"
-                  >
-                    {article.title}
-                  </Link>
-                  <p className="text-muted-foreground truncate text-xs">
-                    {article.slug}
-                    {article.category ? ` — ${article.category}` : ''}
-                    {article.hasEnglish ? ' — FR + EN' : ' — FR'}
-                  </p>
-                </div>
-                <div className="flex shrink-0 items-center gap-3">
-                  {article.status === 'published' ? (
-                    <span className="text-sm text-green-600 dark:text-green-400">
-                      Publié{article.publishedAt ? ` le ${article.publishedAt}` : ''}
-                    </span>
-                  ) : (
-                    <span className="text-muted-foreground text-sm">Brouillon</span>
-                  )}
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="text-destructive"
-                    onClick={() => remove(article)}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <li key={article.id} className="flex items-center justify-between gap-4 py-3">
+              <div className="min-w-0">
+                <Link
+                  href={`/admin/articles/${article.id}/edit`}
+                  className="hover:text-primary font-medium transition-colors"
+                >
+                  {article.title}
+                </Link>
+                <p className="text-muted-foreground truncate font-mono text-xs">
+                  {article.slug}
+                  {article.category ? ` — ${article.category}` : ''}
+                  {article.hasEnglish ? ' — FR + EN' : ' — FR'}
+                </p>
+              </div>
+              <div className="flex shrink-0 items-center gap-3">
+                <StatusBadge status={article.status} detail={article.publishedAt} />
+                <ConfirmButton
+                  description={`Supprimer « ${article.title} » ? Cette action est définitive.`}
+                  onConfirm={() =>
+                    router.delete(`/admin/articles/${article.id}`, { preserveScroll: true })
+                  }
+                  trigger={
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive"
+                      aria-label={`Supprimer ${article.title}`}
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  }
+                />
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
-    </div>
+    </AdminPage>
   )
 }

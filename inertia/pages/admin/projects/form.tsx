@@ -133,7 +133,10 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
         <h1 className="text-2xl font-bold tracking-tight">
           {project ? 'Modifier le projet' : 'Nouveau projet'}
         </h1>
-        <Link href="/admin/projects" className="text-muted-foreground text-sm hover:underline">
+        <Link
+          href="/admin/projects"
+          className="text-muted-foreground hover:text-primary text-sm transition-colors"
+        >
           ← Tous les projets
         </Link>
       </div>

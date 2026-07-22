@@ -3,6 +3,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import AdminPage from '~/components/admin/admin_page'
 
 interface SecurityProps {
   totpEnabled: boolean
@@ -12,9 +13,7 @@ interface SecurityProps {
 
 export default function Security({ totpEnabled, qrCode, secret }: SecurityProps) {
   return (
-    <div className="max-w-xl space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">Sécurité</h1>
-
+    <AdminPage title="Sécurité" className="max-w-xl">
       {totpEnabled ? (
         <Card>
           <CardHeader>
@@ -94,6 +93,6 @@ export default function Security({ totpEnabled, qrCode, secret }: SecurityProps)
           </CardContent>
         </Card>
       )}
-    </div>
+    </AdminPage>
   )
 }

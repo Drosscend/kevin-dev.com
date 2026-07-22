@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import UserTransformer from '#transformers/user_transformer'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
+import ContactMessage from '#models/contact_message'
 import { DEFAULT_LOCALE, type Locale } from '#types/i18n'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -34,6 +35,20 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       }),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
       locale: ctx.inertia.always((i18n?.locale as Locale | undefined) ?? DEFAULT_LOCALE),
+      /**
+       * Unread contact messages, displayed as a badge in the admin
+       * sidebar. Only computed for authenticated (admin) requests.
+       */
+      unreadMessages: async () => {
+        if (!auth?.user) {
+          return undefined
+        }
+        const row = await ContactMessage.query()
+          .whereNull('read_at')
+          .count('* as total')
+          .firstOrFail()
+        return Number(row.$extras.total)
+      },
     }
   }
 

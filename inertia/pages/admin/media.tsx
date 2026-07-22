@@ -5,6 +5,9 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import AdminPage from '~/components/admin/admin_page'
+import ConfirmButton from '~/components/admin/confirm_button'
+import EmptyState from '~/components/admin/empty_state'
 
 type MediaItem = {
   id: number
@@ -29,16 +32,8 @@ function formatSize(bytes: number) {
 }
 
 export default function MediaPage({ media }: MediaPageProps) {
-  function deleteMedia(item: MediaItem) {
-    if (confirm(`Supprimer « ${item.alt} » ? Cette action est définitive.`)) {
-      router.delete(`/admin/media/${item.id}`)
-    }
-  }
-
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">Bibliothèque média</h1>
-
+    <AdminPage title="Bibliothèque média" className="max-w-6xl">
       <Card className="max-w-xl">
         <CardHeader>
           <CardTitle>Ajouter une image</CardTitle>
@@ -78,7 +73,7 @@ export default function MediaPage({ media }: MediaPageProps) {
       </Card>
 
       {media.length === 0 ? (
-        <p className="text-muted-foreground text-sm">Aucune image pour l’instant.</p>
+        <EmptyState>Aucune image pour l’instant.</EmptyState>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {media.map((item) => (
@@ -98,21 +93,26 @@ export default function MediaPage({ media }: MediaPageProps) {
                 <p className="text-muted-foreground truncate text-xs" title={item.originalName}>
                   {item.originalName} — {item.width}×{item.height} — {formatSize(item.size)}
                 </p>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="text-destructive gap-1 px-2"
-                  onClick={() => deleteMedia(item)}
-                >
-                  <Trash2 className="size-4" />
-                  Supprimer
-                </Button>
+                <ConfirmButton
+                  description={`Supprimer « ${item.alt} » ? Cette action est définitive.`}
+                  onConfirm={() => router.delete(`/admin/media/${item.id}`)}
+                  trigger={
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive gap-1 px-2"
+                    >
+                      <Trash2 className="size-4" />
+                      Supprimer
+                    </Button>
+                  }
+                />
               </CardContent>
             </Card>
           ))}
         </div>
       )}
-    </div>
+    </AdminPage>
   )
 }

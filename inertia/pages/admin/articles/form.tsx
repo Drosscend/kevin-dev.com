@@ -103,7 +103,10 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
         <h1 className="text-2xl font-bold tracking-tight">
           {article ? 'Modifier l’article' : 'Nouvel article'}
         </h1>
-        <Link href="/admin/articles" className="text-muted-foreground text-sm hover:underline">
+        <Link
+          href="/admin/articles"
+          className="text-muted-foreground hover:text-primary text-sm transition-colors"
+        >
           ← Tous les articles
         </Link>
       </div>
