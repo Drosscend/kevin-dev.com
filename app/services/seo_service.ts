@@ -49,7 +49,8 @@ export default class SeoService {
           }
         : null,
       ogType: options.ogType ?? 'website',
-      ogImage: options.ogImage ?? null,
+      // Pages without a specific image fall back to the site card
+      ogImage: options.ogImage ?? this.absolute('/images/og-default.jpg'),
       jsonLd: options.jsonLd ?? [],
     }
   }

@@ -67,6 +67,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['robots']>>>
     }
   }
+  'seo.security': {
+    methods: ["GET","HEAD"]
+    pattern: '/.well-known/security.txt'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['securityTxt']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['securityTxt']>>>
+    }
+  }
   'seo.rss': {
     methods: ["GET","HEAD"]
     pattern: '/blog/rss.xml'

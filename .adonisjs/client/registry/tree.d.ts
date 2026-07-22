@@ -39,6 +39,7 @@ export interface ApiDefinition {
   seo: {
     sitemap: typeof routes['seo.sitemap']
     robots: typeof routes['seo.robots']
+    security: typeof routes['seo.security']
     rss: typeof routes['seo.rss']
   }
   llms: {

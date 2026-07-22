@@ -36,6 +36,12 @@ const routes = {
     tokens: [{"old":"/robots.txt","type":0,"val":"robots.txt","end":""}],
     types: placeholder as Registry['seo.robots']['types'],
   },
+  'seo.security': {
+    methods: ["GET","HEAD"],
+    pattern: '/.well-known/security.txt',
+    tokens: [{"old":"/.well-known/security.txt","type":0,"val":".well-known","end":""},{"old":"/.well-known/security.txt","type":0,"val":"security.txt","end":""}],
+    types: placeholder as Registry['seo.security']['types'],
+  },
   'seo.rss': {
     methods: ["GET","HEAD"],
     pattern: '/blog/rss.xml',

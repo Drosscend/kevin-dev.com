@@ -9,6 +9,7 @@ export type ScannedRoutes = {
     'health': { paramsTuple?: []; params?: {} }
     'seo.sitemap': { paramsTuple?: []; params?: {} }
     'seo.robots': { paramsTuple?: []; params?: {} }
+    'seo.security': { paramsTuple?: []; params?: {} }
     'seo.rss': { paramsTuple?: []; params?: {} }
     'en.seo.rss': { paramsTuple?: []; params?: {} }
     'llms.index': { paramsTuple?: []; params?: {} }
@@ -96,6 +97,7 @@ export type ScannedRoutes = {
     'health': { paramsTuple?: []; params?: {} }
     'seo.sitemap': { paramsTuple?: []; params?: {} }
     'seo.robots': { paramsTuple?: []; params?: {} }
+    'seo.security': { paramsTuple?: []; params?: {} }
     'seo.rss': { paramsTuple?: []; params?: {} }
     'en.seo.rss': { paramsTuple?: []; params?: {} }
     'llms.index': { paramsTuple?: []; params?: {} }
@@ -147,6 +149,7 @@ export type ScannedRoutes = {
     'health': { paramsTuple?: []; params?: {} }
     'seo.sitemap': { paramsTuple?: []; params?: {} }
     'seo.robots': { paramsTuple?: []; params?: {} }
+    'seo.security': { paramsTuple?: []; params?: {} }
     'seo.rss': { paramsTuple?: []; params?: {} }
     'en.seo.rss': { paramsTuple?: []; params?: {} }
     'llms.index': { paramsTuple?: []; params?: {} }

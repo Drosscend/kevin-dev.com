@@ -23,6 +23,7 @@ router.get('/health', [controllers.HealthChecks, 'handle']).as('health')
  */
 router.get('/sitemap.xml', [controllers.Seo, 'sitemap']).as('seo.sitemap')
 router.get('/robots.txt', [controllers.Seo, 'robots']).as('seo.robots')
+router.get('/.well-known/security.txt', [controllers.Seo, 'securityTxt']).as('seo.security')
 router.get('/blog/rss.xml', [controllers.Seo, 'rss']).as('seo.rss')
 router.get('/en/blog/rss.xml', [controllers.Seo, 'rss']).as('en.seo.rss')
 

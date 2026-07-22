@@ -171,4 +171,20 @@ export default class SeoController {
       '',
     ].join('\n')
   }
+
+  /**
+   * RFC 9116 security contact. The expiry is computed so the file
+   * never goes stale.
+   */
+  async securityTxt({ response }: HttpContext) {
+    const expires = new Date(Date.now() + 182 * 24 * 60 * 60 * 1000).toISOString()
+    response.header('content-type', 'text/plain; charset=utf-8')
+    return [
+      'Contact: mailto:contact@kevin-dev.com',
+      `Expires: ${expires}`,
+      'Preferred-Languages: fr, en',
+      `Canonical: ${SeoService.absolute('/.well-known/security.txt')}`,
+      '',
+    ].join('\n')
+  }
 }
