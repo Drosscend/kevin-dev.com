@@ -7,42 +7,16 @@ export interface UmamiStats {
   topPages: { path: string; views: number }[]
 }
 
+interface UmamiConfig {
+  apiUrl: string
+  username: string
+  password: string
+  websiteId: string
+}
+
 const TOKEN_TTL_MS = 50 * 60 * 1000
 const FETCH_TIMEOUT_MS = 4000
-
-let cachedToken: { value: string; expiresAt: number } | null = null
-
-function config() {
-  const apiUrl = env.get('UMAMI_API_URL')
-  const username = env.get('UMAMI_API_USERNAME')
-  const password = env.get('UMAMI_API_PASSWORD')
-  const websiteId = env.get('UMAMI_WEBSITE_ID')
-
-  if (!apiUrl || !username || !password || !websiteId) {
-    return null
-  }
-  return { apiUrl: apiUrl.replace(/\/$/, ''), username, password, websiteId }
-}
-
-async function login(apiUrl: string, username: string, password: string) {
-  if (cachedToken && cachedToken.expiresAt > Date.now()) {
-    return cachedToken.value
-  }
-
-  const response = await fetch(`${apiUrl}/api/auth/login`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ username, password }),
-    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-  })
-  if (!response.ok) {
-    throw new Error(`Umami login failed (${response.status})`)
-  }
-
-  const { token } = (await response.json()) as { token: string }
-  cachedToken = { value: token, expiresAt: Date.now() + TOKEN_TTL_MS }
-  return token
-}
+const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000
 
 /**
  * Reads visit statistics from a self-hosted Umami instance for the
@@ -51,23 +25,56 @@ async function login(apiUrl: string, username: string, password: string) {
  * the stats card.
  */
 export default class UmamiService {
-  static get configured() {
-    return config() !== null
+  /**
+   * Access token reused across dashboard loads, refreshed shortly
+   * before the hour-long Umami token expires.
+   */
+  static #cachedToken: { value: string; expiresAt: number } | null = null
+
+  static #config(): UmamiConfig | null {
+    const apiUrl = env.get('UMAMI_API_URL')
+    const username = env.get('UMAMI_API_USERNAME')
+    const password = env.get('UMAMI_API_PASSWORD')
+    const websiteId = env.get('UMAMI_WEBSITE_ID')
+
+    if (!apiUrl || !username || !password || !websiteId) {
+      return null
+    }
+    return { apiUrl: apiUrl.replace(/\/$/, ''), username, password, websiteId }
+  }
+
+  static async #login({ apiUrl, username, password }: UmamiConfig) {
+    if (this.#cachedToken && this.#cachedToken.expiresAt > Date.now()) {
+      return this.#cachedToken.value
+    }
+
+    const response = await fetch(`${apiUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+    })
+    if (!response.ok) {
+      throw new Error(`Umami login failed (${response.status})`)
+    }
+
+    const { token } = (await response.json()) as { token: string }
+    this.#cachedToken = { value: token, expiresAt: Date.now() + TOKEN_TTL_MS }
+    return token
   }
 
   static async statsLast30Days(): Promise<UmamiStats | null> {
-    const settings = config()
-    if (!settings) {
+    const config = this.#config()
+    if (!config) {
       return null
     }
 
     try {
-      const token = await login(settings.apiUrl, settings.username, settings.password)
+      const token = await this.#login(config)
       const endAt = Date.now()
-      const startAt = endAt - 30 * 24 * 60 * 60 * 1000
-      const range = `startAt=${startAt}&endAt=${endAt}`
+      const range = `startAt=${endAt - THIRTY_DAYS_MS}&endAt=${endAt}`
       const headers = { authorization: `Bearer ${token}` }
-      const websiteBase = `${settings.apiUrl}/api/websites/${settings.websiteId}`
+      const websiteBase = `${config.apiUrl}/api/websites/${config.websiteId}`
 
       const [statsResponse, pagesResponse] = await Promise.all([
         fetch(`${websiteBase}/stats?${range}`, {
@@ -81,7 +88,7 @@ export default class UmamiService {
       ])
       if (!statsResponse.ok || !pagesResponse.ok) {
         // A stale token gets a retry on the next dashboard load
-        cachedToken = null
+        this.#cachedToken = null
         throw new Error(`Umami API error (${statsResponse.status}/${pagesResponse.status})`)
       }
 

@@ -21,8 +21,13 @@ export class InvalidImageError extends Error {}
  * disk).
  */
 export default class MediaService {
+  /** Disk folder holding every variant of one media. */
+  static #directory(mediaKey: string) {
+    return `media/${mediaKey}`
+  }
+
   static key(mediaKey: string, file: string) {
-    return `media/${mediaKey}/${file}`
+    return `${this.#directory(mediaKey)}/${file}`
   }
 
   static async store(file: MultipartFile, alt: string) {
@@ -73,13 +78,13 @@ export default class MediaService {
         variants,
       })
     } catch (error) {
-      await disk.deleteAll(`media/${mediaKey}`)
+      await disk.deleteAll(this.#directory(mediaKey))
       throw error
     }
   }
 
   static async delete(media: Media) {
-    await drive.use().deleteAll(`media/${media.key}`)
+    await drive.use().deleteAll(this.#directory(media.key))
     await media.delete()
   }
 }

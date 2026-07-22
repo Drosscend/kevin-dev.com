@@ -5,9 +5,9 @@ import Setting from '#models/setting'
  * page content, CV PDF metadata…).
  */
 export default class SettingsService {
-  static async get(key: string, fallback = '') {
+  static async get(key: string) {
     const setting = await Setting.findBy('key', key)
-    return setting?.value ?? fallback
+    return setting?.value ?? ''
   }
 
   static async getMany(keys: string[]) {
