@@ -4,7 +4,7 @@ import Article from '#models/article'
 import Project from '#models/project'
 import type Media from '#models/media'
 import SeoService from '#services/seo_service'
-import type { Locale } from '#types/i18n'
+import { localePath, type Locale } from '#types/i18n'
 
 function thumbnailUrl(media: Media | null) {
   if (!media) {
@@ -17,27 +17,29 @@ function thumbnailUrl(media: Media | null) {
 export default class HomeController {
   async handle({ inertia, i18n }: HttpContext) {
     const locale = i18n.locale as Locale
-    const base = locale === 'en' ? '/en' : ''
 
     const [articles, projects] = await Promise.all([
       Article.query()
         .where('status', 'published')
         .whereHas('translations', (translations) => translations.where('locale', locale))
-        .preload('translations')
+        .preload('translations', (translations) =>
+          translations.select('id', 'article_id', 'locale', 'title', 'summary')
+        )
         .orderBy('published_at', 'desc')
         .limit(3),
       Project.query()
         .where('status', 'published')
         .where('featured', true)
         .whereHas('translations', (translations) => translations.where('locale', locale))
-        .preload('translations')
+        .preload('translations', (translations) =>
+          translations.select('id', 'project_id', 'locale', 'title', 'summary')
+        )
         .preload('cover')
         .orderBy('published_at', 'desc')
         .limit(3),
     ])
 
     return inertia.render('home', {
-      locale,
       latestArticles: articles.map((article) => ({
         slug: article.slug,
         title: article.translation(locale)!.title,
@@ -60,7 +62,7 @@ export default class HomeController {
         title: 'kevin-dev.com',
         description: i18n.t('messages.home.metaDescription'),
         locale,
-        path: base || '/',
+        path: localePath(locale, '/'),
         alternates: { fr: '/', en: '/en' },
         jsonLd: [SeoService.person()],
       }),

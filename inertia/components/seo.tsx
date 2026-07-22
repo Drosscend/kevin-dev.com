@@ -1,20 +1,7 @@
 import { Head } from '@inertiajs/react'
+import type { SeoMeta } from '#types/seo'
 
-export type JsonLdValue =
-  string | number | boolean | null | JsonLdValue[] | { [key: string]: JsonLdValue }
-
-export type JsonLd = { [key: string]: JsonLdValue }
-
-export type SeoMeta = {
-  title: string
-  description: string
-  canonical: string
-  locale: 'fr' | 'en'
-  alternates: { fr: string; en: string | null } | null
-  ogType: 'website' | 'article'
-  ogImage: string | null
-  jsonLd: JsonLd[]
-}
+export type { SeoMeta }
 
 /**
  * Renders every SEO tag of a page into the document head (SSR

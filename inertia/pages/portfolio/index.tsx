@@ -1,5 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { localePath, otherLocalePath } from '~/lib/locale'
 
 type ProjectCard = {
   slug: string
@@ -18,7 +19,7 @@ type PortfolioIndexProps = {
 }
 
 export default function PortfolioIndex({ locale, projects, labels, meta }: PortfolioIndexProps) {
-  const base = locale === 'en' ? '/en' : ''
+  const to = (path: string) => localePath(locale, path)
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-6 py-10">
@@ -26,7 +27,7 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-3xl font-bold tracking-tight">{labels.title}</h1>
         <Link
-          href={locale === 'en' ? '/projects' : '/en/projects'}
+          href={otherLocalePath(locale, '/projects')}
           className="text-muted-foreground text-sm hover:underline"
         >
           {locale === 'en' ? 'FR' : 'EN'}
@@ -40,7 +41,7 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
           {projects.map((project) => (
             <Link
               key={project.slug}
-              href={`${base}/projects/${project.slug}`}
+              href={to(`/projects/${project.slug}`)}
               className="group overflow-hidden rounded-lg border transition-shadow hover:shadow-md"
             >
               {project.coverUrl ? (

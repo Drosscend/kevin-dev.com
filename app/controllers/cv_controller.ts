@@ -2,7 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import drive from '@adonisjs/drive/services/main'
 import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
-import type { Locale } from '#types/i18n'
+import { localePath, type Locale } from '#types/i18n'
 
 export const CV_PDF_KEY = 'cv/cv.pdf'
 
@@ -13,7 +13,6 @@ export default class CvController {
     const contentHtml = locale === 'en' ? settings.cv_html_en : settings.cv_html_fr
 
     return inertia.render('cv', {
-      locale,
       contentHtml,
       pdfAvailable: await drive.use().exists(CV_PDF_KEY),
       labels: {
@@ -25,7 +24,7 @@ export default class CvController {
         title: i18n.t('messages.cv.title'),
         description: i18n.t('messages.cv.metaDescription'),
         locale,
-        path: locale === 'en' ? '/en/cv' : '/cv',
+        path: localePath(locale, '/cv'),
         alternates: settings.cv_html_en ? { fr: '/cv', en: '/en/cv' } : null,
         jsonLd: [SeoService.person()],
       }),

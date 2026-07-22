@@ -1,18 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Tag from '#models/tag'
 import { tagValidator } from '#validators/blog'
-
-async function saveTranslations(tag: Tag, nameFr: string, nameEn?: string) {
-  await tag.related('translations').updateOrCreate({ locale: 'fr' }, { locale: 'fr', name: nameFr })
-
-  if (nameEn) {
-    await tag
-      .related('translations')
-      .updateOrCreate({ locale: 'en' }, { locale: 'en', name: nameEn })
-  } else {
-    await tag.related('translations').query().where('locale', 'en').delete()
-  }
-}
+import { upsertNameTranslations } from '#services/taxonomy_service'
 
 export default class TagsController {
   async index({ inertia }: HttpContext) {
@@ -39,7 +28,7 @@ export default class TagsController {
     }
 
     const tag = await Tag.create({ slug })
-    await saveTranslations(tag, nameFr, nameEn)
+    await upsertNameTranslations(tag, nameFr, nameEn)
 
     session.flash('success', 'Tag créé')
     response.redirect().toRoute('admin.tags.index')
@@ -57,7 +46,7 @@ export default class TagsController {
 
     tag.slug = slug
     await tag.save()
-    await saveTranslations(tag, nameFr, nameEn)
+    await upsertNameTranslations(tag, nameFr, nameEn)
 
     session.flash('success', 'Tag mis à jour')
     response.redirect().toRoute('admin.tags.index')

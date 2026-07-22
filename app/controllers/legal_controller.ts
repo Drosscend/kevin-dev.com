@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
-import type { Locale } from '#types/i18n'
+import { localePath, type Locale } from '#types/i18n'
 
 export default class LegalController {
   async show({ inertia, i18n }: HttpContext) {
@@ -9,7 +9,6 @@ export default class LegalController {
     const settings = await SettingsService.getMany(['legal_html_fr', 'legal_html_en'])
 
     return inertia.render('legal', {
-      locale,
       contentHtml: locale === 'en' ? settings.legal_html_en : settings.legal_html_fr,
       labels: {
         title: i18n.t('messages.legal.title'),
@@ -19,7 +18,7 @@ export default class LegalController {
         title: i18n.t('messages.legal.title'),
         description: i18n.t('messages.legal.title'),
         locale,
-        path: locale === 'en' ? '/en/legal' : '/legal',
+        path: localePath(locale, '/legal'),
         alternates: settings.legal_html_en ? { fr: '/legal', en: '/en/legal' } : null,
       }),
     })

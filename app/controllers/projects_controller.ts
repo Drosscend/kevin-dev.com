@@ -6,7 +6,7 @@ import Project from '#models/project'
 import type Media from '#models/media'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
-import type { Locale } from '#types/i18n'
+import { localePath, type Locale } from '#types/i18n'
 
 function coverUrl(cover: Media | null) {
   if (!cover) {
@@ -27,14 +27,15 @@ export default class ProjectsController {
     const projects = await Project.query()
       .where('status', 'published')
       .whereHas('translations', (translations) => translations.where('locale', locale))
-      .preload('translations')
+      .preload('translations', (translations) =>
+        translations.select('id', 'project_id', 'locale', 'title', 'summary')
+      )
       .preload('cover')
       .preload('technologies')
       .orderBy('featured', 'desc')
       .orderBy('published_at', 'desc')
 
     return inertia.render('portfolio/index', {
-      locale,
       projects: projects.map((project) => {
         const translation = project.translation(locale)!
         return {
@@ -57,7 +58,7 @@ export default class ProjectsController {
         title: i18n.t('messages.portfolio.title'),
         description: i18n.t('messages.portfolio.metaDescription'),
         locale,
-        path: locale === 'en' ? '/en/projects' : '/projects',
+        path: localePath(locale, '/projects'),
         alternates: { fr: '/projects', en: '/en/projects' },
       }),
     })
@@ -82,7 +83,11 @@ export default class ProjectsController {
       .preload('links', (links) => links.orderBy('position'))
       .preload('technologies')
       .preload('articles', (articles) => {
-        articles.where('status', 'published').preload('translations')
+        articles
+          .where('status', 'published')
+          .preload('translations', (translations) =>
+            translations.select('id', 'article_id', 'locale', 'title')
+          )
       })
       .firstOrFail()
 
@@ -97,7 +102,6 @@ export default class ProjectsController {
     }
 
     return inertia.render('portfolio/show', {
-      locale,
       isDraftPreview,
       project: {
         slug: project.slug,
@@ -134,7 +138,7 @@ export default class ProjectsController {
         title: translation.title,
         description: translation.summary || i18n.t('messages.portfolio.metaDescription'),
         locale,
-        path: `${locale === 'en' ? '/en' : ''}/projects/${project.slug}`,
+        path: localePath(locale, `/projects/${project.slug}`),
         alternates:
           project.translation('en') !== undefined
             ? { fr: `/projects/${project.slug}`, en: `/en/projects/${project.slug}` }
@@ -145,11 +149,11 @@ export default class ProjectsController {
           SeoService.breadcrumbs([
             {
               name: i18n.t('messages.portfolio.title'),
-              path: locale === 'en' ? '/en/projects' : '/projects',
+              path: localePath(locale, '/projects'),
             },
             {
               name: translation.title,
-              path: `${locale === 'en' ? '/en' : ''}/projects/${project.slug}`,
+              path: localePath(locale, `/projects/${project.slug}`),
             },
           ]),
         ],

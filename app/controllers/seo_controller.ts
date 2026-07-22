@@ -4,7 +4,7 @@ import Project from '#models/project'
 import Technology from '#models/technology'
 import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
-import type { Locale } from '#types/i18n'
+import { localePath, type Locale } from '#types/i18n'
 
 function xmlEscape(value: string) {
   return value
@@ -34,8 +34,12 @@ function sitemapUrl(entry: SitemapEntry) {
 export default class SeoController {
   async sitemap({ response }: HttpContext) {
     const [articles, projects, technologies, settings] = await Promise.all([
-      Article.query().where('status', 'published').preload('translations'),
-      Project.query().where('status', 'published').preload('translations'),
+      Article.query()
+        .where('status', 'published')
+        .preload('translations', (query) => query.select('id', 'article_id', 'locale')),
+      Project.query()
+        .where('status', 'published')
+        .preload('translations', (query) => query.select('id', 'project_id', 'locale')),
       Technology.query(),
       SettingsService.getMany(['cv_html_fr', 'cv_html_en', 'legal_html_fr', 'legal_html_en']),
     ])
@@ -112,19 +116,20 @@ export default class SeoController {
 
   async rss({ response, i18n }: HttpContext) {
     const locale = i18n.locale as Locale
-    const base = locale === 'en' ? '/en' : ''
 
     const articles = await Article.query()
       .where('status', 'published')
       .whereHas('translations', (translations) => translations.where('locale', locale))
-      .preload('translations')
+      .preload('translations', (query) =>
+        query.select('id', 'article_id', 'locale', 'title', 'summary')
+      )
       .orderBy('published_at', 'desc')
       .limit(20)
 
     const items = articles
       .map((article) => {
         const translation = article.translation(locale)!
-        const url = SeoService.absolute(`${base}/blog/${article.slug}`)
+        const url = SeoService.absolute(localePath(locale, `/blog/${article.slug}`))
         return [
           '<item>',
           `<title>${xmlEscape(translation.title)}</title>`,
@@ -144,10 +149,10 @@ export default class SeoController {
       '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
       '<channel>',
       `<title>kevin-dev.com — Blog</title>`,
-      `<link>${xmlEscape(SeoService.absolute(`${base}/blog`))}</link>`,
+      `<link>${xmlEscape(SeoService.absolute(localePath(locale, '/blog')))}</link>`,
       `<description>${xmlEscape(i18n.t('messages.blog.metaDescription'))}</description>`,
       `<language>${locale}</language>`,
-      `<atom:link href="${xmlEscape(SeoService.absolute(`${base}/blog/rss.xml`))}" rel="self" type="application/rss+xml"/>`,
+      `<atom:link href="${xmlEscape(SeoService.absolute(localePath(locale, '/blog/rss.xml')))}" rel="self" type="application/rss+xml"/>`,
       items,
       '</channel>',
       '</rss>',

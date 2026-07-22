@@ -17,9 +17,19 @@ const translation = () =>
 export const articleValidator = vine.create({
   slug: slug(),
   status: vine.enum(['draft', 'published'] as const),
-  categoryId: vine.number().positive().nullable().optional(),
-  coverMediaId: vine.number().positive().nullable().optional(),
-  tagIds: vine.array(vine.number().positive()).optional(),
+  categoryId: vine
+    .number()
+    .positive()
+    .exists({ table: 'categories', column: 'id' })
+    .nullable()
+    .optional(),
+  coverMediaId: vine
+    .number()
+    .positive()
+    .exists({ table: 'media', column: 'id' })
+    .nullable()
+    .optional(),
+  tagIds: vine.array(vine.number().positive().exists({ table: 'tags', column: 'id' })).optional(),
   fr: translation(),
   en: translation().optional(),
 })

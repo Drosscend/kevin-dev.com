@@ -1,5 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { localePath } from '~/lib/locale'
 
 type HomeProps = {
   locale: 'fr' | 'en'
@@ -22,7 +23,7 @@ export default function Home({
   labels,
   meta,
 }: HomeProps) {
-  const base = locale === 'en' ? '/en' : ''
+  const to = (path: string) => localePath(locale, path)
 
   return (
     <div className="mx-auto max-w-5xl space-y-14 px-6 py-12">
@@ -37,10 +38,7 @@ export default function Home({
         <section className="space-y-4">
           <div className="flex items-baseline justify-between">
             <h2 className="text-2xl font-semibold">{labels.featuredProjects}</h2>
-            <Link
-              href={`${base}/projects`}
-              className="text-muted-foreground text-sm hover:underline"
-            >
+            <Link href={to('/projects')} className="text-muted-foreground text-sm hover:underline">
               {labels.allProjects}
             </Link>
           </div>
@@ -48,7 +46,7 @@ export default function Home({
             {featuredProjects.map((project) => (
               <Link
                 key={project.slug}
-                href={`${base}/projects/${project.slug}`}
+                href={to(`/projects/${project.slug}`)}
                 className="group overflow-hidden rounded-lg border transition-shadow hover:shadow-md"
               >
                 {project.coverUrl ? (
@@ -77,7 +75,7 @@ export default function Home({
         <section className="space-y-4">
           <div className="flex items-baseline justify-between">
             <h2 className="text-2xl font-semibold">{labels.latestArticles}</h2>
-            <Link href={`${base}/blog`} className="text-muted-foreground text-sm hover:underline">
+            <Link href={to('/blog')} className="text-muted-foreground text-sm hover:underline">
               {labels.allArticles}
             </Link>
           </div>
@@ -85,7 +83,7 @@ export default function Home({
             {latestArticles.map((article) => (
               <article key={article.slug}>
                 <h3 className="font-semibold">
-                  <Link href={`${base}/blog/${article.slug}`} className="hover:underline">
+                  <Link href={to(`/blog/${article.slug}`)} className="hover:underline">
                     {article.title}
                   </Link>
                 </h3>

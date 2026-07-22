@@ -1,5 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { localePath, otherLocalePath } from '~/lib/locale'
 
 type TechnologyCard = {
   slug: string
@@ -29,7 +30,7 @@ export default function TechnologiesIndex({
   labels,
   meta,
 }: TechnologiesIndexProps) {
-  const base = locale === 'en' ? '/en' : ''
+  const to = (path: string) => localePath(locale, path)
   const grouped = CATEGORY_ORDER.map((category) => ({
     category,
     items: technologies.filter((technology) => technology.category === category),
@@ -41,7 +42,7 @@ export default function TechnologiesIndex({
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-3xl font-bold tracking-tight">{labels.title}</h1>
         <Link
-          href={locale === 'en' ? '/technologies' : '/en/technologies'}
+          href={otherLocalePath(locale, '/technologies')}
           className="text-muted-foreground text-sm hover:underline"
         >
           {locale === 'en' ? 'FR' : 'EN'}
@@ -57,7 +58,7 @@ export default function TechnologiesIndex({
             {group.items.map((technology) => (
               <Link
                 key={technology.slug}
-                href={`${base}/technologies/${technology.slug}`}
+                href={to(`/technologies/${technology.slug}`)}
                 className="group flex items-start gap-3 rounded-lg border p-4 transition-shadow hover:shadow-md"
               >
                 {technology.logoUrl && (

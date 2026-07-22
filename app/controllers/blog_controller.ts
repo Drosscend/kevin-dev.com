@@ -5,7 +5,7 @@ import Article from '#models/article'
 import Category from '#models/category'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
-import type { Locale } from '#types/i18n'
+import { localePath, type Locale } from '#types/i18n'
 
 const PER_PAGE = 9
 
@@ -13,8 +13,23 @@ function formatDate(date: DateTime | null, locale: Locale) {
   return date?.setLocale(locale).toLocaleString(DateTime.DATE_FULL) ?? null
 }
 
+function listQueryString(category: string | null, tag: string | null, page: number) {
+  const params = new URLSearchParams()
+  if (category) {
+    params.set('category', category)
+  }
+  if (tag) {
+    params.set('tag', tag)
+  }
+  if (page > 1) {
+    params.set('page', String(page))
+  }
+  const query = params.toString()
+  return query ? `?${query}` : ''
+}
+
 export default class BlogController {
-  async index({ inertia, request, i18n }: HttpContext) {
+  async index({ inertia, request, response, i18n }: HttpContext) {
     const locale = i18n.locale as Locale
     const page = Math.max(1, Number(request.input('page', 1)) || 1)
     const categorySlug = request.input('category') as string | null
@@ -23,7 +38,9 @@ export default class BlogController {
     const query = Article.query()
       .where('status', 'published')
       .whereHas('translations', (translations) => translations.where('locale', locale))
-      .preload('translations')
+      .preload('translations', (translations) =>
+        translations.select('id', 'article_id', 'locale', 'title', 'summary')
+      )
       .preload('category', (category) => category.preload('translations'))
       .preload('tags', (tags) => tags.preload('translations'))
       .orderBy('published_at', 'desc')
@@ -40,8 +57,15 @@ export default class BlogController {
       Category.query().preload('translations').orderBy('slug'),
     ])
 
+    if (paginated.total > 0 && page > paginated.lastPage) {
+      return response
+        .redirect()
+        .toPath(
+          localePath(locale, '/blog') + listQueryString(categorySlug, tagSlug, paginated.lastPage)
+        )
+    }
+
     return inertia.render('blog/index', {
-      locale,
       filters: { category: categorySlug, tag: tagSlug },
       articles: paginated.all().map((article) => {
         const translation = article.translation(locale)!
@@ -79,8 +103,9 @@ export default class BlogController {
         title: i18n.t('messages.blog.title'),
         description: i18n.t('messages.blog.metaDescription'),
         locale,
-        path: locale === 'en' ? '/en/blog' : '/blog',
-        alternates: { fr: '/blog', en: '/en/blog' },
+        path: localePath(locale, '/blog') + listQueryString(categorySlug, tagSlug, page),
+        alternates:
+          !categorySlug && !tagSlug && page === 1 ? { fr: '/blog', en: '/en/blog' } : null,
       }),
     })
   }
@@ -116,7 +141,6 @@ export default class BlogController {
     }
 
     return inertia.render('blog/show', {
-      locale,
       isDraftPreview,
       article: {
         slug: article.slug,
@@ -142,7 +166,7 @@ export default class BlogController {
         title: translation.title,
         description: translation.summary || i18n.t('messages.blog.metaDescription'),
         locale,
-        path: `${locale === 'en' ? '/en' : ''}/blog/${article.slug}`,
+        path: localePath(locale, `/blog/${article.slug}`),
         alternates:
           article.translation('en') !== undefined
             ? { fr: `/blog/${article.slug}`, en: `/en/blog/${article.slug}` }
@@ -153,16 +177,16 @@ export default class BlogController {
           SeoService.article({
             title: translation.title,
             description: translation.summary,
-            path: `${locale === 'en' ? '/en' : ''}/blog/${article.slug}`,
+            path: localePath(locale, `/blog/${article.slug}`),
             locale,
             publishedAt: article.publishedAt?.toISODate() ?? null,
             image: SeoService.mediaUrl(article.cover),
           }),
           SeoService.breadcrumbs([
-            { name: 'Blog', path: locale === 'en' ? '/en/blog' : '/blog' },
+            { name: 'Blog', path: localePath(locale, '/blog') },
             {
               name: translation.title,
-              path: `${locale === 'en' ? '/en' : ''}/blog/${article.slug}`,
+              path: localePath(locale, `/blog/${article.slug}`),
             },
           ]),
         ],

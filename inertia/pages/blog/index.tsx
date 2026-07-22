@@ -1,6 +1,7 @@
 import { router } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { localePath, otherLocalePath } from '~/lib/locale'
 
 type ArticleCard = {
   slug: string
@@ -50,7 +51,7 @@ export default function BlogIndex({
   labels,
   meta,
 }: BlogIndexProps) {
-  const base = locale === 'en' ? '/en/blog' : '/blog'
+  const base = localePath(locale, '/blog')
 
   function filterByCategory(slug: string | null) {
     router.get(pageUrl(base, { category: slug, tag: filters.tag }, 1), {}, { preserveState: true })
@@ -63,7 +64,7 @@ export default function BlogIndex({
         <h1 className="text-3xl font-bold tracking-tight">{labels.title}</h1>
         <div className="flex items-center gap-3">
           <Link
-            href={locale === 'en' ? '/blog' : '/en/blog'}
+            href={otherLocalePath(locale, '/blog')}
             className="text-muted-foreground text-sm hover:underline"
           >
             {locale === 'en' ? 'FR' : 'EN'}

@@ -1,5 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { localePath, otherLocalePath } from '~/lib/locale'
 
 type TechnologyShowProps = {
   locale: 'fr' | 'en'
@@ -20,17 +21,17 @@ type TechnologyShowProps = {
 }
 
 export default function TechnologyShow({ locale, technology, labels, meta }: TechnologyShowProps) {
-  const base = locale === 'en' ? '/en' : ''
+  const to = (path: string) => localePath(locale, path)
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">
       <Seo meta={meta} />
       <div className="flex items-center justify-between gap-4 text-sm">
-        <Link href={`${base}/technologies`} className="text-muted-foreground hover:underline">
+        <Link href={to('/technologies')} className="text-muted-foreground hover:underline">
           {labels.backToList}
         </Link>
         <Link
-          href={`${locale === 'en' ? '' : '/en'}/technologies/${technology.slug}`}
+          href={otherLocalePath(locale, `/technologies/${technology.slug}`)}
           className="text-muted-foreground hover:underline"
         >
           {locale === 'en' ? 'FR' : 'EN'}
@@ -58,7 +59,7 @@ export default function TechnologyShow({ locale, technology, labels, meta }: Tec
             {technology.projects.map((project) => (
               <article key={project.slug} className="space-y-1">
                 <h3 className="font-semibold">
-                  <Link href={`${base}/projects/${project.slug}`} className="hover:underline">
+                  <Link href={to(`/projects/${project.slug}`)} className="hover:underline">
                     {project.title}
                   </Link>
                 </h3>

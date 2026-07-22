@@ -3,14 +3,13 @@ import ContactMessage from '#models/contact_message'
 import ContactMessageReceived from '#events/contact_message_received'
 import SeoService from '#services/seo_service'
 import { contactValidator } from '#validators/contact'
-import type { Locale } from '#types/i18n'
+import { localePath, type Locale } from '#types/i18n'
 
 export default class ContactController {
   async show({ inertia, i18n }: HttpContext) {
     const locale = i18n.locale as Locale
 
     return inertia.render('contact', {
-      locale,
       labels: {
         title: i18n.t('messages.contact.title'),
         intro: i18n.t('messages.contact.intro'),
@@ -24,7 +23,7 @@ export default class ContactController {
         title: i18n.t('messages.contact.title'),
         description: i18n.t('messages.contact.intro'),
         locale,
-        path: locale === 'en' ? '/en/contact' : '/contact',
+        path: localePath(locale, '/contact'),
         alternates: { fr: '/contact', en: '/en/contact' },
       }),
     })

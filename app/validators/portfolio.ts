@@ -19,7 +19,12 @@ const translation = () =>
 export const projectValidator = vine.create({
   slug: slug(),
   status: vine.enum(['draft', 'published'] as const),
-  coverMediaId: vine.number().positive().nullable().optional(),
+  coverMediaId: vine
+    .number()
+    .positive()
+    .exists({ table: 'media', column: 'id' })
+    .nullable()
+    .optional(),
   startedAt: vine
     .string()
     .trim()
@@ -33,8 +38,12 @@ export const projectValidator = vine.create({
     .nullable()
     .optional(),
   featured: vine.boolean().optional(),
-  technologyIds: vine.array(vine.number().positive()).optional(),
-  articleIds: vine.array(vine.number().positive()).optional(),
+  technologyIds: vine
+    .array(vine.number().positive().exists({ table: 'technologies', column: 'id' }))
+    .optional(),
+  articleIds: vine
+    .array(vine.number().positive().exists({ table: 'articles', column: 'id' }))
+    .optional(),
   links: vine
     .array(
       vine.object({
@@ -52,7 +61,12 @@ export const technologyValidator = vine.create({
   slug: slug(),
   name: vine.string().trim().minLength(1).maxLength(100),
   category: vine.enum(TECHNOLOGY_CATEGORIES),
-  logoMediaId: vine.number().positive().nullable().optional(),
+  logoMediaId: vine
+    .number()
+    .positive()
+    .exists({ table: 'media', column: 'id' })
+    .nullable()
+    .optional(),
   descriptionFr: vine.string().trim().maxLength(1000).optional(),
   descriptionEn: vine.string().trim().maxLength(1000).optional(),
 })

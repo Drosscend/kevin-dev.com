@@ -515,12 +515,12 @@ export interface Registry {
     methods: ["DELETE"]
     pattern: '/admin/security'
     types: {
-      body: {}
+      body: ExtractBody<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
       paramsTuple: []
       params: {}
-      query: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.media.index': {

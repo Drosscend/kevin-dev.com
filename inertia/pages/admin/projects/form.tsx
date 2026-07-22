@@ -7,12 +7,13 @@ import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import ArticleContent from '~/components/article_content'
-
-type TranslationValues = {
-  title: string
-  summary: string
-  contentMarkdown: string
-}
+import TranslationFields from '~/components/admin/translation_fields'
+import {
+  EMPTY_TRANSLATION,
+  fetchMarkdownPreview,
+  slugify,
+  type TranslationValues,
+} from '~/lib/admin'
 
 type LinkValues = {
   label: string
@@ -45,7 +46,6 @@ type ProjectFormProps = {
   options: { technologies: Option[]; articles: ArticleOption[]; media: MediaOption[] }
 }
 
-const EMPTY_TRANSLATION: TranslationValues = { title: '', summary: '', contentMarkdown: '' }
 const EMPTY_LINK: LinkValues = { label: '', url: '', type: 'github' }
 
 const LINK_TYPES = [
@@ -55,69 +55,6 @@ const LINK_TYPES = [
   { value: 'store', label: 'Store' },
   { value: 'other', label: 'Autre' },
 ] as const
-
-function slugify(value: string) {
-  return value
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-}
-
-function xsrfToken() {
-  const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/)
-  return match ? decodeURIComponent(match[1]) : ''
-}
-
-function TranslationFields({
-  prefix,
-  values,
-  onChange,
-  errors,
-}: {
-  prefix: 'fr' | 'en'
-  values: TranslationValues
-  onChange: (values: TranslationValues) => void
-  errors: Record<string, string | string[]>
-}) {
-  return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor={`${prefix}-title`}>Titre</Label>
-        <Input
-          id={`${prefix}-title`}
-          value={values.title}
-          onChange={(event) => onChange({ ...values, title: event.target.value })}
-        />
-        {errors[`${prefix}.title`] && (
-          <p className="text-destructive text-sm">{errors[`${prefix}.title`]}</p>
-        )}
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor={`${prefix}-summary`}>Résumé</Label>
-        <textarea
-          id={`${prefix}-summary`}
-          className="border-input min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-sm"
-          value={values.summary}
-          onChange={(event) => onChange({ ...values, summary: event.target.value })}
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor={`${prefix}-content`}>Description longue (Markdown)</Label>
-        <textarea
-          id={`${prefix}-content`}
-          className="border-input min-h-60 w-full rounded-md border bg-transparent px-3 py-2 font-mono text-sm"
-          value={values.contentMarkdown}
-          onChange={(event) => onChange({ ...values, contentMarkdown: event.target.value })}
-        />
-        {errors[`${prefix}.contentMarkdown`] && (
-          <p className="text-destructive text-sm">{errors[`${prefix}.contentMarkdown`]}</p>
-        )}
-      </div>
-    </div>
-  )
-}
 
 export default function ProjectForm({ project, options }: ProjectFormProps) {
   const { errors } = usePage().props as unknown as {
@@ -167,13 +104,8 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
     if (!markdown) {
       return
     }
-    const response = await fetch('/admin/articles/preview', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-XSRF-TOKEN': xsrfToken() },
-      body: JSON.stringify({ markdown }),
-    })
-    if (response.ok) {
-      const { html } = await response.json()
+    const html = await fetchMarkdownPreview(markdown)
+    if (html) {
       setPreview({ locale, html })
     }
   }

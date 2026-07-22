@@ -1,6 +1,7 @@
 import { Link } from '@adonisjs/inertia/react'
 import ArticleContent from '~/components/article_content'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { localePath, otherLocalePath } from '~/lib/locale'
 
 type BlogShowProps = {
   locale: 'fr' | 'en'
@@ -32,8 +33,8 @@ export default function BlogShow({
   labels,
   meta,
 }: BlogShowProps) {
-  const base = locale === 'en' ? '/en/blog' : '/blog'
-  const otherBase = locale === 'en' ? '/blog' : '/en/blog'
+  const base = localePath(locale, '/blog')
+  const otherBase = otherLocalePath(locale, '/blog')
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">

@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import db from '@adonisjs/lucid/services/db'
 import type Article from '#models/article'
 import type { ArticleStatus } from '#models/article'
 import MarkdownService from '#services/markdown_service'
@@ -20,51 +21,60 @@ export interface ArticlePayload {
 }
 
 /**
- * Persists an article with its translations: Markdown is rendered
- * to HTML at save time, reading time is computed from the French
+ * Persists an article with its translations inside a single DB
+ * transaction, so a failure can never leave a published article
+ * without translations or tags. Markdown is rendered before the
+ * transaction starts, reading time is computed from the French
  * content, and publishedAt is set on the first publication only.
  */
 export default class ArticleService {
   static async save(article: Article, payload: ArticlePayload) {
-    article.slug = payload.slug
-    article.categoryId = payload.categoryId
-    article.coverMediaId = payload.coverMediaId
-    article.readingTime = MarkdownService.readingTime(payload.fr.contentMarkdown)
+    const frHtml = await MarkdownService.render(payload.fr.contentMarkdown)
+    const enHtml = payload.en ? await MarkdownService.render(payload.en.contentMarkdown) : null
 
-    if (payload.status === 'published' && !article.publishedAt) {
-      article.publishedAt = DateTime.now()
-    }
-    article.status = payload.status
-    await article.save()
+    return db.transaction(async (trx) => {
+      article.useTransaction(trx)
 
-    await article.related('translations').updateOrCreate(
-      { locale: 'fr' },
-      {
-        locale: 'fr',
-        title: payload.fr.title,
-        summary: payload.fr.summary,
-        contentMarkdown: payload.fr.contentMarkdown,
-        contentHtml: await MarkdownService.render(payload.fr.contentMarkdown),
+      article.slug = payload.slug
+      article.categoryId = payload.categoryId
+      article.coverMediaId = payload.coverMediaId
+      article.readingTime = MarkdownService.readingTime(payload.fr.contentMarkdown)
+
+      if (payload.status === 'published' && !article.publishedAt) {
+        article.publishedAt = DateTime.now()
       }
-    )
+      article.status = payload.status
+      await article.save()
 
-    if (payload.en) {
       await article.related('translations').updateOrCreate(
-        { locale: 'en' },
+        { locale: 'fr' },
         {
-          locale: 'en',
-          title: payload.en.title,
-          summary: payload.en.summary,
-          contentMarkdown: payload.en.contentMarkdown,
-          contentHtml: await MarkdownService.render(payload.en.contentMarkdown),
+          locale: 'fr',
+          title: payload.fr.title,
+          summary: payload.fr.summary,
+          contentMarkdown: payload.fr.contentMarkdown,
+          contentHtml: frHtml,
         }
       )
-    } else {
-      await article.related('translations').query().where('locale', 'en').delete()
-    }
 
-    await article.related('tags').sync(payload.tagIds)
+      if (payload.en) {
+        await article.related('translations').updateOrCreate(
+          { locale: 'en' },
+          {
+            locale: 'en',
+            title: payload.en.title,
+            summary: payload.en.summary,
+            contentMarkdown: payload.en.contentMarkdown,
+            contentHtml: enHtml!,
+          }
+        )
+      } else {
+        await article.related('translations').query().where('locale', 'en').delete()
+      }
 
-    return article
+      await article.related('tags').sync(payload.tagIds)
+
+      return article
+    })
   }
 }

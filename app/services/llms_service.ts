@@ -2,7 +2,7 @@ import Article from '#models/article'
 import Project from '#models/project'
 import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
-import type { Locale } from '#types/i18n'
+import { localePath, type Locale } from '#types/i18n'
 
 export const MARKDOWN_CONTENT_TYPE = 'text/markdown; charset=utf-8'
 
@@ -16,11 +16,15 @@ export default class LlmsService {
     const [articles, projects, settings] = await Promise.all([
       Article.query()
         .where('status', 'published')
-        .preload('translations')
+        .preload('translations', (query) =>
+          query.select('id', 'article_id', 'locale', 'title', 'summary')
+        )
         .orderBy('published_at', 'desc'),
       Project.query()
         .where('status', 'published')
-        .preload('translations')
+        .preload('translations', (query) =>
+          query.select('id', 'project_id', 'locale', 'title', 'summary')
+        )
         .orderBy('published_at', 'desc'),
       SettingsService.getMany(['cv_markdown_fr', 'legal_markdown_fr']),
     ])
@@ -91,7 +95,7 @@ export default class LlmsService {
       `# ${translation.title}`,
       '',
       ...(translation.summary ? [`> ${translation.summary}`, ''] : []),
-      `- URL : ${SeoService.absolute(`${locale === 'en' ? '/en' : ''}/blog/${article.slug}`)}`,
+      `- URL : ${SeoService.absolute(localePath(locale, `/blog/${article.slug}`))}`,
       ...(article.publishedAt ? [`- Publié : ${article.publishedAt.toISODate()}`] : []),
       ...(article.category ? [`- Catégorie : ${article.category.name(locale)}`] : []),
       ...(article.tags.length > 0
@@ -123,7 +127,7 @@ export default class LlmsService {
       `# ${translation.title}`,
       '',
       ...(translation.summary ? [`> ${translation.summary}`, ''] : []),
-      `- URL : ${SeoService.absolute(`${locale === 'en' ? '/en' : ''}/projects/${project.slug}`)}`,
+      `- URL : ${SeoService.absolute(localePath(locale, `/projects/${project.slug}`))}`,
       ...(project.technologies.length > 0
         ? [`- Technologies : ${project.technologies.map((item) => item.name).join(', ')}`]
         : []),

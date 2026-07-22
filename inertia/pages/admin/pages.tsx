@@ -6,6 +6,7 @@ import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import ArticleContent from '~/components/article_content'
+import { fetchMarkdownPreview } from '~/lib/admin'
 
 type PagesProps = {
   cvFr: string
@@ -13,11 +14,6 @@ type PagesProps = {
   legalFr: string
   legalEn: string
   pdf: { size: number } | null
-}
-
-function xsrfToken() {
-  const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/)
-  return match ? decodeURIComponent(match[1]) : ''
 }
 
 function MarkdownField({
@@ -57,13 +53,8 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
     if (!markdown) {
       return
     }
-    const response = await fetch('/admin/articles/preview', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-XSRF-TOKEN': xsrfToken() },
-      body: JSON.stringify({ markdown }),
-    })
-    if (response.ok) {
-      const { html } = await response.json()
+    const html = await fetchMarkdownPreview(markdown)
+    if (html) {
       setPreview({ label, html })
     }
   }

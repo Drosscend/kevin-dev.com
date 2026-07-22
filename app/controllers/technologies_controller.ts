@@ -2,7 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
 import Technology from '#models/technology'
 import SeoService from '#services/seo_service'
-import type { Locale } from '#types/i18n'
+import { localePath, type Locale } from '#types/i18n'
 
 function logoUrl(technology: Technology) {
   if (!technology.logo) {
@@ -24,7 +24,6 @@ export default class TechnologiesController {
       .orderBy('name')
 
     return inertia.render('technologies/index', {
-      locale,
       technologies: technologies.map((technology) => ({
         slug: technology.slug,
         name: technology.name,
@@ -47,7 +46,7 @@ export default class TechnologiesController {
         title: i18n.t('messages.technologies.title'),
         description: i18n.t('messages.technologies.metaDescription'),
         locale,
-        path: locale === 'en' ? '/en/technologies' : '/technologies',
+        path: localePath(locale, '/technologies'),
         alternates: { fr: '/technologies', en: '/en/technologies' },
       }),
     })
@@ -64,13 +63,14 @@ export default class TechnologiesController {
         projects
           .where('status', 'published')
           .whereHas('translations', (translations) => translations.where('locale', locale))
-          .preload('translations')
+          .preload('translations', (translations) =>
+            translations.select('id', 'project_id', 'locale', 'title', 'summary')
+          )
           .orderBy('published_at', 'desc')
       })
       .firstOrFail()
 
     return inertia.render('technologies/show', {
-      locale,
       technology: {
         slug: technology.slug,
         name: technology.name,
@@ -93,7 +93,7 @@ export default class TechnologiesController {
         description:
           technology.description(locale) || i18n.t('messages.technologies.metaDescription'),
         locale,
-        path: `${locale === 'en' ? '/en' : ''}/technologies/${technology.slug}`,
+        path: localePath(locale, `/technologies/${technology.slug}`),
         alternates: {
           fr: `/technologies/${technology.slug}`,
           en: `/en/technologies/${technology.slug}`,
@@ -102,11 +102,11 @@ export default class TechnologiesController {
           SeoService.breadcrumbs([
             {
               name: i18n.t('messages.technologies.title'),
-              path: locale === 'en' ? '/en/technologies' : '/technologies',
+              path: localePath(locale, '/technologies'),
             },
             {
               name: technology.name,
-              path: `${locale === 'en' ? '/en' : ''}/technologies/${technology.slug}`,
+              path: localePath(locale, `/technologies/${technology.slug}`),
             },
           ]),
         ],

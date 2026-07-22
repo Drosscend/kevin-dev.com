@@ -1,20 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Category from '#models/category'
 import { categoryValidator } from '#validators/blog'
-
-async function saveTranslations(category: Category, nameFr: string, nameEn?: string) {
-  await category
-    .related('translations')
-    .updateOrCreate({ locale: 'fr' }, { locale: 'fr', name: nameFr })
-
-  if (nameEn) {
-    await category
-      .related('translations')
-      .updateOrCreate({ locale: 'en' }, { locale: 'en', name: nameEn })
-  } else {
-    await category.related('translations').query().where('locale', 'en').delete()
-  }
-}
+import { upsertNameTranslations } from '#services/taxonomy_service'
 
 export default class CategoriesController {
   async index({ inertia }: HttpContext) {
@@ -44,7 +31,7 @@ export default class CategoriesController {
     }
 
     const category = await Category.create({ slug })
-    await saveTranslations(category, nameFr, nameEn)
+    await upsertNameTranslations(category, nameFr, nameEn)
 
     session.flash('success', 'Catégorie créée')
     response.redirect().toRoute('admin.categories.index')
@@ -62,7 +49,7 @@ export default class CategoriesController {
 
     category.slug = slug
     await category.save()
-    await saveTranslations(category, nameFr, nameEn)
+    await upsertNameTranslations(category, nameFr, nameEn)
 
     session.flash('success', 'Catégorie mise à jour')
     response.redirect().toRoute('admin.categories.index')

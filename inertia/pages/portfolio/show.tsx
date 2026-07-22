@@ -2,6 +2,7 @@ import { Link } from '@adonisjs/inertia/react'
 import { ExternalLink } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { localePath, otherLocalePath } from '~/lib/locale'
 
 type PortfolioShowProps = {
   locale: 'fr' | 'en'
@@ -36,7 +37,7 @@ export default function PortfolioShow({
   labels,
   meta,
 }: PortfolioShowProps) {
-  const base = locale === 'en' ? '/en' : ''
+  const to = (path: string) => localePath(locale, path)
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">
@@ -48,12 +49,12 @@ export default function PortfolioShow({
       )}
 
       <div className="flex items-center justify-between gap-4 text-sm">
-        <Link href={`${base}/projects`} className="text-muted-foreground hover:underline">
+        <Link href={to('/projects')} className="text-muted-foreground hover:underline">
           {labels.backToList}
         </Link>
         {hasOtherLocale && (
           <Link
-            href={`${locale === 'en' ? '' : '/en'}/projects/${project.slug}`}
+            href={otherLocalePath(locale, `/projects/${project.slug}`)}
             className="text-muted-foreground hover:underline"
           >
             {locale === 'en' ? 'FR' : 'EN'}
@@ -100,7 +101,7 @@ export default function PortfolioShow({
             {project.technologies.map((technology) => (
               <Link
                 key={technology.slug}
-                href={`${base}/technologies/${technology.slug}`}
+                href={to(`/technologies/${technology.slug}`)}
                 className="text-muted-foreground hover:underline"
               >
                 {technology.name}
@@ -116,7 +117,7 @@ export default function PortfolioShow({
           <ul className="space-y-1 text-sm">
             {project.articles.map((article) => (
               <li key={article.slug}>
-                <Link href={`${base}/blog/${article.slug}`} className="hover:underline">
+                <Link href={to(`/blog/${article.slug}`)} className="hover:underline">
                   {article.title}
                 </Link>
               </li>

@@ -2,29 +2,12 @@ import env from '#start/env'
 import router from '@adonisjs/core/services/router'
 import type Media from '#models/media'
 import type { Locale } from '#types/i18n'
-
-export type JsonLdValue =
-  string | number | boolean | null | JsonLdValue[] | { [key: string]: JsonLdValue }
-
-export type JsonLd = { [key: string]: JsonLdValue }
+import type { JsonLd, SeoMeta } from '#types/seo'
 
 export interface SeoAlternates {
   fr: string
   en: string | null
 }
-
-export interface SeoMeta {
-  title: string
-  description: string
-  canonical: string
-  locale: Locale
-  alternates: { fr: string; en: string | null } | null
-  ogType: 'website' | 'article'
-  ogImage: string | null
-  jsonLd: JsonLd[]
-}
-
-const SITE_NAME = 'kevin-dev.com'
 
 /**
  * Builds the per-page SEO payload consumed by the <Seo> React
@@ -115,9 +98,5 @@ export default class SeoService {
       'author': { '@type': 'Person', 'name': 'Kévin Véronési', 'url': this.absolute('/') },
       'publisher': { '@type': 'Person', 'name': 'Kévin Véronési' },
     }
-  }
-
-  static get siteName() {
-    return SITE_NAME
   }
 }

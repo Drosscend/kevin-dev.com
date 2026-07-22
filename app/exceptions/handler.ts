@@ -2,6 +2,15 @@ import app from '@adonisjs/core/services/app'
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 
+function isUniqueViolation(error: unknown): error is { code: string; constraint?: string } {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    (error as any).code === '23505'
+  )
+}
+
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
    * In debug mode, the exception handler will display verbose errors
@@ -30,6 +39,18 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
+    /**
+     * A unique-constraint violation that slipped past the
+     * pre-checks (concurrent write) becomes a flashed validation
+     * error instead of a 500. The field name is derived from the
+     * Postgres constraint name (e.g. "articles_slug_unique").
+     */
+    if (isUniqueViolation(error) && ctx.session && ctx.request.method() !== 'GET') {
+      const field = error.constraint?.split('_')[1] ?? 'slug'
+      ctx.session.flash('errors', { [field]: ['Cette valeur est déjà utilisée'] })
+      return ctx.response.redirect().back()
+    }
+
     return super.handle(error, ctx)
   }
 

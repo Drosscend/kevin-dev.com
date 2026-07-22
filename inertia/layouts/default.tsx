@@ -4,9 +4,19 @@ import { usePage } from '@inertiajs/react'
 import { type ReactElement, useEffect } from 'react'
 import { Link } from '@adonisjs/inertia/react'
 import ThemeToggle from '~/components/theme_toggle'
+import { localePath } from '~/lib/locale'
+
+const NAVIGATION = [
+  { path: '/blog', label: 'Blog' },
+  { path: '/projects', label: 'Portfolio' },
+  { path: '/technologies', label: 'Technos' },
+  { path: '/cv', label: 'CV' },
+  { path: '/contact', label: 'Contact' },
+] as const
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const { url } = usePage()
+  const locale = children.props.locale
 
   useEffect(() => {
     toast.dismiss()
@@ -25,32 +35,26 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
     <>
       <header className="border-b">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
-          <Link route="home" className="font-semibold tracking-tight">
+          <Link href={localePath(locale, '/')} className="font-semibold tracking-tight">
             kevin-dev.com
           </Link>
           <nav className="flex items-center gap-4 text-sm">
-            <Link route="blog.index" className="hover:underline">
-              Blog
-            </Link>
-            <Link route="projects.index" className="hover:underline">
-              Portfolio
-            </Link>
-            <Link route="technologies.index" className="hover:underline">
-              Technos
-            </Link>
-            <Link route="cv.show" className="hover:underline">
-              CV
-            </Link>
-            <Link route="contact.show" className="hover:underline">
-              Contact
-            </Link>
+            {NAVIGATION.map((item) => (
+              <Link
+                key={item.path}
+                href={localePath(locale, item.path)}
+                className="hover:underline"
+              >
+                {item.label}
+              </Link>
+            ))}
             <ThemeToggle />
           </nav>
         </div>
       </header>
       <main>{children}</main>
       <footer className="text-muted-foreground border-t py-6 text-center text-xs">
-        <Link route="legal.show" className="hover:underline">
+        <Link href={localePath(locale, '/legal')} className="hover:underline">
           Mentions légales
         </Link>
       </footer>
