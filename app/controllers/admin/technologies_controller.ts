@@ -3,34 +3,26 @@ import router from '@adonisjs/core/services/router'
 import Technology from '#models/technology'
 import Media from '#models/media'
 import { technologyValidator } from '#validators/portfolio'
+import { upsertTranslations } from '#services/translations_service'
 
-async function saveTranslations(
-  technology: Technology,
-  descriptionFr?: string,
-  descriptionEn?: string
-) {
-  await technology
-    .related('translations')
-    .updateOrCreate({ locale: 'fr' }, { locale: 'fr', description: descriptionFr ?? '' })
-
-  if (descriptionEn) {
-    await technology
-      .related('translations')
-      .updateOrCreate({ locale: 'en' }, { locale: 'en', description: descriptionEn })
-  } else {
-    await technology.related('translations').query().where('locale', 'en').delete()
-  }
+function saveTranslations(technology: Technology, descriptionFr = '', descriptionEn?: string) {
+  return upsertTranslations(technology.related('translations'), {
+    fr: { description: descriptionFr },
+    en: descriptionEn ? { description: descriptionEn } : null,
+  })
 }
 
 export default class TechnologiesController {
   async index({ inertia }: HttpContext) {
     const [technologies, media] = await Promise.all([
       Technology.query()
-        .preload('translations')
-        .preload('logo')
+        .preload('translations', (translations) =>
+          translations.select('id', 'technology_id', 'locale', 'description')
+        )
+        .preload('logo', (logo) => logo.select('id', 'key'))
         .withCount('projects')
         .orderBy('name'),
-      Media.query().orderBy('created_at', 'desc'),
+      Media.query().select('id', 'alt').orderBy('created_at', 'desc'),
     ])
 
     return inertia.render('admin/technologies', {
@@ -52,13 +44,7 @@ export default class TechnologiesController {
   }
 
   async store({ request, response, session }: HttpContext) {
-    const payload = await request.validateUsing(technologyValidator)
-
-    const existing = await Technology.findBy('slug', payload.slug)
-    if (existing) {
-      session.flash('errors', { slug: ['Ce slug est déjà utilisé'] })
-      return response.redirect().back()
-    }
+    const payload = await request.validateUsing(technologyValidator, { meta: {} })
 
     const technology = await Technology.create({
       slug: payload.slug,
@@ -74,16 +60,9 @@ export default class TechnologiesController {
 
   async update({ params, request, response, session }: HttpContext) {
     const technology = await Technology.findOrFail(params.id)
-    const payload = await request.validateUsing(technologyValidator)
-
-    const existing = await Technology.query()
-      .where('slug', payload.slug)
-      .whereNot('id', technology.id)
-      .first()
-    if (existing) {
-      session.flash('errors', { slug: ['Ce slug est déjà utilisé'] })
-      return response.redirect().back()
-    }
+    const payload = await request.validateUsing(technologyValidator, {
+      meta: { id: technology.id },
+    })
 
     technology.merge({
       slug: payload.slug,

@@ -18,7 +18,9 @@ export default class TechnologiesController {
     const locale = i18n.locale as Locale
 
     const technologies = await Technology.query()
-      .preload('translations')
+      .preload('translations', (translations) =>
+        translations.select('id', 'technology_id', 'locale', 'description')
+      )
       .preload('logo')
       .withCount('projects', (projects) => projects.withScopes((scopes) => scopes.published()))
       .orderBy('name')
@@ -57,7 +59,9 @@ export default class TechnologiesController {
 
     const technology = await Technology.query()
       .where('slug', params.slug)
-      .preload('translations')
+      .preload('translations', (translations) =>
+        translations.select('id', 'technology_id', 'locale', 'description')
+      )
       .preload('logo')
       .preload('projects', (projects) => {
         projects

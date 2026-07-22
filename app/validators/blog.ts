@@ -1,41 +1,13 @@
 import vine from '@vinejs/vine'
+import { publishedAt, relationId, slug, translation, type EditedRow } from '#validators/shared'
 
-const slug = () =>
-  vine
-    .string()
-    .trim()
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-    .maxLength(255)
-
-const translation = () =>
-  vine.object({
-    title: vine.string().trim().minLength(1).maxLength(255),
-    summary: vine.string().trim().maxLength(500).optional(),
-    contentMarkdown: vine.string().minLength(1),
-  })
-
-export const articleValidator = vine.create({
-  slug: slug(),
+export const articleValidator = vine.withMetaData<EditedRow>().create({
+  slug: slug('articles'),
   status: vine.enum(['draft', 'published'] as const),
-  categoryId: vine
-    .number()
-    .positive()
-    .exists({ table: 'categories', column: 'id' })
-    .nullable()
-    .optional(),
-  coverMediaId: vine
-    .number()
-    .positive()
-    .exists({ table: 'media', column: 'id' })
-    .nullable()
-    .optional(),
-  tagIds: vine.array(vine.number().positive().exists({ table: 'tags', column: 'id' })).optional(),
-  publishedAt: vine
-    .string()
-    .trim()
-    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/)
-    .nullable()
-    .optional(),
+  categoryId: relationId('categories').nullable().optional(),
+  coverMediaId: relationId('media').nullable().optional(),
+  tagIds: vine.array(relationId('tags')).optional(),
+  publishedAt: publishedAt(),
   fr: translation(),
   en: translation().optional(),
 })
@@ -44,14 +16,17 @@ export const previewValidator = vine.create({
   markdown: vine.string(),
 })
 
-export const categoryValidator = vine.create({
-  slug: slug(),
-  nameFr: vine.string().trim().minLength(1).maxLength(255),
-  nameEn: vine.string().trim().maxLength(255).optional(),
-})
+/**
+ * Categories and tags share the same shape: a slug plus an FR name
+ * and an optional EN one.
+ */
+function taxonomyValidator(table: string) {
+  return vine.withMetaData<EditedRow>().create({
+    slug: slug(table),
+    nameFr: vine.string().trim().minLength(1).maxLength(255),
+    nameEn: vine.string().trim().maxLength(255).optional(),
+  })
+}
 
-export const tagValidator = vine.create({
-  slug: slug(),
-  nameFr: vine.string().trim().minLength(1).maxLength(255),
-  nameEn: vine.string().trim().maxLength(255).optional(),
-})
+export const categoryValidator = taxonomyValidator('categories')
+export const tagValidator = taxonomyValidator('tags')

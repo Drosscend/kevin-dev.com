@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import TimelineEntry from '#models/timeline_entry'
 import SettingsService from '#services/settings_service'
+import { upsertTranslations } from '#services/translations_service'
 import {
   homeSettingsValidator,
   timelineEntryValidator,
@@ -17,32 +18,25 @@ type TimelinePayload = {
 }
 
 /**
- * Upserts the FR translation and, when at least one English field is
- * provided, the EN translation (missing EN fields fall back to the
- * French values). An entirely empty EN form removes the translation.
+ * Saves both locales of a timeline entry. The English fields are
+ * optional one by one: any that is left empty falls back to its
+ * French value, and an entirely empty English form drops the
+ * translation altogether.
  */
-async function upsertTimelineTranslations(entry: TimelineEntry, payload: TimelinePayload) {
-  const translations = entry.related('translations')
-
-  await translations.updateOrCreate(
-    { locale: 'fr' },
-    { locale: 'fr', period: payload.periodFr, title: payload.titleFr, place: payload.placeFr }
-  )
-
+function saveTimelineTranslations(entry: TimelineEntry, payload: TimelinePayload) {
+  const fr = { period: payload.periodFr, title: payload.titleFr, place: payload.placeFr }
   const hasEnglish = Boolean(payload.periodEn || payload.titleEn || payload.placeEn)
-  if (hasEnglish) {
-    await translations.updateOrCreate(
-      { locale: 'en' },
-      {
-        locale: 'en',
-        period: payload.periodEn || payload.periodFr,
-        title: payload.titleEn || payload.titleFr,
-        place: payload.placeEn || payload.placeFr,
-      }
-    )
-  } else {
-    await translations.query().where('locale', 'en').delete()
-  }
+
+  return upsertTranslations(entry.related('translations'), {
+    fr,
+    en: hasEnglish
+      ? {
+          period: payload.periodEn || fr.period,
+          title: payload.titleEn || fr.title,
+          place: payload.placeEn || fr.place,
+        }
+      : null,
+  })
 }
 
 export default class HomeController {
@@ -57,7 +51,11 @@ export default class HomeController {
         'talks_fr',
         'talks_en',
       ]),
-      TimelineEntry.query().preload('translations').orderBy('position'),
+      TimelineEntry.query()
+        .preload('translations', (translations) =>
+          translations.select('id', 'timeline_entry_id', 'locale', 'period', 'title', 'place')
+        )
+        .orderBy('position'),
     ])
 
     return inertia.render('admin/home', {
@@ -106,7 +104,7 @@ export default class HomeController {
 
     const last = await TimelineEntry.query().orderBy('position', 'desc').first()
     const entry = await TimelineEntry.create({ position: (last?.position ?? 0) + 1 })
-    await upsertTimelineTranslations(entry, payload)
+    await saveTimelineTranslations(entry, payload)
 
     session.flash('success', 'Étape ajoutée au parcours')
     response.redirect().toRoute('admin.home.index')
@@ -116,7 +114,7 @@ export default class HomeController {
     const entry = await TimelineEntry.findOrFail(params.id)
     const payload = await request.validateUsing(timelineEntryValidator)
 
-    await upsertTimelineTranslations(entry, payload)
+    await saveTimelineTranslations(entry, payload)
 
     session.flash('success', 'Étape mise à jour')
     response.redirect().toRoute('admin.home.index')

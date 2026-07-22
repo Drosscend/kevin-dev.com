@@ -78,7 +78,9 @@ export default class ProjectsController {
 
     const project = await Project.query()
       .where('slug', params.slug)
-      .preload('translations')
+      .preload('translations', (translations) =>
+        translations.select('id', 'project_id', 'locale', 'title', 'summary', 'content_html')
+      )
       .preload('cover')
       .preload('links', (links) => links.orderBy('position'))
       .preload('technologies')

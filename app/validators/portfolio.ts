@@ -1,49 +1,25 @@
 import vine from '@vinejs/vine'
 import { PROJECT_LINK_TYPES } from '#models/project_link'
 import { TECHNOLOGY_CATEGORIES } from '#models/technology'
+import { publishedAt, relationId, slug, translation, type EditedRow } from '#validators/shared'
 
-const slug = () =>
+const date = () =>
   vine
     .string()
     .trim()
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-    .maxLength(255)
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .nullable()
+    .optional()
 
-const translation = () =>
-  vine.object({
-    title: vine.string().trim().minLength(1).maxLength(255),
-    summary: vine.string().trim().maxLength(500).optional(),
-    contentMarkdown: vine.string().minLength(1),
-  })
-
-export const projectValidator = vine.create({
-  slug: slug(),
+export const projectValidator = vine.withMetaData<EditedRow>().create({
+  slug: slug('projects'),
   status: vine.enum(['draft', 'published'] as const),
-  coverMediaId: vine
-    .number()
-    .positive()
-    .exists({ table: 'media', column: 'id' })
-    .nullable()
-    .optional(),
-  startedAt: vine
-    .string()
-    .trim()
-    .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .nullable()
-    .optional(),
-  endedAt: vine
-    .string()
-    .trim()
-    .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .nullable()
-    .optional(),
+  coverMediaId: relationId('media').nullable().optional(),
+  startedAt: date(),
+  endedAt: date(),
   featured: vine.boolean().optional(),
-  technologyIds: vine
-    .array(vine.number().positive().exists({ table: 'technologies', column: 'id' }))
-    .optional(),
-  articleIds: vine
-    .array(vine.number().positive().exists({ table: 'articles', column: 'id' }))
-    .optional(),
+  technologyIds: vine.array(relationId('technologies')).optional(),
+  articleIds: vine.array(relationId('articles')).optional(),
   links: vine
     .array(
       vine.object({
@@ -53,26 +29,16 @@ export const projectValidator = vine.create({
       })
     )
     .optional(),
-  publishedAt: vine
-    .string()
-    .trim()
-    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/)
-    .nullable()
-    .optional(),
+  publishedAt: publishedAt(),
   fr: translation(),
   en: translation().optional(),
 })
 
-export const technologyValidator = vine.create({
-  slug: slug(),
+export const technologyValidator = vine.withMetaData<EditedRow>().create({
+  slug: slug('technologies'),
   name: vine.string().trim().minLength(1).maxLength(100),
   category: vine.enum(TECHNOLOGY_CATEGORIES),
-  logoMediaId: vine
-    .number()
-    .positive()
-    .exists({ table: 'media', column: 'id' })
-    .nullable()
-    .optional(),
+  logoMediaId: relationId('media').nullable().optional(),
   descriptionFr: vine.string().trim().maxLength(1000).optional(),
   descriptionEn: vine.string().trim().maxLength(1000).optional(),
 })

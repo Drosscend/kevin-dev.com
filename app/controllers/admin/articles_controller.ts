@@ -9,9 +9,19 @@ import { articleValidator, previewValidator } from '#validators/blog'
 
 async function formOptions() {
   const [categories, tags, media] = await Promise.all([
-    Category.query().preload('translations').orderBy('slug'),
-    Tag.query().preload('translations').orderBy('slug'),
-    Media.query().orderBy('created_at', 'desc'),
+    Category.query()
+      .select('id', 'slug')
+      .preload('translations', (translations) =>
+        translations.select('id', 'category_id', 'locale', 'name')
+      )
+      .orderBy('slug'),
+    Tag.query()
+      .select('id', 'slug')
+      .preload('translations', (translations) =>
+        translations.select('id', 'tag_id', 'locale', 'name')
+      )
+      .orderBy('slug'),
+    Media.query().select('id', 'alt').orderBy('created_at', 'desc'),
   ])
 
   return {
@@ -24,8 +34,16 @@ async function formOptions() {
 export default class ArticlesController {
   async index({ inertia }: HttpContext) {
     const articles = await Article.query()
-      .preload('translations')
-      .preload('category', (query) => query.preload('translations'))
+      .preload('translations', (translations) =>
+        translations.select('id', 'article_id', 'locale', 'title')
+      )
+      .preload('category', (category) =>
+        category
+          .select('id', 'slug')
+          .preload('translations', (translations) =>
+            translations.select('id', 'category_id', 'locale', 'name')
+          )
+      )
       .orderBy('created_at', 'desc')
 
     return inertia.render('admin/articles/index', {
@@ -50,13 +68,7 @@ export default class ArticlesController {
   }
 
   async store({ request, response, session }: HttpContext) {
-    const payload = await request.validateUsing(articleValidator)
-
-    const existing = await Article.findBy('slug', payload.slug)
-    if (existing) {
-      session.flash('errors', { slug: ['Ce slug est déjà utilisé'] })
-      return response.redirect().back()
-    }
+    const payload = await request.validateUsing(articleValidator, { meta: {} })
 
     const article = await ArticleService.save(new Article(), {
       slug: payload.slug,
@@ -76,8 +88,10 @@ export default class ArticlesController {
   async edit({ params, inertia }: HttpContext) {
     const article = await Article.query()
       .where('id', params.id)
-      .preload('translations')
-      .preload('tags')
+      .preload('translations', (translations) =>
+        translations.select('id', 'article_id', 'locale', 'title', 'summary', 'content_markdown')
+      )
+      .preload('tags', (tags) => tags.select('id'))
       .firstOrFail()
 
     const fr = article.translation('fr')
@@ -107,16 +121,7 @@ export default class ArticlesController {
 
   async update({ params, request, response, session }: HttpContext) {
     const article = await Article.findOrFail(params.id)
-    const payload = await request.validateUsing(articleValidator)
-
-    const existing = await Article.query()
-      .where('slug', payload.slug)
-      .whereNot('id', article.id)
-      .first()
-    if (existing) {
-      session.flash('errors', { slug: ['Ce slug est déjà utilisé'] })
-      return response.redirect().back()
-    }
+    const payload = await request.validateUsing(articleValidator, { meta: { id: article.id } })
 
     await ArticleService.save(article, {
       slug: payload.slug,

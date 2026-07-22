@@ -124,7 +124,9 @@ export default class BlogController {
 
     const article = await Article.query()
       .where('slug', params.slug)
-      .preload('translations')
+      .preload('translations', (translations) =>
+        translations.select('id', 'article_id', 'locale', 'title', 'summary', 'content_html')
+      )
       .preload('cover')
       .preload('category', (category) => category.preload('translations'))
       .preload('tags', (tags) => tags.preload('translations'))

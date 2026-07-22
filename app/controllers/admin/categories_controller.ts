@@ -1,12 +1,14 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Category from '#models/category'
 import { categoryValidator } from '#validators/blog'
-import { upsertNameTranslations } from '#services/taxonomy_service'
+import { upsertTranslations } from '#services/translations_service'
 
 export default class CategoriesController {
   async index({ inertia }: HttpContext) {
     const categories = await Category.query()
-      .preload('translations')
+      .preload('translations', (translations) =>
+        translations.select('id', 'category_id', 'locale', 'name')
+      )
       .withCount('articles')
       .orderBy('slug')
 
@@ -22,16 +24,13 @@ export default class CategoriesController {
   }
 
   async store({ request, response, session }: HttpContext) {
-    const { slug, nameFr, nameEn } = await request.validateUsing(categoryValidator)
-
-    const existing = await Category.findBy('slug', slug)
-    if (existing) {
-      session.flash('errors', { slug: ['Ce slug est déjà utilisé'] })
-      return response.redirect().back()
-    }
+    const { slug, nameFr, nameEn } = await request.validateUsing(categoryValidator, { meta: {} })
 
     const category = await Category.create({ slug })
-    await upsertNameTranslations(category, nameFr, nameEn)
+    await upsertTranslations(category.related('translations'), {
+      fr: { name: nameFr },
+      en: nameEn ? { name: nameEn } : null,
+    })
 
     session.flash('success', 'Catégorie créée')
     response.redirect().toRoute('admin.categories.index')
@@ -39,17 +38,16 @@ export default class CategoriesController {
 
   async update({ params, request, response, session }: HttpContext) {
     const category = await Category.findOrFail(params.id)
-    const { slug, nameFr, nameEn } = await request.validateUsing(categoryValidator)
-
-    const existing = await Category.query().where('slug', slug).whereNot('id', category.id).first()
-    if (existing) {
-      session.flash('errors', { slug: ['Ce slug est déjà utilisé'] })
-      return response.redirect().back()
-    }
+    const { slug, nameFr, nameEn } = await request.validateUsing(categoryValidator, {
+      meta: { id: category.id },
+    })
 
     category.slug = slug
     await category.save()
-    await upsertNameTranslations(category, nameFr, nameEn)
+    await upsertTranslations(category.related('translations'), {
+      fr: { name: nameFr },
+      en: nameEn ? { name: nameEn } : null,
+    })
 
     session.flash('success', 'Catégorie mise à jour')
     response.redirect().toRoute('admin.categories.index')

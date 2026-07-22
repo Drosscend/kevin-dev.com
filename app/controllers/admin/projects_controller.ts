@@ -8,9 +8,14 @@ import { projectValidator } from '#validators/portfolio'
 
 async function formOptions() {
   const [technologies, articles, media] = await Promise.all([
-    Technology.query().orderBy('name'),
-    Article.query().preload('translations').orderBy('created_at', 'desc'),
-    Media.query().orderBy('created_at', 'desc'),
+    Technology.query().select('id', 'name').orderBy('name'),
+    Article.query()
+      .select('id', 'slug')
+      .preload('translations', (translations) =>
+        translations.select('id', 'article_id', 'locale', 'title')
+      )
+      .orderBy('created_at', 'desc'),
+    Media.query().select('id', 'alt').orderBy('created_at', 'desc'),
   ])
 
   return {
@@ -46,7 +51,9 @@ function payloadFromRequest(payload: Awaited<ReturnType<typeof projectValidator.
 export default class ProjectsController {
   async index({ inertia }: HttpContext) {
     const projects = await Project.query()
-      .preload('translations')
+      .preload('translations', (translations) =>
+        translations.select('id', 'project_id', 'locale', 'title')
+      )
       .withCount('technologies')
       .orderBy('created_at', 'desc')
 
@@ -73,13 +80,7 @@ export default class ProjectsController {
   }
 
   async store({ request, response, session }: HttpContext) {
-    const payload = await request.validateUsing(projectValidator)
-
-    const existing = await Project.findBy('slug', payload.slug)
-    if (existing) {
-      session.flash('errors', { slug: ['Ce slug est déjà utilisé'] })
-      return response.redirect().back()
-    }
+    const payload = await request.validateUsing(projectValidator, { meta: {} })
 
     const project = await ProjectService.save(new Project(), payloadFromRequest(payload))
 
@@ -90,10 +91,12 @@ export default class ProjectsController {
   async edit({ params, inertia }: HttpContext) {
     const project = await Project.query()
       .where('id', params.id)
-      .preload('translations')
+      .preload('translations', (translations) =>
+        translations.select('id', 'project_id', 'locale', 'title', 'summary', 'content_markdown')
+      )
       .preload('links', (links) => links.orderBy('position'))
-      .preload('technologies')
-      .preload('articles')
+      .preload('technologies', (technologies) => technologies.select('id'))
+      .preload('articles', (articles) => articles.select('id'))
       .firstOrFail()
 
     const fr = project.translation('fr')
@@ -131,16 +134,7 @@ export default class ProjectsController {
 
   async update({ params, request, response, session }: HttpContext) {
     const project = await Project.findOrFail(params.id)
-    const payload = await request.validateUsing(projectValidator)
-
-    const existing = await Project.query()
-      .where('slug', payload.slug)
-      .whereNot('id', project.id)
-      .first()
-    if (existing) {
-      session.flash('errors', { slug: ['Ce slug est déjà utilisé'] })
-      return response.redirect().back()
-    }
+    const payload = await request.validateUsing(projectValidator, { meta: { id: project.id } })
 
     await ProjectService.save(project, payloadFromRequest(payload))
 
