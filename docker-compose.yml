@@ -1,0 +1,75 @@
+# Production deployment, read by Dokploy (Compose service, project
+# `private`, compose path `./docker-compose.yml`). Push on main -> build
+# -> deploy. Local development uses compose.yaml instead, which only
+# runs Postgres — `docker compose up -d` picks that one up first.
+#
+# House rules (Homelab deploy/new-project.md):
+#   - no `ports:`   Traefik routes through the network, publishing a
+#                   port bypasses UFW;
+#   - no Traefik labels, the domain is set in the Domains tab only;
+#   - no secret in here, every variable is listed as ${VAR} AND set in
+#     the Environment tab — one missing here is silently never passed.
+#
+# The database is a dedicated Dokploy Postgres service reached over
+# dokploy-network. The `mail` network is the shared Proton Mail Bridge
+# (service `mailbridge`, project `infra`): it is the only way out for
+# emails and is never exposed publicly.
+
+services:
+  app:
+    build: .
+    restart: always
+    networks:
+      - dokploy-network
+      - mail
+    environment:
+      - TZ=UTC
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - APP_KEY=${APP_KEY}
+      - APP_URL=${APP_URL}
+      - SESSION_DRIVER=cookie
+
+      # Database (dedicated Dokploy Postgres service)
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+
+      # Admin account, read by `node ace db:seed` only
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+
+      # Contact form notifications through the shared Mail Bridge.
+      # Credentials are the Bridge ones, not the Proton account.
+      - SMTP_HOST=mailbridge
+      - SMTP_PORT=25
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - MAIL_FROM_ADDRESS=${MAIL_FROM_ADDRESS}
+      - MAIL_FROM_NAME=${MAIL_FROM_NAME}
+      - CONTACT_NOTIFICATION_EMAIL=${CONTACT_NOTIFICATION_EMAIL}
+
+      # Umami analytics (script + admin dashboard stats)
+      - UMAMI_SCRIPT_URL=${UMAMI_SCRIPT_URL}
+      - UMAMI_WEBSITE_ID=${UMAMI_WEBSITE_ID}
+      - UMAMI_API_URL=${UMAMI_API_URL}
+      - UMAMI_API_USERNAME=${UMAMI_API_USERNAME}
+      - UMAMI_API_PASSWORD=${UMAMI_API_PASSWORD}
+
+      # Guards the detailed /health report (Uptime Kuma)
+      - MONITORING_SECRET=${MONITORING_SECRET}
+
+    # Uploads and their generated variants. The healthcheck lives in
+    # the Dockerfile.
+    volumes:
+      - storage:/app/storage
+
+volumes:
+  storage:
+
+networks:
+  dokploy-network:
+    external: true
+  mail:
+    external: true
