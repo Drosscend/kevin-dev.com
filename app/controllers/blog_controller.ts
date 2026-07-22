@@ -36,7 +36,7 @@ export default class BlogController {
     const tagSlug = request.input('tag') as string | null
 
     const query = Article.query()
-      .where('status', 'published')
+      .withScopes((scopes) => scopes.published())
       .whereHas('translations', (translations) => translations.where('locale', locale))
       .preload('translations', (translations) =>
         translations.select('id', 'article_id', 'locale', 'title', 'summary')

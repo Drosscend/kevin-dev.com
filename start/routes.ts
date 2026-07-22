@@ -112,12 +112,31 @@ router
     router.get('/', [controllers.admin.Dashboard, 'handle']).as('admin.dashboard')
     router.post('logout', [controllers.admin.Session, 'destroy']).as('admin.logout')
 
+    router.get('home', [controllers.admin.Home, 'show']).as('admin.home.index')
+    router.put('home', [controllers.admin.Home, 'update']).as('admin.home.update')
+    router
+      .post('home/timeline', [controllers.admin.Home, 'timelineStore'])
+      .as('admin.home.timeline.store')
+    router
+      .put('home/timeline/:id', [controllers.admin.Home, 'timelineUpdate'])
+      .as('admin.home.timeline.update')
+    router
+      .put('home/timeline/:id/move', [controllers.admin.Home, 'timelineMove'])
+      .as('admin.home.timeline.move')
+    router
+      .delete('home/timeline/:id', [controllers.admin.Home, 'timelineDestroy'])
+      .as('admin.home.timeline.destroy')
+
     router.get('security', [controllers.admin.Security, 'show']).as('admin.security')
     router.post('security', [controllers.admin.Security, 'store']).as('admin.security.store')
     router.delete('security', [controllers.admin.Security, 'destroy']).as('admin.security.destroy')
+    router
+      .post('security/recovery', [controllers.admin.Security, 'regenerateRecovery'])
+      .as('admin.security.recovery.store')
 
     router.get('media', [controllers.admin.Media, 'index']).as('admin.media.index')
     router.post('media', [controllers.admin.Media, 'store']).as('admin.media.store')
+    router.post('media/upload', [controllers.admin.Media, 'upload']).as('admin.media.upload')
     router.delete('media/:id', [controllers.admin.Media, 'destroy']).as('admin.media.destroy')
 
     router.get('categories', [controllers.admin.Categories, 'index']).as('admin.categories.index')

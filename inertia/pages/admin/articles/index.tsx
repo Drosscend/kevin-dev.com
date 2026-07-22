@@ -14,6 +14,7 @@ type ArticleRow = {
   hasEnglish: boolean
   status: 'draft' | 'published'
   publishedAt: string | null
+  scheduled: boolean
   category: string | null
 }
 
@@ -54,7 +55,11 @@ export default function ArticlesIndex({ articles }: ArticlesIndexProps) {
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-3">
-                <StatusBadge status={article.status} detail={article.publishedAt} />
+                <StatusBadge
+                  status={article.status}
+                  detail={article.publishedAt}
+                  scheduled={article.scheduled}
+                />
                 <ConfirmButton
                   description={`Supprimer « ${article.title} » ? Cette action est définitive.`}
                   onConfirm={() =>

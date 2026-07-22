@@ -20,7 +20,7 @@ export default class TechnologiesController {
     const technologies = await Technology.query()
       .preload('translations')
       .preload('logo')
-      .withCount('projects', (projects) => projects.where('status', 'published'))
+      .withCount('projects', (projects) => projects.withScopes((scopes) => scopes.published()))
       .orderBy('name')
 
     return inertia.render('technologies/index', {
@@ -61,7 +61,7 @@ export default class TechnologiesController {
       .preload('logo')
       .preload('projects', (projects) => {
         projects
-          .where('status', 'published')
+          .withScopes((scopes) => scopes.published())
           .whereHas('translations', (translations) => translations.where('locale', locale))
           .preload('translations', (translations) =>
             translations.select('id', 'project_id', 'locale', 'title', 'summary')

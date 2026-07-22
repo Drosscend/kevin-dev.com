@@ -11,7 +11,8 @@ export default function Verify() {
         <CardHeader>
           <CardTitle>Vérification</CardTitle>
           <CardDescription>
-            Entrez le code à 6 chiffres de votre application d’authentification
+            Entrez le code à 6 chiffres de votre application d’authentification, ou l’un de vos
+            codes de secours
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -19,14 +20,13 @@ export default function Verify() {
             {({ errors, processing }) => (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="code">Code TOTP</Label>
+                  <Label htmlFor="code">Code TOTP ou code de secours</Label>
                   <Input
                     type="text"
                     name="code"
                     id="code"
-                    inputMode="numeric"
                     autoComplete="one-time-code"
-                    maxLength={6}
+                    maxLength={11}
                     autoFocus
                     aria-invalid={errors.code ? true : undefined}
                   />

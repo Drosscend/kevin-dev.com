@@ -15,6 +15,7 @@ type ProjectRow = {
   status: 'draft' | 'published'
   featured: boolean
   publishedAt: string | null
+  scheduled: boolean
   technologiesCount: number
 }
 
@@ -58,7 +59,11 @@ export default function ProjectsIndex({ projects }: ProjectsIndexProps) {
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-3">
-                <StatusBadge status={project.status} detail={project.publishedAt} />
+                <StatusBadge
+                  status={project.status}
+                  detail={project.publishedAt}
+                  scheduled={project.scheduled}
+                />
                 <ConfirmButton
                   description={`Supprimer « ${project.title} » ? Cette action est définitive.`}
                   onConfirm={() =>

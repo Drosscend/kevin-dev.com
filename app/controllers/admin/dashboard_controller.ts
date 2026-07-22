@@ -3,6 +3,7 @@ import Article from '#models/article'
 import Media from '#models/media'
 import Project from '#models/project'
 import ContactMessage from '#models/contact_message'
+import UmamiService from '#services/umami_service'
 
 const asTotal = (row: { $extras: Record<string, unknown> }) => Number(row.$extras.total)
 
@@ -15,6 +16,7 @@ export default class DashboardController {
       projectsDraft,
       mediaCount,
       unreadMessages,
+      umami,
     ] = await Promise.all([
       Article.query().where('status', 'published').count('* as total').firstOrFail().then(asTotal),
       Article.query().where('status', 'draft').count('* as total').firstOrFail().then(asTotal),
@@ -22,10 +24,12 @@ export default class DashboardController {
       Project.query().where('status', 'draft').count('* as total').firstOrFail().then(asTotal),
       Media.query().count('* as total').firstOrFail().then(asTotal),
       ContactMessage.query().whereNull('read_at').count('* as total').firstOrFail().then(asTotal),
+      UmamiService.statsLast30Days(),
     ])
 
     return inertia.render('admin/dashboard', {
       totpEnabled: auth.user!.totpEnabled,
+      umami,
       stats: {
         articlesPublished,
         articlesDraft,

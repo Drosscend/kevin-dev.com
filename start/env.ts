@@ -44,6 +44,12 @@ export default await Env.create(new URL('../', import.meta.url), {
   UMAMI_SCRIPT_URL: Env.schema.string.optional(),
   UMAMI_WEBSITE_ID: Env.schema.string.optional(),
 
+  // Umami API access for the admin dashboard stats (all three
+  // required for the stats card to appear)
+  UMAMI_API_URL: Env.schema.string.optional(),
+  UMAMI_API_USERNAME: Env.schema.string.optional(),
+  UMAMI_API_PASSWORD: Env.schema.string.optional(),
+
   // Restricts the detailed /health report when set
   MONITORING_SECRET: Env.schema.string.optional(),
 

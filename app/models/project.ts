@@ -1,4 +1,5 @@
-import { belongsTo, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import { DateTime } from 'luxon'
+import { belongsTo, hasMany, manyToMany, scope } from '@adonisjs/lucid/orm'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { ProjectSchema } from '#database/schema'
 import ProjectTranslation from '#models/project_translation'
@@ -28,8 +29,21 @@ export default class Project extends ProjectSchema {
   @manyToMany(() => Article, { pivotTable: 'article_project' })
   declare articles: ManyToMany<typeof Article>
 
+  /**
+   * Publicly visible entries: published status AND publication date
+   * reached. A future date means the entry is scheduled.
+   */
+  static published = scope((query) => {
+    query.where('status', 'published').where((inner) => {
+      inner.whereNull('published_at').orWhere('published_at', '<=', DateTime.now().toSQL())
+    })
+  })
+
   get isPublished() {
-    return this.status === 'published'
+    return (
+      this.status === 'published' &&
+      (this.publishedAt === null || this.publishedAt <= DateTime.now())
+    )
   }
 
   translation(locale: Locale) {

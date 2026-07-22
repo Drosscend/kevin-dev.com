@@ -25,7 +25,7 @@ export default class ProjectsController {
     const locale = i18n.locale as Locale
 
     const projects = await Project.query()
-      .where('status', 'published')
+      .withScopes((scopes) => scopes.published())
       .whereHas('translations', (translations) => translations.where('locale', locale))
       .preload('translations', (translations) =>
         translations.select('id', 'project_id', 'locale', 'title', 'summary')
@@ -84,7 +84,7 @@ export default class ProjectsController {
       .preload('technologies')
       .preload('articles', (articles) => {
         articles
-          .where('status', 'published')
+          .withScopes((scopes) => scopes.published())
           .preload('translations', (translations) =>
             translations.select('id', 'article_id', 'locale', 'title')
           )

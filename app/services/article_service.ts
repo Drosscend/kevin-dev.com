@@ -16,6 +16,7 @@ export interface ArticlePayload {
   categoryId: number | null
   coverMediaId: number | null
   tagIds: number[]
+  publishedAt?: string | null
   fr: TranslationPayload
   en: TranslationPayload | null
 }
@@ -40,7 +41,11 @@ export default class ArticleService {
       article.coverMediaId = payload.coverMediaId
       article.readingTime = MarkdownService.readingTime(payload.fr.contentMarkdown)
 
-      if (payload.status === 'published' && !article.publishedAt) {
+      // An explicit date wins (future = scheduled); otherwise the date
+      // is stamped automatically on the first publication.
+      if (payload.publishedAt) {
+        article.publishedAt = DateTime.fromISO(payload.publishedAt)
+      } else if (payload.status === 'published' && !article.publishedAt) {
         article.publishedAt = DateTime.now()
       }
       article.status = payload.status

@@ -24,8 +24,6 @@ export default class PagesController {
       'cv_markdown_en',
       'legal_markdown_fr',
       'legal_markdown_en',
-      'now_fr',
-      'now_en',
     ])
 
     const disk = drive.use()
@@ -40,8 +38,6 @@ export default class PagesController {
       cvEn: settings.cv_markdown_en,
       legalFr: settings.legal_markdown_fr,
       legalEn: settings.legal_markdown_en,
-      nowFr: settings.now_fr,
-      nowEn: settings.now_en,
       pdf,
     })
   }
@@ -53,10 +49,6 @@ export default class PagesController {
     await savePage('cv', 'en', payload.cvEn ?? '')
     await savePage('legal', 'fr', payload.legalFr ?? '')
     await savePage('legal', 'en', payload.legalEn ?? '')
-
-    // Homepage "right now" block, plain text; empty hides the section
-    await SettingsService.set('now_fr', (payload.nowFr ?? '').trim())
-    await SettingsService.set('now_en', (payload.nowEn ?? '').trim())
 
     session.flash('success', 'Pages enregistrées')
     response.redirect().toRoute('admin.pages.index')

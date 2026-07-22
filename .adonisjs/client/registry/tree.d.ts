@@ -81,13 +81,27 @@ export interface ApiDefinition {
     }
     dashboard: typeof routes['admin.dashboard']
     logout: typeof routes['admin.logout']
+    home: {
+      index: typeof routes['admin.home.index']
+      update: typeof routes['admin.home.update']
+      timeline: {
+        store: typeof routes['admin.home.timeline.store']
+        update: typeof routes['admin.home.timeline.update']
+        move: typeof routes['admin.home.timeline.move']
+        destroy: typeof routes['admin.home.timeline.destroy']
+      }
+    }
     security: typeof routes['admin.security'] & {
       store: typeof routes['admin.security.store']
       destroy: typeof routes['admin.security.destroy']
+      recovery: {
+        store: typeof routes['admin.security.recovery.store']
+      }
     }
     media: {
       index: typeof routes['admin.media.index']
       store: typeof routes['admin.media.store']
+      upload: typeof routes['admin.media.upload']
       destroy: typeof routes['admin.media.destroy']
     }
     categories: {

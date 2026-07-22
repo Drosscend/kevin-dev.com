@@ -376,6 +376,49 @@ export class TechnologyTranslationSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class TimelineEntrySchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'position', 'updatedAt'] as const
+  $columns = TimelineEntrySchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare position: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class TimelineEntryTranslationSchema extends BaseModel {
+  static $columns = [
+    'createdAt',
+    'id',
+    'locale',
+    'period',
+    'place',
+    'timelineEntryId',
+    'title',
+    'updatedAt',
+  ] as const
+  $columns = TimelineEntryTranslationSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare locale: string
+  @column()
+  declare period: string
+  @column()
+  declare place: string
+  @column()
+  declare timelineEntryId: number
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class UserSchema extends BaseModel {
   static $columns = [
     'createdAt',
@@ -383,6 +426,7 @@ export class UserSchema extends BaseModel {
     'fullName',
     'id',
     'password',
+    'recoveryCodes',
     'totpSecret',
     'updatedAt',
   ] as const
@@ -397,6 +441,8 @@ export class UserSchema extends BaseModel {
   declare id: number
   @column({ serializeAs: null })
   declare password: string
+  @column()
+  declare recoveryCodes: any | null
   @column()
   declare totpSecret: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })

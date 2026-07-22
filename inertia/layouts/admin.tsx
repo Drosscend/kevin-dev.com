@@ -5,6 +5,7 @@ import { type ReactElement, useEffect, useState } from 'react'
 import { Form, Link } from '@adonisjs/inertia/react'
 import {
   LayoutDashboard,
+  Home,
   Image,
   Menu,
   ShieldCheck,
@@ -30,6 +31,7 @@ const navigation = [
     label: 'Dashboard',
     icon: LayoutDashboard,
   },
+  { route: 'admin.home.index', path: '/admin/home', label: 'Accueil', icon: Home },
   { route: 'admin.articles.index', path: '/admin/articles', label: 'Articles', icon: Newspaper },
   {
     route: 'admin.categories.index',

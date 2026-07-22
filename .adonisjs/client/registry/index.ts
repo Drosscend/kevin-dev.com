@@ -246,6 +246,42 @@ const routes = {
     tokens: [{"old":"/admin/logout","type":0,"val":"admin","end":""},{"old":"/admin/logout","type":0,"val":"logout","end":""}],
     types: placeholder as Registry['admin.logout']['types'],
   },
+  'admin.home.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/home',
+    tokens: [{"old":"/admin/home","type":0,"val":"admin","end":""},{"old":"/admin/home","type":0,"val":"home","end":""}],
+    types: placeholder as Registry['admin.home.index']['types'],
+  },
+  'admin.home.update': {
+    methods: ["PUT"],
+    pattern: '/admin/home',
+    tokens: [{"old":"/admin/home","type":0,"val":"admin","end":""},{"old":"/admin/home","type":0,"val":"home","end":""}],
+    types: placeholder as Registry['admin.home.update']['types'],
+  },
+  'admin.home.timeline.store': {
+    methods: ["POST"],
+    pattern: '/admin/home/timeline',
+    tokens: [{"old":"/admin/home/timeline","type":0,"val":"admin","end":""},{"old":"/admin/home/timeline","type":0,"val":"home","end":""},{"old":"/admin/home/timeline","type":0,"val":"timeline","end":""}],
+    types: placeholder as Registry['admin.home.timeline.store']['types'],
+  },
+  'admin.home.timeline.update': {
+    methods: ["PUT"],
+    pattern: '/admin/home/timeline/:id',
+    tokens: [{"old":"/admin/home/timeline/:id","type":0,"val":"admin","end":""},{"old":"/admin/home/timeline/:id","type":0,"val":"home","end":""},{"old":"/admin/home/timeline/:id","type":0,"val":"timeline","end":""},{"old":"/admin/home/timeline/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.home.timeline.update']['types'],
+  },
+  'admin.home.timeline.move': {
+    methods: ["PUT"],
+    pattern: '/admin/home/timeline/:id/move',
+    tokens: [{"old":"/admin/home/timeline/:id/move","type":0,"val":"admin","end":""},{"old":"/admin/home/timeline/:id/move","type":0,"val":"home","end":""},{"old":"/admin/home/timeline/:id/move","type":0,"val":"timeline","end":""},{"old":"/admin/home/timeline/:id/move","type":1,"val":"id","end":""},{"old":"/admin/home/timeline/:id/move","type":0,"val":"move","end":""}],
+    types: placeholder as Registry['admin.home.timeline.move']['types'],
+  },
+  'admin.home.timeline.destroy': {
+    methods: ["DELETE"],
+    pattern: '/admin/home/timeline/:id',
+    tokens: [{"old":"/admin/home/timeline/:id","type":0,"val":"admin","end":""},{"old":"/admin/home/timeline/:id","type":0,"val":"home","end":""},{"old":"/admin/home/timeline/:id","type":0,"val":"timeline","end":""},{"old":"/admin/home/timeline/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.home.timeline.destroy']['types'],
+  },
   'admin.security': {
     methods: ["GET","HEAD"],
     pattern: '/admin/security',
@@ -264,6 +300,12 @@ const routes = {
     tokens: [{"old":"/admin/security","type":0,"val":"admin","end":""},{"old":"/admin/security","type":0,"val":"security","end":""}],
     types: placeholder as Registry['admin.security.destroy']['types'],
   },
+  'admin.security.recovery.store': {
+    methods: ["POST"],
+    pattern: '/admin/security/recovery',
+    tokens: [{"old":"/admin/security/recovery","type":0,"val":"admin","end":""},{"old":"/admin/security/recovery","type":0,"val":"security","end":""},{"old":"/admin/security/recovery","type":0,"val":"recovery","end":""}],
+    types: placeholder as Registry['admin.security.recovery.store']['types'],
+  },
   'admin.media.index': {
     methods: ["GET","HEAD"],
     pattern: '/admin/media',
@@ -275,6 +317,12 @@ const routes = {
     pattern: '/admin/media',
     tokens: [{"old":"/admin/media","type":0,"val":"admin","end":""},{"old":"/admin/media","type":0,"val":"media","end":""}],
     types: placeholder as Registry['admin.media.store']['types'],
+  },
+  'admin.media.upload': {
+    methods: ["POST"],
+    pattern: '/admin/media/upload',
+    tokens: [{"old":"/admin/media/upload","type":0,"val":"admin","end":""},{"old":"/admin/media/upload","type":0,"val":"media","end":""},{"old":"/admin/media/upload","type":0,"val":"upload","end":""}],
+    types: placeholder as Registry['admin.media.upload']['types'],
   },
   'admin.media.destroy': {
     methods: ["DELETE"],

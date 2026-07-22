@@ -455,10 +455,10 @@ export interface Registry {
     methods: ["POST"]
     pattern: '/admin/login/verify'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#validators/auth').challengeCodeValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
+      query: ExtractQuery<InferInput<(typeof import('#validators/auth').challengeCodeValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['totpStore']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['totpStore']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
@@ -485,6 +485,78 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['destroy']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['destroy']>>>
+    }
+  }
+  'admin.home.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/home'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['show']>>>
+    }
+  }
+  'admin.home.update': {
+    methods: ["PUT"]
+    pattern: '/admin/home'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/home').homeSettingsValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/home').homeSettingsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.home.timeline.store': {
+    methods: ["POST"]
+    pattern: '/admin/home/timeline'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/home').timelineEntryValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/home').timelineEntryValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['timelineStore']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['timelineStore']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.home.timeline.update': {
+    methods: ["PUT"]
+    pattern: '/admin/home/timeline/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/home').timelineEntryValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/home').timelineEntryValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['timelineUpdate']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['timelineUpdate']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.home.timeline.move': {
+    methods: ["PUT"]
+    pattern: '/admin/home/timeline/:id/move'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/home').timelineMoveValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/home').timelineMoveValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['timelineMove']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['timelineMove']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.home.timeline.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/home/timeline/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['timelineDestroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['timelineDestroy']>>>
     }
   }
   'admin.security': {
@@ -523,6 +595,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'admin.security.recovery.store': {
+    methods: ["POST"]
+    pattern: '/admin/security/recovery'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['regenerateRecovery']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['regenerateRecovery']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'admin.media.index': {
     methods: ["GET","HEAD"]
     pattern: '/admin/media'
@@ -545,6 +629,18 @@ export interface Registry {
       query: ExtractQuery<InferInput<(typeof import('#validators/media').mediaValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['store']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.media.upload': {
+    methods: ["POST"]
+    pattern: '/admin/media/upload'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/media').mediaValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/media').mediaValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['upload']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['upload']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.media.destroy': {

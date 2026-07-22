@@ -44,11 +44,19 @@ export type ScannedRoutes = {
     'admin.totp.store': { paramsTuple?: []; params?: {} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
     'admin.logout': { paramsTuple?: []; params?: {} }
+    'admin.home.index': { paramsTuple?: []; params?: {} }
+    'admin.home.update': { paramsTuple?: []; params?: {} }
+    'admin.home.timeline.store': { paramsTuple?: []; params?: {} }
+    'admin.home.timeline.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.home.timeline.move': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.home.timeline.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.security': { paramsTuple?: []; params?: {} }
     'admin.security.store': { paramsTuple?: []; params?: {} }
     'admin.security.destroy': { paramsTuple?: []; params?: {} }
+    'admin.security.recovery.store': { paramsTuple?: []; params?: {} }
     'admin.media.index': { paramsTuple?: []; params?: {} }
     'admin.media.store': { paramsTuple?: []; params?: {} }
+    'admin.media.upload': { paramsTuple?: []; params?: {} }
     'admin.media.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.categories.index': { paramsTuple?: []; params?: {} }
     'admin.categories.store': { paramsTuple?: []; params?: {} }
@@ -118,6 +126,7 @@ export type ScannedRoutes = {
     'admin.login': { paramsTuple?: []; params?: {} }
     'admin.totp': { paramsTuple?: []; params?: {} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
+    'admin.home.index': { paramsTuple?: []; params?: {} }
     'admin.security': { paramsTuple?: []; params?: {} }
     'admin.media.index': { paramsTuple?: []; params?: {} }
     'admin.categories.index': { paramsTuple?: []; params?: {} }
@@ -168,6 +177,7 @@ export type ScannedRoutes = {
     'admin.login': { paramsTuple?: []; params?: {} }
     'admin.totp': { paramsTuple?: []; params?: {} }
     'admin.dashboard': { paramsTuple?: []; params?: {} }
+    'admin.home.index': { paramsTuple?: []; params?: {} }
     'admin.security': { paramsTuple?: []; params?: {} }
     'admin.media.index': { paramsTuple?: []; params?: {} }
     'admin.categories.index': { paramsTuple?: []; params?: {} }
@@ -188,8 +198,11 @@ export type ScannedRoutes = {
     'admin.login.store': { paramsTuple?: []; params?: {} }
     'admin.totp.store': { paramsTuple?: []; params?: {} }
     'admin.logout': { paramsTuple?: []; params?: {} }
+    'admin.home.timeline.store': { paramsTuple?: []; params?: {} }
     'admin.security.store': { paramsTuple?: []; params?: {} }
+    'admin.security.recovery.store': { paramsTuple?: []; params?: {} }
     'admin.media.store': { paramsTuple?: []; params?: {} }
+    'admin.media.upload': { paramsTuple?: []; params?: {} }
     'admin.categories.store': { paramsTuple?: []; params?: {} }
     'admin.tags.store': { paramsTuple?: []; params?: {} }
     'admin.articles.store': { paramsTuple?: []; params?: {} }
@@ -198,7 +211,20 @@ export type ScannedRoutes = {
     'admin.projects.store': { paramsTuple?: []; params?: {} }
     'admin.pages.pdf.store': { paramsTuple?: []; params?: {} }
   }
+  PUT: {
+    'admin.home.update': { paramsTuple?: []; params?: {} }
+    'admin.home.timeline.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.home.timeline.move': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.categories.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.tags.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.articles.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.technologies.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.projects.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'admin.pages.update': { paramsTuple?: []; params?: {} }
+    'admin.messages.read': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+  }
   DELETE: {
+    'admin.home.timeline.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.security.destroy': { paramsTuple?: []; params?: {} }
     'admin.media.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.categories.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -207,15 +233,6 @@ export type ScannedRoutes = {
     'admin.technologies.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.projects.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.messages.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-  }
-  PUT: {
-    'admin.categories.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'admin.tags.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'admin.articles.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'admin.technologies.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'admin.projects.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'admin.pages.update': { paramsTuple?: []; params?: {} }
-    'admin.messages.read': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

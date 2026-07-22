@@ -30,6 +30,12 @@ export const articleValidator = vine.create({
     .nullable()
     .optional(),
   tagIds: vine.array(vine.number().positive().exists({ table: 'tags', column: 'id' })).optional(),
+  publishedAt: vine
+    .string()
+    .trim()
+    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/)
+    .nullable()
+    .optional(),
   fr: translation(),
   en: translation().optional(),
 })

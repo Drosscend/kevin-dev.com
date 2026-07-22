@@ -5,14 +5,10 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
-import ArticleContent from '~/components/article_content'
+import DraftBanner from '~/components/admin/draft_banner'
 import TranslationFields from '~/components/admin/translation_fields'
-import {
-  EMPTY_TRANSLATION,
-  fetchMarkdownPreview,
-  slugify,
-  type TranslationValues,
-} from '~/lib/admin'
+import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
+import { useDraftAutosave } from '~/lib/use_draft_autosave'
 
 type ArticleData = {
   id: number
@@ -45,13 +41,22 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
     categoryId: article?.categoryId ?? null,
     coverMediaId: article?.coverMediaId ?? null,
     tagIds: article?.tagIds ?? [],
+    publishedAt: article?.publishedAt ?? null,
     fr: article?.fr ?? { ...EMPTY_TRANSLATION },
     en: article?.en,
   })
 
   const slugTouched = useRef(article !== null)
   const [withEnglish, setWithEnglish] = useState(Boolean(article?.en))
-  const [preview, setPreview] = useState<{ locale: 'fr' | 'en'; html: string } | null>(null)
+
+  const draft = useDraftAutosave({
+    storageKey: `article:${article?.id ?? 'new'}`,
+    data: form.data,
+    restore: (data) => {
+      form.setData(data)
+      setWithEnglish(Boolean(data.en))
+    },
+  })
 
   function setFrench(values: TranslationValues) {
     form.setData((data) => ({
@@ -70,17 +75,6 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
     )
   }
 
-  async function loadPreview(locale: 'fr' | 'en') {
-    const markdown = locale === 'fr' ? form.data.fr.contentMarkdown : form.data.en?.contentMarkdown
-    if (!markdown) {
-      return
-    }
-    const html = await fetchMarkdownPreview(markdown)
-    if (html) {
-      setPreview({ locale, html })
-    }
-  }
-
   function submit(status: 'draft' | 'published') {
     return (event: FormEvent) => {
       event.preventDefault()
@@ -89,10 +83,11 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
         status,
         en: withEnglish ? (data.en ?? { ...EMPTY_TRANSLATION }) : undefined,
       }))
+      const visitOptions = { preserveScroll: true, onSuccess: () => draft.clearDraft() }
       if (article) {
-        form.put(`/admin/articles/${article.id}`, { preserveScroll: true })
+        form.put(`/admin/articles/${article.id}`, visitOptions)
       } else {
-        form.post('/admin/articles', { preserveScroll: true })
+        form.post('/admin/articles', visitOptions)
       }
     }
   }
@@ -112,6 +107,14 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
       </div>
 
       <form onSubmit={submit(form.data.status)} className="space-y-6">
+        {draft.hasDraft && (
+          <DraftBanner
+            savedAt={draft.draftSavedAt}
+            onRestore={draft.restoreDraft}
+            onDiscard={draft.discardDraft}
+          />
+        )}
+
         <Card>
           <CardHeader>
             <CardTitle>Métadonnées</CardTitle>
@@ -172,6 +175,19 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
                   ))}
                 </select>
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="publishedAt">Date de publication (optionnel)</Label>
+                <Input
+                  type="datetime-local"
+                  id="publishedAt"
+                  value={form.data.publishedAt ?? ''}
+                  onChange={(event) => form.setData('publishedAt', event.target.value || null)}
+                />
+                <p className="text-muted-foreground text-xs">
+                  Une date future programme la publication : l’article restera invisible du public
+                  jusque-là.
+                </p>
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -209,9 +225,6 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
               onChange={setFrench}
               errors={errors}
             />
-            <Button type="button" variant="outline" size="sm" onClick={() => loadPreview('fr')}>
-              Aperçu FR
-            </Button>
           </CardContent>
         </Card>
 
@@ -240,26 +253,9 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
                 onChange={(values) => form.setData('en', values)}
                 errors={errors}
               />
-              <Button type="button" variant="outline" size="sm" onClick={() => loadPreview('en')}>
-                Aperçu EN
-              </Button>
             </CardContent>
           )}
         </Card>
-
-        {preview && (
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Aperçu ({preview.locale.toUpperCase()})</CardTitle>
-              <Button type="button" variant="ghost" size="sm" onClick={() => setPreview(null)}>
-                Fermer
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <ArticleContent html={preview.html} />
-            </CardContent>
-          </Card>
-        )}
 
         <div className="flex items-center gap-3">
           <Button

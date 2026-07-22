@@ -15,13 +15,13 @@ export default class LlmsService {
   static async index() {
     const [articles, projects, settings] = await Promise.all([
       Article.query()
-        .where('status', 'published')
+        .withScopes((scopes) => scopes.published())
         .preload('translations', (query) =>
           query.select('id', 'article_id', 'locale', 'title', 'summary')
         )
         .orderBy('published_at', 'desc'),
       Project.query()
-        .where('status', 'published')
+        .withScopes((scopes) => scopes.published())
         .preload('translations', (query) =>
           query.select('id', 'project_id', 'locale', 'title', 'summary')
         )
@@ -80,7 +80,7 @@ export default class LlmsService {
   static async articleMarkdown(slug: string, locale: Locale) {
     const article = await Article.query()
       .where('slug', slug)
-      .where('status', 'published')
+      .withScopes((scopes) => scopes.published())
       .preload('translations')
       .preload('category', (category) => category.preload('translations'))
       .preload('tags', (tags) => tags.preload('translations'))
@@ -112,7 +112,7 @@ export default class LlmsService {
   static async projectMarkdown(slug: string, locale: Locale) {
     const project = await Project.query()
       .where('slug', slug)
-      .where('status', 'published')
+      .withScopes((scopes) => scopes.published())
       .preload('translations')
       .preload('links', (links) => links.orderBy('position'))
       .preload('technologies')

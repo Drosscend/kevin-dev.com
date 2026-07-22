@@ -9,11 +9,20 @@ export const loginValidator = vine.create({
 })
 
 /**
- * Six-digit TOTP code validator (challenge and enrollment).
+ * Six-digit TOTP code validator (enrollment, disabling, recovery-code
+ * regeneration).
  */
 export const totpCodeValidator = vine.create({
   code: vine
     .string()
     .fixedLength(6)
     .regex(/^\d{6}$/),
+})
+
+/**
+ * Login challenge code: either a six-digit TOTP code or an
+ * XXXXX-XXXXX one-time recovery code.
+ */
+export const challengeCodeValidator = vine.create({
+  code: vine.string().trim().minLength(6).maxLength(11),
 })

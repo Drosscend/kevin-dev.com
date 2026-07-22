@@ -14,6 +14,4 @@ export const pagesValidator = vine.create({
   cvEn: vine.string().optional(),
   legalFr: vine.string().optional(),
   legalEn: vine.string().optional(),
-  nowFr: vine.string().optional(),
-  nowEn: vine.string().optional(),
 })

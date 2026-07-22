@@ -1,5 +1,6 @@
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import MarkdownEditor from '~/components/admin/markdown_editor'
 import type { TranslationValues } from '~/lib/admin'
 
 /**
@@ -40,12 +41,12 @@ export default function TranslationFields({
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor={`${prefix}-content`}>Contenu (Markdown)</Label>
-        <textarea
+        <MarkdownEditor
           id={`${prefix}-content`}
-          className="border-input min-h-60 w-full rounded-md border bg-transparent px-3 py-2 font-mono text-sm"
+          label="Contenu (Markdown)"
           value={values.contentMarkdown}
-          onChange={(event) => onChange({ ...values, contentMarkdown: event.target.value })}
+          rows={16}
+          onChange={(contentMarkdown) => onChange({ ...values, contentMarkdown })}
         />
         {errors[`${prefix}.contentMarkdown`] && (
           <p className="text-destructive text-sm">{errors[`${prefix}.contentMarkdown`]}</p>

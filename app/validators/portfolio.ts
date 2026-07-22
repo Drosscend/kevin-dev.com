@@ -53,6 +53,12 @@ export const projectValidator = vine.create({
       })
     )
     .optional(),
+  publishedAt: vine
+    .string()
+    .trim()
+    .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/)
+    .nullable()
+    .optional(),
   fr: translation(),
   en: translation().optional(),
 })

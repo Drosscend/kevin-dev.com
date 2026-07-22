@@ -36,6 +36,7 @@ export default class ArticlesController {
         hasEnglish: article.translation('en') !== undefined,
         status: article.status,
         publishedAt: article.publishedAt?.toISODate() ?? null,
+        scheduled: !article.isPublished && article.status === 'published',
         category: article.category?.name('fr') ?? null,
       })),
     })
@@ -63,6 +64,7 @@ export default class ArticlesController {
       categoryId: payload.categoryId ?? null,
       coverMediaId: payload.coverMediaId ?? null,
       tagIds: payload.tagIds ?? [],
+      publishedAt: payload.publishedAt ?? null,
       fr: { summary: '', ...payload.fr },
       en: payload.en ? { summary: '', ...payload.en } : null,
     })
@@ -89,7 +91,7 @@ export default class ArticlesController {
         categoryId: article.categoryId,
         coverMediaId: article.coverMediaId,
         tagIds: article.tags.map((tag) => tag.id),
-        publishedAt: article.publishedAt?.toISODate() ?? null,
+        publishedAt: article.publishedAt?.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
         fr: {
           title: fr?.title ?? '',
           summary: fr?.summary ?? '',
@@ -122,6 +124,7 @@ export default class ArticlesController {
       categoryId: payload.categoryId ?? null,
       coverMediaId: payload.coverMediaId ?? null,
       tagIds: payload.tagIds ?? [],
+      publishedAt: payload.publishedAt ?? null,
       fr: { summary: '', ...payload.fr },
       en: payload.en ? { summary: '', ...payload.en } : null,
     })

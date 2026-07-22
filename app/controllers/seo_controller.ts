@@ -35,10 +35,10 @@ export default class SeoController {
   async sitemap({ response }: HttpContext) {
     const [articles, projects, technologies, settings] = await Promise.all([
       Article.query()
-        .where('status', 'published')
+        .withScopes((scopes) => scopes.published())
         .preload('translations', (query) => query.select('id', 'article_id', 'locale')),
       Project.query()
-        .where('status', 'published')
+        .withScopes((scopes) => scopes.published())
         .preload('translations', (query) => query.select('id', 'project_id', 'locale')),
       Technology.query(),
       SettingsService.getMany(['cv_html_fr', 'cv_html_en', 'legal_html_fr', 'legal_html_en']),
@@ -118,7 +118,7 @@ export default class SeoController {
     const locale = i18n.locale as Locale
 
     const articles = await Article.query()
-      .where('status', 'published')
+      .withScopes((scopes) => scopes.published())
       .whereHas('translations', (translations) => translations.where('locale', locale))
       .preload('translations', (query) =>
         query.select('id', 'article_id', 'locale', 'title', 'summary')

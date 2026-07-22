@@ -8,6 +8,7 @@ export const controllers = {
     Articles: () => import('#controllers/admin/articles_controller'),
     Categories: () => import('#controllers/admin/categories_controller'),
     Dashboard: () => import('#controllers/admin/dashboard_controller'),
+    Home: () => import('#controllers/admin/home_controller'),
     Media: () => import('#controllers/admin/media_controller'),
     Messages: () => import('#controllers/admin/messages_controller'),
     Pages: () => import('#controllers/admin/pages_controller'),

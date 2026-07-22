@@ -1,9 +1,20 @@
+import { column } from '@adonisjs/lucid/orm'
 import { UserSchema } from '#database/schema'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 
 export default class User extends compose(UserSchema, withAuthFinder(hash)) {
+  /**
+   * Serialized to a JSON string so the json column receives JSON
+   * (node-postgres maps plain JS arrays to Postgres arrays).
+   */
+  @column({
+    serializeAs: null,
+    prepare: (value: string[] | null) => (value === null ? null : JSON.stringify(value)),
+  })
+  declare recoveryCodes: string[] | null
+
   get totpEnabled() {
     return this.totpSecret !== null
   }

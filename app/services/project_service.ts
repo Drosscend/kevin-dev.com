@@ -27,6 +27,7 @@ export interface ProjectPayload {
   technologyIds: number[]
   articleIds: number[]
   links: ProjectLinkPayload[]
+  publishedAt?: string | null
   fr: ProjectTranslationPayload
   en: ProjectTranslationPayload | null
 }
@@ -53,7 +54,11 @@ export default class ProjectService {
       project.endedAt = payload.endedAt ? DateTime.fromISO(payload.endedAt) : null
       project.featured = payload.featured
 
-      if (payload.status === 'published' && !project.publishedAt) {
+      // An explicit date wins (future = scheduled); otherwise the date
+      // is stamped automatically on the first publication.
+      if (payload.publishedAt) {
+        project.publishedAt = DateTime.fromISO(payload.publishedAt)
+      } else if (payload.status === 'published' && !project.publishedAt) {
         project.publishedAt = DateTime.now()
       }
       project.status = payload.status

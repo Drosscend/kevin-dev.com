@@ -9,11 +9,38 @@ interface SecurityProps {
   totpEnabled: boolean
   qrCode: string | null
   secret: string | null
+  recoveryCodes: string[] | null
+  recoveryCodesRemaining: number
 }
 
-export default function Security({ totpEnabled, qrCode, secret }: SecurityProps) {
+export default function Security({
+  totpEnabled,
+  qrCode,
+  secret,
+  recoveryCodes,
+  recoveryCodesRemaining,
+}: SecurityProps) {
   return (
     <AdminPage title="Sécurité" className="max-w-xl">
+      {recoveryCodes && (
+        <Card className="border-primary">
+          <CardHeader>
+            <CardTitle>Vos codes de secours</CardTitle>
+            <CardDescription>
+              Notez-les maintenant : ils ne seront plus jamais affichés. Chaque code permet une
+              connexion unique si vous perdez l’accès à votre application TOTP.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="grid grid-cols-2 gap-2 font-mono text-sm">
+              {recoveryCodes.map((code) => (
+                <li key={code}>{code}</li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
+
       {totpEnabled ? (
         <Card>
           <CardHeader>
@@ -42,6 +69,44 @@ export default function Security({ totpEnabled, qrCode, secret }: SecurityProps)
                   </div>
                   <Button type="submit" variant="destructive" disabled={processing}>
                     Désactiver la 2FA
+                  </Button>
+                </>
+              )}
+            </Form>
+          </CardContent>
+        </Card>
+      ) : null}
+
+      {totpEnabled ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Codes de secours</CardTitle>
+            <CardDescription>
+              {recoveryCodesRemaining} code(s) restant(s). En régénérer un nouveau jeu invalide tous
+              les codes précédents.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form route="admin.security.recovery.store" className="space-y-4">
+              {({ errors, processing }) => (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="recovery-code">Code TOTP actuel</Label>
+                    <Input
+                      type="text"
+                      name="code"
+                      id="recovery-code"
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      maxLength={6}
+                      aria-invalid={errors.recoveryCode ? true : undefined}
+                    />
+                    {errors.recoveryCode && (
+                      <p className="text-destructive text-sm">{errors.recoveryCode}</p>
+                    )}
+                  </div>
+                  <Button type="submit" variant="outline" disabled={processing}>
+                    Régénérer les codes de secours
                   </Button>
                 </>
               )}

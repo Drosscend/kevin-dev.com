@@ -6,6 +6,11 @@ import AdminPage from '~/components/admin/admin_page'
 
 interface DashboardProps {
   totpEnabled: boolean
+  umami: {
+    pageviews: number
+    visitors: number
+    topPages: { path: string; views: number }[]
+  } | null
   stats: {
     articlesPublished: number
     articlesDraft: number
@@ -40,7 +45,7 @@ function StatCard({
   )
 }
 
-export default function Dashboard({ totpEnabled, stats }: DashboardProps) {
+export default function Dashboard({ totpEnabled, umami, stats }: DashboardProps) {
   return (
     <AdminPage
       title="Dashboard"
@@ -108,6 +113,29 @@ export default function Dashboard({ totpEnabled, stats }: DashboardProps) {
           href="/admin/messages"
         />
       </div>
+
+      {umami && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Visites — 30 derniers jours</CardTitle>
+            <CardDescription>
+              {umami.pageviews} pages vues · {umami.visitors} visiteur(s)
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="divide-y">
+              {umami.topPages.map((page) => (
+                <li key={page.path} className="flex items-baseline justify-between gap-4 py-2">
+                  <span className="truncate font-mono text-sm">{page.path}</span>
+                  <span className="text-muted-foreground shrink-0 text-sm">
+                    {page.views} vue(s)
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
     </AdminPage>
   )
 }

@@ -16,6 +16,7 @@ declare module '@adonisjs/inertia/types' {
     'admin/articles/index': ExtractProps<(typeof import('../../inertia/pages/admin/articles/index.tsx'))['default']>
     'admin/categories': ExtractProps<(typeof import('../../inertia/pages/admin/categories.tsx'))['default']>
     'admin/dashboard': ExtractProps<(typeof import('../../inertia/pages/admin/dashboard.tsx'))['default']>
+    'admin/home': ExtractProps<(typeof import('../../inertia/pages/admin/home.tsx'))['default']>
     'admin/media': ExtractProps<(typeof import('../../inertia/pages/admin/media.tsx'))['default']>
     'admin/messages': ExtractProps<(typeof import('../../inertia/pages/admin/messages.tsx'))['default']>
     'admin/pages': ExtractProps<(typeof import('../../inertia/pages/admin/pages.tsx'))['default']>

@@ -4,6 +4,7 @@ import drive from '@adonisjs/drive/services/main'
 import Article from '#models/article'
 import Project from '#models/project'
 import Technology from '#models/technology'
+import TimelineEntry from '#models/timeline_entry'
 import type Media from '#models/media'
 import SeoService from '#services/seo_service'
 import SettingsService from '#services/settings_service'
@@ -18,55 +19,13 @@ function thumbnailUrl(media: Media | null) {
   return router.makeUrl('uploads.show', { key: media.key, file: variant })
 }
 
-/** Career timeline, static content displayed on the homepage. */
-const TIMELINE: Record<Locale, { period: string; title: string; place: string }[]> = {
-  fr: [
-    {
-      period: '2025 — auj.',
-      title: 'Consultant Data Migration · Développeur Full Stack & IA',
-      place: 'En poste',
-    },
-    {
-      period: '2023 — 2025',
-      title: 'Master MIASHS ICE-LD',
-      place: 'Université Toulouse Jean Jaurès',
-    },
-    { period: '2022 — 2023', title: 'Licence pro APSIO', place: 'IUT de Blagnac' },
-    { period: '2020 — 2022', title: 'DUT Informatique', place: 'IUT de Blagnac' },
-    { period: '2020', title: 'BAC STI2D', place: 'LPO Le Garros, Auch' },
-  ],
-  en: [
-    {
-      period: '2025 — today',
-      title: 'Data Migration Consultant · Full Stack & AI Developer',
-      place: 'Currently employed',
-    },
-    {
-      period: '2023 — 2025',
-      title: "Master's degree MIASHS ICE-LD",
-      place: 'Université Toulouse Jean Jaurès',
-    },
-    {
-      period: '2022 — 2023',
-      title: 'Professional bachelor APSIO',
-      place: 'IUT de Blagnac',
-    },
-    {
-      period: '2020 — 2022',
-      title: 'DUT in computer science',
-      place: 'IUT de Blagnac',
-    },
-    { period: '2020', title: 'STI2D high school diploma', place: 'LPO Le Garros, Auch' },
-  ],
-}
-
 export default class HomeController {
   async handle({ inertia, i18n }: HttpContext) {
     const locale = i18n.locale as Locale
 
-    const [articles, projects, technologies, settings] = await Promise.all([
+    const [articles, projects, technologies, settings, timelineEntries] = await Promise.all([
       Article.query()
-        .where('status', 'published')
+        .withScopes((scopes) => scopes.published())
         .whereHas('translations', (translations) => translations.where('locale', locale))
         .preload('translations', (translations) =>
           translations.select('id', 'article_id', 'locale', 'title', 'summary')
@@ -74,7 +33,7 @@ export default class HomeController {
         .orderBy('published_at', 'desc')
         .limit(3),
       Project.query()
-        .where('status', 'published')
+        .withScopes((scopes) => scopes.published())
         .where('featured', true)
         .whereHas('translations', (translations) => translations.where('locale', locale))
         .preload('translations', (translations) =>
@@ -84,10 +43,27 @@ export default class HomeController {
         .orderBy('published_at', 'desc')
         .limit(3),
       Technology.query().orderBy('name').select('slug', 'name'),
-      SettingsService.getMany(['now_fr', 'now_en']),
+      SettingsService.getMany([
+        'now_fr',
+        'now_en',
+        'hero_roles_fr',
+        'hero_roles_en',
+        'hero_location',
+        'talks_fr',
+        'talks_en',
+      ]),
+      TimelineEntry.query().preload('translations').orderBy('position'),
     ])
 
-    const now = (locale === 'en' ? settings.now_en : settings.now_fr) || null
+    const localized = (fr: string, en: string) => (locale === 'en' ? en || fr : fr)
+    const now = localized(settings.now_fr, settings.now_en) || null
+
+    // Settings override the default i18n copy; empty values fall back.
+    const roles = localized(settings.hero_roles_fr, settings.hero_roles_en)
+      .split('\n')
+      .map((role) => role.trim())
+      .filter(Boolean)
+    const talksText = localized(settings.talks_fr, settings.talks_en)
 
     return inertia.render('home', {
       now,
@@ -107,10 +83,20 @@ export default class HomeController {
         slug: technology.slug,
         name: technology.name,
       })),
-      timeline: TIMELINE[locale],
+      timeline: timelineEntries.map((entry) => {
+        const translation = entry.translation(locale)
+        return {
+          period: translation?.period ?? '',
+          title: translation?.title ?? '',
+          place: translation?.place ?? '',
+        }
+      }),
       labels: {
-        roles: [i18n.t('messages.home.roleFullStack'), i18n.t('messages.home.roleAi')],
-        location: i18n.t('messages.home.location'),
+        roles:
+          roles.length > 0
+            ? roles
+            : [i18n.t('messages.home.roleFullStack'), i18n.t('messages.home.roleAi')],
+        location: settings.hero_location || i18n.t('messages.home.location'),
         downloadCv: i18n.t('messages.home.downloadCv'),
         contactMe: i18n.t('messages.home.contactMe'),
         photoAlt: i18n.t('messages.home.photoAlt'),
@@ -124,7 +110,7 @@ export default class HomeController {
         stack: i18n.t('messages.home.stack'),
         allTechnologies: i18n.t('messages.home.allTechnologies'),
         talks: i18n.t('messages.home.talks'),
-        talksText: i18n.t('messages.home.talksText'),
+        talksText: talksText || i18n.t('messages.home.talksText'),
         talksContact: i18n.t('messages.home.talksContact'),
       },
       meta: SeoService.build({

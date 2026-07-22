@@ -37,6 +37,7 @@ function payloadFromRequest(payload: Awaited<ReturnType<typeof projectValidator.
     technologyIds: payload.technologyIds ?? [],
     articleIds: payload.articleIds ?? [],
     links: payload.links ?? [],
+    publishedAt: payload.publishedAt ?? null,
     fr: { summary: '', ...payload.fr },
     en: payload.en ? { summary: '', ...payload.en } : null,
   }
@@ -58,6 +59,7 @@ export default class ProjectsController {
         status: project.status,
         featured: project.featured,
         publishedAt: project.publishedAt?.toISODate() ?? null,
+        scheduled: !project.isPublished && project.status === 'published',
         technologiesCount: Number(project.$extras.technologies_count ?? 0),
       })),
     })
@@ -113,7 +115,7 @@ export default class ProjectsController {
           url: link.url,
           type: link.type,
         })),
-        publishedAt: project.publishedAt?.toISODate() ?? null,
+        publishedAt: project.publishedAt?.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
         fr: {
           title: fr?.title ?? '',
           summary: fr?.summary ?? '',
