@@ -1,4 +1,19 @@
 {
+  "nav": {
+    "projects": "Projects",
+    "blog": "Blog",
+    "talks": "Speaking",
+    "cv": "Resume",
+    "technologies": "Tech",
+    "contact": "Contact",
+    "legal": "Legal notice",
+    "primary": "Main navigation",
+    "secondary": "Secondary navigation",
+    "openMenu": "Open the menu",
+    "closeMenu": "Close the menu",
+    "theme": "Toggle light or dark theme",
+    "switchLocale": "Read this page in {locale}"
+  },
   "home": {
     "metaDescription": "Kévin Véronési's personal site: tech blog (AdonisJS, React, self-hosting), project portfolio and resume.",
     "roleFullStack": "Full Stack Developer",
@@ -26,15 +41,16 @@
     "draft": "Draft — only visible while signed in",
     "empty": "No articles yet.",
     "allCategories": "All categories",
-    "backToList": "← All articles",
-    "previous": "← Previous",
-    "next": "Next →"
+    "clearTag": "Clear the tag filter",
+    "backToList": "All articles",
+    "previous": "Previous",
+    "next": "Next"
   },
   "portfolio": {
     "title": "Portfolio",
     "metaDescription": "Development projects by Kévin Véronési: web applications, tools and experiments.",
     "empty": "No projects yet.",
-    "backToList": "← All projects",
+    "backToList": "All projects",
     "technologies": "Technologies used",
     "relatedArticles": "Related articles"
   },
@@ -42,7 +58,7 @@
     "title": "Speaking",
     "metaDescription": "Conference talks, meetups and workshops given by Kévin Véronési: slides, recordings and field notes.",
     "empty": "No talks yet.",
-    "backToList": "← All talks",
+    "backToList": "All talks",
     "upcoming": "Upcoming",
     "technologies": "Technologies covered"
   },
@@ -70,9 +86,10 @@
     "title": "Technologies",
     "metaDescription": "The languages, frameworks and tools used across Kévin Véronési's projects.",
     "empty": "No technologies yet.",
-    "backToList": "← All technologies",
+    "backToList": "All technologies",
     "usedIn": "Projects using this technology",
     "noProjects": "No published project uses this technology yet.",
+    "projectsCount": "{count, plural, =0 {no project} one {# project} other {# projects}}",
     "categories": {
       "langage": "Languages",
       "framework": "Frameworks",

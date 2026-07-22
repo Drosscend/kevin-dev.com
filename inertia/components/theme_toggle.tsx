@@ -7,7 +7,7 @@ import { Button } from '~/components/ui/button'
  * preference, overridden by the stored choice). Icons are switched
  * with CSS classes, so server and client render the same markup.
  */
-export default function ThemeToggle() {
+export default function ThemeToggle({ label }: { label: string }) {
   function toggle() {
     const isDark = document.documentElement.classList.toggle('dark')
     localStorage.setItem('theme', isDark ? 'dark' : 'light')
@@ -19,8 +19,8 @@ export default function ThemeToggle() {
       variant="ghost"
       size="sm"
       onClick={toggle}
-      title="Thème clair / sombre"
-      aria-label="Basculer le thème clair ou sombre"
+      title={label}
+      aria-label={label}
     >
       <Sun className="size-4 dark:hidden" />
       <Moon className="hidden size-4 dark:block" />

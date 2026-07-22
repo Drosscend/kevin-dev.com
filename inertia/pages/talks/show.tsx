@@ -1,8 +1,9 @@
 import { Link } from '@adonisjs/inertia/react'
 import { ExternalLink } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
+import { BackLink } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath, otherLocalePath } from '~/lib/locale'
+import { localePath } from '~/lib/locale'
 
 type TalksShowProps = {
   locale: 'fr' | 'en'
@@ -30,14 +31,7 @@ type TalksShowProps = {
   meta: SeoMeta
 }
 
-export default function TalksShow({
-  locale,
-  isDraftPreview,
-  talk,
-  hasOtherLocale,
-  labels,
-  meta,
-}: TalksShowProps) {
+export default function TalksShow({ locale, isDraftPreview, talk, labels, meta }: TalksShowProps) {
   const to = (path: string) => localePath(locale, path)
 
   return (
@@ -50,21 +44,8 @@ export default function TalksShow({
           </p>
         )}
 
-        <div className="flex items-baseline justify-between gap-4 text-sm">
-          <Link
-            href={to('/talks')}
-            className="text-muted-foreground hover:text-primary transition-colors"
-          >
-            {labels.backToList}
-          </Link>
-          {hasOtherLocale && (
-            <Link
-              href={otherLocalePath(locale, `/talks/${talk.slug}`)}
-              className="text-muted-foreground hover:text-primary font-mono text-xs tracking-wider uppercase transition-colors"
-            >
-              {locale === 'en' ? 'FR' : 'EN'}
-            </Link>
-          )}
+        <div className="text-sm">
+          <BackLink href={to('/talks')} label={labels.backToList} />
         </div>
 
         <header>
@@ -80,7 +61,9 @@ export default function TalksShow({
               </>
             )}
             {talk.upcoming && (
-              <span className="text-primary tracking-wider uppercase">{labels.upcoming}</span>
+              <span className="text-primary text-[11px] tracking-wider uppercase">
+                {labels.upcoming}
+              </span>
             )}
           </p>
           {talk.links.length > 0 && (

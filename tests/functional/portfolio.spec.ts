@@ -125,7 +125,10 @@ test.group('Portfolio public', (group) => {
     )
   })
 
-  test('la grille des technologies compte les projets publiés', async ({ client, assert }) => {
+  test('la liste des technologies ne compte que les projets publiés', async ({
+    client,
+    assert,
+  }) => {
     const technology = await Technology.create({
       slug: 'docker',
       name: 'Docker',
@@ -139,9 +142,9 @@ test.group('Portfolio public', (group) => {
     response.assertStatus(200)
     const technologies = response.inertiaProps.technologies as {
       slug: string
-      projectsCount: number
+      projectsLabel: string
     }[]
     const docker = technologies.find((item) => item.slug === 'docker')
-    assert.equal(docker?.projectsCount, 1)
+    assert.equal(docker?.projectsLabel, '1 projet')
   })
 })

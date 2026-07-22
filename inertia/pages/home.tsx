@@ -1,5 +1,7 @@
 import { Link } from '@adonisjs/inertia/react'
+import { Download } from 'lucide-react'
 import { LinkArrow, LinkList, LinkRow } from '~/components/content_link'
+import { Button } from '~/components/ui/button'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { localePath } from '~/lib/locale'
 
@@ -101,27 +103,22 @@ export default function Home({
           </ul>
           <p className="text-muted-foreground mt-6 text-sm">{labels.location}</p>
           <div className="mt-10 flex flex-wrap gap-3.5">
-            {cvPdfAvailable ? (
-              <a
-                href="/cv.pdf"
-                className="bg-primary text-primary-foreground rounded-lg px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-90"
-              >
-                {labels.downloadCv}
-              </a>
-            ) : (
-              <Link
-                href={to('/cv')}
-                className="bg-primary text-primary-foreground rounded-lg px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-90"
-              >
-                {labels.downloadCv}
-              </Link>
-            )}
-            <Link
-              href={to('/contact')}
-              className="bg-card hover:border-primary hover:text-primary rounded-lg border px-5 py-2.5 text-sm font-medium transition-colors"
-            >
-              {labels.contactMe}
-            </Link>
+            <Button asChild size="lg">
+              {cvPdfAvailable ? (
+                <a href="/cv.pdf">
+                  <Download className="size-4" />
+                  {labels.downloadCv}
+                </a>
+              ) : (
+                <Link href={to('/cv')}>
+                  <Download className="size-4" />
+                  {labels.downloadCv}
+                </Link>
+              )}
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link href={to('/contact')}>{labels.contactMe}</Link>
+            </Button>
           </div>
         </div>
         <img

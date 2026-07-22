@@ -1,24 +1,15 @@
-import type { HttpContext } from '@adonisjs/core/http'
-import router from '@adonisjs/core/services/router'
+﻿import type { HttpContext } from '@adonisjs/core/http'
 import drive from '@adonisjs/drive/services/main'
 import Article from '#models/article'
 import Project from '#models/project'
 import Talk from '#models/talk'
 import Technology from '#models/technology'
 import TimelineEntry from '#models/timeline_entry'
-import type Media from '#models/media'
+import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import SettingsService from '#services/settings_service'
 import { CV_PDF_KEY } from '#controllers/cv_controller'
 import { localePath, type Locale } from '#types/i18n'
-
-function thumbnailUrl(media: Media | null) {
-  if (!media) {
-    return null
-  }
-  const variant = media.variants.find((item) => item.width === 640)?.file ?? 'original.webp'
-  return router.makeUrl('uploads.show', { key: media.key, file: variant })
-}
 
 export default class HomeController {
   async handle({ inertia, i18n }: HttpContext) {
@@ -85,13 +76,13 @@ export default class HomeController {
           article.publishedAt
             ?.setLocale(locale)
             .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' }) ?? null,
-        coverUrl: thumbnailUrl(article.cover),
+        coverUrl: MediaService.url(article.cover),
       })),
       featuredProjects: projects.map((project) => ({
         slug: project.slug,
         title: project.translation(locale)!.title,
         summary: project.translation(locale)!.summary,
-        coverUrl: thumbnailUrl(project.cover),
+        coverUrl: MediaService.url(project.cover),
         technologies: project.technologies.map((technology) => technology.name),
       })),
       technologies: technologies.map((technology) => ({
@@ -108,7 +99,7 @@ export default class HomeController {
         city: talk.city,
         upcoming: talk.isUpcoming,
         summary: talk.translation(locale)!.summary,
-        coverUrl: thumbnailUrl(talk.cover),
+        coverUrl: MediaService.url(talk.cover),
       })),
       timeline: timelineEntries.map((entry) => {
         const translation = entry.translation(locale)

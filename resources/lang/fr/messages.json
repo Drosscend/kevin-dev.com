@@ -1,4 +1,19 @@
 {
+  "nav": {
+    "projects": "Projets",
+    "blog": "Blog",
+    "talks": "Interventions",
+    "cv": "CV",
+    "technologies": "Technos",
+    "contact": "Contact",
+    "legal": "Mentions légales",
+    "primary": "Navigation principale",
+    "secondary": "Navigation secondaire",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "theme": "Basculer le thème clair ou sombre",
+    "switchLocale": "Lire cette page en {locale}"
+  },
   "home": {
     "metaDescription": "Site personnel de Kévin Véronési : blog technique (AdonisJS, React, auto-hébergement), portfolio de projets et CV.",
     "roleFullStack": "Développeur Full Stack",
@@ -26,15 +41,16 @@
     "draft": "Brouillon — visible uniquement connecté",
     "empty": "Aucun article pour l'instant.",
     "allCategories": "Toutes les catégories",
-    "backToList": "← Tous les articles",
-    "previous": "← Précédent",
-    "next": "Suivant →"
+    "clearTag": "Retirer le filtre par mot-clé",
+    "backToList": "Tous les articles",
+    "previous": "Précédent",
+    "next": "Suivant"
   },
   "portfolio": {
     "title": "Portfolio",
     "metaDescription": "Projets de développement de Kévin Véronési : applications web, outils et expérimentations.",
     "empty": "Aucun projet pour l'instant.",
-    "backToList": "← Tous les projets",
+    "backToList": "Tous les projets",
     "technologies": "Technologies utilisées",
     "relatedArticles": "Articles liés"
   },
@@ -42,7 +58,7 @@
     "title": "Interventions",
     "metaDescription": "Conférences, meetups et ateliers animés par Kévin Véronési : supports, vidéos et retours d'expérience.",
     "empty": "Aucune intervention pour l'instant.",
-    "backToList": "← Toutes les interventions",
+    "backToList": "Toutes les interventions",
     "upcoming": "À venir",
     "technologies": "Technologies abordées"
   },
@@ -70,9 +86,10 @@
     "title": "Technologies",
     "metaDescription": "Les langages, frameworks et outils utilisés dans les projets de Kévin Véronési.",
     "empty": "Aucune technologie pour l'instant.",
-    "backToList": "← Toutes les technologies",
+    "backToList": "Toutes les technologies",
     "usedIn": "Projets utilisant cette technologie",
     "noProjects": "Aucun projet publié n'utilise cette technologie pour l'instant.",
+    "projectsCount": "{count, plural, =0 {aucun projet} one {# projet} other {# projets}}",
     "categories": {
       "langage": "Langages",
       "framework": "Frameworks",

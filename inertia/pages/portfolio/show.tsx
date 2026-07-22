@@ -1,8 +1,9 @@
 import { Link } from '@adonisjs/inertia/react'
 import { ExternalLink } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
+import { BackLink } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath, otherLocalePath } from '~/lib/locale'
+import { localePath } from '~/lib/locale'
 
 type PortfolioShowProps = {
   locale: 'fr' | 'en'
@@ -33,7 +34,6 @@ export default function PortfolioShow({
   locale,
   isDraftPreview,
   project,
-  hasOtherLocale,
   labels,
   meta,
 }: PortfolioShowProps) {
@@ -49,21 +49,8 @@ export default function PortfolioShow({
           </p>
         )}
 
-        <div className="flex items-baseline justify-between gap-4 text-sm">
-          <Link
-            href={to('/projects')}
-            className="text-muted-foreground hover:text-primary transition-colors"
-          >
-            {labels.backToList}
-          </Link>
-          {hasOtherLocale && (
-            <Link
-              href={otherLocalePath(locale, `/projects/${project.slug}`)}
-              className="text-muted-foreground hover:text-primary font-mono text-xs tracking-wider uppercase transition-colors"
-            >
-              {locale === 'en' ? 'FR' : 'EN'}
-            </Link>
-          )}
+        <div className="text-sm">
+          <BackLink href={to('/projects')} label={labels.backToList} />
         </div>
 
         <header>

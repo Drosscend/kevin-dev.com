@@ -1,20 +1,11 @@
 import { type DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 import { Exception } from '@adonisjs/core/exceptions'
-import router from '@adonisjs/core/services/router'
 import Talk from '#models/talk'
-import type Media from '#models/media'
+import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
 import { localePath, type Locale } from '#types/i18n'
-
-function coverUrl(cover: Media | null) {
-  if (!cover) {
-    return null
-  }
-  const variant = cover.variants.find((item) => item.width === 640)?.file ?? 'original.webp'
-  return router.makeUrl('uploads.show', { key: cover.key, file: variant })
-}
 
 function formatDate(date: DateTime, locale: Locale) {
   return date.setLocale(locale).toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' })
@@ -32,6 +23,7 @@ export default class TalksController {
       )
       .preload('links', (links) => links.orderBy('position'))
       .preload('technologies')
+      .preload('cover')
       .orderBy('event_date', 'desc')
 
     return inertia.render('talks/index', {
@@ -54,6 +46,7 @@ export default class TalksController {
             slug: technology.slug,
             name: technology.name,
           })),
+          coverUrl: MediaService.url(talk.cover),
         }
       }),
       labels: {
@@ -110,7 +103,7 @@ export default class TalksController {
         title: translation.title,
         summary: translation.summary,
         contentHtml: translation.contentHtml,
-        coverUrl: coverUrl(talk.cover),
+        coverUrl: MediaService.url(talk.cover),
         eventName: talk.eventName,
         eventDate: formatDate(talk.eventDate, locale),
         city: talk.city,

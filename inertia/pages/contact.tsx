@@ -24,7 +24,7 @@ export default function Contact({ locale, labels, meta }: ContactProps) {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
-      <div className="max-w-lg">
+      <div className="mx-auto max-w-[720px]">
         <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
         <p className="text-muted-foreground mt-4">{labels.intro}</p>
 
@@ -77,11 +77,7 @@ export default function Contact({ locale, labels, meta }: ContactProps) {
               </div>
 
               <div className="space-y-5 pt-2">
-                <Button
-                  type="submit"
-                  disabled={processing}
-                  className="hover:bg-primary h-auto rounded-lg px-5 py-2.5 transition-opacity hover:opacity-90"
-                >
+                <Button type="submit" size="lg" disabled={processing}>
                   {labels.submit}
                 </Button>
 

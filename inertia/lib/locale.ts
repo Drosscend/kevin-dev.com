@@ -18,3 +18,14 @@ export function localePath(locale: Locale, path: string) {
 export function otherLocalePath(locale: Locale, path: string) {
   return localePath(locale === 'fr' ? 'en' : 'fr', path)
 }
+
+/**
+ * Current URL in the other locale, query string included. Feeds the
+ * header switch, which has only the browsed URL to work from.
+ */
+export function otherLocaleUrl(locale: Locale, url: string) {
+  const [path, query] = url.split('?')
+  const withoutPrefix = locale === 'en' ? path.replace(/^\/en/, '') || '/' : path
+  const target = otherLocalePath(locale, withoutPrefix)
+  return query ? `${target}?${query}` : target
+}

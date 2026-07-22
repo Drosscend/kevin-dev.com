@@ -1,16 +1,11 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import router from '@adonisjs/core/services/router'
 import Technology from '#models/technology'
+import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import { localePath, type Locale } from '#types/i18n'
 
 function logoUrl(technology: Technology) {
-  if (!technology.logo) {
-    return null
-  }
-  const variant =
-    technology.logo.variants.find((item) => item.width === 320)?.file ?? 'original.webp'
-  return router.makeUrl('uploads.show', { key: technology.logo.key, file: variant })
+  return MediaService.url(technology.logo, 320)
 }
 
 export default class TechnologiesController {
@@ -32,7 +27,9 @@ export default class TechnologiesController {
         category: technology.category,
         logoUrl: logoUrl(technology),
         description: technology.description(locale),
-        projectsCount: Number(technology.$extras.projects_count ?? 0),
+        projectsLabel: i18n.t('messages.technologies.projectsCount', {
+          count: Number(technology.$extras.projects_count ?? 0),
+        }),
       })),
       labels: {
         title: i18n.t('messages.technologies.title'),
@@ -70,6 +67,7 @@ export default class TechnologiesController {
           .preload('translations', (translations) =>
             translations.select('id', 'project_id', 'locale', 'title', 'summary')
           )
+          .preload('cover')
           .orderBy('published_at', 'desc')
       })
       .firstOrFail()
@@ -85,6 +83,7 @@ export default class TechnologiesController {
           slug: project.slug,
           title: project.translation(locale)!.title,
           summary: project.translation(locale)!.summary,
+          coverUrl: MediaService.url(project.cover),
         })),
       },
       labels: {

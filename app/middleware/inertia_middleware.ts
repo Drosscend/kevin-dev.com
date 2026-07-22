@@ -36,6 +36,24 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
       locale: ctx.inertia.always((i18n?.locale as Locale | undefined) ?? DEFAULT_LOCALE),
       /**
+       * Labels of the header, footer and window controls. They live in the
+       * layout, which no controller feeds, so they travel with every page.
+       */
+      chrome: ctx.inertia.always({
+        projects: i18n?.t('messages.nav.projects') ?? 'Projets',
+        blog: i18n?.t('messages.nav.blog') ?? 'Blog',
+        talks: i18n?.t('messages.nav.talks') ?? 'Interventions',
+        cv: i18n?.t('messages.nav.cv') ?? 'CV',
+        technologies: i18n?.t('messages.nav.technologies') ?? 'Technos',
+        contact: i18n?.t('messages.nav.contact') ?? 'Contact',
+        legal: i18n?.t('messages.nav.legal') ?? 'Mentions légales',
+        primary: i18n?.t('messages.nav.primary') ?? 'Navigation principale',
+        secondary: i18n?.t('messages.nav.secondary') ?? 'Navigation secondaire',
+        openMenu: i18n?.t('messages.nav.openMenu') ?? 'Ouvrir le menu',
+        closeMenu: i18n?.t('messages.nav.closeMenu') ?? 'Fermer le menu',
+        theme: i18n?.t('messages.nav.theme') ?? 'Basculer le thème clair ou sombre',
+      }),
+      /**
        * Unread contact messages, displayed as a badge in the admin
        * sidebar. Only computed for authenticated (admin) requests.
        */

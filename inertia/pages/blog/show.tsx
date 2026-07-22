@@ -1,7 +1,8 @@
 import { Link } from '@adonisjs/inertia/react'
 import ArticleContent from '~/components/article_content'
+import { BackLink } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath, otherLocalePath } from '~/lib/locale'
+import { localePath } from '~/lib/locale'
 
 type BlogShowProps = {
   locale: 'fr' | 'en'
@@ -25,16 +26,8 @@ type BlogShowProps = {
   meta: SeoMeta
 }
 
-export default function BlogShow({
-  locale,
-  isDraftPreview,
-  article,
-  hasOtherLocale,
-  labels,
-  meta,
-}: BlogShowProps) {
+export default function BlogShow({ locale, isDraftPreview, article, labels, meta }: BlogShowProps) {
   const base = localePath(locale, '/blog')
-  const otherBase = otherLocalePath(locale, '/blog')
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
@@ -42,26 +35,13 @@ export default function BlogShow({
 
       <div className="mx-auto max-w-[720px]">
         {isDraftPreview && (
-          <p className="border-destructive text-destructive mb-10 rounded-lg border px-4 py-2.5 font-mono text-[13px]">
+          <p className="border-destructive text-destructive mb-10 rounded-lg border px-4 py-2.5 text-sm">
             {labels.draft}
           </p>
         )}
 
-        <div className="flex items-baseline justify-between gap-4">
-          <Link
-            href={base}
-            className="text-muted-foreground hover:text-primary text-sm transition-colors"
-          >
-            {labels.backToList}
-          </Link>
-          {hasOtherLocale && (
-            <Link
-              href={`${otherBase}/${article.slug}`}
-              className="text-muted-foreground hover:text-primary font-mono text-[13px] transition-colors"
-            >
-              {locale === 'en' ? 'FR' : 'EN'}
-            </Link>
-          )}
+        <div className="text-sm">
+          <BackLink href={base} label={labels.backToList} />
         </div>
 
         <header className="mt-12">

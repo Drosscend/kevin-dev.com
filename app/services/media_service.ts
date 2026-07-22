@@ -1,6 +1,7 @@
 import { randomBytes } from 'node:crypto'
 import sharp from 'sharp'
 import drive from '@adonisjs/drive/services/main'
+import router from '@adonisjs/core/services/router'
 import type { MultipartFile } from '@adonisjs/core/bodyparser'
 import Media, { type MediaVariant } from '#models/media'
 
@@ -28,6 +29,18 @@ export default class MediaService {
 
   static key(mediaKey: string, file: string) {
     return `${this.#directory(mediaKey)}/${file}`
+  }
+
+  /**
+   * Public URL of the variant at `width`, falling back to the original
+   * when the source image was narrower than that.
+   */
+  static url(media: Media | null, width = 640) {
+    if (!media) {
+      return null
+    }
+    const variant = media.variants.find((item) => item.width === width)?.file ?? 'original.webp'
+    return router.makeUrl('uploads.show', { key: media.key, file: variant })
   }
 
   static async store(file: MultipartFile, alt: string) {

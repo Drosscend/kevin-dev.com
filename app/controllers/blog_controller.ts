@@ -3,6 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { Exception } from '@adonisjs/core/exceptions'
 import Article from '#models/article'
 import Category from '#models/category'
+import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
 import { localePath, type Locale } from '#types/i18n'
@@ -43,6 +44,7 @@ export default class BlogController {
       )
       .preload('category', (category) => category.preload('translations'))
       .preload('tags', (tags) => tags.preload('translations'))
+      .preload('cover')
       .orderBy('published_at', 'desc')
 
     if (categorySlug) {
@@ -81,6 +83,7 @@ export default class BlogController {
             ? { slug: article.category.slug, name: article.category.name(locale) }
             : null,
           tags: article.tags.map((tag) => ({ slug: tag.slug, name: tag.name(locale) })),
+          coverUrl: MediaService.url(article.cover),
         }
       }),
       pagination: {
@@ -96,6 +99,7 @@ export default class BlogController {
         title: i18n.t('messages.blog.title'),
         empty: i18n.t('messages.blog.empty'),
         allCategories: i18n.t('messages.blog.allCategories'),
+        clearTag: i18n.t('messages.blog.clearTag'),
         previous: i18n.t('messages.blog.previous'),
         next: i18n.t('messages.blog.next'),
       },

@@ -1,23 +1,28 @@
 import { type DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 import { Exception } from '@adonisjs/core/exceptions'
-import router from '@adonisjs/core/services/router'
 import Project from '#models/project'
-import type Media from '#models/media'
+import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
 import { localePath, type Locale } from '#types/i18n'
 
-function coverUrl(cover: Media | null) {
-  if (!cover) {
-    return null
-  }
-  const variant = cover.variants.find((item) => item.width === 640)?.file ?? 'original.webp'
-  return router.makeUrl('uploads.show', { key: cover.key, file: variant })
-}
-
 function formatDate(date: DateTime | null, locale: Locale) {
   return date?.setLocale(locale).toLocaleString({ month: 'long', year: 'numeric' }) ?? null
+}
+
+/**
+ * Timespan shown on the listing: an open-ended project keeps only its
+ * start, an undated one has no metadata line at all.
+ */
+function formatPeriod(project: Project, locale: Locale) {
+  const startedAt = formatDate(project.startedAt, locale)
+  const endedAt = formatDate(project.endedAt, locale)
+
+  if (startedAt && endedAt) {
+    return `${startedAt} — ${endedAt}`
+  }
+  return startedAt ?? endedAt
 }
 
 export default class ProjectsController {
@@ -42,8 +47,9 @@ export default class ProjectsController {
           slug: project.slug,
           title: translation.title,
           summary: translation.summary,
-          coverUrl: coverUrl(project.cover),
+          coverUrl: MediaService.url(project.cover),
           featured: project.featured,
+          period: formatPeriod(project, locale),
           technologies: project.technologies.map((technology) => ({
             slug: technology.slug,
             name: technology.name,
@@ -110,7 +116,7 @@ export default class ProjectsController {
         title: translation.title,
         summary: translation.summary,
         contentHtml: translation.contentHtml,
-        coverUrl: coverUrl(project.cover),
+        coverUrl: MediaService.url(project.cover),
         startedAt: formatDate(project.startedAt, locale),
         endedAt: formatDate(project.endedAt, locale),
         links: project.links.map((link) => ({

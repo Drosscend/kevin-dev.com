@@ -5,18 +5,25 @@ import { cn } from '~/lib/utils'
 
 /**
  * Arrow marking a block as a link. It inherits the surrounding colour and
- * slides right when the ancestor carrying `group` is hovered.
+ * slides away from the text when the ancestor carrying `group` is hovered.
  */
-export function LinkArrow({ className }: { className?: string }) {
+export function LinkArrow({
+  className,
+  direction = 'forward',
+}: {
+  className?: string
+  direction?: 'forward' | 'back'
+}) {
   return (
     <span
       aria-hidden
       className={cn(
-        'inline-block transition-transform group-hover:translate-x-0.5 motion-reduce:transform-none',
+        'inline-block transition-transform motion-reduce:transform-none',
+        direction === 'back' ? 'group-hover:-translate-x-0.5' : 'group-hover:translate-x-0.5',
         className
       )}
     >
-      →
+      {direction === 'back' ? '←' : '→'}
     </span>
   )
 }
@@ -77,50 +84,87 @@ export function LinkRow({
   )
 }
 
+/** Vertical list of ListingRow entries, on the rhythm LinkList sets. */
+export function ListingList({ children }: { children: ReactNode }) {
+  return <ul className="max-w-[760px] divide-y border-y">{children}</ul>
+}
+
 /**
- * Card carrying the same link affordances as LinkRow. Passing `coverUrl`,
- * even as null, opts into the cover area; null renders the placeholder.
+ * Full entry of an index page: thumbnail, metadata line, linked title,
+ * summary, and a free footer for tags or external links. Only the title
+ * and the thumbnail are clickable, so the metadata and footer remain free
+ * to hold links of their own.
+ *
+ * Passing `thumbnailUrl`, even as null, opts into the image column; null
+ * renders the placeholder that keeps every row aligned. The "logo" variant
+ * holds a square, letting artwork breathe instead of cropping it.
  */
-export function LinkCard({
+export function ListingRow({
   href,
   title,
-  summary,
-  coverUrl,
+  thumbnailUrl,
+  thumbnail = 'cover',
   meta,
-  heading: Heading = 'h3',
+  summary,
+  footer,
+  heading: Heading = 'h2',
 }: {
   href: string
   title: string
-  summary?: string
-  coverUrl?: string | null
+  thumbnailUrl?: string | null
+  thumbnail?: 'cover' | 'logo'
   meta?: ReactNode
+  summary?: string
+  footer?: ReactNode
   heading?: 'h2' | 'h3'
 }) {
+  const frame =
+    thumbnail === 'logo'
+      ? 'size-16 rounded-md border'
+      : 'aspect-video w-24 rounded-md border sm:w-32'
+
   return (
-    <Link
-      href={href}
-      className="group bg-card hover:border-primary flex flex-col overflow-hidden rounded-lg border transition-[border-color,transform] hover:-translate-y-0.5 motion-reduce:transform-none"
-    >
-      {coverUrl !== undefined &&
-        (coverUrl ? (
-          <img src={coverUrl} alt="" className="aspect-video w-full object-cover" loading="lazy" />
-        ) : (
-          <div className="bg-muted aspect-video w-full" />
-        ))}
-      <div className="flex grow flex-col p-6">
-        <Heading className="group-hover:text-primary font-semibold transition-colors">
-          {title}
-        </Heading>
-        {summary && <p className="text-muted-foreground mt-2 line-clamp-3 text-sm">{summary}</p>}
-        {meta && (
-          <p className="text-muted-foreground mt-4 flex flex-wrap gap-x-2.5 gap-y-1 font-mono text-xs">
-            {meta}
-          </p>
+    <li>
+      <article className="flex gap-5 py-7">
+        {thumbnailUrl !== undefined && (
+          <Link href={href} aria-hidden tabIndex={-1} className="shrink-0">
+            {thumbnailUrl ? (
+              <img
+                src={thumbnailUrl}
+                alt=""
+                loading="lazy"
+                className={cn(frame, thumbnail === 'logo' ? 'object-contain p-2' : 'object-cover')}
+              />
+            ) : (
+              // A missing logo falls back to the initial rather than an empty square.
+              <div
+                className={cn(
+                  'bg-muted text-muted-foreground flex items-center justify-center',
+                  frame
+                )}
+              >
+                {thumbnail === 'logo' && (
+                  <span className="font-display text-xl font-semibold">{title.slice(0, 1)}</span>
+                )}
+              </div>
+            )}
+          </Link>
         )}
-        <span className="text-primary mt-auto pt-4 text-sm">
-          <LinkArrow />
-        </span>
-      </div>
-    </Link>
+        <div className="min-w-0">
+          {meta && (
+            <p className="text-muted-foreground flex flex-wrap items-center gap-x-2.5 font-mono text-[13px]">
+              {meta}
+            </p>
+          )}
+          <Heading className="mt-2 text-xl font-semibold">
+            <Link href={href} className="group hover:text-primary transition-colors">
+              {title} <LinkArrow />
+            </Link>
+          </Heading>
+          {summary && <p className="text-muted-foreground mt-2">{summary}</p>}
+          {footer && <div className="mt-3">{footer}</div>}
+        </div>
+      </article>
+    </li>
   )
 }

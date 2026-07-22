@@ -8,24 +8,31 @@ import { HoverPreviewProvider } from '~/components/hover_preview'
 import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
-import { localePath } from '~/lib/locale'
+import { localePath, otherLocaleUrl } from '~/lib/locale'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
 
+/** Order of the header and footer links; labels come from shared props. */
 const NAVIGATION = [
-  { path: '/projects', label: 'Projets' },
-  { path: '/blog', label: 'Blog' },
-  { path: '/talks', label: 'Interventions' },
-  { path: '/cv', label: 'CV' },
-  { path: '/technologies', label: 'Technos' },
-  { path: '/contact', label: 'Contact' },
+  { path: '/projects', label: 'projects' },
+  { path: '/blog', label: 'blog' },
+  { path: '/talks', label: 'talks' },
+  { path: '/cv', label: 'cv' },
+  { path: '/technologies', label: 'technologies' },
+  { path: '/contact', label: 'contact' },
 ] as const
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const locale = children.props.locale
+  const chrome = children.props.chrome
   const { url } = usePage()
   const [menuOpen, setMenuOpen] = useState(false)
   const [renderedUrl, setRenderedUrl] = useState(url)
   const currentPath = url.split('?')[0]
+  /**
+   * Detail pages report whether the entry exists in the other locale;
+   * listings always do, so the switch shows unless told otherwise.
+   */
+  const translated = (children.props as { hasOtherLocale?: boolean }).hasOtherLocale ?? true
 
   useFlashToasts(children.props.flash)
 
@@ -84,7 +91,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
           </Link>
 
           <div className="flex items-center gap-1 md:gap-3">
-            <nav aria-label="Navigation principale" className="hidden items-center gap-5 md:flex">
+            <nav aria-label={chrome.primary} className="hidden items-center gap-5 md:flex">
               {NAVIGATION.map((item) => (
                 <Link
                   key={item.path}
@@ -95,12 +102,21 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
                     isActive(item.path) ? 'text-primary font-medium' : 'text-muted-foreground'
                   )}
                 >
-                  {item.label}
+                  {chrome[item.label]}
                 </Link>
               ))}
             </nav>
 
-            <ThemeToggle />
+            {translated && (
+              <Link
+                href={otherLocaleUrl(locale, url)}
+                className="text-muted-foreground hover:text-primary px-1.5 font-mono text-xs tracking-wider uppercase transition-colors"
+              >
+                {locale === 'en' ? 'FR' : 'EN'}
+              </Link>
+            )}
+
+            <ThemeToggle label={chrome.theme} />
 
             <Button
               type="button"
@@ -109,7 +125,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
               className="md:hidden"
               aria-controls="mobile-navigation"
               aria-expanded={menuOpen}
-              aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+              aria-label={menuOpen ? chrome.closeMenu : chrome.openMenu}
               onClick={() => setMenuOpen((open) => !open)}
             >
               {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -127,7 +143,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
 
         <nav
           id="mobile-navigation"
-          aria-label="Navigation principale"
+          aria-label={chrome.primary}
           hidden={!menuOpen}
           className="bg-background relative z-50 border-b px-6 pt-2 pb-4 md:hidden"
         >
@@ -143,7 +159,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
               )}
             >
-              {item.label}
+              {chrome[item.label]}
             </Link>
           ))}
         </nav>
@@ -154,21 +170,21 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
       </HoverPreviewProvider>
       <footer className="border-t">
         <div className="text-muted-foreground mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-9 text-sm">
-          <nav aria-label="Navigation secondaire" className="flex flex-wrap gap-x-5 gap-y-3">
+          <nav aria-label={chrome.secondary} className="flex flex-wrap gap-x-5 gap-y-3">
             {NAVIGATION.map((item) => (
               <Link
                 key={item.path}
                 href={localePath(locale, item.path)}
                 className="hover:text-primary transition-colors"
               >
-                {item.label}
+                {chrome[item.label]}
               </Link>
             ))}
             <Link
               href={localePath(locale, '/legal')}
               className="hover:text-primary transition-colors"
             >
-              Mentions légales
+              {chrome.legal}
             </Link>
           </nav>
           <span>

@@ -1,7 +1,7 @@
-import { Link } from '@adonisjs/inertia/react'
-import { LinkCard } from '~/components/content_link'
+import { ListingList, ListingRow } from '~/components/content_link'
+import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath, otherLocalePath } from '~/lib/locale'
+import { localePath } from '~/lib/locale'
 
 type ProjectCard = {
   slug: string
@@ -9,6 +9,7 @@ type ProjectCard = {
   summary: string
   coverUrl: string | null
   featured: boolean
+  period: string | null
   technologies: { slug: string; name: string }[]
 }
 
@@ -25,38 +26,32 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
-      <div className="mb-12 flex items-baseline justify-between gap-4">
-        <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
-        <Link
-          href={otherLocalePath(locale, '/projects')}
-          className="text-muted-foreground hover:text-primary font-mono text-xs tracking-wider uppercase transition-colors"
-        >
-          {locale === 'en' ? 'FR' : 'EN'}
-        </Link>
-      </div>
+      <PageHeader title={labels.title} />
 
       {projects.length === 0 ? (
         <p className="text-muted-foreground">{labels.empty}</p>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ListingList>
           {projects.map((project) => (
-            <LinkCard
+            <ListingRow
               key={project.slug}
               href={to(`/projects/${project.slug}`)}
               title={project.title}
               summary={project.summary}
-              coverUrl={project.coverUrl}
-              heading="h2"
-              meta={
-                project.technologies.length > 0
-                  ? project.technologies.map((technology) => (
+              thumbnailUrl={project.coverUrl}
+              meta={project.period}
+              footer={
+                project.technologies.length > 0 && (
+                  <p className="text-muted-foreground flex flex-wrap gap-x-2.5 gap-y-1 font-mono text-[13px]">
+                    {project.technologies.map((technology) => (
                       <span key={technology.slug}>{technology.name}</span>
-                    ))
-                  : undefined
+                    ))}
+                  </p>
+                )
               }
             />
           ))}
-        </div>
+        </ListingList>
       )}
     </div>
   )

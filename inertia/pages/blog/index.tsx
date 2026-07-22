@@ -1,8 +1,9 @@
 import { router } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
-import { LinkArrow } from '~/components/content_link'
+import { LinkArrow, ListingList, ListingRow } from '~/components/content_link'
+import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath, otherLocalePath } from '~/lib/locale'
+import { localePath } from '~/lib/locale'
 
 type ArticleCard = {
   slug: string
@@ -12,6 +13,7 @@ type ArticleCard = {
   readingTimeLabel: string
   category: { slug: string; name: string } | null
   tags: { slug: string; name: string }[]
+  coverUrl: string | null
 }
 
 type BlogIndexProps = {
@@ -24,6 +26,7 @@ type BlogIndexProps = {
     title: string
     empty: string
     allCategories: string
+    clearTag: string
     previous: string
     next: string
   }
@@ -78,18 +81,10 @@ export default function BlogIndex({
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
 
-      <div className="flex items-baseline justify-between gap-4">
-        <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
-        <Link
-          href={otherLocalePath(locale, '/blog')}
-          className="text-muted-foreground hover:text-primary font-mono text-[13px] transition-colors"
-        >
-          {locale === 'en' ? 'FR' : 'EN'}
-        </Link>
-      </div>
+      <PageHeader title={labels.title} />
 
       {categories.length > 0 && (
-        <div className="mt-8 flex flex-wrap gap-2.5">
+        <div className="-mt-4 flex flex-wrap gap-2.5">
           <button
             type="button"
             onClick={() => filterByCategory(null)}
@@ -116,7 +111,7 @@ export default function BlogIndex({
           <Link
             href={pageUrl(base, { category: filters.category, tag: null }, 1)}
             className="hover:text-primary ml-1 transition-colors"
-            aria-label="×"
+            aria-label={labels.clearTag}
           >
             ×
           </Link>
@@ -124,64 +119,61 @@ export default function BlogIndex({
       )}
 
       {articles.length === 0 ? (
-        <p className="text-muted-foreground mt-12">{labels.empty}</p>
+        <p className="text-muted-foreground">{labels.empty}</p>
       ) : (
-        <ul className="mt-12 max-w-[720px] divide-y border-y">
-          {articles.map((article) => (
-            <li key={article.slug}>
-              <article className="py-7">
-                <p className="text-muted-foreground font-mono text-[13px]">
-                  {article.publishedAt} · {article.readingTimeLabel}
-                  {article.category && (
-                    <>
-                      {' · '}
+        <div className="mt-12">
+          <ListingList>
+            {articles.map((article) => (
+              <ListingRow
+                key={article.slug}
+                href={`${base}/${article.slug}`}
+                title={article.title}
+                summary={article.summary}
+                thumbnailUrl={article.coverUrl}
+                meta={
+                  <>
+                    <span>
+                      {article.publishedAt} · {article.readingTimeLabel}
+                    </span>
+                    {article.category && (
                       <Link
                         href={pageUrl(base, { category: article.category.slug, tag: null }, 1)}
-                        className="hover:text-primary uppercase tracking-wider transition-colors"
+                        className="hover:text-primary tracking-wider uppercase transition-colors"
                       >
                         {article.category.name}
                       </Link>
-                    </>
-                  )}
-                </p>
-                <h2 className="mt-2 text-xl font-semibold">
-                  <Link
-                    href={`${base}/${article.slug}`}
-                    className="group hover:text-primary transition-colors"
-                  >
-                    {article.title} <LinkArrow />
-                  </Link>
-                </h2>
-                {article.summary && (
-                  <p className="text-muted-foreground mt-2 text-sm">{article.summary}</p>
-                )}
-                {article.tags.length > 0 && (
-                  <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[13px]">
-                    {article.tags.map((tag) => (
-                      <Link
-                        key={tag.slug}
-                        href={pageUrl(base, { category: filters.category, tag: tag.slug }, 1)}
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        #{tag.name}
-                      </Link>
-                    ))}
-                  </p>
-                )}
-              </article>
-            </li>
-          ))}
-        </ul>
+                    )}
+                  </>
+                }
+                footer={
+                  article.tags.length > 0 && (
+                    <p className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[13px]">
+                      {article.tags.map((tag) => (
+                        <Link
+                          key={tag.slug}
+                          href={pageUrl(base, { category: filters.category, tag: tag.slug }, 1)}
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          #{tag.name}
+                        </Link>
+                      ))}
+                    </p>
+                  )
+                }
+              />
+            ))}
+          </ListingList>
+        </div>
       )}
 
       {pagination.lastPage > 1 && (
-        <nav className="mt-12 flex max-w-[720px] items-center justify-between text-sm">
+        <nav className="mt-12 flex max-w-[760px] items-center justify-between text-sm">
           {pagination.currentPage > 1 ? (
             <Link
               href={pageUrl(base, filters, pagination.currentPage - 1)}
-              className="hover:text-primary font-medium transition-colors"
+              className="group hover:text-primary font-medium transition-colors"
             >
-              {labels.previous}
+              <LinkArrow direction="back" /> {labels.previous}
             </Link>
           ) : (
             <span />
@@ -192,9 +184,9 @@ export default function BlogIndex({
           {pagination.currentPage < pagination.lastPage ? (
             <Link
               href={pageUrl(base, filters, pagination.currentPage + 1)}
-              className="hover:text-primary font-medium transition-colors"
+              className="group hover:text-primary font-medium transition-colors"
             >
-              {labels.next}
+              {labels.next} <LinkArrow />
             </Link>
           ) : (
             <span />
