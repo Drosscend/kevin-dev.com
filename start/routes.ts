@@ -172,9 +172,9 @@ router
       .delete('projects/:id', [controllers.admin.Projects, 'destroy'])
       .as('admin.projects.destroy')
 
-    router.get('pages', [controllers.admin.Pages, 'show']).as('admin.pages')
+    router.get('pages', [controllers.admin.Pages, 'show']).as('admin.pages.index')
     router.put('pages', [controllers.admin.Pages, 'update']).as('admin.pages.update')
-    router.post('pages/cv-pdf', [controllers.admin.Pages, 'uploadPdf']).as('admin.pages.pdf')
+    router.post('pages/cv-pdf', [controllers.admin.Pages, 'uploadPdf']).as('admin.pages.pdf.store')
 
     router.get('messages', [controllers.admin.Messages, 'index']).as('admin.messages.index')
     router

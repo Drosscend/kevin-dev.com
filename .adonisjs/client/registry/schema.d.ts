@@ -859,7 +859,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['destroy']>>>
     }
   }
-  'admin.pages': {
+  'admin.pages.index': {
     methods: ["GET","HEAD"]
     pattern: '/admin/pages'
     types: {
@@ -883,7 +883,7 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/pages_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'admin.pages.pdf': {
+  'admin.pages.pdf.store': {
     methods: ["POST"]
     pattern: '/admin/pages/cv-pdf'
     types: {

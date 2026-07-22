@@ -75,9 +75,9 @@ export type ScannedRoutes = {
     'admin.projects.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.projects.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.projects.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'admin.pages': { paramsTuple?: []; params?: {} }
+    'admin.pages.index': { paramsTuple?: []; params?: {} }
     'admin.pages.update': { paramsTuple?: []; params?: {} }
-    'admin.pages.pdf': { paramsTuple?: []; params?: {} }
+    'admin.pages.pdf.store': { paramsTuple?: []; params?: {} }
     'admin.messages.index': { paramsTuple?: []; params?: {} }
     'admin.messages.read': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.messages.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -129,7 +129,7 @@ export type ScannedRoutes = {
     'admin.projects.index': { paramsTuple?: []; params?: {} }
     'admin.projects.create': { paramsTuple?: []; params?: {} }
     'admin.projects.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'admin.pages': { paramsTuple?: []; params?: {} }
+    'admin.pages.index': { paramsTuple?: []; params?: {} }
     'admin.messages.index': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
@@ -179,7 +179,7 @@ export type ScannedRoutes = {
     'admin.projects.index': { paramsTuple?: []; params?: {} }
     'admin.projects.create': { paramsTuple?: []; params?: {} }
     'admin.projects.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'admin.pages': { paramsTuple?: []; params?: {} }
+    'admin.pages.index': { paramsTuple?: []; params?: {} }
     'admin.messages.index': { paramsTuple?: []; params?: {} }
   }
   POST: {
@@ -196,7 +196,7 @@ export type ScannedRoutes = {
     'admin.articles.preview': { paramsTuple?: []; params?: {} }
     'admin.technologies.store': { paramsTuple?: []; params?: {} }
     'admin.projects.store': { paramsTuple?: []; params?: {} }
-    'admin.pages.pdf': { paramsTuple?: []; params?: {} }
+    'admin.pages.pdf.store': { paramsTuple?: []; params?: {} }
   }
   DELETE: {
     'admin.security.destroy': { paramsTuple?: []; params?: {} }

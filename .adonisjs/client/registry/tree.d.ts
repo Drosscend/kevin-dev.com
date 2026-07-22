@@ -125,9 +125,12 @@ export interface ApiDefinition {
       update: typeof routes['admin.projects.update']
       destroy: typeof routes['admin.projects.destroy']
     }
-    pages: typeof routes['admin.pages'] & {
+    pages: {
+      index: typeof routes['admin.pages.index']
       update: typeof routes['admin.pages.update']
-      pdf: typeof routes['admin.pages.pdf']
+      pdf: {
+        store: typeof routes['admin.pages.pdf.store']
+      }
     }
     messages: {
       index: typeof routes['admin.messages.index']

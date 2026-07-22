@@ -432,11 +432,11 @@ const routes = {
     tokens: [{"old":"/admin/projects/:id","type":0,"val":"admin","end":""},{"old":"/admin/projects/:id","type":0,"val":"projects","end":""},{"old":"/admin/projects/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['admin.projects.destroy']['types'],
   },
-  'admin.pages': {
+  'admin.pages.index': {
     methods: ["GET","HEAD"],
     pattern: '/admin/pages',
     tokens: [{"old":"/admin/pages","type":0,"val":"admin","end":""},{"old":"/admin/pages","type":0,"val":"pages","end":""}],
-    types: placeholder as Registry['admin.pages']['types'],
+    types: placeholder as Registry['admin.pages.index']['types'],
   },
   'admin.pages.update': {
     methods: ["PUT"],
@@ -444,11 +444,11 @@ const routes = {
     tokens: [{"old":"/admin/pages","type":0,"val":"admin","end":""},{"old":"/admin/pages","type":0,"val":"pages","end":""}],
     types: placeholder as Registry['admin.pages.update']['types'],
   },
-  'admin.pages.pdf': {
+  'admin.pages.pdf.store': {
     methods: ["POST"],
     pattern: '/admin/pages/cv-pdf',
     tokens: [{"old":"/admin/pages/cv-pdf","type":0,"val":"admin","end":""},{"old":"/admin/pages/cv-pdf","type":0,"val":"pages","end":""},{"old":"/admin/pages/cv-pdf","type":0,"val":"cv-pdf","end":""}],
-    types: placeholder as Registry['admin.pages.pdf']['types'],
+    types: placeholder as Registry['admin.pages.pdf.store']['types'],
   },
   'admin.messages.index': {
     methods: ["GET","HEAD"],

@@ -73,7 +73,7 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form route="admin.pages.pdf" className="flex items-end gap-3">
+          <Form route="admin.pages.pdf.store" className="flex items-end gap-3">
             {({ errors, processing }) => (
               <>
                 <div className="space-y-2">

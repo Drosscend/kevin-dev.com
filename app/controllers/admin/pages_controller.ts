@@ -51,7 +51,7 @@ export default class PagesController {
     await savePage('legal', 'en', payload.legalEn ?? '')
 
     session.flash('success', 'Pages enregistrées')
-    response.redirect().toRoute('admin.pages')
+    response.redirect().toRoute('admin.pages.index')
   }
 
   async uploadPdf({ request, response, session }: HttpContext) {
@@ -67,6 +67,6 @@ export default class PagesController {
     await file.moveToDisk(CV_PDF_KEY)
 
     session.flash('success', 'CV PDF mis à jour')
-    response.redirect().toRoute('admin.pages')
+    response.redirect().toRoute('admin.pages.index')
   }
 }
