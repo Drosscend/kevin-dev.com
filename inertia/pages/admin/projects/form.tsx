@@ -2,10 +2,13 @@ import { type FormEvent, useRef, useState } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 import { Trash2 } from 'lucide-react'
+import { client } from '~/client'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import { Select } from '~/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import FieldError from '~/components/field_error'
 import DraftBanner from '~/components/admin/draft_banner'
 import TranslationFields from '~/components/admin/translation_fields'
 import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
@@ -53,9 +56,7 @@ const LINK_TYPES = [
 ] as const
 
 export default function ProjectForm({ project, options }: ProjectFormProps) {
-  const { errors } = usePage().props as unknown as {
-    errors: Record<string, string | string[]>
-  }
+  const { errors } = usePage().props
 
   const form = useForm({
     slug: project?.slug ?? '',
@@ -115,9 +116,9 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
       }))
       const visitOptions = { preserveScroll: true, onSuccess: () => draft.clearDraft() }
       if (project) {
-        form.put(`/admin/projects/${project.id}`, visitOptions)
+        form.put(client.urlFor('admin.projects.update', { id: project.id }), visitOptions)
       } else {
-        form.post('/admin/projects', visitOptions)
+        form.post(client.urlFor('admin.projects.store'), visitOptions)
       }
     }
   }
@@ -129,7 +130,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
           {project ? 'Modifier le projet' : 'Nouveau projet'}
         </h1>
         <Link
-          href="/admin/projects"
+          route="admin.projects.index"
           className="text-muted-foreground hover:text-primary text-sm transition-colors"
         >
           ← Tous les projets
@@ -161,13 +162,12 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                     form.setData('slug', event.target.value)
                   }}
                 />
-                {errors.slug && <p className="text-destructive text-sm">{errors.slug}</p>}
+                <FieldError errors={errors} field="slug" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="cover">Image de couverture</Label>
-                <select
+                <Select
                   id="cover"
-                  className="border-input h-9 w-full rounded-md border bg-transparent px-3 text-sm"
                   value={form.data.coverMediaId ?? ''}
                   onChange={(event) =>
                     form.setData(
@@ -182,7 +182,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                       {media.alt}
                     </option>
                   ))}
-                </select>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="startedAt">Début du projet</Label>
@@ -300,8 +300,8 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                   value={link.url}
                   onChange={(event) => setLink(index, { ...link, url: event.target.value })}
                 />
-                <select
-                  className="border-input h-9 rounded-md border bg-transparent px-3 text-sm"
+                <Select
+                  className="w-auto"
                   value={link.type}
                   onChange={(event) => setLink(index, { ...link, type: event.target.value })}
                 >
@@ -310,12 +310,13 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                       {type.label}
                     </option>
                   ))}
-                </select>
+                </Select>
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
                   className="text-destructive"
+                  aria-label={`Retirer le lien ${index + 1}`}
                   onClick={() =>
                     form.setData(
                       'links',
@@ -327,7 +328,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                 </Button>
               </div>
             ))}
-            {errors['links'] && <p className="text-destructive text-sm">{errors['links']}</p>}
+            <FieldError errors={errors} field="links" />
           </CardContent>
         </Card>
 

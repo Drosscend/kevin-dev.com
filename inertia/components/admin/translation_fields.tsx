@@ -1,6 +1,8 @@
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import { Textarea } from '~/components/ui/textarea'
 import MarkdownEditor from '~/components/admin/markdown_editor'
+import FieldError, { type FieldErrors } from '~/components/field_error'
 import type { TranslationValues } from '~/lib/admin'
 
 /**
@@ -16,7 +18,7 @@ export default function TranslationFields({
   prefix: 'fr' | 'en'
   values: TranslationValues
   onChange: (values: TranslationValues) => void
-  errors: Record<string, string | string[]>
+  errors: FieldErrors
 }) {
   return (
     <div className="space-y-4">
@@ -27,15 +29,12 @@ export default function TranslationFields({
           value={values.title}
           onChange={(event) => onChange({ ...values, title: event.target.value })}
         />
-        {errors[`${prefix}.title`] && (
-          <p className="text-destructive text-sm">{errors[`${prefix}.title`]}</p>
-        )}
+        <FieldError errors={errors} field={`${prefix}.title`} />
       </div>
       <div className="space-y-2">
         <Label htmlFor={`${prefix}-summary`}>Résumé</Label>
-        <textarea
+        <Textarea
           id={`${prefix}-summary`}
-          className="border-input min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-sm"
           value={values.summary}
           onChange={(event) => onChange({ ...values, summary: event.target.value })}
         />
@@ -48,9 +47,7 @@ export default function TranslationFields({
           rows={16}
           onChange={(contentMarkdown) => onChange({ ...values, contentMarkdown })}
         />
-        {errors[`${prefix}.contentMarkdown`] && (
-          <p className="text-destructive text-sm">{errors[`${prefix}.contentMarkdown`]}</p>
-        )}
+        <FieldError errors={errors} field={`${prefix}.contentMarkdown`} />
       </div>
     </div>
   )

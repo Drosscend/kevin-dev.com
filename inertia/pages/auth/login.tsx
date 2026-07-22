@@ -3,6 +3,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import FieldError from '~/components/field_error'
 
 export default function Login() {
   return (
@@ -25,7 +26,7 @@ export default function Login() {
                     autoComplete="username"
                     aria-invalid={errors.email ? true : undefined}
                   />
-                  {errors.email && <p className="text-destructive text-sm">{errors.email}</p>}
+                  <FieldError errors={errors} field="email" />
                 </div>
 
                 <div className="space-y-2">
@@ -37,7 +38,7 @@ export default function Login() {
                     autoComplete="current-password"
                     aria-invalid={errors.password ? true : undefined}
                   />
-                  {errors.password && <p className="text-destructive text-sm">{errors.password}</p>}
+                  <FieldError errors={errors} field="password" />
                 </div>
 
                 <Button type="submit" className="w-full" disabled={processing}>

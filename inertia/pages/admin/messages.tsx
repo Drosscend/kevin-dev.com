@@ -1,4 +1,4 @@
-import { router } from '@inertiajs/react'
+import { useRouter } from '@adonisjs/inertia/react'
 import { Mail, MailOpen, Trash2 } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import AdminPage from '~/components/admin/admin_page'
@@ -20,8 +20,13 @@ type MessagesProps = {
 }
 
 export default function Messages({ messages }: MessagesProps) {
+  const router = useRouter()
+
   function toggleRead(message: Message) {
-    router.put(`/admin/messages/${message.id}/read`, {}, { preserveScroll: true })
+    router.visit(
+      { route: 'admin.messages.read', routeParams: { id: message.id } },
+      { preserveScroll: true }
+    )
   }
 
   return (
@@ -67,7 +72,10 @@ export default function Messages({ messages }: MessagesProps) {
                   <ConfirmButton
                     description={`Supprimer le message de ${message.name} ? Cette action est définitive.`}
                     onConfirm={() =>
-                      router.delete(`/admin/messages/${message.id}`, { preserveScroll: true })
+                      router.visit(
+                        { route: 'admin.messages.destroy', routeParams: { id: message.id } },
+                        { preserveScroll: true }
+                      )
                     }
                     trigger={
                       <Button

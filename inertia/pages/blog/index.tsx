@@ -29,15 +29,26 @@ type BlogIndexProps = {
   meta: SeoMeta
 }
 
+/**
+ * Listing URL carrying the active filters and page. Client-side twin
+ * of listQueryString in the blog controller, which builds the same
+ * query string for redirects and canonical URLs.
+ */
 function pageUrl(
   base: string,
   filters: { category: string | null; tag: string | null },
   page: number
 ) {
   const params = new URLSearchParams()
-  if (filters.category) params.set('category', filters.category)
-  if (filters.tag) params.set('tag', filters.tag)
-  if (page > 1) params.set('page', String(page))
+  if (filters.category) {
+    params.set('category', filters.category)
+  }
+  if (filters.tag) {
+    params.set('tag', filters.tag)
+  }
+  if (page > 1) {
+    params.set('page', String(page))
+  }
   const query = params.toString()
   return query ? `${base}?${query}` : base
 }

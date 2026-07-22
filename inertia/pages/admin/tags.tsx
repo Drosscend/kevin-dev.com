@@ -5,5 +5,5 @@ type TagsProps = {
 }
 
 export default function Tags({ tags }: TagsProps) {
-  return <TaxonomyPage title="Tags" baseUrl="/admin/tags" items={tags} />
+  return <TaxonomyPage title="Tags" route="admin.tags" items={tags} />
 }

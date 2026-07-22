@@ -1,10 +1,17 @@
 import { type FormEvent, useState } from 'react'
-import { router, usePage } from '@inertiajs/react'
+import { usePage } from '@inertiajs/react'
+import { useRouter } from '@adonisjs/inertia/react'
 import { Pencil, Trash2, X } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import { Select } from '~/components/ui/select'
+import { Textarea } from '~/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import FieldError from '~/components/field_error'
+import AdminPage from '~/components/admin/admin_page'
+import ConfirmButton from '~/components/admin/confirm_button'
+import EmptyState from '~/components/admin/empty_state'
 
 const CATEGORIES = [
   { value: 'langage', label: 'Langage' },
@@ -32,8 +39,6 @@ type TechnologiesProps = {
   mediaOptions: MediaOption[]
 }
 
-type Errors = Record<string, string | string[]>
-
 function TechnologyForm({
   item,
   mediaOptions,
@@ -43,35 +48,42 @@ function TechnologyForm({
   mediaOptions: MediaOption[]
   onDone?: () => void
 }) {
-  const { errors } = usePage().props as { errors?: Errors }
-  const [values, setValues] = useState({
-    slug: item?.slug ?? '',
-    name: item?.name ?? '',
-    category: item?.category ?? 'outil',
-    logoMediaId: item?.logoMediaId ?? null,
-    descriptionFr: item?.descriptionFr ?? '',
-    descriptionEn: item?.descriptionEn ?? '',
-  })
+  const { errors } = usePage().props
+  const router = useRouter()
+  const empty = {
+    slug: '',
+    name: '',
+    category: 'outil',
+    logoMediaId: null as number | null,
+    descriptionFr: '',
+    descriptionEn: '',
+  }
+  const [values, setValues] = useState(
+    item
+      ? {
+          slug: item.slug,
+          name: item.name,
+          category: item.category,
+          logoMediaId: item.logoMediaId,
+          descriptionFr: item.descriptionFr,
+          descriptionEn: item.descriptionEn,
+        }
+      : empty
+  )
 
   function submit(event: FormEvent) {
     event.preventDefault()
-    const options = { preserveScroll: true, onSuccess: onDone }
+    const options = { preserveScroll: true, data: values, onSuccess: onDone }
+
     if (item) {
-      router.put(`/admin/technologies/${item.id}`, values, options)
-    } else {
-      router.post('/admin/technologies', values, {
-        ...options,
-        onSuccess: () =>
-          setValues({
-            slug: '',
-            name: '',
-            category: 'outil',
-            logoMediaId: null,
-            descriptionFr: '',
-            descriptionEn: '',
-          }),
-      })
+      router.visit({ route: 'admin.technologies.update', routeParams: { id: item.id } }, options)
+      return
     }
+
+    router.visit(
+      { route: 'admin.technologies.store' },
+      { ...options, onSuccess: () => setValues(empty) }
+    )
   }
 
   const key = item?.id ?? 'new'
@@ -85,7 +97,7 @@ function TechnologyForm({
           value={values.name}
           onChange={(event) => setValues({ ...values, name: event.target.value })}
         />
-        {errors?.name && <p className="text-destructive text-sm">{errors.name}</p>}
+        <FieldError errors={errors} field="name" />
       </div>
       <div className="space-y-2">
         <Label htmlFor={`slug-${key}`}>Slug</Label>
@@ -94,13 +106,12 @@ function TechnologyForm({
           value={values.slug}
           onChange={(event) => setValues({ ...values, slug: event.target.value })}
         />
-        {errors?.slug && <p className="text-destructive text-sm">{errors.slug}</p>}
+        <FieldError errors={errors} field="slug" />
       </div>
       <div className="space-y-2">
         <Label htmlFor={`category-${key}`}>Catégorie</Label>
-        <select
+        <Select
           id={`category-${key}`}
-          className="border-input h-9 w-full rounded-md border bg-transparent px-3 text-sm"
           value={values.category}
           onChange={(event) => setValues({ ...values, category: event.target.value })}
         >
@@ -109,13 +120,12 @@ function TechnologyForm({
               {category.label}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
       <div className="space-y-2">
         <Label htmlFor={`logo-${key}`}>Logo (bibliothèque média)</Label>
-        <select
+        <Select
           id={`logo-${key}`}
-          className="border-input h-9 w-full rounded-md border bg-transparent px-3 text-sm"
           value={values.logoMediaId ?? ''}
           onChange={(event) =>
             setValues({
@@ -130,22 +140,20 @@ function TechnologyForm({
               {media.alt}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
       <div className="space-y-2">
         <Label htmlFor={`descFr-${key}`}>Description (FR)</Label>
-        <textarea
+        <Textarea
           id={`descFr-${key}`}
-          className="border-input min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-sm"
           value={values.descriptionFr}
           onChange={(event) => setValues({ ...values, descriptionFr: event.target.value })}
         />
       </div>
       <div className="space-y-2">
         <Label htmlFor={`descEn-${key}`}>Description (EN, optionnelle)</Label>
-        <textarea
+        <Textarea
           id={`descEn-${key}`}
-          className="border-input min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-sm"
           value={values.descriptionEn}
           onChange={(event) => setValues({ ...values, descriptionEn: event.target.value })}
         />
@@ -160,18 +168,11 @@ function TechnologyForm({
 }
 
 export default function Technologies({ technologies, mediaOptions }: TechnologiesProps) {
+  const router = useRouter()
   const [editingId, setEditingId] = useState<number | null>(null)
 
-  function remove(item: TechnologyItem) {
-    if (confirm(`Supprimer « ${item.name} » ?`)) {
-      router.delete(`/admin/technologies/${item.id}`, { preserveScroll: true })
-    }
-  }
-
   return (
-    <div className="max-w-3xl space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">Technologies</h1>
-
+    <AdminPage title="Technologies" className="max-w-3xl">
       <Card>
         <CardHeader>
           <CardTitle>Ajouter</CardTitle>
@@ -181,10 +182,9 @@ export default function Technologies({ technologies, mediaOptions }: Technologie
         </CardContent>
       </Card>
 
+      {technologies.length === 0 && <EmptyState>Rien pour l’instant.</EmptyState>}
+
       <div className="space-y-2">
-        {technologies.length === 0 && (
-          <p className="text-muted-foreground text-sm">Rien pour l’instant.</p>
-        )}
         {technologies.map((item) => (
           <Card key={item.id}>
             <CardContent className="space-y-3">
@@ -206,6 +206,9 @@ export default function Technologies({ technologies, mediaOptions }: Technologie
                     type="button"
                     variant="ghost"
                     size="sm"
+                    aria-label={
+                      editingId === item.id ? 'Annuler la modification' : `Modifier ${item.name}`
+                    }
                     onClick={() => setEditingId(editingId === item.id ? null : item.id)}
                   >
                     {editingId === item.id ? (
@@ -214,15 +217,26 @@ export default function Technologies({ technologies, mediaOptions }: Technologie
                       <Pencil className="size-4" />
                     )}
                   </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="text-destructive"
-                    onClick={() => remove(item)}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
+                  <ConfirmButton
+                    description={`Supprimer « ${item.name} » ?`}
+                    onConfirm={() =>
+                      router.visit(
+                        { route: 'admin.technologies.destroy', routeParams: { id: item.id } },
+                        { preserveScroll: true }
+                      )
+                    }
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive"
+                        aria-label={`Supprimer ${item.name}`}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    }
+                  />
                 </div>
               </div>
               {editingId === item.id && (
@@ -236,6 +250,6 @@ export default function Technologies({ technologies, mediaOptions }: Technologie
           </Card>
         ))}
       </div>
-    </div>
+    </AdminPage>
   )
 }

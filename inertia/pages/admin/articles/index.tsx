@@ -1,5 +1,4 @@
-import { router } from '@inertiajs/react'
-import { Link } from '@adonisjs/inertia/react'
+import { Link, useRouter } from '@adonisjs/inertia/react'
 import { Plus, Trash2 } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import AdminPage from '~/components/admin/admin_page'
@@ -23,6 +22,8 @@ type ArticlesIndexProps = {
 }
 
 export default function ArticlesIndex({ articles }: ArticlesIndexProps) {
+  const router = useRouter()
+
   return (
     <AdminPage
       title="Articles"
@@ -43,7 +44,8 @@ export default function ArticlesIndex({ articles }: ArticlesIndexProps) {
             <li key={article.id} className="flex items-center justify-between gap-4 py-3">
               <div className="min-w-0">
                 <Link
-                  href={`/admin/articles/${article.id}/edit`}
+                  route="admin.articles.edit"
+                  routeParams={{ id: article.id }}
                   className="hover:text-primary font-medium transition-colors"
                 >
                   {article.title}
@@ -63,7 +65,10 @@ export default function ArticlesIndex({ articles }: ArticlesIndexProps) {
                 <ConfirmButton
                   description={`Supprimer « ${article.title} » ? Cette action est définitive.`}
                   onConfirm={() =>
-                    router.delete(`/admin/articles/${article.id}`, { preserveScroll: true })
+                    router.visit(
+                      { route: 'admin.articles.destroy', routeParams: { id: article.id } },
+                      { preserveScroll: true }
+                    )
                   }
                   trigger={
                     <Button

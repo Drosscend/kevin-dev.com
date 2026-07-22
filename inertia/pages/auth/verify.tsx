@@ -3,6 +3,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import FieldError from '~/components/field_error'
 
 export default function Verify() {
   return (
@@ -30,7 +31,7 @@ export default function Verify() {
                     autoFocus
                     aria-invalid={errors.code ? true : undefined}
                   />
-                  {errors.code && <p className="text-destructive text-sm">{errors.code}</p>}
+                  <FieldError errors={errors} field="code" />
                 </div>
 
                 <Button type="submit" className="w-full" disabled={processing}>

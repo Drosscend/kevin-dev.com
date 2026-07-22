@@ -5,5 +5,5 @@ type CategoriesProps = {
 }
 
 export default function Categories({ categories }: CategoriesProps) {
-  return <TaxonomyPage title="Catégories" baseUrl="/admin/categories" items={categories} />
+  return <TaxonomyPage title="Catégories" route="admin.categories" items={categories} />
 }

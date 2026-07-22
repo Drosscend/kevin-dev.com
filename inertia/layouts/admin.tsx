@@ -1,7 +1,7 @@
 import { type Data } from '@generated/data'
-import { toast, Toaster } from 'sonner'
+import { Toaster } from 'sonner'
 import { usePage } from '@inertiajs/react'
-import { type ReactElement, useEffect, useState } from 'react'
+import { type ReactElement, useState } from 'react'
 import { Form, Link } from '@adonisjs/inertia/react'
 import {
   LayoutDashboard,
@@ -19,38 +19,30 @@ import {
   Inbox,
   X,
 } from 'lucide-react'
+import { client } from '~/client'
 import { Button } from '~/components/ui/button'
 import ThemeToggle from '~/components/theme_toggle'
 import { cn } from '~/lib/utils'
+import { useFlashToasts } from '~/lib/use_flash_toasts'
 
+/**
+ * Sidebar entries. Paths are resolved from the route registry, so a
+ * renamed URL can never desync the active-item highlight. The
+ * dashboard needs an exact match: every other path starts with its
+ * own "/admin" prefix.
+ */
 const navigation = [
-  {
-    route: 'admin.dashboard',
-    path: '/admin',
-    exact: true,
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-  },
-  { route: 'admin.home.index', path: '/admin/home', label: 'Accueil', icon: Home },
-  { route: 'admin.articles.index', path: '/admin/articles', label: 'Articles', icon: Newspaper },
-  {
-    route: 'admin.categories.index',
-    path: '/admin/categories',
-    label: 'Catégories',
-    icon: FolderOpen,
-  },
-  { route: 'admin.tags.index', path: '/admin/tags', label: 'Tags', icon: Tags },
-  { route: 'admin.projects.index', path: '/admin/projects', label: 'Projets', icon: FolderGit2 },
-  {
-    route: 'admin.technologies.index',
-    path: '/admin/technologies',
-    label: 'Technologies',
-    icon: Cpu,
-  },
-  { route: 'admin.media.index', path: '/admin/media', label: 'Médias', icon: Image },
-  { route: 'admin.pages.index', path: '/admin/pages', label: 'Pages', icon: FileText },
-  { route: 'admin.messages.index', path: '/admin/messages', label: 'Messages', icon: Inbox },
-  { route: 'admin.security', path: '/admin/security', label: 'Sécurité', icon: ShieldCheck },
+  { route: 'admin.dashboard', exact: true, label: 'Dashboard', icon: LayoutDashboard },
+  { route: 'admin.home.index', label: 'Accueil', icon: Home },
+  { route: 'admin.articles.index', label: 'Articles', icon: Newspaper },
+  { route: 'admin.categories.index', label: 'Catégories', icon: FolderOpen },
+  { route: 'admin.tags.index', label: 'Tags', icon: Tags },
+  { route: 'admin.projects.index', label: 'Projets', icon: FolderGit2 },
+  { route: 'admin.technologies.index', label: 'Technologies', icon: Cpu },
+  { route: 'admin.media.index', label: 'Médias', icon: Image },
+  { route: 'admin.pages.index', label: 'Pages', icon: FileText },
+  { route: 'admin.messages.index', label: 'Messages', icon: Inbox },
+  { route: 'admin.security', label: 'Sécurité', icon: ShieldCheck },
 ] as const
 
 function UnreadBadge({ count }: { count: number }) {
@@ -70,18 +62,7 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
   const currentPath = url.split('?')[0]
   const unread = (children.props as { unreadMessages?: number }).unreadMessages ?? 0
 
-  useEffect(() => {
-    toast.dismiss()
-  }, [url])
-
-  useEffect(() => {
-    if (children.props.flash.error) {
-      toast.error(children.props.flash.error)
-    }
-    if (children.props.flash.success) {
-      toast.success(children.props.flash.success)
-    }
-  })
+  useFlashToasts(children.props.flash)
 
   const sidebar = (
     <>
@@ -102,7 +83,8 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
-        {navigation.map(({ route, path, label, icon: Icon, ...item }) => {
+        {navigation.map(({ route, label, icon: Icon, ...item }) => {
+          const path = client.urlFor(route)
           const active =
             'exact' in item && item.exact ? currentPath === path : currentPath.startsWith(path)
           return (

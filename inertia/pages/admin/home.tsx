@@ -1,13 +1,17 @@
 import { type FormEvent, useState } from 'react'
-import { router, useForm, usePage } from '@inertiajs/react'
+import { useForm, usePage } from '@inertiajs/react'
+import { useRouter } from '@adonisjs/inertia/react'
 import { ArrowDown, ArrowUp, Pencil, Trash2, X } from 'lucide-react'
+import { client } from '~/client'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import { Textarea } from '~/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
+import FieldError from '~/components/field_error'
 
 type TimelineItem = {
   id: number
@@ -32,15 +36,6 @@ type HomeAdminProps = {
   timeline: TimelineItem[]
 }
 
-type Errors = Record<string, string | string[]>
-
-function FieldError({ errors, field }: { errors: Errors; field: string }) {
-  if (!errors[field]) {
-    return null
-  }
-  return <p className="text-destructive text-sm">{errors[field]}</p>
-}
-
 function SettingsTextarea({
   id,
   label,
@@ -57,10 +52,9 @@ function SettingsTextarea({
   return (
     <div className="space-y-2">
       <Label htmlFor={id}>{label}</Label>
-      <textarea
+      <Textarea
         id={id}
         rows={rows}
-        className="border-input w-full rounded-md border bg-transparent px-3 py-2 text-sm"
         value={value}
         onChange={(event) => onChange(event.target.value)}
       />
@@ -73,7 +67,8 @@ function SettingsTextarea({
  * optional: left empty, the FR entry is shown to both locales.
  */
 function TimelineForm({ item, onDone }: { item: TimelineItem | null; onDone?: () => void }) {
-  const { errors } = usePage().props as { errors?: Errors }
+  const { errors } = usePage().props
+  const router = useRouter()
   const empty = {
     periodFr: '',
     titleFr: '',
@@ -100,15 +95,17 @@ function TimelineForm({ item, onDone }: { item: TimelineItem | null; onDone?: ()
 
   function submit(event: FormEvent) {
     event.preventDefault()
-    const options = { preserveScroll: true, onSuccess: onDone }
+    const options = { preserveScroll: true, data: values, onSuccess: onDone }
+
     if (item) {
-      router.put(`/admin/home/timeline/${item.id}`, values, options)
-    } else {
-      router.post('/admin/home/timeline', values, {
-        ...options,
-        onSuccess: () => setValues(empty),
-      })
+      router.visit({ route: 'admin.home.timeline.update', routeParams: { id: item.id } }, options)
+      return
     }
+
+    router.visit(
+      { route: 'admin.home.timeline.store' },
+      { ...options, onSuccess: () => setValues(empty) }
+    )
   }
 
   const prefix = item?.id ?? 'new'
@@ -119,17 +116,17 @@ function TimelineForm({ item, onDone }: { item: TimelineItem | null; onDone?: ()
         <div className="space-y-2">
           <Label htmlFor={`periodFr-${prefix}`}>Période (FR)</Label>
           <Input id={`periodFr-${prefix}`} value={values.periodFr} onChange={set('periodFr')} />
-          <FieldError errors={errors ?? {}} field="periodFr" />
+          <FieldError errors={errors} field="periodFr" />
         </div>
         <div className="space-y-2">
           <Label htmlFor={`titleFr-${prefix}`}>Intitulé (FR)</Label>
           <Input id={`titleFr-${prefix}`} value={values.titleFr} onChange={set('titleFr')} />
-          <FieldError errors={errors ?? {}} field="titleFr" />
+          <FieldError errors={errors} field="titleFr" />
         </div>
         <div className="space-y-2">
           <Label htmlFor={`placeFr-${prefix}`}>Lieu / statut (FR)</Label>
           <Input id={`placeFr-${prefix}`} value={values.placeFr} onChange={set('placeFr')} />
-          <FieldError errors={errors ?? {}} field="placeFr" />
+          <FieldError errors={errors} field="placeFr" />
         </div>
         <div className="space-y-2">
           <Label htmlFor={`periodEn-${prefix}`}>Période (EN, optionnel)</Label>
@@ -153,15 +150,19 @@ function TimelineForm({ item, onDone }: { item: TimelineItem | null; onDone?: ()
 
 export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
   const form = useForm(settings)
+  const router = useRouter()
   const [editingId, setEditingId] = useState<number | null>(null)
 
   function submitSettings(event: FormEvent) {
     event.preventDefault()
-    form.put('/admin/home', { preserveScroll: true })
+    form.put(client.urlFor('admin.home.update'), { preserveScroll: true })
   }
 
   function move(item: TimelineItem, direction: 'up' | 'down') {
-    router.put(`/admin/home/timeline/${item.id}/move`, { direction }, { preserveScroll: true })
+    router.visit(
+      { route: 'admin.home.timeline.move', routeParams: { id: item.id } },
+      { preserveScroll: true, data: { direction } }
+    )
   }
 
   return (
@@ -320,7 +321,10 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
                   <ConfirmButton
                     description={`Supprimer « ${item.titleFr} » du parcours ?`}
                     onConfirm={() =>
-                      router.delete(`/admin/home/timeline/${item.id}`, { preserveScroll: true })
+                      router.visit(
+                        { route: 'admin.home.timeline.destroy', routeParams: { id: item.id } },
+                        { preserveScroll: true }
+                      )
                     }
                     trigger={
                       <Button

@@ -1,10 +1,10 @@
-import { Form } from '@adonisjs/inertia/react'
-import { router } from '@inertiajs/react'
+import { Form, useRouter } from '@adonisjs/inertia/react'
 import { Trash2 } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import FieldError from '~/components/field_error'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
@@ -32,6 +32,8 @@ function formatSize(bytes: number) {
 }
 
 export default function MediaPage({ media }: MediaPageProps) {
+  const router = useRouter()
+
   return (
     <AdminPage title="Bibliothèque média" className="max-w-6xl">
       <Card className="max-w-xl">
@@ -48,7 +50,7 @@ export default function MediaPage({ media }: MediaPageProps) {
                 <div className="space-y-2">
                   <Label htmlFor="file">Image</Label>
                   <Input type="file" name="file" id="file" accept="image/*" />
-                  {errors.file && <p className="text-destructive text-sm">{errors.file}</p>}
+                  <FieldError errors={errors} field="file" />
                 </div>
 
                 <div className="space-y-2">
@@ -60,7 +62,7 @@ export default function MediaPage({ media }: MediaPageProps) {
                     placeholder="Description de l'image"
                     aria-invalid={errors.alt ? true : undefined}
                   />
-                  {errors.alt && <p className="text-destructive text-sm">{errors.alt}</p>}
+                  <FieldError errors={errors} field="alt" />
                 </div>
 
                 <Button type="submit" disabled={processing}>
@@ -95,7 +97,9 @@ export default function MediaPage({ media }: MediaPageProps) {
                 </p>
                 <ConfirmButton
                   description={`Supprimer « ${item.alt} » ? Cette action est définitive.`}
-                  onConfirm={() => router.delete(`/admin/media/${item.id}`)}
+                  onConfirm={() =>
+                    router.visit({ route: 'admin.media.destroy', routeParams: { id: item.id } })
+                  }
                   trigger={
                     <Button
                       type="button"

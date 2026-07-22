@@ -1,5 +1,6 @@
 import { type FormEvent, useState } from 'react'
-import { router, usePage } from '@inertiajs/react'
+import { usePage } from '@inertiajs/react'
+import { useRouter } from '@adonisjs/inertia/react'
 import { Pencil, Trash2, X } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
@@ -8,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
+import FieldError from '~/components/field_error'
 
 export type TaxonomyItem = {
   id: number
@@ -17,31 +19,29 @@ export type TaxonomyItem = {
   articlesCount: number
 }
 
+/**
+ * Categories and tags expose the same four routes under their own
+ * prefix, so a single prefix identifies the whole CRUD.
+ */
+type TaxonomyRoute = 'admin.categories' | 'admin.tags'
+
 type TaxonomyPageProps = {
   title: string
-  baseUrl: string
+  route: TaxonomyRoute
   items: TaxonomyItem[]
 }
 
-type Errors = Record<string, string | string[]>
-
-function FieldError({ errors, field }: { errors: Errors; field: string }) {
-  if (!errors[field]) {
-    return null
-  }
-  return <p className="text-destructive text-sm">{errors[field]}</p>
-}
-
 function TaxonomyForm({
-  baseUrl,
+  route,
   item,
   onDone,
 }: {
-  baseUrl: string
+  route: TaxonomyRoute
   item: TaxonomyItem | null
   onDone?: () => void
 }) {
-  const { errors } = usePage().props as { errors?: Errors }
+  const { errors } = usePage().props
+  const router = useRouter()
   const [values, setValues] = useState({
     slug: item?.slug ?? '',
     nameFr: item?.nameFr ?? '',
@@ -50,15 +50,17 @@ function TaxonomyForm({
 
   function submit(event: FormEvent) {
     event.preventDefault()
-    const options = { preserveScroll: true, onSuccess: onDone }
+    const options = { preserveScroll: true, data: values, onSuccess: onDone }
+
     if (item) {
-      router.put(`${baseUrl}/${item.id}`, values, options)
-    } else {
-      router.post(baseUrl, values, {
-        ...options,
-        onSuccess: () => setValues({ slug: '', nameFr: '', nameEn: '' }),
-      })
+      router.visit({ route: `${route}.update`, routeParams: { id: item.id } }, options)
+      return
     }
+
+    router.visit(
+      { route: `${route}.store` },
+      { ...options, onSuccess: () => setValues({ slug: '', nameFr: '', nameEn: '' }) }
+    )
   }
 
   return (
@@ -70,7 +72,7 @@ function TaxonomyForm({
           value={values.slug}
           onChange={(event) => setValues({ ...values, slug: event.target.value })}
         />
-        <FieldError errors={errors ?? {}} field="slug" />
+        <FieldError errors={errors} field="slug" />
       </div>
       <div className="space-y-2">
         <Label htmlFor={`nameFr-${item?.id ?? 'new'}`}>Nom (FR)</Label>
@@ -79,7 +81,7 @@ function TaxonomyForm({
           value={values.nameFr}
           onChange={(event) => setValues({ ...values, nameFr: event.target.value })}
         />
-        <FieldError errors={errors ?? {}} field="nameFr" />
+        <FieldError errors={errors} field="nameFr" />
       </div>
       <div className="space-y-2">
         <Label htmlFor={`nameEn-${item?.id ?? 'new'}`}>Nom (EN, optionnel)</Label>
@@ -98,7 +100,8 @@ function TaxonomyForm({
   )
 }
 
-export default function TaxonomyPage({ title, baseUrl, items }: TaxonomyPageProps) {
+export default function TaxonomyPage({ title, route, items }: TaxonomyPageProps) {
+  const router = useRouter()
   const [editingId, setEditingId] = useState<number | null>(null)
 
   return (
@@ -108,7 +111,7 @@ export default function TaxonomyPage({ title, baseUrl, items }: TaxonomyPageProp
           <CardTitle>Ajouter</CardTitle>
         </CardHeader>
         <CardContent>
-          <TaxonomyForm baseUrl={baseUrl} item={null} />
+          <TaxonomyForm route={route} item={null} />
         </CardContent>
       </Card>
 
@@ -147,7 +150,10 @@ export default function TaxonomyPage({ title, baseUrl, items }: TaxonomyPageProp
                   <ConfirmButton
                     description={`Supprimer « ${item.nameFr} » ?`}
                     onConfirm={() =>
-                      router.delete(`${baseUrl}/${item.id}`, { preserveScroll: true })
+                      router.visit(
+                        { route: `${route}.destroy`, routeParams: { id: item.id } },
+                        { preserveScroll: true }
+                      )
                     }
                     trigger={
                       <Button
@@ -164,7 +170,7 @@ export default function TaxonomyPage({ title, baseUrl, items }: TaxonomyPageProp
                 </div>
               </div>
               {editingId === item.id && (
-                <TaxonomyForm baseUrl={baseUrl} item={item} onDone={() => setEditingId(null)} />
+                <TaxonomyForm route={route} item={item} onDone={() => setEditingId(null)} />
               )}
             </li>
           ))}

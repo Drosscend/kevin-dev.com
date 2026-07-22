@@ -1,10 +1,10 @@
 import { type Data } from '@generated/data'
-import { toast, Toaster } from 'sonner'
-import { usePage } from '@inertiajs/react'
-import { type ReactElement, useEffect } from 'react'
+import { Toaster } from 'sonner'
+import { type ReactElement } from 'react'
 import { Link } from '@adonisjs/inertia/react'
 import ThemeToggle from '~/components/theme_toggle'
 import { localePath } from '~/lib/locale'
+import { useFlashToasts } from '~/lib/use_flash_toasts'
 
 const NAVIGATION = [
   { path: '/projects', label: 'Projets' },
@@ -15,21 +15,8 @@ const NAVIGATION = [
 ] as const
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
-  const { url } = usePage()
   const locale = children.props.locale
-
-  useEffect(() => {
-    toast.dismiss()
-  }, [url])
-
-  useEffect(() => {
-    if (children.props.flash.error) {
-      toast.error(children.props.flash.error)
-    }
-    if (children.props.flash.success) {
-      toast.success(children.props.flash.success)
-    }
-  })
+  useFlashToasts(children.props.flash)
 
   return (
     <>

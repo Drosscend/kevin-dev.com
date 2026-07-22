@@ -1,10 +1,13 @@
 import { type FormEvent, useState } from 'react'
 import { useForm } from '@inertiajs/react'
 import { Form } from '@adonisjs/inertia/react'
+import { client } from '~/client'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import { Textarea } from '~/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import FieldError from '~/components/field_error'
 import AdminPage from '~/components/admin/admin_page'
 import ArticleContent from '~/components/article_content'
 import { fetchMarkdownPreview } from '~/lib/admin'
@@ -31,9 +34,9 @@ function MarkdownField({
   return (
     <div className="space-y-2">
       <Label htmlFor={id}>{label}</Label>
-      <textarea
+      <Textarea
         id={id}
-        className="border-input min-h-60 w-full rounded-md border bg-transparent px-3 py-2 font-mono text-sm"
+        className="min-h-60 font-mono"
         value={value}
         onChange={(event) => onChange(event.target.value)}
       />
@@ -47,7 +50,7 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
 
   function submit(event: FormEvent) {
     event.preventDefault()
-    form.put('/admin/pages', { preserveScroll: true })
+    form.put(client.urlFor('admin.pages.update'), { preserveScroll: true })
   }
 
   async function loadPreview(label: string, markdown: string) {
@@ -78,7 +81,7 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
                 <div className="space-y-2">
                   <Label htmlFor="pdf">Nouveau PDF (remplace l’actuel)</Label>
                   <Input type="file" name="pdf" id="pdf" accept="application/pdf" />
-                  {errors.pdf && <p className="text-destructive text-sm">{errors.pdf}</p>}
+                  <FieldError errors={errors} field="pdf" />
                 </div>
                 <Button type="submit" disabled={processing}>
                   Uploader

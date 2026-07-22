@@ -2,7 +2,9 @@ import { Form } from '@adonisjs/inertia/react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import { Textarea } from '~/components/ui/textarea'
 import Seo, { type SeoMeta } from '~/components/seo'
+import FieldError from '~/components/field_error'
 
 type ContactProps = {
   locale: 'fr' | 'en'
@@ -42,7 +44,7 @@ export default function Contact({ locale, labels, meta }: ContactProps) {
                   autoComplete="name"
                   aria-invalid={errors.name ? true : undefined}
                 />
-                {errors.name && <p className="text-destructive text-sm">{errors.name}</p>}
+                <FieldError errors={errors} field="name" />
               </div>
 
               <div className="space-y-2.5">
@@ -54,18 +56,18 @@ export default function Contact({ locale, labels, meta }: ContactProps) {
                   autoComplete="email"
                   aria-invalid={errors.email ? true : undefined}
                 />
-                {errors.email && <p className="text-destructive text-sm">{errors.email}</p>}
+                <FieldError errors={errors} field="email" />
               </div>
 
               <div className="space-y-2.5">
                 <Label htmlFor="message">{labels.message}</Label>
-                <textarea
+                <Textarea
                   name="message"
                   id="message"
-                  className="border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 dark:bg-input/30 min-h-40 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] md:text-sm"
+                  className="min-h-40"
                   aria-invalid={errors.message ? true : undefined}
                 />
-                {errors.message && <p className="text-destructive text-sm">{errors.message}</p>}
+                <FieldError errors={errors} field="message" />
               </div>
 
               {/* Honeypot: invisible to humans, tempting for bots */}

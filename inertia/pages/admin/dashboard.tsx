@@ -25,15 +25,16 @@ function StatCard({
   label,
   value,
   detail,
-  href,
+  route,
 }: {
   label: string
   value: number
   detail?: string
-  href: string
+  route:
+    'admin.articles.index' | 'admin.projects.index' | 'admin.media.index' | 'admin.messages.index'
 }) {
   return (
-    <Link href={href} className="group">
+    <Link route={route} className="group">
       <Card className="group-hover:border-primary h-full transition-colors">
         <CardHeader>
           <CardDescription>{label}</CardDescription>
@@ -92,25 +93,25 @@ export default function Dashboard({ totpEnabled, umami, stats }: DashboardProps)
           label="Articles publiés"
           value={stats.articlesPublished}
           detail={`${stats.articlesDraft} brouillon(s)`}
-          href="/admin/articles"
+          route="admin.articles.index"
         />
         <StatCard
           label="Projets publiés"
           value={stats.projectsPublished}
           detail={`${stats.projectsDraft} brouillon(s)`}
-          href="/admin/projects"
+          route="admin.projects.index"
         />
         <StatCard
           label="Médias"
           value={stats.mediaCount}
           detail="images dans la bibliothèque"
-          href="/admin/media"
+          route="admin.media.index"
         />
         <StatCard
           label="Messages non lus"
           value={stats.unreadMessages}
           detail="boîte de réception"
-          href="/admin/messages"
+          route="admin.messages.index"
         />
       </div>
 

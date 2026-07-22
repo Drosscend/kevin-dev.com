@@ -3,6 +3,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import FieldError from '~/components/field_error'
 import AdminPage from '~/components/admin/admin_page'
 
 interface SecurityProps {
@@ -65,7 +66,7 @@ export default function Security({
                       maxLength={6}
                       aria-invalid={errors.code ? true : undefined}
                     />
-                    {errors.code && <p className="text-destructive text-sm">{errors.code}</p>}
+                    <FieldError errors={errors} field="code" />
                   </div>
                   <Button type="submit" variant="destructive" disabled={processing}>
                     Désactiver la 2FA
@@ -101,9 +102,7 @@ export default function Security({
                       maxLength={6}
                       aria-invalid={errors.recoveryCode ? true : undefined}
                     />
-                    {errors.recoveryCode && (
-                      <p className="text-destructive text-sm">{errors.recoveryCode}</p>
-                    )}
+                    <FieldError errors={errors} field="recoveryCode" />
                   </div>
                   <Button type="submit" variant="outline" disabled={processing}>
                     Régénérer les codes de secours
@@ -146,7 +145,7 @@ export default function Security({
                       maxLength={6}
                       aria-invalid={errors.code ? true : undefined}
                     />
-                    {errors.code && <p className="text-destructive text-sm">{errors.code}</p>}
+                    <FieldError errors={errors} field="code" />
                   </div>
 
                   <Button type="submit" disabled={processing}>

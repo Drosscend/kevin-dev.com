@@ -10,7 +10,9 @@ import { Dialog } from 'radix-ui'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import { Textarea } from '~/components/ui/textarea'
 import ArticleContent from '~/components/article_content'
+import { ErrorText } from '~/components/field_error'
 import { fetchMarkdownPreview, uploadMediaImage } from '~/lib/admin'
 
 /**
@@ -143,11 +145,11 @@ export default function MarkdownEditor({
       </div>
 
       <div className={previewOpen ? 'grid gap-4 lg:grid-cols-2' : ''}>
-        <textarea
+        <Textarea
           ref={textareaRef}
           id={id}
           rows={rows}
-          className="border-input min-h-60 w-full rounded-md border bg-transparent px-3 py-2 font-mono text-sm disabled:opacity-50"
+          className="min-h-60 font-mono"
           value={value}
           disabled={uploading}
           onChange={(event: ChangeEvent<HTMLTextAreaElement>) => onChange(event.target.value)}
@@ -169,7 +171,7 @@ export default function MarkdownEditor({
       </div>
 
       {uploading && <p className="text-muted-foreground text-sm">Envoi de l’image…</p>}
-      {uploadError && <p className="text-destructive text-sm">{uploadError}</p>}
+      {uploadError && <ErrorText>{uploadError}</ErrorText>}
 
       <Dialog.Root
         open={pendingFile !== null}

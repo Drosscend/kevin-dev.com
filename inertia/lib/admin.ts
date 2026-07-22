@@ -1,4 +1,5 @@
 import { toast } from 'sonner'
+import { client } from '~/client'
 
 export type TranslationValues = {
   title: string
@@ -38,7 +39,7 @@ export async function uploadMediaImage(
   body.append('alt', alt)
 
   try {
-    const response = await fetch('/admin/media/upload', {
+    const response = await fetch(client.urlFor('admin.media.upload'), {
       method: 'POST',
       headers: { 'X-XSRF-TOKEN': xsrfToken() },
       body,
@@ -63,7 +64,7 @@ export async function uploadMediaImage(
  */
 export async function fetchMarkdownPreview(markdown: string): Promise<string | null> {
   try {
-    const response = await fetch('/admin/articles/preview', {
+    const response = await fetch(client.urlFor('admin.articles.preview'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-XSRF-TOKEN': xsrfToken() },
       body: JSON.stringify({ markdown }),

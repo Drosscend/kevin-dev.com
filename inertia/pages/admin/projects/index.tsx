@@ -1,5 +1,4 @@
-import { router } from '@inertiajs/react'
-import { Link } from '@adonisjs/inertia/react'
+import { Link, useRouter } from '@adonisjs/inertia/react'
 import { Plus, Star, Trash2 } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import AdminPage from '~/components/admin/admin_page'
@@ -24,6 +23,8 @@ type ProjectsIndexProps = {
 }
 
 export default function ProjectsIndex({ projects }: ProjectsIndexProps) {
+  const router = useRouter()
+
   return (
     <AdminPage
       title="Projets"
@@ -46,7 +47,8 @@ export default function ProjectsIndex({ projects }: ProjectsIndexProps) {
                 <span className="flex items-center gap-1.5">
                   {project.featured && <Star className="size-3.5 text-amber-500" />}
                   <Link
-                    href={`/admin/projects/${project.id}/edit`}
+                    route="admin.projects.edit"
+                    routeParams={{ id: project.id }}
                     className="hover:text-primary font-medium transition-colors"
                   >
                     {project.title}
@@ -67,7 +69,10 @@ export default function ProjectsIndex({ projects }: ProjectsIndexProps) {
                 <ConfirmButton
                   description={`Supprimer « ${project.title} » ? Cette action est définitive.`}
                   onConfirm={() =>
-                    router.delete(`/admin/projects/${project.id}`, { preserveScroll: true })
+                    router.visit(
+                      { route: 'admin.projects.destroy', routeParams: { id: project.id } },
+                      { preserveScroll: true }
+                    )
                   }
                   trigger={
                     <Button
