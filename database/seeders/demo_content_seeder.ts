@@ -13,6 +13,7 @@ import Category from '#models/category'
 import ContactMessage from '#models/contact_message'
 import Project from '#models/project'
 import Tag from '#models/tag'
+import Talk from '#models/talk'
 import Technology from '#models/technology'
 import TimelineEntry from '#models/timeline_entry'
 import type Media from '#models/media'
@@ -21,6 +22,7 @@ import MarkdownService from '#services/markdown_service'
 import MediaService from '#services/media_service'
 import ProjectService from '#services/project_service'
 import SettingsService from '#services/settings_service'
+import TalkService from '#services/talk_service'
 import {
   ARTICLES,
   CATEGORIES,
@@ -29,6 +31,7 @@ import {
   CV_FR,
   PROJECTS,
   TAGS,
+  TALKS,
   TECHNOLOGIES,
   TIMELINE,
   type Cover,
@@ -54,6 +57,10 @@ const CONTENT_TABLES = [
   'projects',
   'technology_translations',
   'technologies',
+  'talk_links',
+  'talk_technology',
+  'talk_translations',
+  'talks',
   'timeline_entry_translations',
   'timeline_entries',
   'contact_messages',
@@ -114,6 +121,7 @@ export default class extends BaseSeeder {
     const tags = await this.#seedTags()
     const articles = await this.#seedArticles(categories, tags)
     await this.#seedProjects(technologies, articles)
+    await this.#seedTalks(technologies)
     await this.#seedTimeline()
     await this.#seedSettings()
     await this.#seedContactMessages()
@@ -220,6 +228,26 @@ export default class extends BaseSeeder {
     }
   }
 
+  async #seedTalks(technologies: Map<string, Technology>) {
+    for (const entry of TALKS) {
+      const cover = await makeCover(entry.cover, entry.fr.title)
+
+      await TalkService.save(new Talk(), {
+        slug: entry.slug,
+        status: entry.status,
+        coverMediaId: cover?.id ?? null,
+        eventDate: entry.eventDate,
+        eventName: entry.eventName,
+        city: entry.city,
+        technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
+        links: entry.links,
+        publishedAt: entry.publishedAt,
+        fr: entry.fr,
+        en: entry.en,
+      })
+    }
+  }
+
   async #seedTimeline() {
     for (const [index, entry] of TIMELINE.entries()) {
       const timelineEntry = await TimelineEntry.create({ position: index })
@@ -242,14 +270,6 @@ export default class extends BaseSeeder {
     await SettingsService.set('hero_roles_fr', 'Développeur full-stack\nArchitecte applicatif')
     await SettingsService.set('hero_roles_en', 'Full-stack developer\nApplication architect')
     await SettingsService.set('hero_location', 'Lyon, France')
-    await SettingsService.set(
-      'talks_fr',
-      "J'interviens ponctuellement en meetup sur la performance back-end, la recherche vectorielle et les pipelines de CI. Format court, retour d'expérience, sans diapositive commerciale."
-    )
-    await SettingsService.set(
-      'talks_en',
-      'I occasionally speak at meetups about back-end performance, vector search and CI pipelines. Short format, field notes, no sales deck.'
-    )
 
     await SettingsService.set('cv_markdown_fr', CV_FR)
     await SettingsService.set('cv_html_fr', await MarkdownService.render(CV_FR))

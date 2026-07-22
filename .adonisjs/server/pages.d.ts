@@ -24,6 +24,8 @@ declare module '@adonisjs/inertia/types' {
     'admin/projects/index': ExtractProps<(typeof import('../../inertia/pages/admin/projects/index.tsx'))['default']>
     'admin/security': ExtractProps<(typeof import('../../inertia/pages/admin/security.tsx'))['default']>
     'admin/tags': ExtractProps<(typeof import('../../inertia/pages/admin/tags.tsx'))['default']>
+    'admin/talks/form': ExtractProps<(typeof import('../../inertia/pages/admin/talks/form.tsx'))['default']>
+    'admin/talks/index': ExtractProps<(typeof import('../../inertia/pages/admin/talks/index.tsx'))['default']>
     'admin/technologies': ExtractProps<(typeof import('../../inertia/pages/admin/technologies.tsx'))['default']>
     'auth/login': ExtractProps<(typeof import('../../inertia/pages/auth/login.tsx'))['default']>
     'auth/verify': ExtractProps<(typeof import('../../inertia/pages/auth/verify.tsx'))['default']>
@@ -37,6 +39,8 @@ declare module '@adonisjs/inertia/types' {
     'legal': ExtractProps<(typeof import('../../inertia/pages/legal.tsx'))['default']>
     'portfolio/index': ExtractProps<(typeof import('../../inertia/pages/portfolio/index.tsx'))['default']>
     'portfolio/show': ExtractProps<(typeof import('../../inertia/pages/portfolio/show.tsx'))['default']>
+    'talks/index': ExtractProps<(typeof import('../../inertia/pages/talks/index.tsx'))['default']>
+    'talks/show': ExtractProps<(typeof import('../../inertia/pages/talks/show.tsx'))['default']>
     'technologies/index': ExtractProps<(typeof import('../../inertia/pages/technologies/index.tsx'))['default']>
     'technologies/show': ExtractProps<(typeof import('../../inertia/pages/technologies/show.tsx'))['default']>
   }

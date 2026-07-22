@@ -19,6 +19,11 @@ function inDays(days: number) {
   return DateTime.now().plus({ days }).toISO()!
 }
 
+/** Calendar date offset from today, negative for the past. */
+function isoDate(days: number) {
+  return DateTime.now().plus({ days }).toISODate()!
+}
+
 export const TECHNOLOGIES = [
   {
     slug: 'typescript',
@@ -832,6 +837,218 @@ Ce projet n'est pas encore publié. Les points à documenter :
 - Le format des sondes et leur planification
 - La déduplication des alertes pendant un incident
 - La page d'état publique et son cache`,
+    },
+    en: null,
+  },
+]
+
+export const TALKS = [
+  {
+    slug: 'postgres-suffit-souvent',
+    status: 'published' as const,
+    eventDate: isoDate(-38),
+    eventName: 'DevFest Lyon',
+    city: 'Lyon',
+    publishedAt: daysAgo(60),
+    technologies: ['postgresql', 'python'],
+    cover: { name: 'talk-postgres', from: '#1f4e79', to: '#0d1b2a' },
+    links: [
+      {
+        label: 'Slides',
+        url: 'https://slides.exemple.dev/postgres-suffit',
+        type: 'slides' as const,
+      },
+      {
+        label: 'Rediffusion',
+        url: 'https://videos.exemple.dev/devfest-postgres',
+        type: 'video' as const,
+      },
+      {
+        label: 'Page de l’événement',
+        url: 'https://devfest.exemple.dev/2026',
+        type: 'event' as const,
+      },
+    ],
+    fr: {
+      title: 'PostgreSQL suffit (bien plus longtemps qu’on ne le croit)',
+      summary:
+        'Recherche plein texte, file d’attente, vecteurs, cache : quatre besoins pour lesquels on ajoute un service, et ce que PostgreSQL fait déjà.',
+      contentMarkdown: `## Le point de départ
+
+Une architecture accumule les services au rythme des besoins ponctuels.
+Chacun se justifie isolément ; l’ensemble devient impossible à exploiter
+à deux personnes.
+
+## Les quatre cas passés en revue
+
+| Besoin | Le réflexe | Ce que fait Postgres |
+| --- | --- | --- |
+| Recherche | Elasticsearch | \`tsvector\` et index GIN |
+| File d’attente | Redis, RabbitMQ | \`SELECT … FOR UPDATE SKIP LOCKED\` |
+| Vecteurs | Base vectorielle | \`pgvector\` et index HNSW |
+| Cache | Redis | Table \`UNLOGGED\` |
+
+## Où est la limite
+
+La question n’est pas idéologique : chaque cas a un seuil chiffré à
+partir duquel le service dédié gagne. Le propos de l’intervention est
+d’expliciter ces seuils plutôt que de choisir par défaut.`,
+    },
+    en: {
+      title: 'PostgreSQL is enough (for far longer than you think)',
+      summary:
+        'Full-text search, queues, vectors, caching: four needs that usually add a service, and what PostgreSQL already does.',
+      contentMarkdown: `## The starting point
+
+Architectures accumulate services one ad-hoc need at a time. Each is
+justified on its own; the result is impossible for a two-person team to
+operate.
+
+## Where the limit is
+
+The point is not ideological: every case has a measurable threshold past
+which the dedicated service wins. The talk makes those thresholds
+explicit instead of picking by default.`,
+    },
+  },
+  {
+    slug: 'inertia-monolithe-moderne',
+    status: 'published' as const,
+    eventDate: isoDate(-96),
+    eventName: 'Meetup Lyon JS',
+    city: 'Lyon',
+    publishedAt: daysAgo(120),
+    technologies: ['adonisjs', 'react', 'inertia', 'typescript'],
+    cover: { name: 'talk-inertia', from: '#9e2430', to: '#2b1013' },
+    links: [
+      {
+        label: 'Slides',
+        url: 'https://slides.exemple.dev/inertia-monolithe',
+        type: 'slides' as const,
+      },
+      {
+        label: 'Code de démonstration',
+        url: 'https://github.com/exemple/demo-inertia',
+        type: 'code' as const,
+      },
+    ],
+    fr: {
+      title: 'Le monolithe moderne : AdonisJS, Inertia et React',
+      summary:
+        'Démonstration en direct : partir d’une page blanche et arriver à un CRUD bilingue typé de bout en bout, sans écrire une seule route d’API.',
+      contentMarkdown: `## Format
+
+Quarante minutes de code en direct, sans diapositive au-delà de la
+première. Le dépôt de démonstration est utilisable tel quel.
+
+## Ce qui est construit
+
+1. Une ressource avec ses traductions
+2. Le formulaire d’édition et sa validation partagée
+3. La page publique, rendue côté serveur au premier chargement
+
+## La question qui revient toujours
+
+« Et si demain il me faut une application mobile ? » — la réponse tient
+en une phrase : exposer alors les trois endpoints nécessaires, pas les
+quarante qu’on aurait écrits par anticipation.`,
+    },
+    en: null,
+  },
+  {
+    slug: 'atelier-observabilite',
+    status: 'published' as const,
+    eventDate: isoDate(-210),
+    eventName: 'Cloud Native Days',
+    city: 'Marseille',
+    publishedAt: daysAgo(230),
+    technologies: ['docker', 'kubernetes', 'grafana', 'go'],
+    cover: null,
+    links: [
+      {
+        label: 'Support de l’atelier',
+        url: 'https://github.com/exemple/atelier-otel',
+        type: 'code' as const,
+      },
+    ],
+    fr: {
+      title: 'Atelier : instrumenter une application de zéro',
+      summary:
+        'Trois heures, une application volontairement mal instrumentée, et un incident à diagnostiquer à la fin. Format atelier, vingt participants.',
+      contentMarkdown: `## Déroulé
+
+L’atelier part d’une application qui journalise beaucoup et n’explique
+rien. Les participants ajoutent traces, métriques et corrélation
+d’identifiants de requête, puis diagnostiquent une panne injectée.
+
+## Ce que les participants repartent avec
+
+- Un fil de trace complet, du navigateur jusqu’à la requête SQL
+- Trois métriques qui valent mieux que trente tableaux de bord
+- La liste des attributs à ne jamais enregistrer`,
+    },
+    en: null,
+  },
+  {
+    slug: 'rag-sans-magie',
+    status: 'published' as const,
+    eventDate: isoDate(34),
+    eventName: 'Devoxx France',
+    city: 'Paris',
+    publishedAt: daysAgo(12),
+    technologies: ['python', 'postgresql'],
+    cover: { name: 'talk-rag', from: '#b45309', to: '#3b1d02' },
+    links: [
+      {
+        label: 'Page de l’événement',
+        url: 'https://devoxx.exemple.fr/2026',
+        type: 'event' as const,
+      },
+    ],
+    fr: {
+      title: 'RAG sans magie : mesurer avant d’ajouter',
+      summary:
+        'Intervention à venir : ce que le découpage, le rerank et l’évaluation apportent réellement, chiffres à l’appui.',
+      contentMarkdown: `## Intervention à venir
+
+Le support sera publié ici le jour de la conférence.
+
+## Plan annoncé
+
+1. Construire un jeu d’évaluation avant d’écrire la première requête
+2. Découpage, rerank, fenêtre de contexte : ce que chacun rapporte
+3. Les questions auxquelles un RAG ne répondra pas, quoi qu’on fasse`,
+    },
+    en: {
+      title: 'RAG without magic: measure before you add',
+      summary:
+        'Upcoming talk: what chunking, reranking and evaluation actually contribute, with numbers.',
+      contentMarkdown: `## Upcoming
+
+Slides will be published here on the day of the conference.`,
+    },
+  },
+  {
+    slug: 'ci-qui-ne-ment-pas',
+    status: 'draft' as const,
+    eventDate: isoDate(75),
+    eventName: 'Meetup Craft Toulouse',
+    city: 'Toulouse',
+    publishedAt: null,
+    technologies: ['docker', 'playwright'],
+    cover: null,
+    links: [],
+    fr: {
+      title: 'Une CI en laquelle l’équipe a confiance',
+      summary:
+        'Proposition en cours de rédaction : ce qu’il faut mesurer pour qu’un échec de CI redevienne un signal.',
+      contentMarkdown: `## Brouillon
+
+Points à développer :
+
+- Le taux d’échecs instables, la seule métrique qui compte
+- Pourquoi relancer un job est un aveu
+- Le budget de temps par pull request, et comment le tenir`,
     },
     en: null,
   },

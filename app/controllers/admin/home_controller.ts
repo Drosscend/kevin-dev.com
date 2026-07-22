@@ -48,8 +48,6 @@ export default class HomeController {
         'hero_location',
         'now_fr',
         'now_en',
-        'talks_fr',
-        'talks_en',
       ]),
       TimelineEntry.query()
         .preload('translations', (translations) =>
@@ -65,8 +63,6 @@ export default class HomeController {
         heroLocation: settings.hero_location,
         nowFr: settings.now_fr,
         nowEn: settings.now_en,
-        talksFr: settings.talks_fr,
-        talksEn: settings.talks_en,
       },
       timeline: entries.map((entry) => {
         const fr = entry.translations.find((item) => item.locale === 'fr')
@@ -92,8 +88,6 @@ export default class HomeController {
     await SettingsService.set('hero_location', (payload.heroLocation ?? '').trim())
     await SettingsService.set('now_fr', (payload.nowFr ?? '').trim())
     await SettingsService.set('now_en', (payload.nowEn ?? '').trim())
-    await SettingsService.set('talks_fr', (payload.talksFr ?? '').trim())
-    await SettingsService.set('talks_en', (payload.talksEn ?? '').trim())
 
     session.flash('success', 'Contenu de l’accueil enregistré')
     response.redirect().toRoute('admin.home.index')

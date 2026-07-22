@@ -17,8 +17,7 @@
     "stack": "Stack",
     "allTechnologies": "Toutes mes technologies →",
     "talks": "Interventions",
-    "talksText": "J'aime transmettre : cours, ateliers et interventions en conférence, sur la data, le web et l'IA.",
-    "talksContact": "Me contacter →"
+    "allTalks": "Toutes mes interventions →"
   },
   "blog": {
     "title": "Blog",
@@ -39,6 +38,15 @@
     "backToList": "← Tous les projets",
     "technologies": "Technologies utilisées",
     "relatedArticles": "Articles liés"
+  },
+  "talks": {
+    "title": "Interventions",
+    "metaDescription": "Conférences, meetups et ateliers animés par Kévin Véronési : supports, vidéos et retours d'expérience.",
+    "empty": "Aucune intervention pour l'instant.",
+    "backToList": "← Toutes les interventions",
+    "upcoming": "À venir",
+    "readMore": "Voir l'intervention",
+    "technologies": "Technologies abordées"
   },
   "cv": {
     "title": "CV",

@@ -8,6 +8,14 @@ type HomeProps = {
   cvPdfAvailable: boolean
   latestArticles: { slug: string; title: string; summary: string }[]
   featuredProjects: { slug: string; title: string; summary: string; coverUrl: string | null }[]
+  talks: {
+    slug: string
+    title: string
+    eventName: string
+    eventDate: string
+    city: string
+    upcoming: boolean
+  }[]
   technologies: { slug: string; name: string }[]
   timeline: { period: string; title: string; place: string }[]
   labels: {
@@ -26,8 +34,8 @@ type HomeProps = {
     stack: string
     allTechnologies: string
     talks: string
-    talksText: string
-    talksContact: string
+    allTalks: string
+    upcomingTalk: string
   }
   meta: SeoMeta
 }
@@ -54,6 +62,7 @@ export default function Home({
   cvPdfAvailable,
   latestArticles,
   featuredProjects,
+  talks,
   technologies,
   timeline,
   labels,
@@ -217,16 +226,33 @@ export default function Home({
         </section>
       )}
 
-      <section className="pb-24 md:pb-32">
-        <SectionHead title={labels.talks} />
-        <p className="max-w-[620px]">{labels.talksText}</p>
-        <Link
-          href={to('/contact')}
-          className="text-primary mt-4 inline-block font-medium hover:underline"
-        >
-          {labels.talksContact}
-        </Link>
-      </section>
+      {talks.length > 0 && (
+        <section className="pb-24 md:pb-32">
+          <SectionHead title={labels.talks} more={{ href: to('/talks'), label: labels.allTalks }} />
+          <ul className="max-w-[720px] divide-y border-y">
+            {talks.map((talk) => (
+              <li key={talk.slug}>
+                <Link
+                  href={to(`/talks/${talk.slug}`)}
+                  className="hover:text-primary flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 px-1 py-4 transition-colors"
+                >
+                  <span className="font-medium">
+                    {talk.title}
+                    {talk.upcoming && (
+                      <span className="text-primary ml-2.5 font-mono text-[11px] tracking-wider uppercase">
+                        {labels.upcomingTalk}
+                      </span>
+                    )}
+                  </span>
+                  <span className="text-muted-foreground font-mono text-[13px]">
+                    {talk.eventName} · {talk.eventDate}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   )
 }

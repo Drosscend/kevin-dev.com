@@ -9,6 +9,7 @@ import { useFlashToasts } from '~/lib/use_flash_toasts'
 const NAVIGATION = [
   { path: '/projects', label: 'Projets' },
   { path: '/blog', label: 'Blog' },
+  { path: '/talks', label: 'Interventions' },
   { path: '/cv', label: 'CV' },
   { path: '/technologies', label: 'Technos' },
   { path: '/contact', label: 'Contact' },

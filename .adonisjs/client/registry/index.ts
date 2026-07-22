@@ -132,6 +132,30 @@ const routes = {
     tokens: [{"old":"/en/projects/:slug","type":0,"val":"en","end":""},{"old":"/en/projects/:slug","type":0,"val":"projects","end":""},{"old":"/en/projects/:slug","type":1,"val":"slug","end":""}],
     types: placeholder as Registry['en.projects.show']['types'],
   },
+  'talks.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/talks',
+    tokens: [{"old":"/talks","type":0,"val":"talks","end":""}],
+    types: placeholder as Registry['talks.index']['types'],
+  },
+  'talks.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/talks/:slug',
+    tokens: [{"old":"/talks/:slug","type":0,"val":"talks","end":""},{"old":"/talks/:slug","type":1,"val":"slug","end":""}],
+    types: placeholder as Registry['talks.show']['types'],
+  },
+  'en.talks.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/en/talks',
+    tokens: [{"old":"/en/talks","type":0,"val":"en","end":""},{"old":"/en/talks","type":0,"val":"talks","end":""}],
+    types: placeholder as Registry['en.talks.index']['types'],
+  },
+  'en.talks.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/en/talks/:slug',
+    tokens: [{"old":"/en/talks/:slug","type":0,"val":"en","end":""},{"old":"/en/talks/:slug","type":0,"val":"talks","end":""},{"old":"/en/talks/:slug","type":1,"val":"slug","end":""}],
+    types: placeholder as Registry['en.talks.show']['types'],
+  },
   'technologies.index': {
     methods: ["GET","HEAD"],
     pattern: '/technologies',
@@ -485,6 +509,42 @@ const routes = {
     pattern: '/admin/projects/:id',
     tokens: [{"old":"/admin/projects/:id","type":0,"val":"admin","end":""},{"old":"/admin/projects/:id","type":0,"val":"projects","end":""},{"old":"/admin/projects/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['admin.projects.destroy']['types'],
+  },
+  'admin.talks.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/talks',
+    tokens: [{"old":"/admin/talks","type":0,"val":"admin","end":""},{"old":"/admin/talks","type":0,"val":"talks","end":""}],
+    types: placeholder as Registry['admin.talks.index']['types'],
+  },
+  'admin.talks.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/talks/create',
+    tokens: [{"old":"/admin/talks/create","type":0,"val":"admin","end":""},{"old":"/admin/talks/create","type":0,"val":"talks","end":""},{"old":"/admin/talks/create","type":0,"val":"create","end":""}],
+    types: placeholder as Registry['admin.talks.create']['types'],
+  },
+  'admin.talks.store': {
+    methods: ["POST"],
+    pattern: '/admin/talks',
+    tokens: [{"old":"/admin/talks","type":0,"val":"admin","end":""},{"old":"/admin/talks","type":0,"val":"talks","end":""}],
+    types: placeholder as Registry['admin.talks.store']['types'],
+  },
+  'admin.talks.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/admin/talks/:id/edit',
+    tokens: [{"old":"/admin/talks/:id/edit","type":0,"val":"admin","end":""},{"old":"/admin/talks/:id/edit","type":0,"val":"talks","end":""},{"old":"/admin/talks/:id/edit","type":1,"val":"id","end":""},{"old":"/admin/talks/:id/edit","type":0,"val":"edit","end":""}],
+    types: placeholder as Registry['admin.talks.edit']['types'],
+  },
+  'admin.talks.update': {
+    methods: ["PUT"],
+    pattern: '/admin/talks/:id',
+    tokens: [{"old":"/admin/talks/:id","type":0,"val":"admin","end":""},{"old":"/admin/talks/:id","type":0,"val":"talks","end":""},{"old":"/admin/talks/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.talks.update']['types'],
+  },
+  'admin.talks.destroy': {
+    methods: ["DELETE"],
+    pattern: '/admin/talks/:id',
+    tokens: [{"old":"/admin/talks/:id","type":0,"val":"admin","end":""},{"old":"/admin/talks/:id","type":0,"val":"talks","end":""},{"old":"/admin/talks/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['admin.talks.destroy']['types'],
   },
   'admin.pages.index': {
     methods: ["GET","HEAD"],

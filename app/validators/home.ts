@@ -1,9 +1,9 @@
 import vine from '@vinejs/vine'
 
 /**
- * Admin editor for the homepage settings blocks (hero, "right now",
- * talks). All fields are plain text; empty values fall back to the
- * default i18n copy on the public page.
+ * Admin editor for the homepage settings blocks (hero, "right now").
+ * All fields are plain text; empty values fall back to the default
+ * i18n copy on the public page.
  */
 export const homeSettingsValidator = vine.create({
   heroRolesFr: vine.string().optional(),
@@ -11,8 +11,6 @@ export const homeSettingsValidator = vine.create({
   heroLocation: vine.string().optional(),
   nowFr: vine.string().optional(),
   nowEn: vine.string().optional(),
-  talksFr: vine.string().optional(),
-  talksEn: vine.string().optional(),
 })
 
 /**

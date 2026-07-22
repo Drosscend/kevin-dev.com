@@ -17,8 +17,7 @@
     "stack": "Stack",
     "allTechnologies": "All my technologies →",
     "talks": "Speaking",
-    "talksText": "I enjoy passing knowledge on: courses, workshops and conference talks about data, the web and AI.",
-    "talksContact": "Contact me →"
+    "allTalks": "All my talks →"
   },
   "blog": {
     "title": "Blog",
@@ -39,6 +38,15 @@
     "backToList": "← All projects",
     "technologies": "Technologies used",
     "relatedArticles": "Related articles"
+  },
+  "talks": {
+    "title": "Speaking",
+    "metaDescription": "Conference talks, meetups and workshops given by Kévin Véronési: slides, recordings and field notes.",
+    "empty": "No talks yet.",
+    "backToList": "← All talks",
+    "upcoming": "Upcoming",
+    "readMore": "View talk",
+    "technologies": "Technologies covered"
   },
   "cv": {
     "title": "Resume",

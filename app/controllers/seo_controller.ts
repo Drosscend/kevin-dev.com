@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Article from '#models/article'
 import Project from '#models/project'
+import Talk from '#models/talk'
 import Technology from '#models/technology'
 import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
@@ -33,13 +34,16 @@ function sitemapUrl(entry: SitemapEntry) {
 
 export default class SeoController {
   async sitemap({ response }: HttpContext) {
-    const [articles, projects, technologies, settings] = await Promise.all([
+    const [articles, projects, talks, technologies, settings] = await Promise.all([
       Article.query()
         .withScopes((scopes) => scopes.published())
         .preload('translations', (query) => query.select('id', 'article_id', 'locale')),
       Project.query()
         .withScopes((scopes) => scopes.published())
         .preload('translations', (query) => query.select('id', 'project_id', 'locale')),
+      Talk.query()
+        .withScopes((scopes) => scopes.published())
+        .preload('translations', (query) => query.select('id', 'talk_id', 'locale')),
       Technology.query(),
       SettingsService.getMany(['cv_html_fr', 'cv_html_en', 'legal_html_fr', 'legal_html_en']),
     ])
@@ -51,6 +55,8 @@ export default class SeoController {
       { path: '/en/blog', alternates: { fr: '/blog', en: '/en/blog' } },
       { path: '/projects', alternates: { fr: '/projects', en: '/en/projects' } },
       { path: '/en/projects', alternates: { fr: '/projects', en: '/en/projects' } },
+      { path: '/talks', alternates: { fr: '/talks', en: '/en/talks' } },
+      { path: '/en/talks', alternates: { fr: '/talks', en: '/en/talks' } },
       { path: '/technologies', alternates: { fr: '/technologies', en: '/en/technologies' } },
       { path: '/en/technologies', alternates: { fr: '/technologies', en: '/en/technologies' } },
       { path: '/contact', alternates: { fr: '/contact', en: '/en/contact' } },
@@ -91,6 +97,18 @@ export default class SeoController {
       entries.push({ path: `/projects/${project.slug}`, lastmod, alternates })
       if (hasEnglish) {
         entries.push({ path: `/en/projects/${project.slug}`, lastmod, alternates })
+      }
+    }
+
+    for (const talk of talks) {
+      const hasEnglish = talk.translations.some((translation) => translation.locale === 'en')
+      const lastmod = talk.updatedAt?.toISODate() ?? talk.publishedAt?.toISODate()
+      const alternates = hasEnglish
+        ? { fr: `/talks/${talk.slug}`, en: `/en/talks/${talk.slug}` }
+        : null
+      entries.push({ path: `/talks/${talk.slug}`, lastmod, alternates })
+      if (hasEnglish) {
+        entries.push({ path: `/en/talks/${talk.slug}`, lastmod, alternates })
       }
     }
 

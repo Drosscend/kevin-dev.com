@@ -1,5 +1,6 @@
 import Article from '#models/article'
 import Project from '#models/project'
+import Talk from '#models/talk'
 import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
 import { localePath, type Locale } from '#types/i18n'
@@ -13,7 +14,7 @@ export const MARKDOWN_CONTENT_TYPE = 'text/markdown; charset=utf-8'
  */
 export default class LlmsService {
   static async index() {
-    const [articles, projects, settings] = await Promise.all([
+    const [articles, projects, talks, settings] = await Promise.all([
       Article.query()
         .withScopes((scopes) => scopes.published())
         .preload('translations', (query) =>
@@ -26,6 +27,12 @@ export default class LlmsService {
           query.select('id', 'project_id', 'locale', 'title', 'summary')
         )
         .orderBy('published_at', 'desc'),
+      Talk.query()
+        .withScopes((scopes) => scopes.published())
+        .preload('translations', (query) =>
+          query.select('id', 'talk_id', 'locale', 'title', 'summary')
+        )
+        .orderBy('event_date', 'desc'),
       SettingsService.getMany(['cv_markdown_fr', 'legal_markdown_fr']),
     ])
 
@@ -63,6 +70,16 @@ export default class LlmsService {
       lines.push(
         `- [${fr.title}](${SeoService.absolute(`/projects/${project.slug}.md`)})${summary}`
       )
+    }
+
+    lines.push('', '## Interventions', '')
+    for (const talk of talks) {
+      const fr = talk.translations.find((translation) => translation.locale === 'fr')
+      if (!fr) {
+        continue
+      }
+      const context = `${talk.eventName}, ${talk.eventDate.toISODate()}`
+      lines.push(`- [${fr.title}](${SeoService.absolute(`/talks/${talk.slug}.md`)}) — ${context}`)
     }
 
     lines.push('', '## Pages', '')
@@ -132,6 +149,39 @@ export default class LlmsService {
         ? [`- Technologies : ${project.technologies.map((item) => item.name).join(', ')}`]
         : []),
       ...project.links.map((link) => `- ${link.label} : ${link.url}`),
+      '',
+      '---',
+      '',
+    ]
+
+    return header.join('\n') + translation.contentMarkdown + '\n'
+  }
+
+  static async talkMarkdown(slug: string, locale: Locale) {
+    const talk = await Talk.query()
+      .where('slug', slug)
+      .withScopes((scopes) => scopes.published())
+      .preload('translations')
+      .preload('links', (links) => links.orderBy('position'))
+      .preload('technologies')
+      .first()
+
+    const translation = talk?.translation(locale)
+    if (!talk || !translation) {
+      return null
+    }
+
+    const header = [
+      `# ${translation.title}`,
+      '',
+      ...(translation.summary ? [`> ${translation.summary}`, ''] : []),
+      `- URL : ${SeoService.absolute(localePath(locale, `/talks/${talk.slug}`))}`,
+      `- Événement : ${talk.eventName}${talk.city ? ` (${talk.city})` : ''}`,
+      `- Date : ${talk.eventDate.toISODate()}`,
+      ...(talk.technologies.length > 0
+        ? [`- Technologies : ${talk.technologies.map((item) => item.name).join(', ')}`]
+        : []),
+      ...talk.links.map((link) => `- ${link.label} : ${link.url}`),
       '',
       '---',
       '',

@@ -30,8 +30,6 @@ type HomeAdminProps = {
     heroLocation: string
     nowFr: string
     nowEn: string
-    talksFr: string
-    talksEn: string
   }
   timeline: TimelineItem[]
 }
@@ -223,30 +221,6 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
               label="En ce moment (EN, optionnel)"
               value={form.data.nowEn}
               onChange={(value) => form.setData('nowEn', value)}
-            />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Interventions</CardTitle>
-            <CardDescription>
-              La phrase de la section « Interventions ». Laisser vide pour garder le texte par
-              défaut.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <SettingsTextarea
-              id="talksFr"
-              label="Texte (FR)"
-              value={form.data.talksFr}
-              onChange={(value) => form.setData('talksFr', value)}
-            />
-            <SettingsTextarea
-              id="talksEn"
-              label="Texte (EN, optionnel)"
-              value={form.data.talksEn}
-              onChange={(value) => form.setData('talksEn', value)}
             />
           </CardContent>
         </Card>

@@ -16,6 +16,7 @@ export const controllers = {
     Security: () => import('#controllers/admin/security_controller'),
     Session: () => import('#controllers/admin/session_controller'),
     Tags: () => import('#controllers/admin/tags_controller'),
+    Talks: () => import('#controllers/admin/talks_controller'),
     Technologies: () => import('#controllers/admin/technologies_controller'),
   },
   Blog: () => import('#controllers/blog_controller'),
@@ -27,6 +28,7 @@ export const controllers = {
   Llms: () => import('#controllers/llms_controller'),
   Projects: () => import('#controllers/projects_controller'),
   Seo: () => import('#controllers/seo_controller'),
+  Talks: () => import('#controllers/talks_controller'),
   Technologies: () => import('#controllers/technologies_controller'),
   Uploads: () => import('#controllers/uploads_controller'),
 }

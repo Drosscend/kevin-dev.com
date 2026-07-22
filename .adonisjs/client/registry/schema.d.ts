@@ -259,6 +259,54 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['show']>>>
     }
   }
+  'talks.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/talks'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['index']>>>
+    }
+  }
+  'talks.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/talks/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['show']>>>
+    }
+  }
+  'en.talks.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/talks'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['index']>>>
+    }
+  }
+  'en.talks.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/talks/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['show']>>>
+    }
+  }
   'technologies.index': {
     methods: ["GET","HEAD"]
     pattern: '/technologies'
@@ -965,6 +1013,78 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['destroy']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['destroy']>>>
+    }
+  }
+  'admin.talks.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/talks'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['index']>>>
+    }
+  }
+  'admin.talks.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/talks/create'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['create']>>>
+    }
+  }
+  'admin.talks.store': {
+    methods: ["POST"]
+    pattern: '/admin/talks'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').talkValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').talkValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.talks.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/talks/:id/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['edit']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['edit']>>>
+    }
+  }
+  'admin.talks.update': {
+    methods: ["PUT"]
+    pattern: '/admin/talks/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').talkValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').talkValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.talks.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/talks/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['destroy']>>>
     }
   }
   'admin.pages.index': {

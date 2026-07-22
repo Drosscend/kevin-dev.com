@@ -20,6 +20,10 @@ export interface ApiDefinition {
       index: typeof routes['en.projects.index']
       show: typeof routes['en.projects.show']
     }
+    talks: {
+      index: typeof routes['en.talks.index']
+      show: typeof routes['en.talks.show']
+    }
     technologies: {
       index: typeof routes['en.technologies.index']
       show: typeof routes['en.technologies.show']
@@ -54,6 +58,10 @@ export interface ApiDefinition {
   projects: {
     index: typeof routes['projects.index']
     show: typeof routes['projects.show']
+  }
+  talks: {
+    index: typeof routes['talks.index']
+    show: typeof routes['talks.show']
   }
   technologies: {
     index: typeof routes['technologies.index']
@@ -139,6 +147,14 @@ export interface ApiDefinition {
       edit: typeof routes['admin.projects.edit']
       update: typeof routes['admin.projects.update']
       destroy: typeof routes['admin.projects.destroy']
+    }
+    talks: {
+      index: typeof routes['admin.talks.index']
+      create: typeof routes['admin.talks.create']
+      store: typeof routes['admin.talks.store']
+      edit: typeof routes['admin.talks.edit']
+      update: typeof routes['admin.talks.update']
+      destroy: typeof routes['admin.talks.destroy']
     }
     pages: {
       index: typeof routes['admin.pages.index']

@@ -325,6 +325,103 @@ export class TagSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class TalkLinkSchema extends BaseModel {
+  static $columns = ['id', 'label', 'position', 'talkId', 'type', 'url'] as const
+  $columns = TalkLinkSchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare label: string
+  @column()
+  declare position: number
+  @column()
+  declare talkId: number
+  @column()
+  declare type: string
+  @column()
+  declare url: string
+}
+
+export class TalkTechnologySchema extends BaseModel {
+  static $columns = ['id', 'talkId', 'technologyId'] as const
+  $columns = TalkTechnologySchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare talkId: number
+  @column()
+  declare technologyId: number
+}
+
+export class TalkTranslationSchema extends BaseModel {
+  static $columns = [
+    'contentHtml',
+    'contentMarkdown',
+    'createdAt',
+    'id',
+    'locale',
+    'summary',
+    'talkId',
+    'title',
+    'updatedAt',
+  ] as const
+  $columns = TalkTranslationSchema.$columns
+  @column()
+  declare contentHtml: string
+  @column()
+  declare contentMarkdown: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare locale: string
+  @column()
+  declare summary: string
+  @column()
+  declare talkId: number
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class TalkSchema extends BaseModel {
+  static $columns = [
+    'city',
+    'coverMediaId',
+    'createdAt',
+    'eventDate',
+    'eventName',
+    'id',
+    'publishedAt',
+    'slug',
+    'status',
+    'updatedAt',
+  ] as const
+  $columns = TalkSchema.$columns
+  @column()
+  declare city: string
+  @column()
+  declare coverMediaId: number | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.date()
+  declare eventDate: DateTime
+  @column()
+  declare eventName: string
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime()
+  declare publishedAt: DateTime | null
+  @column()
+  declare slug: string
+  @column()
+  declare status: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class TechnologySchema extends BaseModel {
   static $columns = [
     'category',

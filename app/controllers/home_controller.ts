@@ -3,6 +3,7 @@ import router from '@adonisjs/core/services/router'
 import drive from '@adonisjs/drive/services/main'
 import Article from '#models/article'
 import Project from '#models/project'
+import Talk from '#models/talk'
 import Technology from '#models/technology'
 import TimelineEntry from '#models/timeline_entry'
 import type Media from '#models/media'
@@ -23,7 +24,7 @@ export default class HomeController {
   async handle({ inertia, i18n }: HttpContext) {
     const locale = i18n.locale as Locale
 
-    const [articles, projects, technologies, settings, timelineEntries] = await Promise.all([
+    const [articles, projects, talks, technologies, settings, timelineEntries] = await Promise.all([
       Article.query()
         .withScopes((scopes) => scopes.published())
         .whereHas('translations', (translations) => translations.where('locale', locale))
@@ -42,6 +43,14 @@ export default class HomeController {
         .preload('cover')
         .orderBy('published_at', 'desc')
         .limit(3),
+      Talk.query()
+        .withScopes((scopes) => scopes.published())
+        .whereHas('translations', (translations) => translations.where('locale', locale))
+        .preload('translations', (translations) =>
+          translations.select('id', 'talk_id', 'locale', 'title')
+        )
+        .orderBy('event_date', 'desc')
+        .limit(3),
       Technology.query().orderBy('name').select('slug', 'name'),
       SettingsService.getMany([
         'now_fr',
@@ -49,8 +58,6 @@ export default class HomeController {
         'hero_roles_fr',
         'hero_roles_en',
         'hero_location',
-        'talks_fr',
-        'talks_en',
       ]),
       TimelineEntry.query().preload('translations').orderBy('position'),
     ])
@@ -63,7 +70,6 @@ export default class HomeController {
       .split('\n')
       .map((role) => role.trim())
       .filter(Boolean)
-    const talksText = localized(settings.talks_fr, settings.talks_en)
 
     return inertia.render('home', {
       now,
@@ -82,6 +88,16 @@ export default class HomeController {
       technologies: technologies.map((technology) => ({
         slug: technology.slug,
         name: technology.name,
+      })),
+      talks: talks.map((talk) => ({
+        slug: talk.slug,
+        title: talk.translation(locale)!.title,
+        eventName: talk.eventName,
+        eventDate: talk.eventDate
+          .setLocale(locale)
+          .toLocaleString({ month: 'long', year: 'numeric' }),
+        city: talk.city,
+        upcoming: talk.isUpcoming,
       })),
       timeline: timelineEntries.map((entry) => {
         const translation = entry.translation(locale)
@@ -110,8 +126,8 @@ export default class HomeController {
         stack: i18n.t('messages.home.stack'),
         allTechnologies: i18n.t('messages.home.allTechnologies'),
         talks: i18n.t('messages.home.talks'),
-        talksText: talksText || i18n.t('messages.home.talksText'),
-        talksContact: i18n.t('messages.home.talksContact'),
+        allTalks: i18n.t('messages.home.allTalks'),
+        upcomingTalk: i18n.t('messages.talks.upcoming'),
       },
       meta: SeoService.build({
         title: 'kevin-dev.com',
