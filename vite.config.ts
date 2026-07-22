@@ -6,7 +6,13 @@ import inertia from '@adonisjs/inertia/vite'
 
 export default defineConfig({
   plugins: [
-    react(),
+    /**
+     * The React compiler memoizes components and hooks at build time.
+     * It covers the whole inertia/ folder (the plugin transforms
+     * .ts as well as .tsx), so the editor screens no longer re-render
+     * every option list on each keystroke.
+     */
+    react({ babel: { plugins: ['babel-plugin-react-compiler'] } }),
     tailwindcss(),
     inertia({ ssr: { enabled: true, entrypoint: 'inertia/ssr.tsx' } }),
     adonisjs({ entrypoints: ['inertia/app.tsx'], reload: ['resources/views/**/*.edge'] }),
