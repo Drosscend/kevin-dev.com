@@ -39,6 +39,7 @@ jobs:
       DB_PASSWORD: password
       DB_DATABASE: kevin_dev_test
       DRIVE_DISK: fs
+      CONTACT_NOTIFICATION_EMAIL: contact@example.com
 
     steps:
       - uses: actions/checkout@v5

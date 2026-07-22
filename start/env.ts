@@ -55,4 +55,17 @@ export default await Env.create(new URL('../', import.meta.url), {
   |----------------------------------------------------------
   */
   DRIVE_DISK: Env.schema.enum(['fs'] as const),
+
+  // SMTP relay (Proton Mail Bridge on the shared `mail` Docker
+  // network). Credentials are the Bridge ones, not the Proton account.
+  SMTP_HOST: Env.schema.string.optional(),
+  SMTP_PORT: Env.schema.number.optional(),
+  SMTP_USERNAME: Env.schema.string.optional(),
+  SMTP_PASSWORD: Env.schema.string.optional(),
+  MAIL_FROM_ADDRESS: Env.schema.string.optional({ format: 'email' }),
+  MAIL_FROM_NAME: Env.schema.string.optional(),
+
+  // Recipient of the contact form notifications. Sending is disabled
+  // when left empty.
+  CONTACT_NOTIFICATION_EMAIL: Env.schema.string.optional({ format: 'email' }),
 })
