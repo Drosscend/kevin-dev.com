@@ -1,6 +1,7 @@
 import { Download } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { Button } from '~/components/ui/button'
 
 type CvProps = {
   locale: 'fr' | 'en'
@@ -22,13 +23,12 @@ export default function Cv({ contentHtml, pdfAvailable, labels, meta }: CvProps)
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
           {pdfAvailable && (
-            <a
-              href="/cv.pdf"
-              className="bg-primary text-primary-foreground inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-opacity hover:opacity-90"
-            >
-              <Download aria-hidden className="size-4" />
-              {labels.download}
-            </a>
+            <Button asChild size="lg" className="w-full sm:w-auto">
+              <a href="/cv.pdf" download>
+                <Download aria-hidden className="size-4" />
+                {labels.download}
+              </a>
+            </Button>
           )}
         </div>
 

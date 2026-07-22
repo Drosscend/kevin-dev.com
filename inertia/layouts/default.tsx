@@ -1,8 +1,12 @@
 import { type Data } from '@generated/data'
 import { Toaster } from 'sonner'
-import { type ReactElement } from 'react'
+import { type ReactElement, useEffect, useState } from 'react'
 import { Link } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
+import { Menu, X } from 'lucide-react'
 import ThemeToggle from '~/components/theme_toggle'
+import { Button } from '~/components/ui/button'
+import { cn } from '~/lib/utils'
 import { localePath } from '~/lib/locale'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
 
@@ -17,11 +21,59 @@ const NAVIGATION = [
 
 export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const locale = children.props.locale
+  const { url } = usePage()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [renderedUrl, setRenderedUrl] = useState(url)
+  const currentPath = url.split('?')[0]
+
   useFlashToasts(children.props.flash)
+
+  /**
+   * Closes the panel on navigation, including history moves that no
+   * link click would catch.
+   */
+  if (url !== renderedUrl) {
+    setRenderedUrl(url)
+    setMenuOpen(false)
+  }
+
+  /**
+   * The panel only exists below the "md" breakpoint: closing it on
+   * resize keeps the scroll lock from outliving a rotation or a
+   * window widened past the breakpoint.
+   */
+  useEffect(() => {
+    if (!menuOpen) {
+      return
+    }
+
+    const wide = window.matchMedia('(min-width: 48rem)')
+    const close = () => setMenuOpen(false)
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        close()
+      }
+    }
+
+    document.body.style.overflow = 'hidden'
+    document.addEventListener('keydown', onKeyDown)
+    wide.addEventListener('change', close)
+
+    return () => {
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', onKeyDown)
+      wide.removeEventListener('change', close)
+    }
+  }, [menuOpen])
+
+  function isActive(path: string) {
+    const href = localePath(locale, path)
+    return currentPath === href || currentPath.startsWith(`${href}/`)
+  }
 
   return (
     <>
-      <header>
+      <header className="bg-background/85 sticky top-0 z-40 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <Link
             href={localePath(locale, '/')}
@@ -29,24 +81,77 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
           >
             Kévin Véronési
           </Link>
-          <nav className="flex items-center gap-3 sm:gap-5">
-            {NAVIGATION.map((item) => (
-              <Link
-                key={item.path}
-                href={localePath(locale, item.path)}
-                className="text-muted-foreground hover:text-primary text-sm transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
+
+          <div className="flex items-center gap-1 md:gap-3">
+            <nav aria-label="Navigation principale" className="hidden items-center gap-5 md:flex">
+              {NAVIGATION.map((item) => (
+                <Link
+                  key={item.path}
+                  href={localePath(locale, item.path)}
+                  aria-current={isActive(item.path) ? 'page' : undefined}
+                  className={cn(
+                    'hover:text-primary text-sm transition-colors',
+                    isActive(item.path) ? 'text-primary font-medium' : 'text-muted-foreground'
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+
             <ThemeToggle />
-          </nav>
+
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              aria-controls="mobile-navigation"
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </Button>
+          </div>
         </div>
+
+        {menuOpen && (
+          <div
+            aria-hidden
+            className="fixed inset-x-0 top-16 bottom-0 z-40 bg-black/40 md:hidden"
+            onClick={() => setMenuOpen(false)}
+          />
+        )}
+
+        <nav
+          id="mobile-navigation"
+          aria-label="Navigation principale"
+          hidden={!menuOpen}
+          className="bg-background relative z-50 border-b px-6 pt-2 pb-4 md:hidden"
+        >
+          {NAVIGATION.map((item) => (
+            <Link
+              key={item.path}
+              href={localePath(locale, item.path)}
+              aria-current={isActive(item.path) ? 'page' : undefined}
+              className={cn(
+                'block rounded-md px-3 py-3 text-base transition-colors',
+                isActive(item.path)
+                  ? 'bg-accent text-primary font-medium'
+                  : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
       </header>
+
       <main>{children}</main>
       <footer className="border-t">
         <div className="text-muted-foreground mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-9 text-sm">
-          <nav className="flex flex-wrap gap-5">
+          <nav aria-label="Navigation secondaire" className="flex flex-wrap gap-x-5 gap-y-3">
             {NAVIGATION.map((item) => (
               <Link
                 key={item.path}
