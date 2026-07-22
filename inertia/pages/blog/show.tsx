@@ -37,63 +37,74 @@ export default function BlogShow({
   const otherBase = otherLocalePath(locale, '/blog')
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">
+    <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
-      {isDraftPreview && (
-        <p className="border-destructive text-destructive rounded-md border px-4 py-2 text-sm">
-          {labels.draft}
-        </p>
-      )}
 
-      <div className="flex items-center justify-between gap-4 text-sm">
-        <Link href={base} className="text-muted-foreground hover:underline">
-          {labels.backToList}
-        </Link>
-        {hasOtherLocale && (
+      <div className="mx-auto max-w-[720px]">
+        {isDraftPreview && (
+          <p className="border-destructive text-destructive mb-10 rounded-lg border px-4 py-2.5 font-mono text-[13px]">
+            {labels.draft}
+          </p>
+        )}
+
+        <div className="flex items-baseline justify-between gap-4">
           <Link
-            href={`${otherBase}/${article.slug}`}
-            className="text-muted-foreground hover:underline"
+            href={base}
+            className="text-muted-foreground hover:text-primary text-sm transition-colors"
           >
-            {locale === 'en' ? 'FR' : 'EN'}
+            {labels.backToList}
           </Link>
+          {hasOtherLocale && (
+            <Link
+              href={`${otherBase}/${article.slug}`}
+              className="text-muted-foreground hover:text-primary font-mono text-[13px] transition-colors"
+            >
+              {locale === 'en' ? 'FR' : 'EN'}
+            </Link>
+          )}
+        </div>
+
+        <header className="mt-12">
+          <h1 className="text-3xl font-bold md:text-4xl">{article.title}</h1>
+          <p className="text-muted-foreground mt-4 font-mono text-[13px]">
+            {article.publishedAt && (
+              <>
+                {labels.publishedOn} {article.publishedAt} ·{' '}
+              </>
+            )}
+            {article.readingTimeLabel}
+            {article.category && (
+              <>
+                {' · '}
+                <Link
+                  href={`${base}?category=${article.category.slug}`}
+                  className="hover:text-primary uppercase tracking-wider transition-colors"
+                >
+                  {article.category.name}
+                </Link>
+              </>
+            )}
+          </p>
+        </header>
+
+        <div className="mt-10">
+          <ArticleContent html={article.contentHtml} />
+        </div>
+
+        {article.tags.length > 0 && (
+          <p className="mt-12 flex flex-wrap gap-x-3 gap-y-1 border-t pt-6 font-mono text-[13px]">
+            {article.tags.map((tag) => (
+              <Link
+                key={tag.slug}
+                href={`${base}?tag=${tag.slug}`}
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                #{tag.name}
+              </Link>
+            ))}
+          </p>
         )}
       </div>
-
-      <header className="space-y-3">
-        <h1 className="text-3xl font-bold tracking-tight">{article.title}</h1>
-        <p className="text-muted-foreground text-sm">
-          {article.publishedAt && (
-            <>
-              {labels.publishedOn} {article.publishedAt} ·{' '}
-            </>
-          )}
-          {article.readingTimeLabel}
-          {article.category && (
-            <>
-              {' · '}
-              <Link href={`${base}?category=${article.category.slug}`} className="hover:underline">
-                {article.category.name}
-              </Link>
-            </>
-          )}
-        </p>
-      </header>
-
-      <ArticleContent html={article.contentHtml} />
-
-      {article.tags.length > 0 && (
-        <p className="flex flex-wrap gap-2 border-t pt-4 text-sm">
-          {article.tags.map((tag) => (
-            <Link
-              key={tag.slug}
-              href={`${base}?tag=${tag.slug}`}
-              className="text-muted-foreground hover:underline"
-            >
-              #{tag.name}
-            </Link>
-          ))}
-        </p>
-      )}
     </div>
   )
 }

@@ -13,6 +13,8 @@ type PagesProps = {
   cvEn: string
   legalFr: string
   legalEn: string
+  nowFr: string
+  nowEn: string
   pdf: { size: number } | null
 }
 
@@ -40,8 +42,8 @@ function MarkdownField({
   )
 }
 
-export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps) {
-  const form = useForm({ cvFr, cvEn, legalFr, legalEn })
+export default function Pages({ cvFr, cvEn, legalFr, legalEn, nowFr, nowEn, pdf }: PagesProps) {
+  const form = useForm({ cvFr, cvEn, legalFr, legalEn, nowFr, nowEn })
   const [preview, setPreview] = useState<{ label: string; html: string } | null>(null)
 
   function submit(event: FormEvent) {
@@ -61,7 +63,9 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
 
   return (
     <div className="max-w-4xl space-y-6">
-      <h1 className="text-2xl font-bold tracking-tight">Pages (CV &amp; mentions légales)</h1>
+      <h1 className="text-2xl font-bold tracking-tight">
+        Pages (accueil, CV &amp; mentions légales)
+      </h1>
 
       <Card>
         <CardHeader>
@@ -91,6 +95,36 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
       </Card>
 
       <form onSubmit={submit} className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>En ce moment</CardTitle>
+            <CardDescription>
+              Texte brut affiché dans le bloc « En ce moment » de la page d’accueil. Laisser vide
+              pour masquer la section.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="nowFr">En ce moment (FR)</Label>
+              <textarea
+                id="nowFr"
+                className="border-input min-h-20 w-full rounded-md border bg-transparent px-3 py-2 text-sm"
+                value={form.data.nowFr}
+                onChange={(event) => form.setData('nowFr', event.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="nowEn">En ce moment (EN, optionnel)</Label>
+              <textarea
+                id="nowEn"
+                className="border-input min-h-20 w-full rounded-md border bg-transparent px-3 py-2 text-sm"
+                value={form.data.nowEn}
+                onChange={(event) => form.setData('nowEn', event.target.value)}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle>Page CV</CardTitle>

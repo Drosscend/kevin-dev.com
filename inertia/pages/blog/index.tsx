@@ -57,39 +57,54 @@ export default function BlogIndex({
     router.get(pageUrl(base, { category: slug, tag: filters.tag }, 1), {}, { preserveState: true })
   }
 
+  const pillClass = (active: boolean) =>
+    active
+      ? 'border-primary bg-primary text-primary-foreground rounded-full border px-4 py-1.5 text-sm transition-colors'
+      : 'bg-card hover:border-primary hover:text-primary rounded-full border px-4 py-1.5 text-sm transition-colors'
+
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-6 py-10">
+    <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold tracking-tight">{labels.title}</h1>
-        <div className="flex items-center gap-3">
-          <Link
-            href={otherLocalePath(locale, '/blog')}
-            className="text-muted-foreground text-sm hover:underline"
-          >
-            {locale === 'en' ? 'FR' : 'EN'}
-          </Link>
-          <select
-            className="border-input h-9 rounded-md border bg-transparent px-3 text-sm"
-            value={filters.category ?? ''}
-            onChange={(event) => filterByCategory(event.target.value || null)}
-          >
-            <option value="">{labels.allCategories}</option>
-            {categories.map((category) => (
-              <option key={category.slug} value={category.slug}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
+
+      <div className="flex items-baseline justify-between gap-4">
+        <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
+        <Link
+          href={otherLocalePath(locale, '/blog')}
+          className="text-muted-foreground hover:text-primary font-mono text-[13px] transition-colors"
+        >
+          {locale === 'en' ? 'FR' : 'EN'}
+        </Link>
       </div>
 
+      {categories.length > 0 && (
+        <div className="mt-8 flex flex-wrap gap-2.5">
+          <button
+            type="button"
+            onClick={() => filterByCategory(null)}
+            className={pillClass(!filters.category)}
+          >
+            {labels.allCategories}
+          </button>
+          {categories.map((category) => (
+            <button
+              key={category.slug}
+              type="button"
+              onClick={() => filterByCategory(category.slug)}
+              className={pillClass(filters.category === category.slug)}
+            >
+              {category.name}
+            </button>
+          ))}
+        </div>
+      )}
+
       {filters.tag && (
-        <p className="text-muted-foreground text-sm">
-          #{filters.tag} —{' '}
+        <p className="text-muted-foreground mt-8 font-mono text-[13px]">
+          #{filters.tag}{' '}
           <Link
             href={pageUrl(base, { category: filters.category, tag: null }, 1)}
-            className="underline"
+            className="hover:text-primary ml-1 transition-colors"
+            aria-label="×"
           >
             ×
           </Link>
@@ -97,68 +112,81 @@ export default function BlogIndex({
       )}
 
       {articles.length === 0 ? (
-        <p className="text-muted-foreground">{labels.empty}</p>
+        <p className="text-muted-foreground mt-12">{labels.empty}</p>
       ) : (
-        <div className="space-y-8">
+        <ul className="mt-12 max-w-[720px] divide-y border-y">
           {articles.map((article) => (
-            <article key={article.slug} className="space-y-2">
-              <h2 className="text-xl font-semibold">
-                <Link href={`${base}/${article.slug}`} className="hover:underline">
-                  {article.title}
-                </Link>
-              </h2>
-              <p className="text-muted-foreground text-sm">
-                {article.publishedAt} · {article.readingTimeLabel}
-                {article.category && (
-                  <>
-                    {' · '}
-                    <Link
-                      href={pageUrl(base, { category: article.category.slug, tag: null }, 1)}
-                      className="hover:underline"
-                    >
-                      {article.category.name}
-                    </Link>
-                  </>
-                )}
-              </p>
-              {article.summary && <p>{article.summary}</p>}
-              {article.tags.length > 0 && (
-                <p className="flex flex-wrap gap-2 text-sm">
-                  {article.tags.map((tag) => (
-                    <Link
-                      key={tag.slug}
-                      href={pageUrl(base, { category: filters.category, tag: tag.slug }, 1)}
-                      className="text-muted-foreground hover:underline"
-                    >
-                      #{tag.name}
-                    </Link>
-                  ))}
+            <li key={article.slug}>
+              <article className="py-7">
+                <p className="text-muted-foreground font-mono text-[13px]">
+                  {article.publishedAt} · {article.readingTimeLabel}
+                  {article.category && (
+                    <>
+                      {' · '}
+                      <Link
+                        href={pageUrl(base, { category: article.category.slug, tag: null }, 1)}
+                        className="hover:text-primary uppercase tracking-wider transition-colors"
+                      >
+                        {article.category.name}
+                      </Link>
+                    </>
+                  )}
                 </p>
-              )}
-            </article>
+                <h2 className="mt-2 text-xl font-semibold">
+                  <Link
+                    href={`${base}/${article.slug}`}
+                    className="group hover:text-primary transition-colors"
+                  >
+                    {article.title}{' '}
+                    <span
+                      aria-hidden
+                      className="inline-block transition-transform group-hover:translate-x-0.5 motion-reduce:transform-none"
+                    >
+                      →
+                    </span>
+                  </Link>
+                </h2>
+                {article.summary && (
+                  <p className="text-muted-foreground mt-2 text-sm">{article.summary}</p>
+                )}
+                {article.tags.length > 0 && (
+                  <p className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[13px]">
+                    {article.tags.map((tag) => (
+                      <Link
+                        key={tag.slug}
+                        href={pageUrl(base, { category: filters.category, tag: tag.slug }, 1)}
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        #{tag.name}
+                      </Link>
+                    ))}
+                  </p>
+                )}
+              </article>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
       {pagination.lastPage > 1 && (
-        <nav className="flex items-center justify-between border-t pt-4 text-sm">
+        <nav className="mt-12 flex max-w-[720px] items-center justify-between text-sm">
           {pagination.currentPage > 1 ? (
             <Link
               href={pageUrl(base, filters, pagination.currentPage - 1)}
-              className="hover:underline"
+              className="hover:text-primary font-medium transition-colors"
             >
               {labels.previous}
             </Link>
           ) : (
             <span />
           )}
-          <span className="text-muted-foreground">
+          <span className="text-muted-foreground font-mono text-[13px]">
             {pagination.currentPage} / {pagination.lastPage}
           </span>
           {pagination.currentPage < pagination.lastPage ? (
             <Link
               href={pageUrl(base, filters, pagination.currentPage + 1)}
-              className="hover:underline"
+              className="hover:text-primary font-medium transition-colors"
             >
               {labels.next}
             </Link>

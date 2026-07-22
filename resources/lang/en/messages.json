@@ -1,11 +1,24 @@
 {
   "home": {
-    "intro": "Data Migration consultant by day, web developer by night. I write about AdonisJS, React and self-hosting, and share my projects here.",
     "metaDescription": "Kévin Véronési's personal site: tech blog (AdonisJS, React, self-hosting), project portfolio and resume.",
+    "roleFullStack": "Full Stack Developer",
+    "roleAi": "AI Developer",
+    "location": "Toulouse, France",
+    "downloadCv": "Download my resume",
+    "contactMe": "Contact me",
+    "photoAlt": "Kévin speaking at a conference",
+    "now": "Right now",
+    "featuredProjects": "Projects",
+    "viewProject": "View project",
     "latestArticles": "Latest articles",
-    "featuredProjects": "Featured projects",
     "allArticles": "All articles →",
-    "allProjects": "All projects →"
+    "allProjects": "All my projects →",
+    "timeline": "Background",
+    "stack": "Stack",
+    "allTechnologies": "All my technologies →",
+    "talks": "Speaking",
+    "talksText": "I enjoy passing knowledge on: courses, workshops and conference talks about data, the web and AI.",
+    "talksContact": "Contact me →"
   },
   "blog": {
     "title": "Blog",

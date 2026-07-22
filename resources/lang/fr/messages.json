@@ -1,11 +1,24 @@
 {
   "home": {
-    "intro": "Consultant Data Migration le jour, développeur web le soir. J'écris sur AdonisJS, React et l'auto-hébergement, et je partage mes projets ici.",
     "metaDescription": "Site personnel de Kévin Véronési : blog technique (AdonisJS, React, auto-hébergement), portfolio de projets et CV.",
+    "roleFullStack": "Développeur Full Stack",
+    "roleAi": "Développeur IA",
+    "location": "Toulouse, France",
+    "downloadCv": "Télécharger mon CV",
+    "contactMe": "Me contacter",
+    "photoAlt": "Kévin en conférence, au micro",
+    "now": "En ce moment",
+    "featuredProjects": "Projets",
+    "viewProject": "Voir le projet",
     "latestArticles": "Derniers articles",
-    "featuredProjects": "Projets mis en avant",
     "allArticles": "Tous les articles →",
-    "allProjects": "Tous les projets →"
+    "allProjects": "Tous mes projets →",
+    "timeline": "Parcours",
+    "stack": "Stack",
+    "allTechnologies": "Toutes mes technologies →",
+    "talks": "Interventions",
+    "talksText": "J'aime transmettre : cours, ateliers et interventions en conférence, sur la data, le web et l'IA.",
+    "talksContact": "Me contacter →"
   },
   "blog": {
     "title": "Blog",
