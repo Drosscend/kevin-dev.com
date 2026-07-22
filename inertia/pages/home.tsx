@@ -1,5 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
-import { LinkArrow, LinkCard, LinkList, LinkRow } from '~/components/content_link'
+import { LinkArrow, LinkList, LinkRow } from '~/components/content_link'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { localePath } from '~/lib/locale'
 
@@ -7,8 +7,20 @@ type HomeProps = {
   locale: 'fr' | 'en'
   now: string | null
   cvPdfAvailable: boolean
-  latestArticles: { slug: string; title: string; summary: string; publishedAt: string | null }[]
-  featuredProjects: { slug: string; title: string; summary: string; coverUrl: string | null }[]
+  latestArticles: {
+    slug: string
+    title: string
+    summary: string
+    publishedAt: string | null
+    coverUrl: string | null
+  }[]
+  featuredProjects: {
+    slug: string
+    title: string
+    summary: string
+    coverUrl: string | null
+    technologies: string[]
+  }[]
   talks: {
     slug: string
     title: string
@@ -16,6 +28,8 @@ type HomeProps = {
     eventDate: string
     city: string
     upcoming: boolean
+    summary: string
+    coverUrl: string | null
   }[]
   technologies: { slug: string; name: string }[]
   timeline: { period: string; title: string; place: string }[]
@@ -138,16 +152,17 @@ export default function Home({
             title={labels.featuredProjects}
             more={{ href: to('/projects'), label: labels.allProjects }}
           />
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <LinkList>
             {featuredProjects.map((project) => (
-              <LinkCard
+              <LinkRow
                 key={project.slug}
                 href={to(`/projects/${project.slug}`)}
                 title={project.title}
-                summary={project.summary}
+                meta={project.technologies.join(' · ')}
+                preview={{ imageUrl: project.coverUrl, summary: project.summary }}
               />
             ))}
-          </div>
+          </LinkList>
         </section>
       )}
 
@@ -164,6 +179,7 @@ export default function Home({
                 href={to(`/blog/${article.slug}`)}
                 title={article.title}
                 meta={article.publishedAt}
+                preview={{ imageUrl: article.coverUrl, summary: article.summary }}
               />
             ))}
           </LinkList>
@@ -219,6 +235,11 @@ export default function Home({
                 title={talk.title}
                 badge={talk.upcoming ? labels.upcomingTalk : undefined}
                 meta={`${talk.eventName} · ${talk.eventDate}`}
+                preview={{
+                  imageUrl: talk.coverUrl,
+                  summary: talk.summary,
+                  meta: talk.city || undefined,
+                }}
               />
             ))}
           </LinkList>

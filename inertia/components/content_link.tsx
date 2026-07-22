@@ -1,5 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import type { ReactNode } from 'react'
+import { useHoverPreview, type PreviewContent } from '~/components/hover_preview'
 import { cn } from '~/lib/utils'
 
 /**
@@ -27,22 +28,38 @@ export function LinkList({ children }: { children: ReactNode }) {
 
 /**
  * One entry of a LinkList: title, optional accent badge, optional metadata
- * line, and the trailing arrow shared with LinkCard.
+ * line, and the trailing arrow shared with LinkCard. A `preview` opts the
+ * row into the card that follows the cursor.
  */
 export function LinkRow({
   href,
   title,
   badge,
   meta,
+  preview,
 }: {
   href: string
   title: string
   badge?: string
   meta?: ReactNode
+  preview?: PreviewContent
 }) {
+  const hoverPreview = useHoverPreview()
+  const hoverHandlers = preview && {
+    onMouseEnter: (event: { clientX: number; clientY: number }) =>
+      hoverPreview.show(preview, event.clientX, event.clientY),
+    onMouseMove: (event: { clientX: number; clientY: number }) =>
+      hoverPreview.move(event.clientX, event.clientY),
+    onMouseLeave: hoverPreview.hide,
+  }
+
   return (
     <li>
-      <Link href={href} className="group grid grid-cols-[1fr_auto] items-center gap-x-6 px-1 py-4">
+      <Link
+        href={href}
+        {...hoverHandlers}
+        className="group grid grid-cols-[1fr_auto] items-center gap-x-6 px-1 py-4"
+      >
         <span>
           <span className="group-hover:text-primary font-medium transition-colors">{title}</span>
           {badge && (

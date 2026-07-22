@@ -31,6 +31,7 @@ export default class HomeController {
         .preload('translations', (translations) =>
           translations.select('id', 'article_id', 'locale', 'title', 'summary')
         )
+        .preload('cover')
         .orderBy('published_at', 'desc')
         .limit(3),
       Project.query()
@@ -41,14 +42,16 @@ export default class HomeController {
           translations.select('id', 'project_id', 'locale', 'title', 'summary')
         )
         .preload('cover')
+        .preload('technologies', (query) => query.select('slug', 'name'))
         .orderBy('published_at', 'desc')
         .limit(3),
       Talk.query()
         .withScopes((scopes) => scopes.published())
         .whereHas('translations', (translations) => translations.where('locale', locale))
         .preload('translations', (translations) =>
-          translations.select('id', 'talk_id', 'locale', 'title')
+          translations.select('id', 'talk_id', 'locale', 'title', 'summary')
         )
+        .preload('cover')
         .orderBy('event_date', 'desc')
         .limit(3),
       Technology.query().orderBy('name').select('slug', 'name'),
@@ -82,12 +85,14 @@ export default class HomeController {
           article.publishedAt
             ?.setLocale(locale)
             .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' }) ?? null,
+        coverUrl: thumbnailUrl(article.cover),
       })),
       featuredProjects: projects.map((project) => ({
         slug: project.slug,
         title: project.translation(locale)!.title,
         summary: project.translation(locale)!.summary,
         coverUrl: thumbnailUrl(project.cover),
+        technologies: project.technologies.map((technology) => technology.name),
       })),
       technologies: technologies.map((technology) => ({
         slug: technology.slug,
@@ -102,6 +107,8 @@ export default class HomeController {
           .toLocaleString({ month: 'long', year: 'numeric' }),
         city: talk.city,
         upcoming: talk.isUpcoming,
+        summary: talk.translation(locale)!.summary,
+        coverUrl: thumbnailUrl(talk.cover),
       })),
       timeline: timelineEntries.map((entry) => {
         const translation = entry.translation(locale)

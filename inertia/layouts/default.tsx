@@ -4,6 +4,7 @@ import { type ReactElement, useEffect, useState } from 'react'
 import { Link } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
 import { Menu, X } from 'lucide-react'
+import { HoverPreviewProvider } from '~/components/hover_preview'
 import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
@@ -148,7 +149,9 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
         </nav>
       </header>
 
-      <main>{children}</main>
+      <HoverPreviewProvider>
+        <main>{children}</main>
+      </HoverPreviewProvider>
       <footer className="border-t">
         <div className="text-muted-foreground mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-9 text-sm">
           <nav aria-label="Navigation secondaire" className="flex flex-wrap gap-x-5 gap-y-3">
