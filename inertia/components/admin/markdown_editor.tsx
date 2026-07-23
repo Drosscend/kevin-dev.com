@@ -18,9 +18,20 @@ import { uploadMediaImage } from '~/lib/admin'
 
 const PLACEHOLDER = 'Rédigez le contenu…'
 
+/**
+ * Filenames such as `main.py` or `README.md` end with something the
+ * linkifier reads as a country TLD, so the default autolinker turns
+ * them into links. Only autolink what unambiguously reads as an
+ * address, which is also what GFM does when the markdown is later
+ * rendered: an explicit protocol, a `www.` host, or an email.
+ */
+function shouldAutoLink(url: string) {
+  return /^[a-z][a-z0-9+.-]*:/i.test(url) || /^www\./i.test(url) || url.includes('@')
+}
+
 const EXTENSIONS = [
   StarterKit.configure({
-    link: { openOnClick: false, autolink: true },
+    link: { openOnClick: false, autolink: true, shouldAutoLink },
   }),
   Markdown,
   Image,
