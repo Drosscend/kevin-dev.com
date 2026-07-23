@@ -52,6 +52,7 @@ const LINK_TYPES = [
   { value: 'demo', label: 'Démo' },
   { value: 'release', label: 'Release' },
   { value: 'store', label: 'Store' },
+  { value: 'paper', label: 'Mémoire / rapport' },
   { value: 'other', label: 'Autre' },
 ] as const
 

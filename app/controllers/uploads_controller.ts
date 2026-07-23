@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import drive from '@adonisjs/drive/services/main'
-import MediaService from '#services/media_service'
+import Media from '#models/media'
+import MediaService, { DOCUMENT_FILE } from '#services/media_service'
 
 /**
  * Serves media library files from the Drive disk. Both URL segments
@@ -10,11 +11,27 @@ import MediaService from '#services/media_service'
 const KEY_PATTERN = /^[a-z0-9]{10,32}$/
 const FILE_PATTERN = /^(original|w\d{3,4})\.webp$/
 
+/**
+ * Download name of a document: the uploaded name stripped of
+ * anything that could break out of the content-disposition header.
+ */
+function downloadName(originalName: string) {
+  const cleaned = originalName
+    .replace(/[^\w.\- ]+/g, '')
+    .trim()
+    .slice(0, 100)
+  if (!cleaned || cleaned === '.pdf') {
+    return DOCUMENT_FILE
+  }
+  return cleaned.toLowerCase().endsWith('.pdf') ? cleaned : `${cleaned}.pdf`
+}
+
 export default class UploadsController {
   async show({ params, response }: HttpContext) {
     const { key, file } = params
+    const isDocument = file === DOCUMENT_FILE
 
-    if (!KEY_PATTERN.test(key) || !FILE_PATTERN.test(file)) {
+    if (!KEY_PATTERN.test(key) || !(isDocument || FILE_PATTERN.test(file))) {
       return response.notFound('Not found')
     }
 
@@ -24,7 +41,21 @@ export default class UploadsController {
       return response.notFound('Not found')
     }
 
-    response.header('content-type', 'image/webp')
+    /**
+     * Documents open in the browser viewer and are saved under the
+     * name they were uploaded with, not the generated one.
+     */
+    if (isDocument) {
+      const media = await Media.findBy('key', key)
+      response.header('content-type', 'application/pdf')
+      response.header(
+        'content-disposition',
+        `inline; filename="${downloadName(media?.originalName ?? DOCUMENT_FILE)}"`
+      )
+    } else {
+      response.header('content-type', 'image/webp')
+    }
+
     response.header('cache-control', 'public, max-age=31536000, immutable')
     return response.stream(await disk.getStream(diskKey))
   }

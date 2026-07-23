@@ -1,5 +1,6 @@
 import { Form, useRouter } from '@adonisjs/inertia/react'
-import { Trash2 } from 'lucide-react'
+import { Copy, FileText, Trash2 } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
@@ -13,11 +14,13 @@ type MediaItem = {
   id: number
   alt: string
   originalName: string
-  width: number
-  height: number
+  isDocument: boolean
+  width: number | null
+  height: number | null
   size: number
   url: string
-  thumbnailUrl: string
+  absoluteUrl: string
+  thumbnailUrl: string | null
   createdAt: string | null
 }
 
@@ -31,16 +34,27 @@ function formatSize(bytes: number) {
     : `${(bytes / (1024 * 1024)).toFixed(1)} Mo`
 }
 
+function describe(item: MediaItem) {
+  const details = item.isDocument ? 'PDF' : `${item.width}×${item.height}`
+  return `${item.originalName} · ${details} · ${formatSize(item.size)}`
+}
+
 export default function MediaPage({ media }: MediaPageProps) {
   const router = useRouter()
+
+  async function copyUrl(item: MediaItem) {
+    await navigator.clipboard.writeText(item.absoluteUrl)
+    toast.success('Lien copié')
+  }
 
   return (
     <AdminPage title="Bibliothèque média" className="max-w-6xl">
       <Card className="max-w-xl">
         <CardHeader>
-          <CardTitle>Ajouter une image</CardTitle>
+          <CardTitle>Ajouter un fichier</CardTitle>
           <CardDescription>
-            Réencodée en webp avec variantes responsive. Le texte alternatif est obligatoire.
+            Les images sont réencodées en webp avec variantes responsive (10 Mo maximum), les PDF
+            sont stockés tels quels (50 Mo maximum). Le libellé est obligatoire.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -48,18 +62,18 @@ export default function MediaPage({ media }: MediaPageProps) {
             {({ errors, processing }) => (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="file">Image</Label>
-                  <Input type="file" name="file" id="file" accept="image/*" />
+                  <Label htmlFor="file">Image ou PDF</Label>
+                  <Input type="file" name="file" id="file" accept="image/*,application/pdf" />
                   <FieldError errors={errors} field="file" />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="alt">Texte alternatif</Label>
+                  <Label htmlFor="alt">Libellé (texte alternatif)</Label>
                   <Input
                     type="text"
                     name="alt"
                     id="alt"
-                    placeholder="Description de l'image"
+                    placeholder="Description de l'image ou titre du document"
                     aria-invalid={errors.alt ? true : undefined}
                   />
                   <FieldError errors={errors} field="alt" />
@@ -75,43 +89,63 @@ export default function MediaPage({ media }: MediaPageProps) {
       </Card>
 
       {media.length === 0 ? (
-        <EmptyState>Aucune image pour l’instant.</EmptyState>
+        <EmptyState>Aucun fichier pour l’instant.</EmptyState>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {media.map((item) => (
             <Card key={item.id} className="overflow-hidden pt-0">
               <a href={item.url} target="_blank" rel="noreferrer">
-                <img
-                  src={item.thumbnailUrl}
-                  alt={item.alt}
-                  className="aspect-video w-full object-cover"
-                  loading="lazy"
-                />
+                {item.thumbnailUrl ? (
+                  <img
+                    src={item.thumbnailUrl}
+                    alt={item.alt}
+                    className="aspect-video w-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <span className="bg-muted text-muted-foreground flex aspect-video w-full items-center justify-center">
+                    <FileText className="size-10" />
+                  </span>
+                )}
               </a>
               <CardContent className="space-y-1">
                 <p className="truncate text-sm font-medium" title={item.alt}>
                   {item.alt}
                 </p>
                 <p className="text-muted-foreground truncate text-xs" title={item.originalName}>
-                  {item.originalName} · {item.width}×{item.height} · {formatSize(item.size)}
+                  {describe(item)}
                 </p>
-                <ConfirmButton
-                  description={`Supprimer « ${item.alt} » ? Cette action est définitive.`}
-                  onConfirm={() =>
-                    router.visit({ route: 'admin.media.destroy', routeParams: { id: item.id } })
-                  }
-                  trigger={
+                <div className="flex flex-wrap items-center">
+                  {item.isDocument && (
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="text-destructive gap-1 px-2"
+                      className="gap-1 px-2"
+                      onClick={() => copyUrl(item)}
                     >
-                      <Trash2 className="size-4" />
-                      Supprimer
+                      <Copy className="size-4" />
+                      Copier le lien
                     </Button>
-                  }
-                />
+                  )}
+                  <ConfirmButton
+                    description={`Supprimer « ${item.alt} » ? Cette action est définitive.`}
+                    onConfirm={() =>
+                      router.visit({ route: 'admin.media.destroy', routeParams: { id: item.id } })
+                    }
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive gap-1 px-2"
+                      >
+                        <Trash2 className="size-4" />
+                        Supprimer
+                      </Button>
+                    }
+                  />
+                </div>
               </CardContent>
             </Card>
           ))}

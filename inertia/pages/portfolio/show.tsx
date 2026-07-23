@@ -1,5 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, FileText } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
 import { ChipLink, ChipList } from '~/components/chip'
 import { BackLink } from '~/components/page_header'
@@ -64,18 +64,21 @@ export default function PortfolioShow({
           )}
           {project.links.length > 0 && (
             <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-              {project.links.map((link) => (
-                <a
-                  key={link.url}
-                  href={link.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-primary inline-flex items-center gap-1.5 font-medium hover:underline"
-                >
-                  <ExternalLink className="size-3.5" />
-                  {link.label}
-                </a>
-              ))}
+              {project.links.map((link) => {
+                const Icon = link.type === 'paper' ? FileText : ExternalLink
+                return (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-primary inline-flex items-center gap-1.5 font-medium hover:underline"
+                  >
+                    <Icon className="size-3.5" />
+                    {link.label}
+                  </a>
+                )
+              })}
             </p>
           )}
         </header>

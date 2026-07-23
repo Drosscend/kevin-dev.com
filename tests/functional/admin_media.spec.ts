@@ -70,6 +70,92 @@ test.group('Admin media', (group) => {
     )
   })
 
+  test('un PDF est stocké tel quel et servi en application/pdf', async ({ client, assert }) => {
+    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const pdf = Buffer.from('%PDF-1.7\n%stub\ntrailer\n%%EOF\n')
+
+    const response = await client
+      .post('/admin/media')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .file('file', pdf, { filename: 'memoire-master.pdf' })
+      .field('alt', 'Mémoire de master')
+
+    response.assertStatus(302)
+
+    const media = await Media.query().firstOrFail()
+    assert.equal(media.mimeType, 'application/pdf')
+    assert.isTrue(media.isDocument)
+    assert.isNull(media.width)
+    assert.deepEqual(media.variants, [])
+    assert.equal(media.size, pdf.byteLength)
+
+    const document = await client.get(`/uploads/${media.key}/document.pdf`)
+    document.assertStatus(200)
+    document.assertHeader('content-type', 'application/pdf')
+    document.assertHeader('content-disposition', 'inline; filename="memoire-master.pdf"')
+
+    // Documents carry no image variant
+    const missing = await client.get(`/uploads/${media.key}/original.webp`)
+    missing.assertStatus(404)
+
+    await MediaService.delete(media)
+  })
+
+  test('un faux PDF est rejeté', async ({ client, assert }) => {
+    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+
+    const response = await client
+      .post('/admin/media')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .file('file', Buffer.from('pas un pdf'), { filename: 'fake.pdf' })
+      .field('alt', 'Document invalide')
+
+    response.assertStatus(302)
+    assert.equal(
+      await Media.query()
+        .count('* as total')
+        .firstOrFail()
+        .then((r) => Number(r.$extras.total)),
+      0
+    )
+  })
+
+  test('le sélecteur de couverture ignore les documents', async ({ client, assert }) => {
+    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    await Media.create({
+      key: 'a1b2c3d4e5f6',
+      originalName: 'photo.png',
+      alt: 'Une image',
+      mimeType: 'image/webp',
+      width: 800,
+      height: 600,
+      size: 1024,
+      variants: [],
+    })
+    await Media.create({
+      key: 'f6e5d4c3b2a1',
+      originalName: 'memoire.pdf',
+      alt: 'Un mémoire',
+      mimeType: 'application/pdf',
+      width: null,
+      height: null,
+      size: 2048,
+      variants: [],
+    })
+
+    const response = await client.get('/admin/projects/create').loginAs(user).withInertia()
+
+    response.assertStatus(200)
+    assert.deepEqual(
+      response.inertiaProps.options.media.map((item: { alt: string }) => item.alt),
+      ['Une image']
+    )
+  })
+
   test('le path traversal sur /uploads est bloqué', async ({ client }) => {
     const response = await client.get('/uploads/..%2F..%2F.env/original.webp')
     response.assertStatus(404)

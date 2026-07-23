@@ -1,4 +1,4 @@
-import { column } from '@adonisjs/lucid/orm'
+import { column, scope } from '@adonisjs/lucid/orm'
 import { MediaSchema } from '#database/schema'
 
 export interface MediaVariant {
@@ -7,6 +7,8 @@ export interface MediaVariant {
   height: number
   size: number
 }
+
+export const DOCUMENT_MIME_TYPE = 'application/pdf'
 
 export default class Media extends MediaSchema {
   /**
@@ -17,4 +19,15 @@ export default class Media extends MediaSchema {
     prepare: (value: MediaVariant[]) => JSON.stringify(value),
   })
   declare variants: MediaVariant[]
+
+  /**
+   * Images only: documents are never valid covers or logos.
+   */
+  static images = scope((query) => {
+    query.where('mime_type', 'like', 'image/%')
+  })
+
+  get isDocument() {
+    return this.mimeType === DOCUMENT_MIME_TYPE
+  }
 }

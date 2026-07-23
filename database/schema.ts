@@ -164,7 +164,7 @@ export class MediaSchema extends BaseModel {
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
-  declare height: number
+  declare height: number | null
   @column({ isPrimary: true })
   declare id: number
   @column()
@@ -180,7 +180,7 @@ export class MediaSchema extends BaseModel {
   @column()
   declare variants: any
   @column()
-  declare width: number
+  declare width: number | null
 }
 
 export class ProjectLinkSchema extends BaseModel {

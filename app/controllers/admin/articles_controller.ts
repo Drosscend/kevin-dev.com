@@ -20,7 +20,10 @@ async function formOptions() {
         translations.select('id', 'tag_id', 'locale', 'name')
       )
       .orderBy('slug'),
-    Media.query().select('id', 'alt').orderBy('created_at', 'desc'),
+    Media.query()
+      .withScopes((scopes) => scopes.images())
+      .select('id', 'alt')
+      .orderBy('created_at', 'desc'),
   ])
 
   return {

@@ -8,7 +8,10 @@ import { talkValidator } from '#validators/portfolio'
 async function formOptions() {
   const [technologies, media] = await Promise.all([
     Technology.query().select('id', 'name').orderBy('name'),
-    Media.query().select('id', 'alt').orderBy('created_at', 'desc'),
+    Media.query()
+      .withScopes((scopes) => scopes.images())
+      .select('id', 'alt')
+      .orderBy('created_at', 'desc'),
   ])
 
   return {

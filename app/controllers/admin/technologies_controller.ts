@@ -22,7 +22,10 @@ export default class TechnologiesController {
         .preload('logo', (logo) => logo.select('id', 'key'))
         .withCount('projects')
         .orderBy('name'),
-      Media.query().select('id', 'alt').orderBy('created_at', 'desc'),
+      Media.query()
+        .withScopes((scopes) => scopes.images())
+        .select('id', 'alt')
+        .orderBy('created_at', 'desc'),
     ])
 
     return inertia.render('admin/technologies', {
