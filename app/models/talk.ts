@@ -42,6 +42,15 @@ export default class Talk extends TalkSchema {
     )
   }
 
+  /**
+   * The slug is frozen once the URL has been publicly reachable, so an
+   * already shared link cannot break. A scheduled entry keeps a
+   * renamable slug until its date is reached.
+   */
+  get slugLocked() {
+    return Boolean(this.publishedAt) && this.publishedAt! <= DateTime.now()
+  }
+
   /** True while the talk has not been given yet. */
   get isUpcoming() {
     return this.eventDate > DateTime.now().startOf('day')

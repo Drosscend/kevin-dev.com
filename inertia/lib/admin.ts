@@ -17,6 +17,13 @@ export function slugify(value: string) {
     .replace(/(^-|-$)/g, '')
 }
 
+/**
+ * Shown under a slug field the server refuses to update, so the three
+ * admin forms explain the rule the same way.
+ */
+export const SLUG_LOCKED_HINT =
+  'Le slug est figé depuis la mise en ligne : le modifier casserait l’URL déjà partagée.'
+
 export function xsrfToken() {
   const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/)
   return match ? decodeURIComponent(match[1]) : ''

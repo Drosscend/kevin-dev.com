@@ -42,6 +42,15 @@ export default class Article extends ArticleSchema {
     )
   }
 
+  /**
+   * The slug is frozen once the URL has been publicly reachable, so an
+   * already shared link cannot break. A scheduled entry keeps a
+   * renamable slug until its date is reached.
+   */
+  get slugLocked() {
+    return Boolean(this.publishedAt) && this.publishedAt! <= DateTime.now()
+  }
+
   translation(locale: Locale) {
     return this.translations.find((item) => item.locale === locale)
   }

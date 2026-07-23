@@ -1,11 +1,29 @@
 import vine from '@vinejs/vine'
+import type { FieldContext } from '@vinejs/vine/types'
 
 /**
  * Metadata carried by every validator using the shared slug rule:
  * the id of the row being edited, so it is excluded from the
- * uniqueness lookup (absent when creating).
+ * uniqueness lookup (absent when creating), and the current slug when
+ * it is frozen because the entry has already been online.
  */
-export type EditedRow = { id?: number }
+export type EditedRow = { id?: number; lockedSlug?: string }
+
+/**
+ * Rejects any change to a slug whose URL has already been reachable,
+ * so a link published elsewhere can never end up broken.
+ */
+const frozenSlug = vine.createRule((value: unknown, _options: undefined, field: FieldContext) => {
+  const { lockedSlug } = field.meta as EditedRow
+
+  if (lockedSlug && value !== lockedSlug) {
+    field.report(
+      "Le slug ne peut plus être modifié une fois l'entrée mise en ligne",
+      'slug.frozen',
+      field
+    )
+  }
+})
 
 /**
  * Slug shared by both locales: lowercase words joined by single
@@ -17,6 +35,7 @@ export function slug(table: string) {
     .trim()
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
     .maxLength(255)
+    .use(frozenSlug())
     .unique(async (db, value, field) => {
       const query = db.from(table).select('id').where('slug', value)
 

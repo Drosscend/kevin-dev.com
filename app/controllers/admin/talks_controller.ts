@@ -109,6 +109,7 @@ export default class TalksController {
           type: link.type,
         })),
         publishedAt: talk.publishedAt?.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
+        slugLocked: talk.slugLocked,
         fr: {
           title: fr?.title ?? '',
           summary: fr?.summary ?? '',
@@ -124,7 +125,9 @@ export default class TalksController {
 
   async update({ params, request, response, session }: HttpContext) {
     const talk = await Talk.findOrFail(params.id)
-    const payload = await request.validateUsing(talkValidator, { meta: { id: talk.id } })
+    const payload = await request.validateUsing(talkValidator, {
+      meta: { id: talk.id, lockedSlug: talk.slugLocked ? talk.slug : undefined },
+    })
 
     await TalkService.save(talk, payloadFromRequest(payload))
 

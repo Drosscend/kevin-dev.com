@@ -108,6 +108,7 @@ export default class ArticlesController {
         coverMediaId: article.coverMediaId,
         tagIds: article.tags.map((tag) => tag.id),
         publishedAt: article.publishedAt?.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
+        slugLocked: article.slugLocked,
         fr: {
           title: fr?.title ?? '',
           summary: fr?.summary ?? '',
@@ -123,7 +124,9 @@ export default class ArticlesController {
 
   async update({ params, request, response, session }: HttpContext) {
     const article = await Article.findOrFail(params.id)
-    const payload = await request.validateUsing(articleValidator, { meta: { id: article.id } })
+    const payload = await request.validateUsing(articleValidator, {
+      meta: { id: article.id, lockedSlug: article.slugLocked ? article.slug : undefined },
+    })
 
     await ArticleService.save(article, {
       slug: payload.slug,

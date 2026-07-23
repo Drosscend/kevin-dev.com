@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import FieldError from '~/components/field_error'
 import DraftBanner from '~/components/admin/draft_banner'
 import TranslationFields from '~/components/admin/translation_fields'
-import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
+import { EMPTY_TRANSLATION, SLUG_LOCKED_HINT, slugify, type TranslationValues } from '~/lib/admin'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
 
 type LinkValues = {
@@ -31,6 +31,7 @@ type TalkData = {
   technologyIds: number[]
   links: LinkValues[]
   publishedAt: string | null
+  slugLocked: boolean
   fr: TranslationValues
   en: TranslationValues | null
 }
@@ -157,11 +158,15 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
                 <Input
                   id="slug"
                   value={form.data.slug}
+                  disabled={talk?.slugLocked}
                   onChange={(event) => {
                     slugTouched.current = true
                     form.setData('slug', event.target.value)
                   }}
                 />
+                {talk?.slugLocked && (
+                  <p className="text-muted-foreground text-xs">{SLUG_LOCKED_HINT}</p>
+                )}
                 <FieldError errors={errors} field="slug" />
               </div>
               <div className="space-y-2">

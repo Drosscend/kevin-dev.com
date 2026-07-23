@@ -1,4 +1,5 @@
 import { test } from '@japa/runner'
+import { DateTime } from 'luxon'
 import testUtils from '@adonisjs/core/services/test_utils'
 import User from '#models/user'
 import Category from '#models/category'
@@ -273,6 +274,58 @@ test.group('Admin CRUD articles et projets (HTTP)', (group) => {
     response.assertStatus(302)
     const total = await Article.query().count('* as total').firstOrFail()
     assert.equal(Number(total.$extras.total), 1)
+  })
+
+  test('le slug d’un article déjà en ligne ne peut plus être modifié', async ({
+    client,
+    assert,
+  }) => {
+    const user = await admin()
+    const article = await Article.create({
+      slug: 'en-ligne',
+      status: 'published',
+      publishedAt: DateTime.now().minus({ days: 1 }),
+    })
+
+    const response = await client
+      .put(`/admin/articles/${article.id}`)
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .json({
+        slug: 'autre-slug',
+        status: 'published',
+        fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
+      })
+
+    response.assertStatus(302)
+    await article.refresh()
+    assert.equal(article.slug, 'en-ligne')
+  })
+
+  test('le slug d’un article planifié reste modifiable', async ({ client, assert }) => {
+    const user = await admin()
+    const article = await Article.create({
+      slug: 'a-venir',
+      status: 'published',
+      publishedAt: DateTime.now().plus({ days: 7 }),
+    })
+
+    const response = await client
+      .put(`/admin/articles/${article.id}`)
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .json({
+        slug: 'titre-definitif',
+        status: 'published',
+        publishedAt: article.publishedAt!.toISO({ includeOffset: false })!.slice(0, 16),
+        fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
+      })
+
+    response.assertStatus(302)
+    await article.refresh()
+    assert.equal(article.slug, 'titre-definitif')
   })
 
   test('une catégorie inexistante est rejetée en 422', async ({ client }) => {
