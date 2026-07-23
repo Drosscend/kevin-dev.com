@@ -11,50 +11,66 @@ import SettingsService from '#services/settings_service'
 import { CV_PDF_KEY } from '#controllers/cv_controller'
 import { localePath, type Locale } from '#types/i18n'
 
+/**
+ * The stack section only shows the technologies carrying the most published
+ * projects; the rest stays one click away on /technologies.
+ */
+const TECHNOLOGIES_SHOWN = 12
+
 export default class HomeController {
   async handle({ inertia, i18n }: HttpContext) {
     const locale = i18n.locale as Locale
 
-    const [articles, projects, talks, technologies, settings, timelineEntries] = await Promise.all([
-      Article.query()
-        .withScopes((scopes) => scopes.published())
-        .whereHas('translations', (translations) => translations.where('locale', locale))
-        .preload('translations', (translations) =>
-          translations.select('id', 'article_id', 'locale', 'title', 'summary')
-        )
-        .preload('cover')
-        .orderBy('published_at', 'desc')
-        .limit(3),
-      Project.query()
-        .withScopes((scopes) => scopes.published())
-        .where('featured', true)
-        .whereHas('translations', (translations) => translations.where('locale', locale))
-        .preload('translations', (translations) =>
-          translations.select('id', 'project_id', 'locale', 'title', 'summary')
-        )
-        .preload('cover')
-        .preload('technologies', (query) => query.select('slug', 'name'))
-        .orderBy('published_at', 'desc')
-        .limit(3),
-      Talk.query()
-        .withScopes((scopes) => scopes.published())
-        .whereHas('translations', (translations) => translations.where('locale', locale))
-        .preload('translations', (translations) =>
-          translations.select('id', 'talk_id', 'locale', 'title', 'summary')
-        )
-        .preload('cover')
-        .orderBy('event_date', 'desc')
-        .limit(3),
-      Technology.query().orderBy('name').select('slug', 'name'),
-      SettingsService.getMany([
-        'now_fr',
-        'now_en',
-        'hero_roles_fr',
-        'hero_roles_en',
-        'hero_location',
-      ]),
-      TimelineEntry.query().preload('translations').orderBy('position'),
-    ])
+    const [articles, projects, talks, technologies, technologiesTotal, settings, timelineEntries] =
+      await Promise.all([
+        Article.query()
+          .withScopes((scopes) => scopes.published())
+          .whereHas('translations', (translations) => translations.where('locale', locale))
+          .preload('translations', (translations) =>
+            translations.select('id', 'article_id', 'locale', 'title', 'summary')
+          )
+          .preload('cover')
+          .orderBy('published_at', 'desc')
+          .limit(3),
+        Project.query()
+          .withScopes((scopes) => scopes.published())
+          .where('featured', true)
+          .whereHas('translations', (translations) => translations.where('locale', locale))
+          .preload('translations', (translations) =>
+            translations.select('id', 'project_id', 'locale', 'title', 'summary')
+          )
+          .preload('cover')
+          .preload('technologies', (query) => query.select('slug', 'name'))
+          .orderBy('published_at', 'desc')
+          .limit(3),
+        Talk.query()
+          .withScopes((scopes) => scopes.published())
+          .whereHas('translations', (translations) => translations.where('locale', locale))
+          .preload('translations', (translations) =>
+            translations.select('id', 'talk_id', 'locale', 'title', 'summary')
+          )
+          .preload('cover')
+          .orderBy('event_date', 'desc')
+          .limit(3),
+        Technology.query()
+          .select('slug', 'name')
+          .withCount('projects', (query) => query.withScopes((scopes) => scopes.published()))
+          .orderBy('projects_count', 'desc')
+          .orderBy('name')
+          .limit(TECHNOLOGIES_SHOWN),
+        Technology.query()
+          .count('* as total')
+          .firstOrFail()
+          .then((row) => Number(row.$extras.total)),
+        SettingsService.getMany([
+          'now_fr',
+          'now_en',
+          'hero_roles_fr',
+          'hero_roles_en',
+          'hero_location',
+        ]),
+        TimelineEntry.query().preload('translations').orderBy('position'),
+      ])
 
     const localized = (fr: string, en: string) => (locale === 'en' ? en || fr : fr)
     const now = localized(settings.now_fr, settings.now_en) || null
@@ -91,6 +107,7 @@ export default class HomeController {
         slug: technology.slug,
         name: technology.name,
       })),
+      hiddenTechnologies: Math.max(0, technologiesTotal - technologies.length),
       talks: talks.map((talk) => ({
         slug: talk.slug,
         title: talk.translation(locale)!.title,

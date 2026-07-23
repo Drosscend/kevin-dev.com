@@ -1,6 +1,6 @@
-import { Link } from '@adonisjs/inertia/react'
 import { ExternalLink } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
+import { ChipLink, ChipList } from '~/components/chip'
 import { BackLink } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { localePath } from '~/lib/locale'
@@ -93,18 +93,13 @@ export default function TalksShow({ locale, isDraftPreview, talk, labels, meta }
             <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
               {labels.technologies}
             </h2>
-            <ul className="mt-4 flex flex-wrap gap-2.5">
+            <ChipList className="mt-4">
               {talk.technologies.map((technology) => (
-                <li key={technology.slug}>
-                  <Link
-                    href={to(`/technologies/${technology.slug}`)}
-                    className="bg-card hover:border-primary hover:text-primary inline-block rounded-full border px-4 py-1.5 text-sm transition-colors"
-                  >
-                    {technology.name}
-                  </Link>
-                </li>
+                <ChipLink key={technology.slug} href={to(`/technologies/${technology.slug}`)}>
+                  {technology.name}
+                </ChipLink>
               ))}
-            </ul>
+            </ChipList>
           </section>
         )}
       </div>

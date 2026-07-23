@@ -1,5 +1,6 @@
 import { router } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
+import { ChipButton, ChipList } from '~/components/chip'
 import { LinkArrow, ListingList, ListingRow } from '~/components/content_link'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
@@ -72,11 +73,6 @@ export default function BlogIndex({
     router.get(pageUrl(base, { category: slug, tag: filters.tag }, 1), {}, { preserveState: true })
   }
 
-  const pillClass = (active: boolean) =>
-    active
-      ? 'border-primary bg-primary text-primary-foreground rounded-full border px-4 py-1.5 text-sm transition-colors'
-      : 'bg-card hover:border-primary hover:text-primary rounded-full border px-4 py-1.5 text-sm transition-colors'
-
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
@@ -84,25 +80,20 @@ export default function BlogIndex({
       <PageHeader title={labels.title} />
 
       {categories.length > 0 && (
-        <div className="-mt-4 flex flex-wrap gap-2.5">
-          <button
-            type="button"
-            onClick={() => filterByCategory(null)}
-            className={pillClass(!filters.category)}
-          >
+        <ChipList className="-mt-4">
+          <ChipButton onClick={() => filterByCategory(null)} active={!filters.category}>
             {labels.allCategories}
-          </button>
+          </ChipButton>
           {categories.map((category) => (
-            <button
+            <ChipButton
               key={category.slug}
-              type="button"
               onClick={() => filterByCategory(category.slug)}
-              className={pillClass(filters.category === category.slug)}
+              active={filters.category === category.slug}
             >
               {category.name}
-            </button>
+            </ChipButton>
           ))}
-        </div>
+        </ChipList>
       )}
 
       {filters.tag && (

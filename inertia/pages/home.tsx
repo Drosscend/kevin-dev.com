@@ -1,5 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import { Download } from 'lucide-react'
+import { ChipLink, ChipList } from '~/components/chip'
 import { LinkArrow, LinkList, LinkRow } from '~/components/content_link'
 import { Button } from '~/components/ui/button'
 import Seo, { type SeoMeta } from '~/components/seo'
@@ -36,6 +37,7 @@ type HomeProps = {
     coverUrl: string | null
   }[]
   technologies: { slug: string; name: string }[]
+  hiddenTechnologies: number
   timeline: { period: string; title: string; place: string; honours: string | null }[]
   labels: {
     downloadCv: string
@@ -82,6 +84,7 @@ export default function Home({
   featuredProjects,
   talks,
   technologies,
+  hiddenTechnologies,
   timeline,
   labels,
   meta,
@@ -213,18 +216,22 @@ export default function Home({
             title={labels.stack}
             more={{ href: to('/technologies'), label: labels.allTechnologies }}
           />
-          <ul className="flex max-w-[720px] flex-wrap gap-2.5">
+          <ChipList className="max-w-[720px]">
             {technologies.map((technology) => (
-              <li key={technology.slug}>
-                <Link
-                  href={to(`/technologies/${technology.slug}`)}
-                  className="bg-card hover:border-primary hover:text-primary inline-block rounded-full border px-4 py-1.5 text-sm transition-colors"
-                >
-                  {technology.name}
-                </Link>
-              </li>
+              <ChipLink key={technology.slug} href={to(`/technologies/${technology.slug}`)}>
+                {technology.name}
+              </ChipLink>
             ))}
-          </ul>
+            {hiddenTechnologies > 0 && (
+              <ChipLink
+                href={to('/technologies')}
+                variant="muted"
+                ariaLabel={labels.allTechnologies}
+              >
+                +{hiddenTechnologies}
+              </ChipLink>
+            )}
+          </ChipList>
         </section>
       )}
 
