@@ -129,7 +129,6 @@ export interface ApiDefinition {
       index: typeof routes['admin.articles.index']
       create: typeof routes['admin.articles.create']
       store: typeof routes['admin.articles.store']
-      preview: typeof routes['admin.articles.preview']
       edit: typeof routes['admin.articles.edit']
       update: typeof routes['admin.articles.update']
       destroy: typeof routes['admin.articles.destroy']

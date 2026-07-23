@@ -847,18 +847,6 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'admin.articles.preview': {
-    methods: ["POST"]
-    pattern: '/admin/articles/preview'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/blog').previewValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/blog').previewValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['preview']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['preview']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
   'admin.articles.edit': {
     methods: ["GET","HEAD"]
     pattern: '/admin/articles/:id/edit'

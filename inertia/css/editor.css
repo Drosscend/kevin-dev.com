@@ -1,0 +1,229 @@
+/* Admin markdown editor: the Tiptap writing surface and the
+   CodeMirror markdown source share the design tokens, and the code
+   palette mirrors the github-light / github-dark themes shiki uses
+   on the public site. */
+
+:root {
+  --code-keyword: #cf222e;
+  --code-string: #0a3069;
+  --code-comment: #6e7781;
+  --code-number: #0550ae;
+  --code-function: #8250df;
+  --code-type: #953800;
+  --code-attribute: #116329;
+}
+
+.dark {
+  --code-keyword: #ff7b72;
+  --code-string: #a5d6ff;
+  --code-comment: #8b949e;
+  --code-number: #79c0ff;
+  --code-function: #d2a8ff;
+  --code-type: #ffa657;
+  --code-attribute: #7ee787;
+}
+
+/* Rich text surface
+   ------------------------------------------------------------- */
+
+.markdown-rich .tiptap {
+  white-space: pre-wrap;
+}
+
+.markdown-rich .tiptap :first-child {
+  margin-block-start: 0;
+}
+
+.markdown-rich .tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--muted-foreground);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.markdown-rich .tiptap img.ProseMirror-selectednode {
+  outline: 2px solid var(--ring);
+  border-radius: var(--radius-md);
+}
+
+/* Tiptap task lists carry data attributes where GFM output uses
+   classes, so they need their own layout rules. */
+.markdown-rich .tiptap ul[data-type='taskList'] {
+  list-style: none;
+  padding-inline-start: 0.25em;
+}
+
+.markdown-rich .tiptap ul[data-type='taskList'] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+
+.markdown-rich .tiptap ul[data-type='taskList'] li > label {
+  margin-block-start: 0.35em;
+}
+
+.markdown-rich .tiptap ul[data-type='taskList'] input[type='checkbox'] {
+  accent-color: var(--primary);
+}
+
+.markdown-rich .tiptap table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.markdown-rich .tiptap table .selectedCell {
+  background-color: color-mix(in oklab, var(--primary) 12%, transparent);
+}
+
+.markdown-rich .tiptap table .column-resize-handle {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: -2px;
+  width: 3px;
+  background-color: var(--primary);
+  pointer-events: none;
+}
+
+.markdown-rich .tiptap .ProseMirror-gapcursor::after {
+  border-block-start-color: var(--foreground);
+}
+
+/* Markdown source
+   ------------------------------------------------------------- */
+
+.markdown-source .cm-editor {
+  background-color: transparent;
+}
+
+.markdown-source .cm-editor.cm-focused {
+  outline: none;
+}
+
+.markdown-source .cm-scroller {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  min-height: 22rem;
+}
+
+.markdown-source .cm-content {
+  padding: 0.75rem 1rem;
+  caret-color: var(--primary);
+}
+
+.markdown-source .cm-cursor {
+  border-inline-start-color: var(--primary);
+  border-inline-start-width: 2px;
+}
+
+.markdown-source .cm-selectionBackground,
+.markdown-source .cm-focused .cm-selectionBackground,
+.markdown-source .cm-content ::selection {
+  background-color: color-mix(in oklab, var(--primary) 22%, transparent) !important;
+}
+
+.markdown-source .cm-placeholder {
+  color: var(--muted-foreground);
+}
+
+.markdown-source .cm-panels {
+  background-color: var(--card);
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+.markdown-source .cm-panel input,
+.markdown-source .cm-panel button {
+  font-family: var(--font-sans);
+}
+
+/* Markdown tokens */
+
+.markdown-source .cm-md-heading {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.markdown-source .cm-md-h1 {
+  font-size: 1.3em;
+}
+
+.markdown-source .cm-md-h2 {
+  font-size: 1.15em;
+}
+
+.markdown-source .cm-md-h3 {
+  font-size: 1.05em;
+}
+
+.markdown-source .cm-md-strong {
+  font-weight: 700;
+}
+
+.markdown-source .cm-md-emphasis {
+  font-style: italic;
+}
+
+.markdown-source .cm-md-strike {
+  text-decoration: line-through;
+  color: var(--muted-foreground);
+}
+
+.markdown-source .cm-md-link {
+  color: var(--primary);
+}
+
+.markdown-source .cm-md-url {
+  color: var(--muted-foreground);
+  text-decoration: underline;
+}
+
+.markdown-source .cm-md-code {
+  color: var(--code-type);
+}
+
+.markdown-source .cm-md-quote {
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+.markdown-source .cm-md-marker {
+  color: color-mix(in oklab, var(--muted-foreground) 80%, transparent);
+}
+
+/* Fenced code tokens */
+
+.markdown-source .cm-code-keyword {
+  color: var(--code-keyword);
+}
+
+.markdown-source .cm-code-string {
+  color: var(--code-string);
+}
+
+.markdown-source .cm-code-comment {
+  color: var(--code-comment);
+  font-style: italic;
+}
+
+.markdown-source .cm-code-number {
+  color: var(--code-number);
+}
+
+.markdown-source .cm-code-function {
+  color: var(--code-function);
+}
+
+.markdown-source .cm-code-type {
+  color: var(--code-type);
+}
+
+.markdown-source .cm-code-attribute {
+  color: var(--code-attribute);
+}
+
+.markdown-source .cm-code-punctuation {
+  color: var(--muted-foreground);
+}

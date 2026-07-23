@@ -42,9 +42,8 @@ export default function TranslationFields({
       <div className="space-y-2">
         <MarkdownEditor
           id={`${prefix}-content`}
-          label="Contenu (Markdown)"
+          label="Contenu"
           value={values.contentMarkdown}
-          rows={16}
           onChange={(contentMarkdown) => onChange({ ...values, contentMarkdown })}
         />
         <FieldError errors={errors} field={`${prefix}.contentMarkdown`} />

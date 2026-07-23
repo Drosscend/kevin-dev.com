@@ -5,10 +5,10 @@ import { client } from '~/client'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-import { Textarea } from '~/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import FieldError from '~/components/field_error'
 import AdminPage from '~/components/admin/admin_page'
+import MarkdownEditor from '~/components/admin/markdown_editor'
 
 type PagesProps = {
   cvFr: string
@@ -16,30 +16,6 @@ type PagesProps = {
   legalFr: string
   legalEn: string
   pdf: { size: number } | null
-}
-
-function MarkdownField({
-  id,
-  label,
-  value,
-  onChange,
-}: {
-  id: string
-  label: string
-  value: string
-  onChange: (value: string) => void
-}) {
-  return (
-    <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
-      <Textarea
-        id={id}
-        className="min-h-60 font-mono"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-      />
-    </div>
-  )
 }
 
 export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps) {
@@ -89,13 +65,13 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <MarkdownField
+            <MarkdownEditor
               id="cvFr"
               label="CV (FR)"
               value={form.data.cvFr}
               onChange={(value) => form.setData('cvFr', value)}
             />
-            <MarkdownField
+            <MarkdownEditor
               id="cvEn"
               label="CV (EN, optionnel)"
               value={form.data.cvEn}
@@ -109,13 +85,13 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
             <CardTitle>Mentions légales</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <MarkdownField
+            <MarkdownEditor
               id="legalFr"
               label="Mentions légales (FR)"
               value={form.data.legalFr}
               onChange={(value) => form.setData('legalFr', value)}
             />
-            <MarkdownField
+            <MarkdownEditor
               id="legalEn"
               label="Mentions légales (EN, optionnel)"
               value={form.data.legalEn}

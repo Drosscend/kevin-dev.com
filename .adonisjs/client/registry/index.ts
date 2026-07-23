@@ -426,12 +426,6 @@ const routes = {
     tokens: [{"old":"/admin/articles","type":0,"val":"admin","end":""},{"old":"/admin/articles","type":0,"val":"articles","end":""}],
     types: placeholder as Registry['admin.articles.store']['types'],
   },
-  'admin.articles.preview': {
-    methods: ["POST"],
-    pattern: '/admin/articles/preview',
-    tokens: [{"old":"/admin/articles/preview","type":0,"val":"admin","end":""},{"old":"/admin/articles/preview","type":0,"val":"articles","end":""},{"old":"/admin/articles/preview","type":0,"val":"preview","end":""}],
-    types: placeholder as Registry['admin.articles.preview']['types'],
-  },
   'admin.articles.edit': {
     methods: ["GET","HEAD"],
     pattern: '/admin/articles/:id/edit',

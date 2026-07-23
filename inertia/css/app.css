@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import './typeset.css';
+@import './editor.css';
 @import '@fontsource-variable/inter';
 @import '@fontsource-variable/archivo';
 @import '@fontsource/ibm-plex-mono/400.css';

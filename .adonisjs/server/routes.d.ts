@@ -74,7 +74,6 @@ export type ScannedRoutes = {
     'admin.articles.index': { paramsTuple?: []; params?: {} }
     'admin.articles.create': { paramsTuple?: []; params?: {} }
     'admin.articles.store': { paramsTuple?: []; params?: {} }
-    'admin.articles.preview': { paramsTuple?: []; params?: {} }
     'admin.articles.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.articles.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'admin.articles.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -233,7 +232,6 @@ export type ScannedRoutes = {
     'admin.categories.store': { paramsTuple?: []; params?: {} }
     'admin.tags.store': { paramsTuple?: []; params?: {} }
     'admin.articles.store': { paramsTuple?: []; params?: {} }
-    'admin.articles.preview': { paramsTuple?: []; params?: {} }
     'admin.technologies.store': { paramsTuple?: []; params?: {} }
     'admin.projects.store': { paramsTuple?: []; params?: {} }
     'admin.talks.store': { paramsTuple?: []; params?: {} }
