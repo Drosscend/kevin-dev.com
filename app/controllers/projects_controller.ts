@@ -48,7 +48,6 @@ export default class ProjectsController {
           title: translation.title,
           summary: translation.summary,
           coverUrl: MediaService.url(project.cover),
-          featured: project.featured,
           period: formatPeriod(project, locale),
           technologies: project.technologies.map((technology) => ({
             slug: technology.slug,

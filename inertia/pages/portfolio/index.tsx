@@ -8,7 +8,6 @@ type ProjectCard = {
   title: string
   summary: string
   coverUrl: string | null
-  featured: boolean
   period: string | null
   technologies: { slug: string; name: string }[]
 }
