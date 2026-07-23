@@ -1,6 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
-import { ExternalLink, FileText } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
+import ExternalLinkList, { type ExternalLinkRef } from '~/components/external_link_list'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner, { type PreviewMode } from '~/components/preview_banner'
 import ReadingLayout from '~/components/reading_layout'
@@ -22,7 +22,7 @@ type PortfolioShowProps = {
     startedAt: string | null
     endedAt: string | null
     ongoing: boolean
-    links: { label: string; url: string; type: string }[]
+    links: ExternalLinkRef[]
     technologies: TechnologyRef[]
     articles: { slug: string; title: string }[]
   }
@@ -72,25 +72,7 @@ export default function PortfolioShow({
               {project.ongoing && <StatusBadge>{labels.ongoing}</StatusBadge>}
             </p>
           )}
-          {project.links.length > 0 && (
-            <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-              {project.links.map((link) => {
-                const Icon = link.type === 'paper' ? FileText : ExternalLink
-                return (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-primary inline-flex items-center gap-1.5 font-medium hover:underline"
-                  >
-                    <Icon className="size-3.5" />
-                    {link.label}
-                  </a>
-                )
-              })}
-            </p>
-          )}
+          <ExternalLinkList links={project.links} className="mt-5" />
         </header>
 
         {project.coverUrl && (

@@ -1,5 +1,5 @@
-import { ExternalLink } from 'lucide-react'
 import { ListingList, ListingRow } from '~/components/content_link'
+import ExternalLinkList, { type ExternalLinkRef } from '~/components/external_link_list'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
@@ -14,7 +14,7 @@ type TalkCard = {
   eventDate: string
   city: string
   upcoming: boolean
-  links: { label: string; url: string; type: string }[]
+  links: ExternalLinkRef[]
   technologies: TechnologyRef[]
   coverUrl: string | null
 }
@@ -57,22 +57,7 @@ export default function TalksIndex({ locale, talks, labels, meta }: TalksIndexPr
               footer={
                 <>
                   <TechnologyNames technologies={talk.technologies} />
-                  {talk.links.length > 0 && (
-                    <p className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-                      {talk.links.map((link) => (
-                        <a
-                          key={link.url}
-                          href={link.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-muted-foreground hover:text-primary inline-flex items-center gap-1.5 transition-colors"
-                        >
-                          <ExternalLink className="size-3.5" />
-                          {link.label}
-                        </a>
-                      ))}
-                    </p>
-                  )}
+                  <ExternalLinkList links={talk.links} variant="subtle" className="mt-3" />
                 </>
               }
             />

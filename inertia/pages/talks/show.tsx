@@ -1,5 +1,5 @@
-import { ExternalLink } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
+import ExternalLinkList, { type ExternalLinkRef } from '~/components/external_link_list'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner, { type PreviewMode } from '~/components/preview_banner'
 import Seo, { type SeoMeta } from '~/components/seo'
@@ -20,7 +20,7 @@ type TalksShowProps = {
     eventDate: string
     city: string
     upcoming: boolean
-    links: { label: string; url: string; type: string }[]
+    links: ExternalLinkRef[]
     technologies: TechnologyRef[]
   }
   hasOtherLocale: boolean
@@ -61,22 +61,7 @@ export default function TalksShow({ locale, preview, talk, labels, meta }: Talks
             )}
             {talk.upcoming && <StatusBadge>{labels.upcoming}</StatusBadge>}
           </p>
-          {talk.links.length > 0 && (
-            <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-              {talk.links.map((link) => (
-                <a
-                  key={link.url}
-                  href={link.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-primary inline-flex items-center gap-1.5 font-medium hover:underline"
-                >
-                  <ExternalLink className="size-3.5" />
-                  {link.label}
-                </a>
-              ))}
-            </p>
-          )}
+          <ExternalLinkList links={talk.links} className="mt-5" />
         </header>
 
         {talk.coverUrl && <img src={talk.coverUrl} alt="" className="w-full rounded-lg border" />}
