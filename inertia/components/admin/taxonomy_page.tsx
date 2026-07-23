@@ -20,10 +20,10 @@ export type TaxonomyItem = {
 }
 
 /**
- * Categories and tags expose the same four routes under their own
- * prefix, so a single prefix identifies the whole CRUD.
+ * A taxonomy exposes the same four routes under its own prefix, so a
+ * single prefix identifies the whole CRUD.
  */
-type TaxonomyRoute = 'admin.categories' | 'admin.tags'
+type TaxonomyRoute = 'admin.categories'
 
 type TaxonomyPageProps = {
   title: string

@@ -88,7 +88,7 @@ export function ListingList({ children }: { children: ReactNode }) {
 
 /**
  * Full entry of an index page: thumbnail, metadata line, linked title,
- * summary, and a free footer for tags or external links. Only the title
+ * summary, and a free footer for technologies or external links. Only the title
  * and the thumbnail are clickable, so the metadata and footer remain free
  * to hold links of their own.
  *

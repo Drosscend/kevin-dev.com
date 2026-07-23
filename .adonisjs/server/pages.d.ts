@@ -23,7 +23,6 @@ declare module '@adonisjs/inertia/types' {
     'admin/projects/form': ExtractProps<(typeof import('../../inertia/pages/admin/projects/form.tsx'))['default']>
     'admin/projects/index': ExtractProps<(typeof import('../../inertia/pages/admin/projects/index.tsx'))['default']>
     'admin/security': ExtractProps<(typeof import('../../inertia/pages/admin/security.tsx'))['default']>
-    'admin/tags': ExtractProps<(typeof import('../../inertia/pages/admin/tags.tsx'))['default']>
     'admin/talks/form': ExtractProps<(typeof import('../../inertia/pages/admin/talks/form.tsx'))['default']>
     'admin/talks/index': ExtractProps<(typeof import('../../inertia/pages/admin/talks/index.tsx'))['default']>
     'admin/technologies': ExtractProps<(typeof import('../../inertia/pages/admin/technologies.tsx'))['default']>

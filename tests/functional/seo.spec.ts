@@ -9,7 +9,7 @@ function makeArticle(slug: string, status: 'draft' | 'published', english = fals
     status,
     categoryId: null,
     coverMediaId: null,
-    tagIds: [],
+    technologyIds: [],
     fr: { title: `Titre ${slug}`, summary: 'Résumé', contentMarkdown: '# Contenu' },
     en: english ? { title: `Title ${slug}`, summary: 'Summary', contentMarkdown: '# Body' } : null,
   })

@@ -3,6 +3,7 @@ import { ListingList, ListingRow } from '~/components/content_link'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
+import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
 import { localePath } from '~/lib/locale'
 
 type TalkCard = {
@@ -14,7 +15,7 @@ type TalkCard = {
   city: string
   upcoming: boolean
   links: { label: string; url: string; type: string }[]
-  technologies: { slug: string; name: string }[]
+  technologies: TechnologyRef[]
   coverUrl: string | null
 }
 
@@ -55,13 +56,7 @@ export default function TalksIndex({ locale, talks, labels, meta }: TalksIndexPr
               }
               footer={
                 <>
-                  {talk.technologies.length > 0 && (
-                    <p className="text-muted-foreground flex flex-wrap gap-x-2.5 gap-y-1 font-mono text-[13px]">
-                      {talk.technologies.map((technology) => (
-                        <span key={technology.slug}>{technology.name}</span>
-                      ))}
-                    </p>
-                  )}
+                  <TechnologyNames technologies={talk.technologies} />
                   {talk.links.length > 0 && (
                     <p className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
                       {talk.links.map((link) => (

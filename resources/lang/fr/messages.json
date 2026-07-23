@@ -46,7 +46,7 @@
     "draft": "Brouillon, visible uniquement connecté",
     "empty": "Aucun article pour l'instant.",
     "allCategories": "Toutes les catégories",
-    "clearTag": "Retirer le filtre par mot-clé",
+    "technologies": "Technologies abordées",
     "backToList": "Tous les articles",
     "previous": "Précédent",
     "next": "Suivant"
@@ -94,8 +94,10 @@
     "empty": "Aucune technologie pour l'instant.",
     "backToList": "Toutes les technologies",
     "usedIn": "Projets utilisant cette technologie",
-    "noProjects": "Aucun projet publié n'utilise cette technologie pour l'instant.",
+    "writtenAbout": "Articles sur cette technologie",
+    "unused": "Rien de publié sur cette technologie pour l'instant.",
     "projectsCount": "{count, plural, =0 {aucun projet} one {# projet} other {# projets}}",
+    "articlesCount": "{count, plural, =0 {aucun article} one {# article} other {# articles}}",
     "categories": {
       "langage": "Langages",
       "framework": "Frameworks",

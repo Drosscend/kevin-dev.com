@@ -12,7 +12,7 @@ function makeArticle(slug: string, status: 'draft' | 'published', english = fals
     status,
     categoryId: null,
     coverMediaId: null,
-    tagIds: [],
+    technologyIds: [],
     fr: { title: `Titre ${slug}`, summary: 'Résumé', contentMarkdown: '## Section\n\nCorps.' },
     en: english
       ? { title: `Title ${slug}`, summary: 'Summary', contentMarkdown: '## Section EN' }

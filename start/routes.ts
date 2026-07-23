@@ -154,11 +154,6 @@ router
       .delete('categories/:id', [controllers.admin.Categories, 'destroy'])
       .as('admin.categories.destroy')
 
-    router.get('tags', [controllers.admin.Tags, 'index']).as('admin.tags.index')
-    router.post('tags', [controllers.admin.Tags, 'store']).as('admin.tags.store')
-    router.put('tags/:id', [controllers.admin.Tags, 'update']).as('admin.tags.update')
-    router.delete('tags/:id', [controllers.admin.Tags, 'destroy']).as('admin.tags.destroy')
-
     router.get('articles', [controllers.admin.Articles, 'index']).as('admin.articles.index')
     router
       .get('articles/create', [controllers.admin.Articles, 'create'])

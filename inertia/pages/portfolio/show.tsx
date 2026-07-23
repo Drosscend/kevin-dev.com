@@ -1,12 +1,12 @@
 import { Link } from '@adonisjs/inertia/react'
 import { ExternalLink, FileText } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
-import { ChipLink, ChipList } from '~/components/chip'
 import { BackLink } from '~/components/page_header'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import TableOfContents from '~/components/table_of_contents'
+import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
 import { localePath } from '~/lib/locale'
 
 type PortfolioShowProps = {
@@ -22,7 +22,7 @@ type PortfolioShowProps = {
     endedAt: string | null
     ongoing: boolean
     links: { label: string; url: string; type: string }[]
-    technologies: { slug: string; name: string }[]
+    technologies: TechnologyRef[]
     articles: { slug: string; title: string }[]
   }
   hasOtherLocale: boolean
@@ -101,20 +101,11 @@ export default function PortfolioShow({
 
         <ArticleContent html={project.contentHtml} />
 
-        {project.technologies.length > 0 && (
-          <section className="border-t pt-8">
-            <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-              {labels.technologies}
-            </h2>
-            <ChipList className="mt-4">
-              {project.technologies.map((technology) => (
-                <ChipLink key={technology.slug} href={to(`/technologies/${technology.slug}`)}>
-                  {technology.name}
-                </ChipLink>
-              ))}
-            </ChipList>
-          </section>
-        )}
+        <TechnologySection
+          locale={locale}
+          title={labels.technologies}
+          technologies={project.technologies}
+        />
 
         {project.articles.length > 0 && (
           <section className="border-t pt-8">

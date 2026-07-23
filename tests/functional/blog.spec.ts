@@ -14,7 +14,7 @@ function makeArticle(
     status,
     categoryId: null,
     coverMediaId: null,
-    tagIds: [],
+    technologyIds: [],
     fr: {
       title: `Titre ${slug}`,
       summary: 'Résumé de test',
@@ -96,7 +96,7 @@ test.group('Blog public', (group) => {
       status: 'draft',
       categoryId: null,
       coverMediaId: null,
-      tagIds: [],
+      technologyIds: [],
       fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
       en: null,
     })
@@ -105,7 +105,7 @@ test.group('Blog public', (group) => {
       status: 'published',
       categoryId: null,
       coverMediaId: null,
-      tagIds: [],
+      technologyIds: [],
       fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
       en: null,
     })

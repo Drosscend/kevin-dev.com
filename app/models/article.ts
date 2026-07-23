@@ -4,7 +4,7 @@ import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relat
 import { ArticleSchema } from '#database/schema'
 import ArticleTranslation from '#models/article_translation'
 import Category from '#models/category'
-import Tag from '#models/tag'
+import Technology from '#models/technology'
 import Media from '#models/media'
 import type { Locale } from '#types/i18n'
 
@@ -22,8 +22,8 @@ export default class Article extends ArticleSchema {
   @belongsTo(() => Media, { foreignKey: 'coverMediaId' })
   declare cover: BelongsTo<typeof Media>
 
-  @manyToMany(() => Tag, { pivotTable: 'article_tag' })
-  declare tags: ManyToMany<typeof Tag>
+  @manyToMany(() => Technology, { pivotTable: 'article_technology' })
+  declare technologies: ManyToMany<typeof Technology>
 
   /**
    * Publicly visible entries: published status AND publication date

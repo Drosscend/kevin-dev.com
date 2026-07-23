@@ -18,15 +18,15 @@ export class ArticleProjectSchema extends BaseModel {
   declare projectId: number
 }
 
-export class ArticleTagSchema extends BaseModel {
-  static $columns = ['articleId', 'id', 'tagId'] as const
-  $columns = ArticleTagSchema.$columns
+export class ArticleTechnologySchema extends BaseModel {
+  static $columns = ['articleId', 'id', 'technologyId'] as const
+  $columns = ArticleTechnologySchema.$columns
   @column()
   declare articleId: number
   @column({ isPrimary: true })
   declare id: number
   @column()
-  declare tagId: number
+  declare technologyId: number
 }
 
 export class ArticleTranslationSchema extends BaseModel {
@@ -293,36 +293,6 @@ export class SettingSchema extends BaseModel {
   declare updatedAt: DateTime | null
   @column()
   declare value: string
-}
-
-export class TagTranslationSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'locale', 'name', 'tagId', 'updatedAt'] as const
-  $columns = TagTranslationSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare locale: string
-  @column()
-  declare name: string
-  @column()
-  declare tagId: number
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
-}
-
-export class TagSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'slug', 'updatedAt'] as const
-  $columns = TagSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare slug: string
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
 }
 
 export class TalkLinkSchema extends BaseModel {

@@ -12,7 +12,6 @@ import Article from '#models/article'
 import Category from '#models/category'
 import ContactMessage from '#models/contact_message'
 import Project from '#models/project'
-import Tag from '#models/tag'
 import Talk from '#models/talk'
 import Technology from '#models/technology'
 import TimelineEntry from '#models/timeline_entry'
@@ -30,7 +29,6 @@ import {
   CV_EN,
   CV_FR,
   PROJECTS,
-  TAGS,
   TALKS,
   TECHNOLOGIES,
   TIMELINE,
@@ -44,13 +42,11 @@ import {
  */
 const CONTENT_TABLES = [
   'article_project',
-  'article_tag',
+  'article_technology',
   'article_translations',
   'articles',
   'category_translations',
   'categories',
-  'tag_translations',
-  'tags',
   'project_links',
   'project_technology',
   'project_translations',
@@ -105,7 +101,7 @@ async function makeCover(cover: Cover | null, alt: string): Promise<Media | null
 
 /**
  * Fills the site with realistic demo content: technologies,
- * categories, tags, articles (published, draft and scheduled),
+ * categories, articles (published, draft and scheduled),
  * projects with covers and links, CV timeline, settings and contact
  * messages. Destructive by design (every content table is emptied
  * first), so it is restricted to development.
@@ -118,8 +114,7 @@ export default class extends BaseSeeder {
 
     const technologies = await this.#seedTechnologies()
     const categories = await this.#seedCategories()
-    const tags = await this.#seedTags()
-    const articles = await this.#seedArticles(categories, tags)
+    const articles = await this.#seedArticles(categories, technologies)
     await this.#seedProjects(technologies, articles)
     await this.#seedTalks(technologies)
     await this.#seedTimeline()
@@ -169,22 +164,7 @@ export default class extends BaseSeeder {
     return bySlug
   }
 
-  async #seedTags() {
-    const bySlug = new Map<string, Tag>()
-
-    for (const entry of TAGS) {
-      const tag = await Tag.create({ slug: entry.slug })
-      await tag.related('translations').createMany([
-        { locale: 'fr', name: entry.fr },
-        { locale: 'en', name: entry.en },
-      ])
-      bySlug.set(entry.slug, tag)
-    }
-
-    return bySlug
-  }
-
-  async #seedArticles(categories: Map<string, Category>, tags: Map<string, Tag>) {
+  async #seedArticles(categories: Map<string, Category>, technologies: Map<string, Technology>) {
     const bySlug = new Map<string, Article>()
 
     for (const entry of ARTICLES) {
@@ -195,7 +175,7 @@ export default class extends BaseSeeder {
         status: entry.status,
         categoryId: categories.get(entry.category)?.id ?? null,
         coverMediaId: cover?.id ?? null,
-        tagIds: entry.tags.map((slug) => tags.get(slug)!.id),
+        technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
         publishedAt: entry.publishedAt,
         fr: entry.fr,
         en: entry.en,

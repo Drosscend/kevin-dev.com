@@ -3,6 +3,8 @@ import { BackLink } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { localePath } from '~/lib/locale'
 
+type Entry = { slug: string; title: string; summary: string; coverUrl: string | null }
+
 type TechnologyShowProps = {
   locale: 'fr' | 'en'
   technology: {
@@ -11,14 +13,51 @@ type TechnologyShowProps = {
     category: string
     logoUrl: string | null
     description: string
-    projects: { slug: string; title: string; summary: string; coverUrl: string | null }[]
+    projects: Entry[]
+    articles: Entry[]
   }
   labels: {
     backToList: string
     usedIn: string
-    noProjects: string
+    writtenAbout: string
+    unused: string
   }
   meta: SeoMeta
+}
+
+/** Listing of the entries a technology is attached to, on either side. */
+function UsageSection({
+  title,
+  entries,
+  href,
+}: {
+  title: string
+  entries: Entry[]
+  href: (slug: string) => string
+}) {
+  if (entries.length === 0) {
+    return null
+  }
+
+  return (
+    <section className="mt-14">
+      <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">{title}</h2>
+      <div className="mt-8">
+        <ListingList>
+          {entries.map((entry) => (
+            <ListingRow
+              key={entry.slug}
+              href={href(entry.slug)}
+              title={entry.title}
+              summary={entry.summary}
+              thumbnailUrl={entry.coverUrl}
+              heading="h3"
+            />
+          ))}
+        </ListingList>
+      </div>
+    </section>
+  )
 }
 
 export default function TechnologyShow({ locale, technology, labels, meta }: TechnologyShowProps) {
@@ -48,29 +87,21 @@ export default function TechnologyShow({ locale, technology, labels, meta }: Tec
           </div>
         </header>
 
-        <section className="mt-14">
-          <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-            {labels.usedIn}
-          </h2>
-          {technology.projects.length === 0 ? (
-            <p className="text-muted-foreground mt-4">{labels.noProjects}</p>
-          ) : (
-            <div className="mt-8">
-              <ListingList>
-                {technology.projects.map((project) => (
-                  <ListingRow
-                    key={project.slug}
-                    href={to(`/projects/${project.slug}`)}
-                    title={project.title}
-                    summary={project.summary}
-                    thumbnailUrl={project.coverUrl}
-                    heading="h3"
-                  />
-                ))}
-              </ListingList>
-            </div>
-          )}
-        </section>
+        <UsageSection
+          title={labels.usedIn}
+          entries={technology.projects}
+          href={(slug) => to(`/projects/${slug}`)}
+        />
+
+        <UsageSection
+          title={labels.writtenAbout}
+          entries={technology.articles}
+          href={(slug) => to(`/blog/${slug}`)}
+        />
+
+        {technology.projects.length === 0 && technology.articles.length === 0 && (
+          <p className="text-muted-foreground mt-14">{labels.unused}</p>
+        )}
       </div>
     </div>
   )

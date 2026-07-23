@@ -46,7 +46,7 @@
     "draft": "Draft, only visible while signed in",
     "empty": "No articles yet.",
     "allCategories": "All categories",
-    "clearTag": "Clear the tag filter",
+    "technologies": "Technologies covered",
     "backToList": "All articles",
     "previous": "Previous",
     "next": "Next"
@@ -94,8 +94,10 @@
     "empty": "No technologies yet.",
     "backToList": "All technologies",
     "usedIn": "Projects using this technology",
-    "noProjects": "No published project uses this technology yet.",
+    "writtenAbout": "Articles about this technology",
+    "unused": "Nothing published about this technology yet.",
     "projectsCount": "{count, plural, =0 {no project} one {# project} other {# projects}}",
+    "articlesCount": "{count, plural, =0 {no article} one {# article} other {# articles}}",
     "categories": {
       "langage": "Languages",
       "framework": "Frameworks",

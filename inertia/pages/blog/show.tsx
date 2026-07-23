@@ -4,6 +4,7 @@ import { BackLink } from '~/components/page_header'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import TableOfContents from '~/components/table_of_contents'
+import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
 import { localePath } from '~/lib/locale'
 
 type BlogShowProps = {
@@ -17,13 +18,14 @@ type BlogShowProps = {
     publishedAt: string | null
     readingTimeLabel: string
     category: { slug: string; name: string } | null
-    tags: { slug: string; name: string }[]
+    technologies: TechnologyRef[]
   }
   hasOtherLocale: boolean
   labels: {
     publishedOn: string
     draft: string
     backToList: string
+    technologies: string
     contents: string
   }
   meta: SeoMeta
@@ -74,19 +76,12 @@ export default function BlogShow({ locale, isDraftPreview, article, labels, meta
           <ArticleContent html={article.contentHtml} />
         </div>
 
-        {article.tags.length > 0 && (
-          <p className="mt-12 flex flex-wrap gap-x-3 gap-y-1 border-t pt-6 font-mono text-[13px]">
-            {article.tags.map((tag) => (
-              <Link
-                key={tag.slug}
-                href={`${base}?tag=${tag.slug}`}
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                #{tag.name}
-              </Link>
-            ))}
-          </p>
-        )}
+        <TechnologySection
+          className="mt-12"
+          locale={locale}
+          title={labels.technologies}
+          technologies={article.technologies}
+        />
       </ReadingLayout>
     </>
   )

@@ -3,7 +3,6 @@ import { DateTime } from 'luxon'
 import testUtils from '@adonisjs/core/services/test_utils'
 import User from '#models/user'
 import Category from '#models/category'
-import Tag from '#models/tag'
 import Technology from '#models/technology'
 import Article from '#models/article'
 import Project from '#models/project'
@@ -14,7 +13,7 @@ async function admin() {
   return User.create({ email: 'admin@example.com', password: 'motdepasse' })
 }
 
-test.group('Admin CRUD catégories et tags', (group) => {
+test.group('Admin CRUD catégories', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test('créer, modifier puis supprimer une catégorie', async ({ client, assert }) => {
@@ -90,20 +89,6 @@ test.group('Admin CRUD catégories et tags', (group) => {
     response.assertStatus(302)
     await category.load('translations')
     assert.equal(category.name('fr'), 'Développement')
-  })
-
-  test('créer un tag', async ({ client, assert }) => {
-    const user = await admin()
-
-    const response = await client
-      .post('/admin/tags')
-      .loginAs(user)
-      .withCsrfToken()
-      .redirects(0)
-      .form({ slug: 'adonisjs', nameFr: 'AdonisJS' })
-
-    response.assertStatus(302)
-    assert.isNotNull(await Tag.findBy('slug', 'adonisjs'))
   })
 })
 
@@ -411,8 +396,7 @@ test.group('Admin écrans de contenu', (group) => {
     const user = await admin()
     const category = await Category.create({ slug: 'dev' })
     await category.related('translations').create({ locale: 'fr', name: 'Développement' })
-    const tag = await Tag.create({ slug: 'adonisjs' })
-    await tag.related('translations').create({ locale: 'fr', name: 'AdonisJS' })
+    const technology = await Technology.create({ slug: 'adonisjs', name: 'AdonisJS' })
 
     const article = await Article.create({
       slug: 'sujet',
@@ -426,7 +410,7 @@ test.group('Admin écrans de contenu', (group) => {
       contentMarkdown: '# Contenu source',
       contentHtml: '<h1>Contenu source</h1>',
     })
-    await article.related('tags').sync([tag.id])
+    await article.related('technologies').sync([technology.id])
 
     const response = await client
       .get(`/admin/articles/${article.id}/edit`)
@@ -439,7 +423,7 @@ test.group('Admin écrans de contenu', (group) => {
     assert.equal(props.article.fr.title, 'Sujet')
     assert.equal(props.article.fr.summary, 'Un résumé')
     assert.equal(props.article.fr.contentMarkdown, '# Contenu source')
-    assert.deepEqual(props.article.tagIds, [tag.id])
+    assert.deepEqual(props.article.technologyIds, [technology.id])
     assert.deepEqual(props.options.categories, [{ id: category.id, name: 'Développement' }])
   })
 

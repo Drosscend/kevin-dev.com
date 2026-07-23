@@ -15,7 +15,6 @@ export const controllers = {
     Projects: () => import('#controllers/admin/projects_controller'),
     Security: () => import('#controllers/admin/security_controller'),
     Session: () => import('#controllers/admin/session_controller'),
-    Tags: () => import('#controllers/admin/tags_controller'),
     Talks: () => import('#controllers/admin/talks_controller'),
     Technologies: () => import('#controllers/admin/technologies_controller'),
   },

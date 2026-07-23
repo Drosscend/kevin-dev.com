@@ -15,7 +15,7 @@ export interface ArticlePayload {
   status: ArticleStatus
   categoryId: number | null
   coverMediaId: number | null
-  tagIds: number[]
+  technologyIds: number[]
   publishedAt?: string | null
   fr: TranslationPayload
   en: TranslationPayload | null
@@ -24,7 +24,7 @@ export interface ArticlePayload {
 /**
  * Persists an article with its translations inside a single DB
  * transaction, so a failure can never leave a published article
- * without translations or tags. Markdown is rendered before the
+ * without translations or technologies. Markdown is rendered before the
  * transaction starts, reading time is computed from the French
  * content, and publishedAt is set on the first publication only.
  */
@@ -77,7 +77,7 @@ export default class ArticleService {
         await article.related('translations').query().where('locale', 'en').delete()
       }
 
-      await article.related('tags').sync(payload.tagIds)
+      await article.related('technologies').sync(payload.technologyIds)
 
       return article
     })

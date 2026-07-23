@@ -142,9 +142,9 @@ test.group('Portfolio public', (group) => {
     response.assertStatus(200)
     const technologies = response.inertiaProps.technologies as {
       slug: string
-      projectsLabel: string
+      usageLabel: string
     }[]
     const docker = technologies.find((item) => item.slug === 'docker')
-    assert.equal(docker?.projectsLabel, '1 projet')
+    assert.equal(docker?.usageLabel, '1 projet')
   })
 })

@@ -19,7 +19,7 @@ type ArticleData = {
   status: 'draft' | 'published'
   categoryId: number | null
   coverMediaId: number | null
-  tagIds: number[]
+  technologyIds: number[]
   publishedAt: string | null
   slugLocked: boolean
   fr: TranslationValues
@@ -31,7 +31,7 @@ type MediaOption = { id: number; alt: string }
 
 type ArticleFormProps = {
   article: ArticleData | null
-  options: { categories: Option[]; tags: Option[]; media: MediaOption[] }
+  options: { categories: Option[]; technologies: Option[]; media: MediaOption[] }
 }
 
 export default function ArticleForm({ article, options }: ArticleFormProps) {
@@ -42,7 +42,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
     status: article?.status ?? ('draft' as 'draft' | 'published'),
     categoryId: article?.categoryId ?? null,
     coverMediaId: article?.coverMediaId ?? null,
-    tagIds: article?.tagIds ?? [],
+    technologyIds: article?.technologyIds ?? [],
     publishedAt: article?.publishedAt ?? null,
     fr: article?.fr ?? { ...EMPTY_TRANSLATION },
     en: article?.en,
@@ -68,12 +68,11 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
     }))
   }
 
-  function toggleTag(id: number) {
+  function toggleTechnology(id: number) {
+    const current = form.data.technologyIds
     form.setData(
-      'tagIds',
-      form.data.tagIds.includes(id)
-        ? form.data.tagIds.filter((tagId) => tagId !== id)
-        : [...form.data.tagIds, id]
+      'technologyIds',
+      current.includes(id) ? current.filter((value) => value !== id) : [...current, id]
     )
   }
 
@@ -195,22 +194,22 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
             </div>
 
             <div className="space-y-2">
-              <Label>Tags</Label>
+              <Label>Technologies abordées</Label>
               <div className="flex flex-wrap gap-2">
-                {options.tags.length === 0 && (
-                  <p className="text-muted-foreground text-sm">Aucun tag défini.</p>
+                {options.technologies.length === 0 && (
+                  <p className="text-muted-foreground text-sm">Aucune technologie définie.</p>
                 )}
-                {options.tags.map((tag) => (
+                {options.technologies.map((technology) => (
                   <label
-                    key={tag.id}
+                    key={technology.id}
                     className="flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-sm"
                   >
                     <input
                       type="checkbox"
-                      checked={form.data.tagIds.includes(tag.id)}
-                      onChange={() => toggleTag(tag.id)}
+                      checked={form.data.technologyIds.includes(technology.id)}
+                      onChange={() => toggleTechnology(technology.id)}
                     />
-                    {tag.name}
+                    {technology.name}
                   </label>
                 ))}
               </div>

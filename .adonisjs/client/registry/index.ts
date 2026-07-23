@@ -384,30 +384,6 @@ const routes = {
     tokens: [{"old":"/admin/categories/:id","type":0,"val":"admin","end":""},{"old":"/admin/categories/:id","type":0,"val":"categories","end":""},{"old":"/admin/categories/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['admin.categories.destroy']['types'],
   },
-  'admin.tags.index': {
-    methods: ["GET","HEAD"],
-    pattern: '/admin/tags',
-    tokens: [{"old":"/admin/tags","type":0,"val":"admin","end":""},{"old":"/admin/tags","type":0,"val":"tags","end":""}],
-    types: placeholder as Registry['admin.tags.index']['types'],
-  },
-  'admin.tags.store': {
-    methods: ["POST"],
-    pattern: '/admin/tags',
-    tokens: [{"old":"/admin/tags","type":0,"val":"admin","end":""},{"old":"/admin/tags","type":0,"val":"tags","end":""}],
-    types: placeholder as Registry['admin.tags.store']['types'],
-  },
-  'admin.tags.update': {
-    methods: ["PUT"],
-    pattern: '/admin/tags/:id',
-    tokens: [{"old":"/admin/tags/:id","type":0,"val":"admin","end":""},{"old":"/admin/tags/:id","type":0,"val":"tags","end":""},{"old":"/admin/tags/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['admin.tags.update']['types'],
-  },
-  'admin.tags.destroy': {
-    methods: ["DELETE"],
-    pattern: '/admin/tags/:id',
-    tokens: [{"old":"/admin/tags/:id","type":0,"val":"admin","end":""},{"old":"/admin/tags/:id","type":0,"val":"tags","end":""},{"old":"/admin/tags/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['admin.tags.destroy']['types'],
-  },
   'admin.articles.index': {
     methods: ["GET","HEAD"],
     pattern: '/admin/articles',

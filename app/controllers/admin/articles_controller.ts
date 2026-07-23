@@ -1,25 +1,20 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Article from '#models/article'
 import Category from '#models/category'
-import Tag from '#models/tag'
+import Technology from '#models/technology'
 import Media from '#models/media'
 import ArticleService from '#services/article_service'
 import { articleValidator } from '#validators/blog'
 
 async function formOptions() {
-  const [categories, tags, media] = await Promise.all([
+  const [categories, technologies, media] = await Promise.all([
     Category.query()
       .select('id', 'slug')
       .preload('translations', (translations) =>
         translations.select('id', 'category_id', 'locale', 'name')
       )
       .orderBy('slug'),
-    Tag.query()
-      .select('id', 'slug')
-      .preload('translations', (translations) =>
-        translations.select('id', 'tag_id', 'locale', 'name')
-      )
-      .orderBy('slug'),
+    Technology.query().select('id', 'name').orderBy('name'),
     Media.query()
       .withScopes((scopes) => scopes.images())
       .select('id', 'alt')
@@ -28,7 +23,10 @@ async function formOptions() {
 
   return {
     categories: categories.map((category) => ({ id: category.id, name: category.name('fr') })),
-    tags: tags.map((tag) => ({ id: tag.id, name: tag.name('fr') })),
+    technologies: technologies.map((technology) => ({
+      id: technology.id,
+      name: technology.name,
+    })),
     media: media.map((item) => ({ id: item.id, alt: item.alt })),
   }
 }
@@ -77,7 +75,7 @@ export default class ArticlesController {
       status: payload.status,
       categoryId: payload.categoryId ?? null,
       coverMediaId: payload.coverMediaId ?? null,
-      tagIds: payload.tagIds ?? [],
+      technologyIds: payload.technologyIds ?? [],
       publishedAt: payload.publishedAt ?? null,
       fr: { summary: '', ...payload.fr },
       en: payload.en ? { summary: '', ...payload.en } : null,
@@ -93,7 +91,7 @@ export default class ArticlesController {
       .preload('translations', (translations) =>
         translations.select('id', 'article_id', 'locale', 'title', 'summary', 'content_markdown')
       )
-      .preload('tags', (tags) => tags.select('id'))
+      .preload('technologies', (technologies) => technologies.select('id'))
       .firstOrFail()
 
     const fr = article.translation('fr')
@@ -106,7 +104,7 @@ export default class ArticlesController {
         status: article.status,
         categoryId: article.categoryId,
         coverMediaId: article.coverMediaId,
-        tagIds: article.tags.map((tag) => tag.id),
+        technologyIds: article.technologies.map((technology) => technology.id),
         publishedAt: article.publishedAt?.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
         slugLocked: article.slugLocked,
         fr: {
@@ -133,7 +131,7 @@ export default class ArticlesController {
       status: payload.status,
       categoryId: payload.categoryId ?? null,
       coverMediaId: payload.coverMediaId ?? null,
-      tagIds: payload.tagIds ?? [],
+      technologyIds: payload.technologyIds ?? [],
       publishedAt: payload.publishedAt ?? null,
       fr: { summary: '', ...payload.fr },
       en: payload.en ? { summary: '', ...payload.en } : null,

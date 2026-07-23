@@ -763,54 +763,6 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/categories_controller').default['destroy']>>>
     }
   }
-  'admin.tags.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/tags'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/tags_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/tags_controller').default['index']>>>
-    }
-  }
-  'admin.tags.store': {
-    methods: ["POST"]
-    pattern: '/admin/tags'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/blog').tagValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/blog').tagValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/tags_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/tags_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.tags.update': {
-    methods: ["PUT"]
-    pattern: '/admin/tags/:id'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/blog').tagValidator)>>
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#validators/blog').tagValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/tags_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/tags_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.tags.destroy': {
-    methods: ["DELETE"]
-    pattern: '/admin/tags/:id'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/tags_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/tags_controller').default['destroy']>>>
-    }
-  }
   'admin.articles.index': {
     methods: ["GET","HEAD"]
     pattern: '/admin/articles'

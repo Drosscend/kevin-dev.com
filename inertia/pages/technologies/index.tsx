@@ -9,7 +9,7 @@ type TechnologyCard = {
   category: 'langage' | 'framework' | 'outil' | 'infra'
   logoUrl: string | null
   description: string
-  projectsLabel: string
+  usageLabel: string
 }
 
 type TechnologiesIndexProps = {
@@ -60,7 +60,7 @@ export default function TechnologiesIndex({
                     summary={technology.description}
                     thumbnailUrl={technology.logoUrl}
                     thumbnail="logo"
-                    meta={technology.projectsLabel}
+                    meta={technology.usageLabel}
                     heading="h3"
                   />
                 ))}

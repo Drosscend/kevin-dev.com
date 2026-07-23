@@ -1,9 +1,9 @@
 import { ExternalLink } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
-import { ChipLink, ChipList } from '~/components/chip'
 import { BackLink } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
+import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
 import { localePath } from '~/lib/locale'
 
 type TalksShowProps = {
@@ -20,7 +20,7 @@ type TalksShowProps = {
     city: string
     upcoming: boolean
     links: { label: string; url: string; type: string }[]
-    technologies: { slug: string; name: string }[]
+    technologies: TechnologyRef[]
   }
   hasOtherLocale: boolean
   labels: {
@@ -85,20 +85,11 @@ export default function TalksShow({ locale, isDraftPreview, talk, labels, meta }
 
         <ArticleContent html={talk.contentHtml} />
 
-        {talk.technologies.length > 0 && (
-          <section className="border-t pt-8">
-            <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-              {labels.technologies}
-            </h2>
-            <ChipList className="mt-4">
-              {talk.technologies.map((technology) => (
-                <ChipLink key={technology.slug} href={to(`/technologies/${technology.slug}`)}>
-                  {technology.name}
-                </ChipLink>
-              ))}
-            </ChipList>
-          </section>
-        )}
+        <TechnologySection
+          locale={locale}
+          title={labels.technologies}
+          technologies={talk.technologies}
+        />
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import { ListingList, ListingRow } from '~/components/content_link'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
+import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
 import { localePath } from '~/lib/locale'
 
 type ProjectCard = {
@@ -11,7 +12,7 @@ type ProjectCard = {
   coverUrl: string | null
   period: string | null
   ongoing: boolean
-  technologies: { slug: string; name: string }[]
+  technologies: TechnologyRef[]
 }
 
 type PortfolioIndexProps = {
@@ -50,11 +51,7 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
               }
               footer={
                 project.technologies.length > 0 && (
-                  <p className="text-muted-foreground flex flex-wrap gap-x-2.5 gap-y-1 font-mono text-[13px]">
-                    {project.technologies.map((technology) => (
-                      <span key={technology.slug}>{technology.name}</span>
-                    ))}
-                  </p>
+                  <TechnologyNames technologies={project.technologies} />
                 )
               }
             />

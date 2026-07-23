@@ -136,22 +136,11 @@ export const CATEGORIES = [
   },
 ]
 
-export const TAGS = [
-  { slug: 'adonisjs', fr: 'AdonisJS', en: 'AdonisJS' },
-  { slug: 'react', fr: 'React', en: 'React' },
-  { slug: 'postgresql', fr: 'PostgreSQL', en: 'PostgreSQL' },
-  { slug: 'performance', fr: 'Performance', en: 'Performance' },
-  { slug: 'architecture', fr: 'Architecture', en: 'Architecture' },
-  { slug: 'tests', fr: 'Tests', en: 'Testing' },
-  { slug: 'docker', fr: 'Docker', en: 'Docker' },
-  { slug: 'llm', fr: 'LLM', en: 'LLM' },
-]
-
 export const ARTICLES = [
   {
     slug: 'inertia-sans-couche-api',
     category: 'backend',
-    tags: ['adonisjs', 'react', 'architecture'],
+    technologies: ['adonisjs', 'react', 'inertia'],
     publishedAt: daysAgo(6),
     status: 'published' as const,
     cover: { name: 'inertia', from: '#9e2430', to: '#2b1013' },
@@ -254,7 +243,7 @@ API layer is dead weight.`,
   {
     slug: 'index-partiels-postgresql',
     category: 'backend',
-    tags: ['postgresql', 'performance'],
+    technologies: ['postgresql'],
     publishedAt: daysAgo(19),
     status: 'published' as const,
     cover: { name: 'postgres', from: '#1f4e79', to: '#0d1b2a' },
@@ -304,7 +293,7 @@ cache : un index dix fois plus petit reste en mémoire.`,
   {
     slug: 'react-compiler-en-production',
     category: 'frontend',
-    tags: ['react', 'performance'],
+    technologies: ['react', 'typescript'],
     publishedAt: daysAgo(33),
     status: 'published' as const,
     cover: { name: 'react-compiler', from: '#0f766e', to: '#052e2b' },
@@ -365,7 +354,7 @@ measurable difference, as expected.`,
   {
     slug: 'pipeline-ci-monorepo',
     category: 'devops',
-    tags: ['docker', 'tests', 'performance'],
+    technologies: ['docker', 'playwright'],
     publishedAt: daysAgo(52),
     status: 'published' as const,
     cover: { name: 'ci', from: '#7c3aed', to: '#241155' },
@@ -423,7 +412,7 @@ a réglé le problème.
   {
     slug: 'rag-maison-pgvector',
     category: 'intelligence-artificielle',
-    tags: ['llm', 'postgresql', 'architecture'],
+    technologies: ['python', 'postgresql'],
     publishedAt: daysAgo(78),
     status: 'published' as const,
     cover: { name: 'rag', from: '#b45309', to: '#3b1d02' },
@@ -494,7 +483,7 @@ of overlap.`,
   {
     slug: 'tests-e2e-qui-ne-mentent-pas',
     category: 'devops',
-    tags: ['tests', 'performance'],
+    technologies: ['playwright', 'typescript'],
     publishedAt: daysAgo(104),
     status: 'published' as const,
     cover: { name: 'e2e', from: '#0369a1', to: '#052236' },
@@ -535,7 +524,7 @@ plus vite que la confiance.`,
   {
     slug: 'observabilite-opentelemetry',
     category: 'devops',
-    tags: ['architecture', 'docker'],
+    technologies: ['adonisjs', 'grafana'],
     publishedAt: null,
     status: 'draft' as const,
     cover: null,
@@ -559,7 +548,7 @@ Plan prévu :
   {
     slug: 'edge-rendering-2027',
     category: 'frontend',
-    tags: ['react', 'performance', 'architecture'],
+    technologies: ['react', 'kubernetes'],
     publishedAt: inDays(9),
     status: 'published' as const,
     cover: { name: 'edge', from: '#be123c', to: '#3f0715' },

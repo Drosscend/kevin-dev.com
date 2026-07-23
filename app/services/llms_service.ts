@@ -100,7 +100,7 @@ export default class LlmsService {
       .withScopes((scopes) => scopes.published())
       .preload('translations')
       .preload('category', (category) => category.preload('translations'))
-      .preload('tags', (tags) => tags.preload('translations'))
+      .preload('technologies')
       .first()
 
     const translation = article?.translation(locale)
@@ -115,8 +115,8 @@ export default class LlmsService {
       `- URL : ${SeoService.absolute(localePath(locale, `/blog/${article.slug}`))}`,
       ...(article.publishedAt ? [`- Publié : ${article.publishedAt.toISODate()}`] : []),
       ...(article.category ? [`- Catégorie : ${article.category.name(locale)}`] : []),
-      ...(article.tags.length > 0
-        ? [`- Tags : ${article.tags.map((tag) => tag.name(locale)).join(', ')}`]
+      ...(article.technologies.length > 0
+        ? [`- Technologies : ${article.technologies.map((item) => item.name).join(', ')}`]
         : []),
       '',
       '---',

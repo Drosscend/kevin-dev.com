@@ -14,13 +14,10 @@ function formatDate(date: DateTime | null, locale: Locale) {
   return date?.setLocale(locale).toLocaleString(DateTime.DATE_FULL) ?? null
 }
 
-function listQueryString(category: string | null, tag: string | null, page: number) {
+function listQueryString(category: string | null, page: number) {
   const params = new URLSearchParams()
   if (category) {
     params.set('category', category)
-  }
-  if (tag) {
-    params.set('tag', tag)
   }
   if (page > 1) {
     params.set('page', String(page))
@@ -34,7 +31,6 @@ export default class BlogController {
     const locale = i18n.locale as Locale
     const page = Math.max(1, Number(request.input('page', 1)) || 1)
     const categorySlug = request.input('category') as string | null
-    const tagSlug = request.input('tag') as string | null
 
     const query = Article.query()
       .withScopes((scopes) => scopes.published())
@@ -43,15 +39,12 @@ export default class BlogController {
         translations.select('id', 'article_id', 'locale', 'title', 'summary')
       )
       .preload('category', (category) => category.preload('translations'))
-      .preload('tags', (tags) => tags.preload('translations'))
+      .preload('technologies')
       .preload('cover')
       .orderBy('published_at', 'desc')
 
     if (categorySlug) {
       query.whereHas('category', (category) => category.where('slug', categorySlug))
-    }
-    if (tagSlug) {
-      query.whereHas('tags', (tags) => tags.where('slug', tagSlug))
     }
 
     const [paginated, categories] = await Promise.all([
@@ -62,13 +55,11 @@ export default class BlogController {
     if (paginated.total > 0 && page > paginated.lastPage) {
       return response
         .redirect()
-        .toPath(
-          localePath(locale, '/blog') + listQueryString(categorySlug, tagSlug, paginated.lastPage)
-        )
+        .toPath(localePath(locale, '/blog') + listQueryString(categorySlug, paginated.lastPage))
     }
 
     return inertia.render('blog/index', {
-      filters: { category: categorySlug, tag: tagSlug },
+      filters: { category: categorySlug },
       articles: paginated.all().map((article) => {
         const translation = article.translation(locale)!
         return {
@@ -82,7 +73,10 @@ export default class BlogController {
           category: article.category
             ? { slug: article.category.slug, name: article.category.name(locale) }
             : null,
-          tags: article.tags.map((tag) => ({ slug: tag.slug, name: tag.name(locale) })),
+          technologies: article.technologies.map((technology) => ({
+            slug: technology.slug,
+            name: technology.name,
+          })),
           coverUrl: MediaService.url(article.cover),
         }
       }),
@@ -99,7 +93,6 @@ export default class BlogController {
         title: i18n.t('messages.blog.title'),
         empty: i18n.t('messages.blog.empty'),
         allCategories: i18n.t('messages.blog.allCategories'),
-        clearTag: i18n.t('messages.blog.clearTag'),
         previous: i18n.t('messages.blog.previous'),
         next: i18n.t('messages.blog.next'),
       },
@@ -107,9 +100,8 @@ export default class BlogController {
         title: i18n.t('messages.blog.title'),
         description: i18n.t('messages.blog.metaDescription'),
         locale,
-        path: localePath(locale, '/blog') + listQueryString(categorySlug, tagSlug, page),
-        alternates:
-          !categorySlug && !tagSlug && page === 1 ? { fr: '/blog', en: '/en/blog' } : null,
+        path: localePath(locale, '/blog') + listQueryString(categorySlug, page),
+        alternates: !categorySlug && page === 1 ? { fr: '/blog', en: '/en/blog' } : null,
       }),
     })
   }
@@ -133,7 +125,7 @@ export default class BlogController {
       )
       .preload('cover')
       .preload('category', (category) => category.preload('translations'))
-      .preload('tags', (tags) => tags.preload('translations'))
+      .preload('technologies')
       .firstOrFail()
 
     const translation = article.translation(locale)
@@ -160,13 +152,17 @@ export default class BlogController {
         category: article.category
           ? { slug: article.category.slug, name: article.category.name(locale) }
           : null,
-        tags: article.tags.map((tag) => ({ slug: tag.slug, name: tag.name(locale) })),
+        technologies: article.technologies.map((technology) => ({
+          slug: technology.slug,
+          name: technology.name,
+        })),
       },
       hasOtherLocale: article.translation(locale === 'fr' ? 'en' : 'fr') !== undefined,
       labels: {
         publishedOn: i18n.t('messages.blog.publishedOn'),
         draft: i18n.t('messages.blog.draft'),
         backToList: i18n.t('messages.blog.backToList'),
+        technologies: i18n.t('messages.blog.technologies'),
         contents: i18n.t('messages.toc.title'),
       },
       meta: SeoService.build({
