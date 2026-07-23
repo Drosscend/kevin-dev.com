@@ -1,25 +1,16 @@
-import {
-  type ChangeEvent,
-  type ClipboardEvent,
-  type DragEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import { type ChangeEvent, type ClipboardEvent, type DragEvent, useRef, useState } from 'react'
 import { Dialog } from 'radix-ui'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Textarea } from '~/components/ui/textarea'
-import ArticleContent from '~/components/article_content'
 import { ErrorText } from '~/components/field_error'
-import { fetchMarkdownPreview, uploadMediaImage } from '~/lib/admin'
+import { uploadMediaImage } from '~/lib/admin'
 
 /**
  * Markdown textarea with inline image upload (drag-and-drop or
  * paste, alt text asked through a dialog before uploading to the
- * media library) and an optional side-by-side server-rendered
- * preview, refreshed with a debounce while typing.
+ * media library).
  */
 export default function MarkdownEditor({
   id,
@@ -38,40 +29,11 @@ export default function MarkdownEditor({
   // Caret position captured when an image lands, reused after the
   // upload finishes to insert the markdown at that spot.
   const insertionRef = useRef<{ start: number; end: number }>({ start: 0, end: 0 })
-  // Monotonic counter so a stale preview response never overwrites a
-  // newer one.
-  const previewRequestRef = useRef(0)
 
-  const [previewOpen, setPreviewOpen] = useState(false)
-  const [previewHtml, setPreviewHtml] = useState('')
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [altText, setAltText] = useState('')
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!previewOpen) {
-      return
-    }
-    // Bumping the counter invalidates any in-flight request so a
-    // stale response can never repaint the panel.
-    const requestId = ++previewRequestRef.current
-    const empty = value.trim() === ''
-    const timer = window.setTimeout(
-      async () => {
-        if (empty) {
-          setPreviewHtml('')
-          return
-        }
-        const html = await fetchMarkdownPreview(value)
-        if (html !== null && requestId === previewRequestRef.current) {
-          setPreviewHtml(html)
-        }
-      },
-      empty ? 0 : 1000
-    )
-    return () => window.clearTimeout(timer)
-  }, [value, previewOpen])
 
   function captureImage(file: File) {
     const textarea = textareaRef.current
@@ -132,43 +94,20 @@ export default function MarkdownEditor({
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <Label htmlFor={id}>{label}</Label>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={() => setPreviewOpen((open) => !open)}
-        >
-          {previewOpen ? 'Masquer l’aperçu' : 'Aperçu'}
-        </Button>
-      </div>
+      <Label htmlFor={id}>{label}</Label>
 
-      <div className={previewOpen ? 'grid gap-4 lg:grid-cols-2' : ''}>
-        <Textarea
-          ref={textareaRef}
-          id={id}
-          rows={rows}
-          className="min-h-60 font-mono"
-          value={value}
-          disabled={uploading}
-          onChange={(event: ChangeEvent<HTMLTextAreaElement>) => onChange(event.target.value)}
-          onPaste={handlePaste}
-          onDragOver={(event) => event.preventDefault()}
-          onDrop={handleDrop}
-        />
-        {previewOpen && (
-          <div className="bg-card min-h-60 overflow-x-auto rounded-md border px-4 py-3">
-            {previewHtml !== '' && value.trim() !== '' ? (
-              <ArticleContent html={previewHtml} />
-            ) : (
-              <p className="text-muted-foreground text-sm">
-                L’aperçu s’affichera ici pendant la saisie.
-              </p>
-            )}
-          </div>
-        )}
-      </div>
+      <Textarea
+        ref={textareaRef}
+        id={id}
+        rows={rows}
+        className="min-h-60 font-mono"
+        value={value}
+        disabled={uploading}
+        onChange={(event: ChangeEvent<HTMLTextAreaElement>) => onChange(event.target.value)}
+        onPaste={handlePaste}
+        onDragOver={(event) => event.preventDefault()}
+        onDrop={handleDrop}
+      />
 
       {uploading && <p className="text-muted-foreground text-sm">Envoi de l’image…</p>}
       {uploadError && <ErrorText>{uploadError}</ErrorText>}

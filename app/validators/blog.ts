@@ -12,10 +12,6 @@ export const articleValidator = vine.withMetaData<EditedRow>().create({
   en: translation().optional(),
 })
 
-export const previewValidator = vine.create({
-  markdown: vine.string(),
-})
-
 /**
  * Categories and tags share the same shape: a slug plus an FR name
  * and an optional EN one.

@@ -1,4 +1,3 @@
-import { toast } from 'sonner'
 import { client } from '~/client'
 
 export type TranslationValues = {
@@ -54,29 +53,5 @@ export async function uploadMediaImage(
     return { media: (await response.json()) as UploadedMedia }
   } catch {
     return { error: 'Téléversement impossible, vérifiez votre connexion' }
-  }
-}
-
-/**
- * Renders Markdown through the server pipeline (same output as the
- * public pages). Returns null and shows a toast when the request
- * fails (network error, expired CSRF token…).
- */
-export async function fetchMarkdownPreview(markdown: string): Promise<string | null> {
-  try {
-    const response = await fetch(client.urlFor('admin.articles.preview'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-XSRF-TOKEN': xsrfToken() },
-      body: JSON.stringify({ markdown }),
-    })
-    if (!response.ok) {
-      toast.error('Aperçu indisponible, rechargez la page et réessayez')
-      return null
-    }
-    const { html } = await response.json()
-    return html
-  } catch {
-    toast.error('Aperçu indisponible, vérifiez votre connexion')
-    return null
   }
 }

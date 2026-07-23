@@ -4,8 +4,7 @@ import Category from '#models/category'
 import Tag from '#models/tag'
 import Media from '#models/media'
 import ArticleService from '#services/article_service'
-import MarkdownService from '#services/markdown_service'
-import { articleValidator, previewValidator } from '#validators/blog'
+import { articleValidator } from '#validators/blog'
 
 async function formOptions() {
   const [categories, tags, media] = await Promise.all([
@@ -144,14 +143,5 @@ export default class ArticlesController {
 
     session.flash('success', 'Article supprimé')
     response.redirect().toRoute('admin.articles.index')
-  }
-
-  /**
-   * Renders Markdown through the same pipeline as the public site,
-   * so the editor preview matches the final output.
-   */
-  async preview({ request, response }: HttpContext) {
-    const { markdown } = await request.validateUsing(previewValidator)
-    return response.json({ html: await MarkdownService.render(markdown) })
   }
 }

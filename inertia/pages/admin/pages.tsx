@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react'
+import { type FormEvent } from 'react'
 import { useForm } from '@inertiajs/react'
 import { Form } from '@adonisjs/inertia/react'
 import { client } from '~/client'
@@ -9,8 +9,6 @@ import { Textarea } from '~/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import FieldError from '~/components/field_error'
 import AdminPage from '~/components/admin/admin_page'
-import ArticleContent from '~/components/article_content'
-import { fetchMarkdownPreview } from '~/lib/admin'
 
 type PagesProps = {
   cvFr: string
@@ -46,21 +44,10 @@ function MarkdownField({
 
 export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps) {
   const form = useForm({ cvFr, cvEn, legalFr, legalEn })
-  const [preview, setPreview] = useState<{ label: string; html: string } | null>(null)
 
   function submit(event: FormEvent) {
     event.preventDefault()
     form.put(client.urlFor('admin.pages.update'), { preserveScroll: true })
-  }
-
-  async function loadPreview(label: string, markdown: string) {
-    if (!markdown) {
-      return
-    }
-    const html = await fetchMarkdownPreview(markdown)
-    if (html) {
-      setPreview({ label, html })
-    }
   }
 
   return (
@@ -108,14 +95,6 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
               value={form.data.cvFr}
               onChange={(value) => form.setData('cvFr', value)}
             />
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => loadPreview('CV FR', form.data.cvFr)}
-            >
-              Aperçu FR
-            </Button>
             <MarkdownField
               id="cvEn"
               label="CV (EN, optionnel)"
@@ -144,20 +123,6 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
             />
           </CardContent>
         </Card>
-
-        {preview && (
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Aperçu — {preview.label}</CardTitle>
-              <Button type="button" variant="ghost" size="sm" onClick={() => setPreview(null)}>
-                Fermer
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <ArticleContent html={preview.html} />
-            </CardContent>
-          </Card>
-        )}
 
         <Button type="submit" disabled={form.processing}>
           Enregistrer les pages

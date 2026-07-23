@@ -164,9 +164,6 @@ router
       .get('articles/create', [controllers.admin.Articles, 'create'])
       .as('admin.articles.create')
     router.post('articles', [controllers.admin.Articles, 'store']).as('admin.articles.store')
-    router
-      .post('articles/preview', [controllers.admin.Articles, 'preview'])
-      .as('admin.articles.preview')
     router.get('articles/:id/edit', [controllers.admin.Articles, 'edit']).as('admin.articles.edit')
     router.put('articles/:id', [controllers.admin.Articles, 'update']).as('admin.articles.update')
     router
