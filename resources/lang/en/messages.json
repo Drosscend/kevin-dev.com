@@ -11,8 +11,7 @@
     "secondary": "Secondary navigation",
     "openMenu": "Open the menu",
     "closeMenu": "Close the menu",
-    "theme": "Toggle light or dark theme",
-    "switchLocale": "Read this page in {locale}"
+    "theme": "Toggle light or dark theme"
   },
   "home": {
     "metaDescription": "Kévin Véronési's personal site: tech blog (AdonisJS, React, self-hosting), project portfolio and resume.",

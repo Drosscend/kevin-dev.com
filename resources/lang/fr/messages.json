@@ -11,8 +11,7 @@
     "secondary": "Navigation secondaire",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
-    "theme": "Basculer le thème clair ou sombre",
-    "switchLocale": "Lire cette page en {locale}"
+    "theme": "Basculer le thème clair ou sombre"
   },
   "home": {
     "metaDescription": "Site personnel de Kévin Véronési : blog technique (AdonisJS, React, auto-hébergement), portfolio de projets et CV.",

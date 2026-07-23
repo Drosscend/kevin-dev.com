@@ -392,6 +392,44 @@ test.group('Admin tableau de bord', (group) => {
 test.group('Admin écrans de contenu', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
+  test('l’écran catégories expose ses lignes et leur compte d’articles', async ({
+    client,
+    assert,
+  }) => {
+    const user = await admin()
+    const category = await Category.create({ slug: 'dev' })
+    await category.related('translations').createMany([
+      { locale: 'fr', name: 'Développement' },
+      { locale: 'en', name: 'Development' },
+    ])
+    const article = await Article.create({
+      slug: 'sujet',
+      status: 'draft',
+      categoryId: category.id,
+    })
+    await article.related('translations').create({
+      locale: 'fr',
+      title: 'Sujet',
+      summary: '',
+      contentMarkdown: 'Contenu',
+      contentHtml: '<p>Contenu</p>',
+    })
+
+    const response = await client.get('/admin/categories').loginAs(user).withInertia()
+
+    response.assertStatus(200)
+    response.assertInertiaComponent('admin/categories')
+    assert.deepEqual(response.inertiaProps.categories, [
+      {
+        id: category.id,
+        slug: 'dev',
+        nameFr: 'Développement',
+        nameEn: 'Development',
+        articlesCount: 1,
+      },
+    ])
+  })
+
   test('le formulaire article expose le contenu et ses relations', async ({ client, assert }) => {
     const user = await admin()
     const category = await Category.create({ slug: 'dev' })
