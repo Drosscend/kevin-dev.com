@@ -102,19 +102,20 @@ export default function BlogIndex({
                 summary={article.summary}
                 thumbnailUrl={article.coverUrl}
                 meta={
-                  <>
-                    <span>
-                      {article.publishedAt} · {article.readingTimeLabel}
-                    </span>
+                  <span>
+                    {article.publishedAt} · {article.readingTimeLabel}
                     {article.category && (
-                      <Link
-                        href={pageUrl(base, { category: article.category.slug }, 1)}
-                        className="hover:text-primary tracking-wider uppercase transition-colors"
-                      >
-                        {article.category.name}
-                      </Link>
+                      <>
+                        {' · '}
+                        <Link
+                          href={pageUrl(base, { category: article.category.slug }, 1)}
+                          className="hover:text-primary tracking-wider uppercase transition-colors"
+                        >
+                          {article.category.name}
+                        </Link>
+                      </>
                     )}
-                  </>
+                  </span>
                 }
                 footer={
                   article.technologies.length > 0 && (
