@@ -33,6 +33,15 @@ const EXTENSIONS = [
 type Mode = 'rich' | 'source'
 
 /**
+ * The rich editor always keeps an empty paragraph at the end, which
+ * the serializer writes as a non-breaking space entity. Dropping it
+ * keeps the stored markdown from growing on every save.
+ */
+function trimTrailingBlanks(markdown: string) {
+  return markdown.replace(/(?:\s*&nbsp;)*\s*$/, '')
+}
+
+/**
  * Markdown field with two interchangeable views over the same
  * value: a rich text surface backed by Tiptap (native shortcuts,
  * toolbar, live rendering) and a syntax coloured markdown source.
@@ -82,7 +91,7 @@ export default function MarkdownEditor({
       },
     },
     onUpdate: ({ editor: instance }) => {
-      const markdown = instance.getMarkdown()
+      const markdown = trimTrailingBlanks(instance.getMarkdown())
       emittedRef.current = markdown
       onChange(markdown)
     },

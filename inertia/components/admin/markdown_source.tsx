@@ -23,7 +23,6 @@ const highlight = HighlightStyle.define([
   { tag: [tags.monospace, tags.special(tags.string)], class: 'cm-md-code' },
   { tag: tags.quote, class: 'cm-md-quote' },
   { tag: [tags.processingInstruction, tags.contentSeparator], class: 'cm-md-marker' },
-  { tag: tags.list, class: 'cm-md-marker' },
   // Languages loaded on demand inside fenced code blocks.
   { tag: [tags.keyword, tags.modifier, tags.self], class: 'cm-code-keyword' },
   { tag: [tags.string, tags.regexp], class: 'cm-code-string' },

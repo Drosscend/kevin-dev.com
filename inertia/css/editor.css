@@ -26,8 +26,14 @@
 /* Rich text surface
    ------------------------------------------------------------- */
 
+/* ProseMirror keeps every source line break visible; the published
+   article collapses them, and the editor should read the same. */
 .markdown-rich .tiptap {
-  white-space: pre-wrap;
+  white-space: normal;
+}
+
+.markdown-rich .tiptap pre {
+  white-space: pre;
 }
 
 .markdown-rich .tiptap :first-child {
