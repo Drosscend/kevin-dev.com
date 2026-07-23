@@ -202,6 +202,32 @@ test.group('Admin parcours', (group) => {
     await created.load('translations')
     assert.isUndefined(created.translations.find((item) => item.locale === 'en'))
   })
+
+  test('la mention est enregistrée, sans mention par défaut', async ({ client, assert }) => {
+    const user = await admin()
+
+    const store = await client
+      .post('/admin/home/timeline')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .form(entry)
+    store.assertStatus(302)
+
+    const created = await TimelineEntry.query().orderBy('position', 'desc').firstOrFail()
+    assert.equal(created.honours, 'none')
+
+    const update = await client
+      .put(`/admin/home/timeline/${created.id}`)
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .form({ ...entry, honours: 'very_good' })
+    update.assertStatus(302)
+
+    await created.refresh()
+    assert.equal(created.honours, 'very_good')
+  })
 })
 
 test.group('Admin CRUD articles et projets (HTTP)', (group) => {

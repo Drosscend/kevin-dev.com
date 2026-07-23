@@ -36,7 +36,7 @@ type HomeProps = {
     coverUrl: string | null
   }[]
   technologies: { slug: string; name: string }[]
-  timeline: { period: string; title: string; place: string }[]
+  timeline: { period: string; title: string; place: string; honours: string | null }[]
   labels: {
     downloadCv: string
     contactMe: string
@@ -197,7 +197,10 @@ export default function Home({
               </span>
               <div>
                 <p className="font-medium">{entry.title}</p>
-                <p className="text-muted-foreground text-sm">{entry.place}</p>
+                <p className="text-muted-foreground text-sm">
+                  {entry.place}
+                  {entry.honours && <span className="text-primary"> · {entry.honours}</span>}
+                </p>
               </div>
             </li>
           ))}

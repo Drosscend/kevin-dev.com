@@ -1,5 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import TimelineEntry from '#models/timeline_entry'
+import TimelineEntry, { type TimelineHonours } from '#models/timeline_entry'
 import SettingsService from '#services/settings_service'
 import { upsertTranslations } from '#services/translations_service'
 import {
@@ -9,6 +9,7 @@ import {
 } from '#validators/home'
 
 type TimelinePayload = {
+  honours?: TimelineHonours
   periodFr: string
   titleFr: string
   placeFr: string
@@ -69,6 +70,7 @@ export default class HomeController {
         const en = entry.translations.find((item) => item.locale === 'en')
         return {
           id: entry.id,
+          honours: entry.honours,
           periodFr: fr?.period ?? '',
           titleFr: fr?.title ?? '',
           placeFr: fr?.place ?? '',
@@ -97,7 +99,10 @@ export default class HomeController {
     const payload = await request.validateUsing(timelineEntryValidator)
 
     const last = await TimelineEntry.query().orderBy('position', 'desc').first()
-    const entry = await TimelineEntry.create({ position: (last?.position ?? 0) + 1 })
+    const entry = await TimelineEntry.create({
+      position: (last?.position ?? 0) + 1,
+      honours: payload.honours ?? 'none',
+    })
     await saveTimelineTranslations(entry, payload)
 
     session.flash('success', 'Étape ajoutée au parcours')
@@ -108,6 +113,7 @@ export default class HomeController {
     const entry = await TimelineEntry.findOrFail(params.id)
     const payload = await request.validateUsing(timelineEntryValidator)
 
+    await entry.merge({ honours: payload.honours ?? 'none' }).save()
     await saveTimelineTranslations(entry, payload)
 
     session.flash('success', 'Étape mise à jour')

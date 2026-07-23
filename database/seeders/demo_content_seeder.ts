@@ -250,7 +250,10 @@ export default class extends BaseSeeder {
 
   async #seedTimeline() {
     for (const [index, entry] of TIMELINE.entries()) {
-      const timelineEntry = await TimelineEntry.create({ position: index })
+      const timelineEntry = await TimelineEntry.create({
+        position: index,
+        honours: 'honours' in entry ? entry.honours : 'none',
+      })
       await timelineEntry.related('translations').createMany([
         { locale: 'fr', ...entry.fr },
         { locale: 'en', ...entry.en },

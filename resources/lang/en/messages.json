@@ -28,7 +28,12 @@
     "stack": "Stack",
     "allTechnologies": "All my technologies",
     "talks": "Speaking",
-    "allTalks": "All my talks"
+    "allTalks": "All my talks",
+    "honours": {
+      "fair": "With honours: fair",
+      "good": "With honours: good",
+      "very_good": "With honours: very good"
+    }
   },
   "blog": {
     "title": "Blog",

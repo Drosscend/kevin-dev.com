@@ -474,10 +474,12 @@ export class TechnologyTranslationSchema extends BaseModel {
 }
 
 export class TimelineEntrySchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'position', 'updatedAt'] as const
+  static $columns = ['createdAt', 'honours', 'id', 'position', 'updatedAt'] as const
   $columns = TimelineEntrySchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
+  @column()
+  declare honours: string
   @column({ isPrimary: true })
   declare id: number
   @column()

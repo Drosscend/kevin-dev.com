@@ -1088,6 +1088,7 @@ export const TIMELINE = [
     },
   },
   {
+    honours: 'good' as const,
     fr: {
       period: '2016 — 2019',
       title: 'Master informatique, spécialité génie logiciel',

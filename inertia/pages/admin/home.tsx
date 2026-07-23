@@ -6,6 +6,7 @@ import { client } from '~/client'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import { Select } from '~/components/ui/select'
 import { Textarea } from '~/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import AdminPage from '~/components/admin/admin_page'
@@ -13,8 +14,18 @@ import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
 import FieldError from '~/components/field_error'
 
+const HONOURS = [
+  { value: 'none', label: 'Sans mention' },
+  { value: 'fair', label: 'Assez bien' },
+  { value: 'good', label: 'Bien' },
+  { value: 'very_good', label: 'Très bien' },
+] as const
+
+const honoursLabel = (value: string) => HONOURS.find((option) => option.value === value)?.label
+
 type TimelineItem = {
   id: number
+  honours: string
   periodFr: string
   titleFr: string
   placeFr: string
@@ -68,6 +79,7 @@ function TimelineForm({ item, onDone }: { item: TimelineItem | null; onDone?: ()
   const { errors } = usePage().props
   const router = useRouter()
   const empty = {
+    honours: 'none',
     periodFr: '',
     titleFr: '',
     placeFr: '',
@@ -78,6 +90,7 @@ function TimelineForm({ item, onDone }: { item: TimelineItem | null; onDone?: ()
   const [values, setValues] = useState(
     item
       ? {
+          honours: item.honours,
           periodFr: item.periodFr,
           titleFr: item.titleFr,
           placeFr: item.placeFr,
@@ -138,6 +151,17 @@ function TimelineForm({ item, onDone }: { item: TimelineItem | null; onDone?: ()
           <Label htmlFor={`placeEn-${prefix}`}>Lieu / statut (EN, optionnel)</Label>
           <Input id={`placeEn-${prefix}`} value={values.placeEn} onChange={set('placeEn')} />
         </div>
+      </div>
+      <div className="max-w-xs space-y-2">
+        <Label htmlFor={`honours-${prefix}`}>Mention</Label>
+        <Select id={`honours-${prefix}`} value={values.honours} onChange={set('honours')}>
+          {HONOURS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </Select>
+        <FieldError errors={errors} field="honours" />
       </div>
       <Button type="submit" size="sm">
         {item ? 'Enregistrer' : 'Ajouter'}
@@ -252,6 +276,7 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
                   <p className="font-medium">{item.titleFr}</p>
                   <p className="text-muted-foreground truncate font-mono text-xs">
                     {item.periodFr} — {item.placeFr}
+                    {item.honours !== 'none' ? ` — ${honoursLabel(item.honours)}` : ''}
                     {item.titleEn ? ' — EN ✓' : ''}
                   </p>
                 </div>

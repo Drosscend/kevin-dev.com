@@ -28,7 +28,12 @@
     "stack": "Stack",
     "allTechnologies": "Toutes mes technologies",
     "talks": "Interventions",
-    "allTalks": "Toutes mes interventions"
+    "allTalks": "Toutes mes interventions",
+    "honours": {
+      "fair": "Mention assez bien",
+      "good": "Mention bien",
+      "very_good": "Mention très bien"
+    }
   },
   "blog": {
     "title": "Blog",
