@@ -15,11 +15,13 @@ type TechnologyShowProps = {
     description: string
     projects: Entry[]
     articles: Entry[]
+    talks: Entry[]
   }
   labels: {
     backToList: string
     usedIn: string
     writtenAbout: string
+    spokenAbout: string
     unused: string
   }
   meta: SeoMeta
@@ -99,9 +101,17 @@ export default function TechnologyShow({ locale, technology, labels, meta }: Tec
           href={(slug) => to(`/blog/${slug}`)}
         />
 
-        {technology.projects.length === 0 && technology.articles.length === 0 && (
-          <p className="text-muted-foreground mt-14">{labels.unused}</p>
-        )}
+        <UsageSection
+          title={labels.spokenAbout}
+          entries={technology.talks}
+          href={(slug) => to(`/talks/${slug}`)}
+        />
+
+        {technology.projects.length === 0 &&
+          technology.articles.length === 0 &&
+          technology.talks.length === 0 && (
+            <p className="text-muted-foreground mt-14">{labels.unused}</p>
+          )}
       </div>
     </div>
   )

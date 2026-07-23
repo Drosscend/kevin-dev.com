@@ -13,13 +13,15 @@ function logoUrl(technology: Technology) {
  * the taxonomy, zeros omitted rather than spelled out.
  */
 function usageLabel(technology: Technology, i18n: HttpContext['i18n']) {
-  const projects = Number(technology.$extras.projects_count ?? 0)
-  const articles = Number(technology.$extras.articles_count ?? 0)
+  const counts = [
+    ['projectsCount', Number(technology.$extras.projects_count ?? 0)],
+    ['articlesCount', Number(technology.$extras.articles_count ?? 0)],
+    ['talksCount', Number(technology.$extras.talks_count ?? 0)],
+  ] as const
 
-  const parts = [
-    ...(projects > 0 ? [i18n.t('messages.technologies.projectsCount', { count: projects })] : []),
-    ...(articles > 0 ? [i18n.t('messages.technologies.articlesCount', { count: articles })] : []),
-  ]
+  const parts = counts
+    .filter(([, count]) => count > 0)
+    .map(([key, count]) => i18n.t(`messages.technologies.${key}`, { count }))
 
   return parts.length > 0 ? parts.join(' · ') : i18n.t('messages.technologies.unused')
 }
@@ -35,6 +37,7 @@ export default class TechnologiesController {
       .preload('logo')
       .withCount('projects', (projects) => projects.withScopes((scopes) => scopes.published()))
       .withCount('articles', (articles) => articles.withScopes((scopes) => scopes.published()))
+      .withCount('talks', (talks) => talks.withScopes((scopes) => scopes.published()))
       .orderBy('name')
 
     return inertia.render('technologies/index', {
@@ -95,6 +98,16 @@ export default class TechnologiesController {
           .preload('cover')
           .orderBy('published_at', 'desc')
       })
+      .preload('talks', (talks) => {
+        talks
+          .withScopes((scopes) => scopes.published())
+          .whereHas('translations', (translations) => translations.where('locale', locale))
+          .preload('translations', (translations) =>
+            translations.select('id', 'talk_id', 'locale', 'title', 'summary')
+          )
+          .preload('cover')
+          .orderBy('event_date', 'desc')
+      })
       .firstOrFail()
 
     return inertia.render('technologies/show', {
@@ -116,11 +129,18 @@ export default class TechnologiesController {
           summary: article.translation(locale)!.summary,
           coverUrl: MediaService.url(article.cover),
         })),
+        talks: technology.talks.map((talk) => ({
+          slug: talk.slug,
+          title: talk.translation(locale)!.title,
+          summary: talk.translation(locale)!.summary,
+          coverUrl: MediaService.url(talk.cover),
+        })),
       },
       labels: {
         backToList: i18n.t('messages.technologies.backToList'),
         usedIn: i18n.t('messages.technologies.usedIn'),
         writtenAbout: i18n.t('messages.technologies.writtenAbout'),
+        spokenAbout: i18n.t('messages.technologies.spokenAbout'),
         unused: i18n.t('messages.technologies.unused'),
       },
       meta: SeoService.build({

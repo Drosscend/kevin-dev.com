@@ -5,6 +5,7 @@ import TechnologyTranslation from '#models/technology_translation'
 import Media from '#models/media'
 import Project from '#models/project'
 import Article from '#models/article'
+import Talk from '#models/talk'
 import type { Locale } from '#types/i18n'
 
 export const TECHNOLOGY_CATEGORIES = ['langage', 'framework', 'outil', 'infra'] as const
@@ -24,6 +25,9 @@ export default class Technology extends TechnologySchema {
 
   @manyToMany(() => Article, { pivotTable: 'article_technology' })
   declare articles: ManyToMany<typeof Article>
+
+  @manyToMany(() => Talk, { pivotTable: 'talk_technology' })
+  declare talks: ManyToMany<typeof Talk>
 
   description(locale: Locale) {
     return this.translations.find((item) => item.locale === locale)?.description ?? ''
