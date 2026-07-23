@@ -16,9 +16,6 @@
   },
   "home": {
     "metaDescription": "Site personnel de Kévin Véronési : blog technique (AdonisJS, React, auto-hébergement), portfolio de projets et CV.",
-    "roleFullStack": "Développeur Full Stack",
-    "roleAi": "Développeur IA",
-    "location": "Toulouse, France",
     "downloadCv": "Télécharger mon CV",
     "contactMe": "Me contacter",
     "photoAlt": "Kévin en conférence, au micro",

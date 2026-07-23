@@ -170,8 +170,8 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
           <CardHeader>
             <CardTitle>Hero</CardTitle>
             <CardDescription>
-              Les métiers s’affichent sous ton nom, un par ligne. Laisser vide pour garder les
-              valeurs par défaut du site.
+              Les métiers s’affichent sous ton nom, un par ligne. Laisser vide pour masquer la
+              ligne.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -193,7 +193,6 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
               <Label htmlFor="heroLocation">Localisation</Label>
               <Input
                 id="heroLocation"
-                placeholder="Toulouse, France"
                 value={form.data.heroLocation}
                 onChange={(event) => form.setData('heroLocation', event.target.value)}
               />

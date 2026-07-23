@@ -8,6 +8,8 @@ import { localePath } from '~/lib/locale'
 type HomeProps = {
   locale: 'fr' | 'en'
   now: string | null
+  roles: string[]
+  location: string | null
   cvPdfAvailable: boolean
   latestArticles: {
     slug: string
@@ -36,8 +38,6 @@ type HomeProps = {
   technologies: { slug: string; name: string }[]
   timeline: { period: string; title: string; place: string }[]
   labels: {
-    roles: string[]
-    location: string
     downloadCv: string
     contactMe: string
     photoAlt: string
@@ -75,6 +75,8 @@ function SectionHead({ title, more }: { title: string; more?: { href: string; la
 export default function Home({
   locale,
   now,
+  roles,
+  location,
   cvPdfAvailable,
   latestArticles,
   featuredProjects,
@@ -93,15 +95,17 @@ export default function Home({
       <section className="grid items-center gap-12 py-16 md:grid-cols-[1fr_300px] md:gap-16 md:py-24">
         <div>
           <h1 className="text-5xl font-bold md:text-6xl">Kévin Véronési</h1>
-          <ul className="mt-7 space-y-1.5 text-lg font-medium">
-            {labels.roles.map((role) => (
-              <li key={role} className="flex items-center gap-3">
-                <span aria-hidden className="bg-primary h-0.5 w-[18px]" />
-                {role}
-              </li>
-            ))}
-          </ul>
-          <p className="text-muted-foreground mt-6 text-sm">{labels.location}</p>
+          {roles.length > 0 && (
+            <ul className="mt-7 space-y-1.5 text-lg font-medium">
+              {roles.map((role) => (
+                <li key={role} className="flex items-center gap-3">
+                  <span aria-hidden className="bg-primary h-0.5 w-[18px]" />
+                  {role}
+                </li>
+              ))}
+            </ul>
+          )}
+          {location && <p className="text-muted-foreground mt-6 text-sm">{location}</p>}
           <div className="mt-10 flex flex-wrap gap-3.5">
             <Button asChild size="lg">
               {cvPdfAvailable ? (

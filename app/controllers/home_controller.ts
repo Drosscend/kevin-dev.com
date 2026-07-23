@@ -59,7 +59,7 @@ export default class HomeController {
     const localized = (fr: string, en: string) => (locale === 'en' ? en || fr : fr)
     const now = localized(settings.now_fr, settings.now_en) || null
 
-    // Settings override the default i18n copy; empty values fall back.
+    // The hero comes entirely from the settings: an empty value hides its line.
     const roles = localized(settings.hero_roles_fr, settings.hero_roles_en)
       .split('\n')
       .map((role) => role.trim())
@@ -67,6 +67,8 @@ export default class HomeController {
 
     return inertia.render('home', {
       now,
+      roles,
+      location: settings.hero_location || null,
       cvPdfAvailable: await drive.use().exists(CV_PDF_KEY),
       latestArticles: articles.map((article) => ({
         slug: article.slug,
@@ -110,11 +112,6 @@ export default class HomeController {
         }
       }),
       labels: {
-        roles:
-          roles.length > 0
-            ? roles
-            : [i18n.t('messages.home.roleFullStack'), i18n.t('messages.home.roleAi')],
-        location: settings.hero_location || i18n.t('messages.home.location'),
         downloadCv: i18n.t('messages.home.downloadCv'),
         contactMe: i18n.t('messages.home.contactMe'),
         photoAlt: i18n.t('messages.home.photoAlt'),

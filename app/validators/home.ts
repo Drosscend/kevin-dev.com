@@ -2,8 +2,8 @@ import vine from '@vinejs/vine'
 
 /**
  * Admin editor for the homepage settings blocks (hero, "right now").
- * All fields are plain text; empty values fall back to the default
- * i18n copy on the public page.
+ * All fields are plain text; an empty value hides its block on the
+ * public page.
  */
 export const homeSettingsValidator = vine.create({
   heroRolesFr: vine.string().optional(),
