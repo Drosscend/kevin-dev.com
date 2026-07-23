@@ -5,6 +5,7 @@ import { ChipLink, ChipList } from '~/components/chip'
 import { BackLink } from '~/components/page_header'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
+import StatusBadge from '~/components/status_badge'
 import TableOfContents from '~/components/table_of_contents'
 import { localePath } from '~/lib/locale'
 
@@ -19,6 +20,7 @@ type PortfolioShowProps = {
     coverUrl: string | null
     startedAt: string | null
     endedAt: string | null
+    ongoing: boolean
     links: { label: string; url: string; type: string }[]
     technologies: { slug: string; name: string }[]
     articles: { slug: string; title: string }[]
@@ -27,6 +29,7 @@ type PortfolioShowProps = {
   labels: {
     backToList: string
     draft: string
+    ongoing: string
     technologies: string
     relatedArticles: string
     contents: string
@@ -62,10 +65,13 @@ export default function PortfolioShow({
 
         <header>
           <h1 className="text-3xl font-bold md:text-4xl">{project.title}</h1>
-          {(project.startedAt || project.endedAt) && (
-            <p className="text-muted-foreground mt-3 font-mono text-[13px]">
-              {project.startedAt}
-              {project.endedAt ? ` → ${project.endedAt}` : ''}
+          {(project.startedAt || project.endedAt || project.ongoing) && (
+            <p className="text-muted-foreground mt-3 flex flex-wrap items-center gap-x-2.5 font-mono text-[13px]">
+              <span>
+                {project.startedAt}
+                {project.endedAt ? ` → ${project.endedAt}` : ''}
+              </span>
+              {project.ongoing && <StatusBadge>{labels.ongoing}</StatusBadge>}
             </p>
           )}
           {project.links.length > 0 && (

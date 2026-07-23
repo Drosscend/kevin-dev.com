@@ -1,6 +1,7 @@
 import { Link } from '@adonisjs/inertia/react'
 import type { ReactNode } from 'react'
 import { useHoverPreview, type PreviewContent } from '~/components/hover_preview'
+import StatusBadge from '~/components/status_badge'
 import { cn } from '~/lib/utils'
 
 /**
@@ -69,11 +70,7 @@ export function LinkRow({
       >
         <span>
           <span className="group-hover:text-primary font-medium transition-colors">{title}</span>
-          {badge && (
-            <span className="text-primary ml-2.5 font-mono text-[11px] tracking-wider uppercase">
-              {badge}
-            </span>
-          )}
+          {badge && <StatusBadge className="ml-2.5">{badge}</StatusBadge>}
           {meta && (
             <span className="text-muted-foreground mt-1 block font-mono text-[13px]">{meta}</span>
           )}

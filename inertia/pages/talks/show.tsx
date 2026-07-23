@@ -3,6 +3,7 @@ import ArticleContent from '~/components/article_content'
 import { ChipLink, ChipList } from '~/components/chip'
 import { BackLink } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
+import StatusBadge from '~/components/status_badge'
 import { localePath } from '~/lib/locale'
 
 type TalksShowProps = {
@@ -60,11 +61,7 @@ export default function TalksShow({ locale, isDraftPreview, talk, labels, meta }
                 <span>{talk.city}</span>
               </>
             )}
-            {talk.upcoming && (
-              <span className="text-primary text-[11px] tracking-wider uppercase">
-                {labels.upcoming}
-              </span>
-            )}
+            {talk.upcoming && <StatusBadge>{labels.upcoming}</StatusBadge>}
           </p>
           {talk.links.length > 0 && (
             <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm">

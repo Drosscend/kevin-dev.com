@@ -39,6 +39,11 @@ export default class Project extends ProjectSchema {
     })
   })
 
+  /** A started project with no end date yet is still running. */
+  get isOngoing() {
+    return this.startedAt !== null && this.endedAt === null
+  }
+
   get isPublished() {
     return (
       this.status === 'published' &&

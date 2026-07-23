@@ -1,6 +1,7 @@
 import { ListingList, ListingRow } from '~/components/content_link'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
+import StatusBadge from '~/components/status_badge'
 import { localePath } from '~/lib/locale'
 
 type ProjectCard = {
@@ -9,13 +10,14 @@ type ProjectCard = {
   summary: string
   coverUrl: string | null
   period: string | null
+  ongoing: boolean
   technologies: { slug: string; name: string }[]
 }
 
 type PortfolioIndexProps = {
   locale: 'fr' | 'en'
   projects: ProjectCard[]
-  labels: { title: string; empty: string }
+  labels: { title: string; empty: string; ongoing: string }
   meta: SeoMeta
 }
 
@@ -38,7 +40,14 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
               title={project.title}
               summary={project.summary}
               thumbnailUrl={project.coverUrl}
-              meta={project.period}
+              meta={
+                (project.period || project.ongoing) && (
+                  <>
+                    {project.period && <span>{project.period}</span>}
+                    {project.ongoing && <StatusBadge>{labels.ongoing}</StatusBadge>}
+                  </>
+                )
+              }
               footer={
                 project.technologies.length > 0 && (
                   <p className="text-muted-foreground flex flex-wrap gap-x-2.5 gap-y-1 font-mono text-[13px]">

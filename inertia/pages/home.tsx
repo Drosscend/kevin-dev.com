@@ -24,6 +24,7 @@ type HomeProps = {
     title: string
     summary: string
     coverUrl: string | null
+    ongoing: boolean
     technologies: string[]
   }[]
   talks: {
@@ -54,6 +55,7 @@ type HomeProps = {
     talks: string
     allTalks: string
     upcomingTalk: string
+    ongoingProject: string
   }
   meta: SeoMeta
 }
@@ -162,6 +164,7 @@ export default function Home({
                 key={project.slug}
                 href={to(`/projects/${project.slug}`)}
                 title={project.title}
+                badge={project.ongoing ? labels.ongoingProject : undefined}
                 meta={project.technologies.join(' · ')}
                 preview={{ imageUrl: project.coverUrl, summary: project.summary }}
               />

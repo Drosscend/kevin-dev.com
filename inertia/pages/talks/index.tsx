@@ -2,6 +2,7 @@ import { ExternalLink } from 'lucide-react'
 import { ListingList, ListingRow } from '~/components/content_link'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
+import StatusBadge from '~/components/status_badge'
 import { localePath } from '~/lib/locale'
 
 type TalkCard = {
@@ -49,11 +50,7 @@ export default function TalksIndex({ locale, talks, labels, meta }: TalksIndexPr
                     {talk.eventDate} · {talk.eventName}
                     {talk.city && ` · ${talk.city}`}
                   </span>
-                  {talk.upcoming && (
-                    <span className="text-primary text-[11px] tracking-wider uppercase">
-                      {labels.upcoming}
-                    </span>
-                  )}
+                  {talk.upcoming && <StatusBadge>{labels.upcoming}</StatusBadge>}
                 </>
               }
               footer={

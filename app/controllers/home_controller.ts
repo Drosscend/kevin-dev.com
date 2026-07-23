@@ -101,6 +101,7 @@ export default class HomeController {
         title: project.translation(locale)!.title,
         summary: project.translation(locale)!.summary,
         coverUrl: MediaService.url(project.cover),
+        ongoing: project.isOngoing,
         technologies: project.technologies.map((technology) => technology.name),
       })),
       technologies: technologies.map((technology) => ({
@@ -147,6 +148,7 @@ export default class HomeController {
         talks: i18n.t('messages.home.talks'),
         allTalks: i18n.t('messages.home.allTalks'),
         upcomingTalk: i18n.t('messages.talks.upcoming'),
+        ongoingProject: i18n.t('messages.portfolio.ongoing'),
       },
       meta: SeoService.build({
         title: 'kevin-dev.com',

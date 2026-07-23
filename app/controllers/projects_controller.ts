@@ -49,6 +49,7 @@ export default class ProjectsController {
           summary: translation.summary,
           coverUrl: MediaService.url(project.cover),
           period: formatPeriod(project, locale),
+          ongoing: project.isOngoing,
           technologies: project.technologies.map((technology) => ({
             slug: technology.slug,
             name: technology.name,
@@ -58,6 +59,7 @@ export default class ProjectsController {
       labels: {
         title: i18n.t('messages.portfolio.title'),
         empty: i18n.t('messages.portfolio.empty'),
+        ongoing: i18n.t('messages.portfolio.ongoing'),
       },
       meta: SeoService.build({
         title: i18n.t('messages.portfolio.title'),
@@ -118,6 +120,7 @@ export default class ProjectsController {
         coverUrl: MediaService.url(project.cover),
         startedAt: formatDate(project.startedAt, locale),
         endedAt: formatDate(project.endedAt, locale),
+        ongoing: project.isOngoing,
         links: project.links.map((link) => ({
           label: link.label,
           url: link.url,
@@ -138,6 +141,7 @@ export default class ProjectsController {
       labels: {
         backToList: i18n.t('messages.portfolio.backToList'),
         draft: i18n.t('messages.blog.draft'),
+        ongoing: i18n.t('messages.portfolio.ongoing'),
         technologies: i18n.t('messages.portfolio.technologies'),
         relatedArticles: i18n.t('messages.portfolio.relatedArticles'),
         contents: i18n.t('messages.toc.title'),

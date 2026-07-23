@@ -55,6 +55,7 @@
     "title": "Portfolio",
     "metaDescription": "Development projects by Kévin Véronési: web applications, tools and experiments.",
     "empty": "No projects yet.",
+    "ongoing": "Ongoing",
     "backToList": "All projects",
     "technologies": "Technologies used",
     "relatedArticles": "Related articles"
