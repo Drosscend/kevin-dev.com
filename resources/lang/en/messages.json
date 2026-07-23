@@ -35,6 +35,9 @@
       "very_good": "With honours: very good"
     }
   },
+  "toc": {
+    "title": "Contents"
+  },
   "blog": {
     "title": "Blog",
     "metaDescription": "Technical articles about AdonisJS, React, self-hosting and web development, by Kévin Véronési.",

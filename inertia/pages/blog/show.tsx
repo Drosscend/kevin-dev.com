@@ -1,7 +1,9 @@
 import { Link } from '@adonisjs/inertia/react'
 import ArticleContent from '~/components/article_content'
 import { BackLink } from '~/components/page_header'
+import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
+import TableOfContents from '~/components/table_of_contents'
 import { localePath } from '~/lib/locale'
 
 type BlogShowProps = {
@@ -22,6 +24,7 @@ type BlogShowProps = {
     publishedOn: string
     draft: string
     backToList: string
+    contents: string
   }
   meta: SeoMeta
 }
@@ -30,10 +33,10 @@ export default function BlogShow({ locale, isDraftPreview, article, labels, meta
   const base = localePath(locale, '/blog')
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
+    <>
       <Seo meta={meta} />
 
-      <div className="mx-auto max-w-[720px]">
+      <ReadingLayout aside={<TableOfContents html={article.contentHtml} label={labels.contents} />}>
         {isDraftPreview && (
           <p className="border-destructive text-destructive mb-10 rounded-lg border px-4 py-2.5 text-sm">
             {labels.draft}
@@ -84,7 +87,7 @@ export default function BlogShow({ locale, isDraftPreview, article, labels, meta
             ))}
           </p>
         )}
-      </div>
-    </div>
+      </ReadingLayout>
+    </>
   )
 }

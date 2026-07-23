@@ -84,9 +84,9 @@
       color: var(--typeset-muted);
       margin-block-start: calc(var(--typeset-flow) / 0.8125);
     }
-    /* Anchors. */
+    /* Anchors, offset so the sticky header never covers the target. */
     &:where([id]) {
-      scroll-margin-block-start: var(--typeset-flow);
+      scroll-margin-block-start: calc(var(--typeset-flow) + 5rem);
     }
 
     /* Headings own the space below them. */

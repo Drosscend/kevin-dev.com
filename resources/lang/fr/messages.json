@@ -35,6 +35,9 @@
       "very_good": "Mention très bien"
     }
   },
+  "toc": {
+    "title": "Sommaire"
+  },
   "blog": {
     "title": "Blog",
     "metaDescription": "Articles techniques sur AdonisJS, React, l'auto-hébergement et le développement web, par Kévin Véronési.",

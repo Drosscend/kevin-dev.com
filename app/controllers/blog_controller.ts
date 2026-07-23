@@ -167,6 +167,7 @@ export default class BlogController {
         publishedOn: i18n.t('messages.blog.publishedOn'),
         draft: i18n.t('messages.blog.draft'),
         backToList: i18n.t('messages.blog.backToList'),
+        contents: i18n.t('messages.toc.title'),
       },
       meta: SeoService.build({
         title: translation.title,

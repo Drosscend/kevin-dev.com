@@ -3,7 +3,9 @@ import { ExternalLink, FileText } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
 import { ChipLink, ChipList } from '~/components/chip'
 import { BackLink } from '~/components/page_header'
+import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
+import TableOfContents from '~/components/table_of_contents'
 import { localePath } from '~/lib/locale'
 
 type PortfolioShowProps = {
@@ -27,6 +29,7 @@ type PortfolioShowProps = {
     draft: string
     technologies: string
     relatedArticles: string
+    contents: string
   }
   meta: SeoMeta
 }
@@ -41,9 +44,12 @@ export default function PortfolioShow({
   const to = (path: string) => localePath(locale, path)
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
+    <>
       <Seo meta={meta} />
-      <div className="mx-auto max-w-[720px] space-y-10">
+      <ReadingLayout
+        className="space-y-10"
+        aside={<TableOfContents html={project.contentHtml} label={labels.contents} />}
+      >
         {isDraftPreview && (
           <p className="border-destructive text-destructive rounded-lg border px-4 py-2.5 text-sm">
             {labels.draft}
@@ -123,7 +129,7 @@ export default function PortfolioShow({
             </ul>
           </section>
         )}
-      </div>
-    </div>
+      </ReadingLayout>
+    </>
   )
 }

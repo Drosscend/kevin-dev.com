@@ -140,6 +140,7 @@ export default class ProjectsController {
         draft: i18n.t('messages.blog.draft'),
         technologies: i18n.t('messages.portfolio.technologies'),
         relatedArticles: i18n.t('messages.portfolio.relatedArticles'),
+        contents: i18n.t('messages.toc.title'),
       },
       meta: SeoService.build({
         title: translation.title,
