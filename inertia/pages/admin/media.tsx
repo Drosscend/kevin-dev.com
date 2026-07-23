@@ -93,7 +93,7 @@ export default function MediaPage({ media }: MediaPageProps) {
                   {item.alt}
                 </p>
                 <p className="text-muted-foreground truncate text-xs" title={item.originalName}>
-                  {item.originalName} — {item.width}×{item.height} — {formatSize(item.size)}
+                  {item.originalName} · {item.width}×{item.height} · {formatSize(item.size)}
                 </p>
                 <ConfirmButton
                   description={`Supprimer « ${item.alt} » ? Cette action est définitive.`}

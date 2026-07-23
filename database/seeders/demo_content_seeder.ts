@@ -107,8 +107,8 @@ async function makeCover(cover: Cover | null, alt: string): Promise<Media | null
  * Fills the site with realistic demo content: technologies,
  * categories, tags, articles (published, draft and scheduled),
  * projects with covers and links, CV timeline, settings and contact
- * messages. Destructive by design — every content table is emptied
- * first — so it is restricted to development.
+ * messages. Destructive by design (every content table is emptied
+ * first), so it is restricted to development.
  */
 export default class extends BaseSeeder {
   static environment = ['development']

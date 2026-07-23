@@ -40,7 +40,7 @@
     "metaDescription": "Technical articles about AdonisJS, React, self-hosting and web development, by Kévin Véronési.",
     "readingTime": "{minutes} min read",
     "publishedOn": "Published on",
-    "draft": "Draft — only visible while signed in",
+    "draft": "Draft, only visible while signed in",
     "empty": "No articles yet.",
     "allCategories": "All categories",
     "clearTag": "Clear the tag filter",

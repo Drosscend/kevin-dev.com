@@ -154,7 +154,7 @@ test.group('Admin parcours', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   const entry = {
-    periodFr: '2024 — aujourd’hui',
+    periodFr: '2024-aujourd’hui',
     titleFr: 'Consultant',
     placeFr: 'Toulouse',
   }
@@ -188,7 +188,7 @@ test.group('Admin parcours', (group) => {
     const created = await TimelineEntry.create({ position: 1 })
     await created.related('translations').createMany([
       { locale: 'fr', ...{ period: entry.periodFr, title: entry.titleFr, place: entry.placeFr } },
-      { locale: 'en', period: '2024 — now', title: 'Consultant', place: 'Toulouse' },
+      { locale: 'en', period: '2024-now', title: 'Consultant', place: 'Toulouse' },
     ])
 
     const response = await client

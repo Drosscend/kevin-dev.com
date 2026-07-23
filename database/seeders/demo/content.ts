@@ -218,7 +218,7 @@ Trois règles suffisent à garder les pages lisibles :
    son contexte.
 2. Les props sont mises en forme dans le contrôleur, pas dans le
    composant.
-3. Tout ce qui n'est pas affiché n'est pas envoyé — les requêtes
+3. Tout ce qui n'est pas affiché n'est pas envoyé : les requêtes
    sélectionnent les colonnes utiles.`,
     },
     en: {
@@ -340,7 +340,7 @@ export const sorted = [...items].sort((a, b) => a.position - b.position)
 
 Les rendus inutiles ont baissé d'environ 40 % sur les écrans de
 formulaire, où la mémoïsation manuelle était la plus incomplète. Sur les
-pages statiques, aucune différence mesurable — et c'est normal.
+pages statiques, aucune différence mesurable, et c'est normal.
 
 Le vrai bénéfice est ailleurs : les revues de code ne discutent plus des
 tableaux de dépendances.`,
@@ -359,7 +359,7 @@ React, with no state mutation during render.
 
 Wasted renders dropped by roughly 40% on form-heavy screens, where
 manual memoization was the most incomplete. On static pages, no
-measurable difference — as expected.`,
+measurable difference, as expected.`,
     },
   },
   {
@@ -949,7 +949,7 @@ première. Le dépôt de démonstration est utilisable tel quel.
 
 ## La question qui revient toujours
 
-« Et si demain il me faut une application mobile ? » — la réponse tient
+« Et si demain il me faut une application mobile ? » : la réponse tient
 en une phrase : exposer alors les trois endpoints nécessaires, pas les
 quarante qu’on aurait écrits par anticipation.`,
     },
@@ -1057,32 +1057,32 @@ Points à développer :
 export const TIMELINE = [
   {
     fr: {
-      period: "2024 — aujourd'hui",
+      period: "2024-aujourd'hui",
       title: 'Développeur full-stack indépendant',
       place: 'Lyon, France',
     },
     en: {
-      period: '2024 — present',
+      period: '2024-present',
       title: 'Freelance full-stack developer',
       place: 'Lyon, France',
     },
   },
   {
     fr: {
-      period: '2021 — 2024',
+      period: '2021-2024',
       title: 'Lead développeur, plateforme SaaS',
       place: 'Nova Systems',
     },
-    en: { period: '2021 — 2024', title: 'Lead developer, SaaS platform', place: 'Nova Systems' },
+    en: { period: '2021-2024', title: 'Lead developer, SaaS platform', place: 'Nova Systems' },
   },
   {
-    fr: { period: '2019 — 2021', title: 'Développeur back-end', place: 'Groupe Meridian' },
-    en: { period: '2019 — 2021', title: 'Back-end developer', place: 'Meridian Group' },
+    fr: { period: '2019-2021', title: 'Développeur back-end', place: 'Groupe Meridian' },
+    en: { period: '2019-2021', title: 'Back-end developer', place: 'Meridian Group' },
   },
   {
-    fr: { period: '2018 — 2019', title: 'Alternance, équipe infrastructure', place: 'Cortex Labs' },
+    fr: { period: '2018-2019', title: 'Alternance, équipe infrastructure', place: 'Cortex Labs' },
     en: {
-      period: '2018 — 2019',
+      period: '2018-2019',
       title: 'Apprenticeship, infrastructure team',
       place: 'Cortex Labs',
     },
@@ -1090,12 +1090,12 @@ export const TIMELINE = [
   {
     honours: 'good' as const,
     fr: {
-      period: '2016 — 2019',
+      period: '2016-2019',
       title: 'Master informatique, spécialité génie logiciel',
       place: 'Université Lyon 1',
     },
     en: {
-      period: '2016 — 2019',
+      period: '2016-2019',
       title: "Master's in computer science, software engineering",
       place: 'Université Lyon 1',
     },
@@ -1148,19 +1148,19 @@ peut exploiter à deux, pas seulement construire à dix.
 
 ## Expérience
 
-### Développeur indépendant — depuis 2024
+### Développeur indépendant · depuis 2024
 
 Conception et développement d'applications sur mesure : CMS bilingues,
 outils internes, intégration de modèles de langage sur données privées.
 Accompagnement d'équipes sur la performance back-end et la CI.
 
-### Lead développeur — Nova Systems, 2021 à 2024
+### Lead développeur · Nova Systems, 2021 à 2024
 
 Encadrement technique d'une équipe de cinq personnes sur une plateforme
 SaaS multi-tenant. Division par sept du temps de réponse au 95e centile,
 et passage d'un déploiement mensuel à un déploiement quotidien.
 
-### Développeur back-end — Groupe Meridian, 2019 à 2021
+### Développeur back-end · Groupe Meridian, 2019 à 2021
 
 Services de facturation et d'export de données, migration progressive
 d'un monolithe PHP vers des services Node.js.
@@ -1174,7 +1174,7 @@ d'un monolithe PHP vers des services Node.js.
 
 ## Formation
 
-Master informatique, spécialité génie logiciel — Université Lyon 1, 2019.
+Master informatique, spécialité génie logiciel · Université Lyon 1, 2019.
 
 ## Langues
 
@@ -1189,19 +1189,19 @@ operate, not just that ten people can build.
 
 ## Experience
 
-### Freelance developer — since 2024
+### Freelance developer · since 2024
 
 Custom application design and development: bilingual CMSes, internal
 tools, language-model integration over private data. Consulting on
 back-end performance and CI.
 
-### Lead developer — Nova Systems, 2021 to 2024
+### Lead developer · Nova Systems, 2021 to 2024
 
 Technical lead for a team of five on a multi-tenant SaaS platform. Cut
 95th-percentile response time by a factor of seven and moved from
 monthly to daily deployments.
 
-### Back-end developer — Meridian Group, 2019 to 2021
+### Back-end developer · Meridian Group, 2019 to 2021
 
 Billing and data export services, progressive migration from a PHP
 monolith to Node.js services.
@@ -1215,7 +1215,7 @@ monolith to Node.js services.
 
 ## Education
 
-MSc in computer science, software engineering — Université Lyon 1, 2019.
+MSc in computer science, software engineering · Université Lyon 1, 2019.
 
 ## Languages
 

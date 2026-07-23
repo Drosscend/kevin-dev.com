@@ -79,7 +79,7 @@ export default class LlmsService {
         continue
       }
       const context = `${talk.eventName}, ${talk.eventDate.toISODate()}`
-      lines.push(`- [${fr.title}](${SeoService.absolute(`/talks/${talk.slug}.md`)}) — ${context}`)
+      lines.push(`- [${fr.title}](${SeoService.absolute(`/talks/${talk.slug}.md`)}) · ${context}`)
     }
 
     lines.push('', '## Pages', '')

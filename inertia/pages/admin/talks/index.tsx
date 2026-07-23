@@ -61,9 +61,9 @@ export default function TalksIndex({ talks }: TalksIndexProps) {
                   )}
                 </span>
                 <p className="text-muted-foreground truncate font-mono text-xs">
-                  {talk.eventDate} — {talk.eventName}
+                  {talk.eventDate} · {talk.eventName}
                   {talk.city ? `, ${talk.city}` : ''}
-                  {talk.hasEnglish ? ' — FR + EN' : ' — FR'}
+                  {talk.hasEnglish ? ' · FR + EN' : ' · FR'}
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-3">

@@ -33,7 +33,7 @@ export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps)
           <CardTitle>CV PDF</CardTitle>
           <CardDescription>
             {pdf
-              ? `PDF en ligne — ${Math.round(pdf.size / 1024)} Ko`
+              ? `PDF en ligne · ${Math.round(pdf.size / 1024)} Ko`
               : 'Aucun PDF en ligne pour l’instant.'}
           </CardDescription>
         </CardHeader>

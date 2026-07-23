@@ -52,8 +52,8 @@ export default function ArticlesIndex({ articles }: ArticlesIndexProps) {
                 </Link>
                 <p className="text-muted-foreground truncate font-mono text-xs">
                   {article.slug}
-                  {article.category ? ` — ${article.category}` : ''}
-                  {article.hasEnglish ? ' — FR + EN' : ' — FR'}
+                  {article.category ? ` · ${article.category}` : ''}
+                  {article.hasEnglish ? ' · FR + EN' : ' · FR'}
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-3">

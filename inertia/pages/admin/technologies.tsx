@@ -197,7 +197,7 @@ export default function Technologies({ technologies, mediaOptions }: Technologie
                     <span className="font-medium">{item.name}</span>
                     <span className="text-muted-foreground text-sm"> · {item.category}</span>
                     <span className="text-muted-foreground block text-xs">
-                      {item.slug} — {item.projectsCount} projet(s)
+                      {item.slug} · {item.projectsCount} projet(s)
                     </span>
                   </div>
                 </div>

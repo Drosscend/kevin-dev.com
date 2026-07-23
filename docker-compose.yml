@@ -1,14 +1,14 @@
 # Production deployment, read by Dokploy (Compose service, project
 # `private`, compose path `./docker-compose.yml`). Push on main -> build
 # -> deploy. Local development uses compose.yaml instead, which only
-# runs Postgres — `docker compose up -d` picks that one up first.
+# runs Postgres, and `docker compose up -d` picks that one up first.
 #
 # House rules (Homelab deploy/new-project.md):
 #   - no `ports:`   Traefik routes through the network, publishing a
 #                   port bypasses UFW;
 #   - no Traefik labels, the domain is set in the Domains tab only;
 #   - no secret in here, every variable is listed as ${VAR} AND set in
-#     the Environment tab — one missing here is silently never passed.
+#     the Environment tab: one missing here is silently never passed.
 #
 # The database ships in this compose, isolated on the `internal`
 # network so only `app` can reach it (same pattern as the other VPS

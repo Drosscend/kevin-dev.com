@@ -128,7 +128,7 @@ export default function TaxonomyPage({ title, route, items }: TaxonomyPageProps)
                     <span className="text-muted-foreground text-sm"> · {item.nameEn}</span>
                   )}
                   <span className="text-muted-foreground block font-mono text-xs">
-                    {item.slug} — {item.articlesCount} article(s)
+                    {item.slug} · {item.articlesCount} article(s)
                   </span>
                 </div>
                 <div className="flex gap-1">

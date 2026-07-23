@@ -14,7 +14,7 @@ export default function render(page: any) {
   return createInertiaApp({
     page,
     render: ReactDOMServer.renderToString,
-    title: (title) => (title && title !== appName ? `${title} — ${appName}` : appName),
+    title: (title) => (title && title !== appName ? `${title} · ${appName}` : appName),
     resolve: (name) => {
       return resolvePageComponent(
         `./pages/${name}.tsx`,

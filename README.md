@@ -53,13 +53,13 @@ réencode les images en webp (variantes 320/640/1280) dans
 Service **Compose** Dokploy branché sur ce dépôt : [docker-compose.yml](docker-compose.yml)
 construit le [Dockerfile](Dockerfile) multi-stage et embarque le Postgres
 (service `db`, réseau `internal` que seule l'app atteint, volume
-`postgres_data`) — le `compose.yaml` de la racine, lui, ne sert qu'au
+`postgres_data`). Le `compose.yaml` de la racine, lui, ne sert qu'au
 Postgres de développement. Les migrations sont jouées au démarrage du
 conteneur ; endpoint de monitoring : `/health` ; les uploads vivent dans le
 volume `storage` monté sur `/app/storage`.
 
 Chaque variable doit figurer **à la fois** dans le compose en `${VAR}` et
-dans l'onglet Environment de Dokploy — une variable posée d'un seul côté
+dans l'onglet Environment de Dokploy : une variable posée d'un seul côté
 n'arrive jamais dans le conteneur, sans avertissement. Liste et rôles :
 [.env.example](.env.example). Mise en ligne pas à pas : `deploy/new-project.md`
 du dépôt Homelab.

@@ -275,9 +275,9 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
                 <div className="min-w-0">
                   <p className="font-medium">{item.titleFr}</p>
                   <p className="text-muted-foreground truncate font-mono text-xs">
-                    {item.periodFr} — {item.placeFr}
-                    {item.honours !== 'none' ? ` — ${honoursLabel(item.honours)}` : ''}
-                    {item.titleEn ? ' — EN ✓' : ''}
+                    {item.periodFr} · {item.placeFr}
+                    {item.honours !== 'none' ? ` · ${honoursLabel(item.honours)}` : ''}
+                    {item.titleEn ? ' · EN ✓' : ''}
                   </p>
                 </div>
                 <div className="flex shrink-0 gap-1">

@@ -56,7 +56,7 @@ export default function ProjectsIndex({ projects }: ProjectsIndexProps) {
                 </span>
                 <p className="text-muted-foreground truncate font-mono text-xs">
                   {project.slug}
-                  {project.hasEnglish ? ' — FR + EN' : ' — FR'} — {project.technologiesCount}{' '}
+                  {project.hasEnglish ? ' · FR + EN' : ' · FR'} · {project.technologiesCount}{' '}
                   techno(s)
                 </p>
               </div>

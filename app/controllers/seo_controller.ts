@@ -166,7 +166,7 @@ export default class SeoController {
       '<?xml version="1.0" encoding="UTF-8"?>',
       '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
       '<channel>',
-      `<title>kevin-dev.com — Blog</title>`,
+      `<title>kevin-dev.com · Blog</title>`,
       `<link>${xmlEscape(SeoService.absolute(localePath(locale, '/blog')))}</link>`,
       `<description>${xmlEscape(i18n.t('messages.blog.metaDescription'))}</description>`,
       `<language>${locale}</language>`,

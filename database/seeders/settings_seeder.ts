@@ -5,7 +5,7 @@ import MarkdownService from '#services/markdown_service'
 
 const DEFAULT_LEGAL_FR = `## Représentant
 
-M. Kévin Véronési — kevin.veronesipro@gmail.com
+M. Kévin Véronési, kevin.veronesipro@gmail.com
 
 ## Hébergement
 

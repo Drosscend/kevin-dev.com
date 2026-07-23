@@ -34,7 +34,7 @@ export default class ContactMessageNotification extends BaseMail {
           '',
           body,
           '',
-          `— ${env.get('APP_URL')}/admin/messages`,
+          `Voir dans l'admin : ${env.get('APP_URL')}/admin/messages`,
         ].join('\n')
       )
   }

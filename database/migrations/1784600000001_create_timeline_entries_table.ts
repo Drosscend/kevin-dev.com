@@ -9,12 +9,12 @@ const SEED = [
   {
     position: 1,
     fr: {
-      period: '2025 — auj.',
+      period: '2025-auj.',
       title: 'Consultant Data Migration · Développeur Full Stack & IA',
       place: 'En poste',
     },
     en: {
-      period: '2025 — today',
+      period: '2025-today',
       title: 'Data Migration Consultant · Full Stack & AI Developer',
       place: 'Currently employed',
     },
@@ -22,25 +22,25 @@ const SEED = [
   {
     position: 2,
     fr: {
-      period: '2023 — 2025',
+      period: '2023-2025',
       title: 'Master MIASHS ICE-LD',
       place: 'Université Toulouse Jean Jaurès',
     },
     en: {
-      period: '2023 — 2025',
+      period: '2023-2025',
       title: "Master's degree MIASHS ICE-LD",
       place: 'Université Toulouse Jean Jaurès',
     },
   },
   {
     position: 3,
-    fr: { period: '2022 — 2023', title: 'Licence pro APSIO', place: 'IUT de Blagnac' },
-    en: { period: '2022 — 2023', title: 'Professional bachelor APSIO', place: 'IUT de Blagnac' },
+    fr: { period: '2022-2023', title: 'Licence pro APSIO', place: 'IUT de Blagnac' },
+    en: { period: '2022-2023', title: 'Professional bachelor APSIO', place: 'IUT de Blagnac' },
   },
   {
     position: 4,
-    fr: { period: '2020 — 2022', title: 'DUT Informatique', place: 'IUT de Blagnac' },
-    en: { period: '2020 — 2022', title: 'DUT in computer science', place: 'IUT de Blagnac' },
+    fr: { period: '2020-2022', title: 'DUT Informatique', place: 'IUT de Blagnac' },
+    en: { period: '2020-2022', title: 'DUT in computer science', place: 'IUT de Blagnac' },
   },
   {
     position: 5,

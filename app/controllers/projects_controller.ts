@@ -20,7 +20,7 @@ function formatPeriod(project: Project, locale: Locale) {
   const endedAt = formatDate(project.endedAt, locale)
 
   if (startedAt && endedAt) {
-    return `${startedAt} — ${endedAt}`
+    return `${startedAt} - ${endedAt}`
   }
   return startedAt ?? endedAt
 }

@@ -12,7 +12,7 @@ import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 const appName = 'kevin-dev.com'
 
 createInertiaApp({
-  title: (title) => (title && title !== appName ? `${title} — ${appName}` : appName),
+  title: (title) => (title && title !== appName ? `${title} · ${appName}` : appName),
   resolve: (name) => {
     return resolvePageComponent(
       `./pages/${name}.tsx`,

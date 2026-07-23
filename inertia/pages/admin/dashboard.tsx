@@ -118,7 +118,7 @@ export default function Dashboard({ totpEnabled, umami, stats }: DashboardProps)
       {umami && (
         <Card>
           <CardHeader>
-            <CardTitle>Visites — 30 derniers jours</CardTitle>
+            <CardTitle>Visites sur 30 jours</CardTitle>
             <CardDescription>
               {umami.pageviews} pages vues · {umami.visitors} visiteur(s)
             </CardDescription>

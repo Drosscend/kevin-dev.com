@@ -21,9 +21,9 @@ interface Entry {
  * name is `<slug>.png`, so a logo library imported beforehand gets
  * wired up automatically.
  *
- * Existing slugs are left untouched — the back office is the source of
- * truth once an entry has been edited — unless --update is passed, and
- * a missing logo is filled in either way.
+ * Existing slugs are left untouched, since the back office is the source
+ * of truth once an entry has been edited, unless --update is passed. A
+ * missing logo is filled in either way.
  */
 export default class TechnologiesImport extends BaseCommand {
   static commandName = 'technologies:import'
@@ -46,7 +46,7 @@ export default class TechnologiesImport extends BaseCommand {
     if (invalid.length > 0) {
       this.exitCode = 1
       for (const entry of invalid) {
-        this.logger.error(`${entry.slug ?? '(no slug)'} — missing name, slug or unknown category`)
+        this.logger.error(`${entry.slug ?? '(no slug)'} · missing name, slug or unknown category`)
       }
       return
     }
@@ -71,9 +71,9 @@ export default class TechnologiesImport extends BaseCommand {
         skipped += 1
         if (logo && !known.logoMediaId) {
           await known.merge({ logoMediaId: logo.id }).save()
-          this.logger.info(`${entry.slug} — kept, logo attached`)
+          this.logger.info(`${entry.slug} · kept, logo attached`)
         } else {
-          this.logger.info(`${entry.slug} — already there`)
+          this.logger.info(`${entry.slug} · already there`)
         }
         continue
       }
@@ -100,10 +100,10 @@ export default class TechnologiesImport extends BaseCommand {
 
       if (known) {
         updated += 1
-        this.logger.success(`${entry.slug} — updated`)
+        this.logger.success(`${entry.slug} · updated`)
       } else {
         created += 1
-        this.logger.success(`${entry.slug} — created`)
+        this.logger.success(`${entry.slug} · created`)
       }
     }
 

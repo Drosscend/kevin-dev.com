@@ -51,7 +51,7 @@ export default class MediaImport extends BaseCommand {
     for (const file of files) {
       if (known.has(file)) {
         skipped += 1
-        this.logger.info(`${file} — already in the library`)
+        this.logger.info(`${file} · already in the library`)
         continue
       }
 
@@ -65,7 +65,7 @@ export default class MediaImport extends BaseCommand {
       } catch (error) {
         this.exitCode = 1
         this.logger.error(
-          `${file} — ${error instanceof InvalidImageError ? 'unreadable image' : String(error)}`
+          `${file} · ${error instanceof InvalidImageError ? 'unreadable image' : String(error)}`
         )
       }
     }

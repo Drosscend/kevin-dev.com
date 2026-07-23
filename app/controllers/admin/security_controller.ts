@@ -11,7 +11,7 @@ export default class SecurityController {
   /**
    * Security page: offers TOTP enrollment when 2FA is inactive.
    * The candidate secret lives in the session until it is confirmed
-   * with a valid code — nothing is persisted before that. Freshly
+   * with a valid code: nothing is persisted before that. Freshly
    * generated recovery codes transit through a flash message so they
    * are displayed exactly once.
    */

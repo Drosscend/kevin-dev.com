@@ -2,7 +2,7 @@ import { BaseSchema } from '@adonisjs/lucid/schema'
 
 /**
  * The homepage "talks" blurb became the talks table: its settings
- * rows are now dead weight. Irreversible by nature — rolling back
+ * rows are now dead weight. Irreversible by nature: rolling back
  * restores the (empty) editor, not the text that was stored.
  */
 export default class extends BaseSchema {
