@@ -313,6 +313,75 @@ test.group('Admin CRUD articles et projets (HTTP)', (group) => {
     assert.equal(article.slug, 'titre-definitif')
   })
 
+  test('un article en ligne ne peut plus revenir en brouillon', async ({ client, assert }) => {
+    const user = await admin()
+    const article = await Article.create({
+      slug: 'en-ligne',
+      status: 'published',
+      publishedAt: DateTime.now().minus({ days: 1 }),
+    })
+
+    const response = await client
+      .put(`/admin/articles/${article.id}`)
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .json({
+        slug: 'en-ligne',
+        status: 'draft',
+        fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
+      })
+
+    response.assertStatus(302)
+    await article.refresh()
+    assert.equal(article.status, 'published')
+  })
+
+  test('un article en ligne peut être retiré du site', async ({ client, assert }) => {
+    const user = await admin()
+    const article = await Article.create({
+      slug: 'en-ligne',
+      status: 'published',
+      publishedAt: DateTime.now().minus({ days: 1 }),
+    })
+
+    const response = await client
+      .put(`/admin/articles/${article.id}`)
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .json({
+        slug: 'en-ligne',
+        status: 'archived',
+        fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
+      })
+
+    response.assertStatus(302)
+    await article.refresh()
+    assert.equal(article.status, 'archived')
+    assert.isNotNull(article.publishedAt, 'la date de publication reste, pour republier plus tard')
+  })
+
+  test('un brouillon jamais publié ne peut pas être retiré du site', async ({ client, assert }) => {
+    const user = await admin()
+    const article = await Article.create({ slug: 'jamais-publie', status: 'draft' })
+
+    const response = await client
+      .put(`/admin/articles/${article.id}`)
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .json({
+        slug: 'jamais-publie',
+        status: 'archived',
+        fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
+      })
+
+    response.assertStatus(302)
+    await article.refresh()
+    assert.equal(article.status, 'draft')
+  })
+
   test('une catégorie inexistante est rejetée en 422', async ({ client }) => {
     const user = await admin()
 

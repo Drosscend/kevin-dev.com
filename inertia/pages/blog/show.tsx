@@ -1,6 +1,7 @@
 import { Link } from '@adonisjs/inertia/react'
 import ArticleContent from '~/components/article_content'
 import { BackLink } from '~/components/page_header'
+import PreviewBanner, { type PreviewMode } from '~/components/preview_banner'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import TableOfContents from '~/components/table_of_contents'
@@ -9,7 +10,7 @@ import { localePath } from '~/lib/locale'
 
 type BlogShowProps = {
   locale: 'fr' | 'en'
-  isDraftPreview: boolean
+  preview: PreviewMode
   article: {
     slug: string
     title: string
@@ -24,6 +25,7 @@ type BlogShowProps = {
   labels: {
     publishedOn: string
     draft: string
+    archived: string
     backToList: string
     technologies: string
     contents: string
@@ -31,7 +33,7 @@ type BlogShowProps = {
   meta: SeoMeta
 }
 
-export default function BlogShow({ locale, isDraftPreview, article, labels, meta }: BlogShowProps) {
+export default function BlogShow({ locale, preview, article, labels, meta }: BlogShowProps) {
   const base = localePath(locale, '/blog')
 
   return (
@@ -39,11 +41,7 @@ export default function BlogShow({ locale, isDraftPreview, article, labels, meta
       <Seo meta={meta} />
 
       <ReadingLayout aside={<TableOfContents html={article.contentHtml} label={labels.contents} />}>
-        {isDraftPreview && (
-          <p className="border-destructive text-destructive mb-10 rounded-lg border px-4 py-2.5 text-sm">
-            {labels.draft}
-          </p>
-        )}
+        {preview && <PreviewBanner label={labels[preview]} className="mb-10" />}
 
         <div className="text-sm">
           <BackLink href={base} label={labels.backToList} />

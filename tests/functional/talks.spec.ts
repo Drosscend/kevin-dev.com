@@ -131,7 +131,7 @@ test.group('Interventions publiques', (group) => {
     const response = await client.get('/talks/secrete').loginAs(user).withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaPropsContains({ isDraftPreview: true })
+    response.assertInertiaPropsContains({ preview: 'draft' })
   })
 
   test('l’accueil affiche les trois interventions les plus récentes', async ({

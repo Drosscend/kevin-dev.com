@@ -1,9 +1,16 @@
 import vine from '@vinejs/vine'
-import { publishedAt, relationId, slug, translation, type EditedRow } from '#validators/shared'
+import {
+  publishedAt,
+  relationId,
+  slug,
+  status,
+  translation,
+  type EditedRow,
+} from '#validators/shared'
 
 export const articleValidator = vine.withMetaData<EditedRow>().create({
   slug: slug('articles'),
-  status: vine.enum(['draft', 'published'] as const),
+  status: status(),
   categoryId: relationId('categories').nullable().optional(),
   coverMediaId: relationId('media').nullable().optional(),
   technologyIds: vine.array(relationId('technologies')).optional(),

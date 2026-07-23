@@ -106,7 +106,7 @@ test.group('Portfolio public', (group) => {
     const response = await client.get('/projects/secret').loginAs(user).withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaPropsContains({ isDraftPreview: true })
+    response.assertInertiaPropsContains({ preview: 'draft' })
   })
 
   test('la fiche techno liste les projets publiés qui l’utilisent', async ({ client, assert }) => {

@@ -5,6 +5,7 @@ import Talk from '#models/talk'
 import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
+import PublicationService from '#services/publication_service'
 import { localePath, type Locale } from '#types/i18n'
 
 function formatDate(date: DateTime, locale: Locale) {
@@ -91,13 +92,10 @@ export default class TalksController {
       throw new Exception('Not found', { status: 404 })
     }
 
-    const isDraftPreview = !talk.isPublished
-    if (isDraftPreview && !auth.user) {
-      throw new Exception('Not found', { status: 404 })
-    }
+    const preview = PublicationService.preview(talk, Boolean(auth.user))
 
     return inertia.render('talks/show', {
-      isDraftPreview,
+      preview,
       talk: {
         slug: talk.slug,
         title: translation.title,
@@ -122,6 +120,7 @@ export default class TalksController {
       labels: {
         backToList: i18n.t('messages.talks.backToList'),
         draft: i18n.t('messages.blog.draft'),
+        archived: i18n.t('messages.blog.archived'),
         upcoming: i18n.t('messages.talks.upcoming'),
         technologies: i18n.t('messages.talks.technologies'),
       },

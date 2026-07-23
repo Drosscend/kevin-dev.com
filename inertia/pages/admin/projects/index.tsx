@@ -5,13 +5,14 @@ import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
 import StatusBadge from '~/components/admin/status_badge'
+import type { PublicationStatus } from '~/components/admin/publication_actions'
 
 type ProjectRow = {
   id: number
   slug: string
   title: string
   hasEnglish: boolean
-  status: 'draft' | 'published'
+  status: PublicationStatus
   featured: boolean
   publishedAt: string | null
   scheduled: boolean

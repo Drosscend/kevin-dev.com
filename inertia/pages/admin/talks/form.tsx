@@ -10,6 +10,7 @@ import { Select } from '~/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import FieldError from '~/components/field_error'
 import DraftBanner from '~/components/admin/draft_banner'
+import PublicationActions, { type PublicationStatus } from '~/components/admin/publication_actions'
 import TranslationFields from '~/components/admin/translation_fields'
 import { EMPTY_TRANSLATION, SLUG_LOCKED_HINT, slugify, type TranslationValues } from '~/lib/admin'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
@@ -23,7 +24,7 @@ type LinkValues = {
 type TalkData = {
   id: number
   slug: string
-  status: 'draft' | 'published'
+  status: PublicationStatus
   coverMediaId: number | null
   eventDate: string | null
   eventName: string
@@ -31,7 +32,7 @@ type TalkData = {
   technologyIds: number[]
   links: LinkValues[]
   publishedAt: string | null
-  slugLocked: boolean
+  hasBeenOnline: boolean
   fr: TranslationValues
   en: TranslationValues | null
 }
@@ -59,7 +60,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
 
   const form = useForm({
     slug: talk?.slug ?? '',
-    status: talk?.status ?? ('draft' as 'draft' | 'published'),
+    status: talk?.status ?? ('draft' as PublicationStatus),
     coverMediaId: talk?.coverMediaId ?? null,
     eventDate: talk?.eventDate ?? '',
     eventName: talk?.eventName ?? '',
@@ -106,22 +107,24 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
     )
   }
 
-  function submit(status: 'draft' | 'published') {
-    return (event: FormEvent) => {
-      event.preventDefault()
-      form.transform((data) => ({
-        ...data,
-        status,
-        links: data.links.filter((link) => link.label.trim() !== '' || link.url.trim() !== ''),
-        en: withEnglish ? (data.en ?? { ...EMPTY_TRANSLATION }) : undefined,
-      }))
-      const visitOptions = { preserveScroll: true, onSuccess: () => draft.clearDraft() }
-      if (talk) {
-        form.put(client.urlFor('admin.talks.update', { id: talk.id }), visitOptions)
-      } else {
-        form.post(client.urlFor('admin.talks.store'), visitOptions)
-      }
+  function save(status: PublicationStatus) {
+    form.transform((data) => ({
+      ...data,
+      status,
+      links: data.links.filter((link) => link.label.trim() !== '' || link.url.trim() !== ''),
+      en: withEnglish ? (data.en ?? { ...EMPTY_TRANSLATION }) : undefined,
+    }))
+    const visitOptions = { preserveScroll: true, onSuccess: () => draft.clearDraft() }
+    if (talk) {
+      form.put(client.urlFor('admin.talks.update', { id: talk.id }), visitOptions)
+    } else {
+      form.post(client.urlFor('admin.talks.store'), visitOptions)
     }
+  }
+
+  function submit(event: FormEvent) {
+    event.preventDefault()
+    save(form.data.status)
   }
 
   return (
@@ -138,7 +141,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
         </Link>
       </div>
 
-      <form onSubmit={submit(form.data.status)} className="space-y-6">
+      <form onSubmit={submit} className="space-y-6">
         {draft.hasDraft && (
           <DraftBanner
             savedAt={draft.draftSavedAt}
@@ -158,13 +161,13 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
                 <Input
                   id="slug"
                   value={form.data.slug}
-                  disabled={talk?.slugLocked}
+                  disabled={talk?.hasBeenOnline}
                   onChange={(event) => {
                     slugTouched.current = true
                     form.setData('slug', event.target.value)
                   }}
                 />
-                {talk?.slugLocked && (
+                {talk?.hasBeenOnline && (
                   <p className="text-muted-foreground text-xs">{SLUG_LOCKED_HINT}</p>
                 )}
                 <FieldError errors={errors} field="slug" />
@@ -361,17 +364,12 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
         </Card>
 
         <div className="flex items-center gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            disabled={form.processing}
-            onClick={submit('draft')}
-          >
-            Enregistrer en brouillon
-          </Button>
-          <Button type="button" disabled={form.processing} onClick={submit('published')}>
-            Publier
-          </Button>
+          <PublicationActions
+            status={form.data.status}
+            hasBeenOnline={Boolean(talk?.hasBeenOnline)}
+            processing={form.processing}
+            onSave={save}
+          />
           {talk?.publishedAt && (
             <span className="text-muted-foreground text-sm">
               Première publication : {talk.publishedAt}

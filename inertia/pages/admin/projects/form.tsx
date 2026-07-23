@@ -10,6 +10,7 @@ import { Select } from '~/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import FieldError from '~/components/field_error'
 import DraftBanner from '~/components/admin/draft_banner'
+import PublicationActions, { type PublicationStatus } from '~/components/admin/publication_actions'
 import TranslationFields from '~/components/admin/translation_fields'
 import { EMPTY_TRANSLATION, SLUG_LOCKED_HINT, slugify, type TranslationValues } from '~/lib/admin'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
@@ -23,7 +24,7 @@ type LinkValues = {
 type ProjectData = {
   id: number
   slug: string
-  status: 'draft' | 'published'
+  status: PublicationStatus
   coverMediaId: number | null
   startedAt: string | null
   endedAt: string | null
@@ -32,7 +33,7 @@ type ProjectData = {
   articleIds: number[]
   links: LinkValues[]
   publishedAt: string | null
-  slugLocked: boolean
+  hasBeenOnline: boolean
   fr: TranslationValues
   en: TranslationValues | null
 }
@@ -62,7 +63,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
 
   const form = useForm({
     slug: project?.slug ?? '',
-    status: project?.status ?? ('draft' as 'draft' | 'published'),
+    status: project?.status ?? ('draft' as PublicationStatus),
     coverMediaId: project?.coverMediaId ?? null,
     startedAt: project?.startedAt ?? null,
     endedAt: project?.endedAt ?? null,
@@ -107,22 +108,24 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
     )
   }
 
-  function submit(status: 'draft' | 'published') {
-    return (event: FormEvent) => {
-      event.preventDefault()
-      form.transform((data) => ({
-        ...data,
-        status,
-        links: data.links.filter((link) => link.label.trim() !== '' || link.url.trim() !== ''),
-        en: withEnglish ? (data.en ?? { ...EMPTY_TRANSLATION }) : undefined,
-      }))
-      const visitOptions = { preserveScroll: true, onSuccess: () => draft.clearDraft() }
-      if (project) {
-        form.put(client.urlFor('admin.projects.update', { id: project.id }), visitOptions)
-      } else {
-        form.post(client.urlFor('admin.projects.store'), visitOptions)
-      }
+  function save(status: PublicationStatus) {
+    form.transform((data) => ({
+      ...data,
+      status,
+      links: data.links.filter((link) => link.label.trim() !== '' || link.url.trim() !== ''),
+      en: withEnglish ? (data.en ?? { ...EMPTY_TRANSLATION }) : undefined,
+    }))
+    const visitOptions = { preserveScroll: true, onSuccess: () => draft.clearDraft() }
+    if (project) {
+      form.put(client.urlFor('admin.projects.update', { id: project.id }), visitOptions)
+    } else {
+      form.post(client.urlFor('admin.projects.store'), visitOptions)
     }
+  }
+
+  function submit(event: FormEvent) {
+    event.preventDefault()
+    save(form.data.status)
   }
 
   return (
@@ -139,7 +142,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
         </Link>
       </div>
 
-      <form onSubmit={submit(form.data.status)} className="space-y-6">
+      <form onSubmit={submit} className="space-y-6">
         {draft.hasDraft && (
           <DraftBanner
             savedAt={draft.draftSavedAt}
@@ -159,13 +162,13 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                 <Input
                   id="slug"
                   value={form.data.slug}
-                  disabled={project?.slugLocked}
+                  disabled={project?.hasBeenOnline}
                   onChange={(event) => {
                     slugTouched.current = true
                     form.setData('slug', event.target.value)
                   }}
                 />
-                {project?.slugLocked && (
+                {project?.hasBeenOnline && (
                   <p className="text-muted-foreground text-xs">{SLUG_LOCKED_HINT}</p>
                 )}
                 <FieldError errors={errors} field="slug" />
@@ -382,17 +385,12 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
         </Card>
 
         <div className="flex items-center gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            disabled={form.processing}
-            onClick={submit('draft')}
-          >
-            Enregistrer en brouillon
-          </Button>
-          <Button type="button" disabled={form.processing} onClick={submit('published')}>
-            Publier
-          </Button>
+          <PublicationActions
+            status={form.data.status}
+            hasBeenOnline={Boolean(project?.hasBeenOnline)}
+            processing={form.processing}
+            onSave={save}
+          />
           {project?.publishedAt && (
             <span className="text-muted-foreground text-sm">
               Première publication : {project.publishedAt}

@@ -6,7 +6,7 @@ import ArticleService from '#services/article_service'
 
 function makeArticle(
   slug: string,
-  status: 'draft' | 'published',
+  status: 'draft' | 'published' | 'archived',
   options: { english?: boolean } = {}
 ) {
   return ArticleService.save(new Article(), {
@@ -84,7 +84,29 @@ test.group('Blog public', (group) => {
 
     response.assertStatus(200)
     response.assertInertiaComponent('blog/show')
-    response.assertInertiaPropsContains({ isDraftPreview: true })
+    response.assertInertiaPropsContains({ preview: 'draft' })
+  })
+
+  test('un article retiré du site répond 410 à un visiteur', async ({ client }) => {
+    const article = await makeArticle('article-retire', 'published')
+    article.status = 'archived'
+    await article.save()
+
+    const response = await client.get('/blog/article-retire')
+    response.assertStatus(410)
+  })
+
+  test('un article retiré du site reste consultable connecté', async ({ client }) => {
+    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const article = await makeArticle('article-retire', 'published')
+    article.status = 'archived'
+    await article.save()
+
+    const response = await client.get('/blog/article-retire').loginAs(user).withInertia()
+
+    response.assertStatus(200)
+    response.assertInertiaComponent('blog/show')
+    response.assertInertiaPropsContains({ preview: 'archived' })
   })
 
   test('publishedAt est figé à la première publication', async ({ assert }) => {

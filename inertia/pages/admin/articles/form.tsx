@@ -2,13 +2,13 @@ import { type FormEvent, useRef, useState } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 import { client } from '~/client'
-import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Select } from '~/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import FieldError from '~/components/field_error'
 import DraftBanner from '~/components/admin/draft_banner'
+import PublicationActions, { type PublicationStatus } from '~/components/admin/publication_actions'
 import TranslationFields from '~/components/admin/translation_fields'
 import { EMPTY_TRANSLATION, SLUG_LOCKED_HINT, slugify, type TranslationValues } from '~/lib/admin'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
@@ -16,12 +16,12 @@ import { useDraftAutosave } from '~/lib/use_draft_autosave'
 type ArticleData = {
   id: number
   slug: string
-  status: 'draft' | 'published'
+  status: PublicationStatus
   categoryId: number | null
   coverMediaId: number | null
   technologyIds: number[]
   publishedAt: string | null
-  slugLocked: boolean
+  hasBeenOnline: boolean
   fr: TranslationValues
   en: TranslationValues | null
 }
@@ -39,7 +39,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
 
   const form = useForm({
     slug: article?.slug ?? '',
-    status: article?.status ?? ('draft' as 'draft' | 'published'),
+    status: article?.status ?? ('draft' as PublicationStatus),
     categoryId: article?.categoryId ?? null,
     coverMediaId: article?.coverMediaId ?? null,
     technologyIds: article?.technologyIds ?? [],
@@ -76,21 +76,23 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
     )
   }
 
-  function submit(status: 'draft' | 'published') {
-    return (event: FormEvent) => {
-      event.preventDefault()
-      form.transform((data) => ({
-        ...data,
-        status,
-        en: withEnglish ? (data.en ?? { ...EMPTY_TRANSLATION }) : undefined,
-      }))
-      const visitOptions = { preserveScroll: true, onSuccess: () => draft.clearDraft() }
-      if (article) {
-        form.put(client.urlFor('admin.articles.update', { id: article.id }), visitOptions)
-      } else {
-        form.post(client.urlFor('admin.articles.store'), visitOptions)
-      }
+  function save(status: PublicationStatus) {
+    form.transform((data) => ({
+      ...data,
+      status,
+      en: withEnglish ? (data.en ?? { ...EMPTY_TRANSLATION }) : undefined,
+    }))
+    const visitOptions = { preserveScroll: true, onSuccess: () => draft.clearDraft() }
+    if (article) {
+      form.put(client.urlFor('admin.articles.update', { id: article.id }), visitOptions)
+    } else {
+      form.post(client.urlFor('admin.articles.store'), visitOptions)
     }
+  }
+
+  function submit(event: FormEvent) {
+    event.preventDefault()
+    save(form.data.status)
   }
 
   return (
@@ -107,7 +109,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
         </Link>
       </div>
 
-      <form onSubmit={submit(form.data.status)} className="space-y-6">
+      <form onSubmit={submit} className="space-y-6">
         {draft.hasDraft && (
           <DraftBanner
             savedAt={draft.draftSavedAt}
@@ -127,13 +129,13 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
                 <Input
                   id="slug"
                   value={form.data.slug}
-                  disabled={article?.slugLocked}
+                  disabled={article?.hasBeenOnline}
                   onChange={(event) => {
                     slugTouched.current = true
                     form.setData('slug', event.target.value)
                   }}
                 />
-                {article?.slugLocked && (
+                {article?.hasBeenOnline && (
                   <p className="text-muted-foreground text-xs">{SLUG_LOCKED_HINT}</p>
                 )}
                 <FieldError errors={errors} field="slug" />
@@ -261,17 +263,12 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
         </Card>
 
         <div className="flex items-center gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            disabled={form.processing}
-            onClick={submit('draft')}
-          >
-            Enregistrer en brouillon
-          </Button>
-          <Button type="button" disabled={form.processing} onClick={submit('published')}>
-            Publier
-          </Button>
+          <PublicationActions
+            status={form.data.status}
+            hasBeenOnline={Boolean(article?.hasBeenOnline)}
+            processing={form.processing}
+            onSave={save}
+          />
           {article?.publishedAt && (
             <span className="text-muted-foreground text-sm">
               Première publication : {article.publishedAt}

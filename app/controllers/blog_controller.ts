@@ -6,6 +6,7 @@ import Category from '#models/category'
 import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
+import PublicationService from '#services/publication_service'
 import { localePath, type Locale } from '#types/i18n'
 
 const PER_PAGE = 9
@@ -133,13 +134,10 @@ export default class BlogController {
       throw new Exception('Not found', { status: 404 })
     }
 
-    const isDraftPreview = !article.isPublished
-    if (isDraftPreview && !auth.user) {
-      throw new Exception('Not found', { status: 404 })
-    }
+    const preview = PublicationService.preview(article, Boolean(auth.user))
 
     return inertia.render('blog/show', {
-      isDraftPreview,
+      preview,
       article: {
         slug: article.slug,
         title: translation.title,
@@ -161,6 +159,7 @@ export default class BlogController {
       labels: {
         publishedOn: i18n.t('messages.blog.publishedOn'),
         draft: i18n.t('messages.blog.draft'),
+        archived: i18n.t('messages.blog.archived'),
         backToList: i18n.t('messages.blog.backToList'),
         technologies: i18n.t('messages.blog.technologies'),
         contents: i18n.t('messages.toc.title'),

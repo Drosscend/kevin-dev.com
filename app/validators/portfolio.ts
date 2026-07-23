@@ -2,7 +2,14 @@ import vine from '@vinejs/vine'
 import { PROJECT_LINK_TYPES } from '#models/project_link'
 import { TALK_LINK_TYPES } from '#models/talk_link'
 import { TECHNOLOGY_CATEGORIES } from '#models/technology'
-import { publishedAt, relationId, slug, translation, type EditedRow } from '#validators/shared'
+import {
+  publishedAt,
+  relationId,
+  slug,
+  status,
+  translation,
+  type EditedRow,
+} from '#validators/shared'
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/
 
@@ -10,7 +17,7 @@ const date = () => vine.string().trim().regex(DATE_PATTERN).nullable().optional(
 
 export const projectValidator = vine.withMetaData<EditedRow>().create({
   slug: slug('projects'),
-  status: vine.enum(['draft', 'published'] as const),
+  status: status(),
   coverMediaId: relationId('media').nullable().optional(),
   startedAt: date(),
   endedAt: date(),
@@ -33,7 +40,7 @@ export const projectValidator = vine.withMetaData<EditedRow>().create({
 
 export const talkValidator = vine.withMetaData<EditedRow>().create({
   slug: slug('talks'),
-  status: vine.enum(['draft', 'published'] as const),
+  status: status(),
   coverMediaId: relationId('media').nullable().optional(),
   eventDate: vine.string().trim().regex(DATE_PATTERN),
   eventName: vine.string().trim().minLength(1).maxLength(200),

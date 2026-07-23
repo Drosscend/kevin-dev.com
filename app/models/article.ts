@@ -8,7 +8,7 @@ import Technology from '#models/technology'
 import Media from '#models/media'
 import type { Locale } from '#types/i18n'
 
-export type ArticleStatus = 'draft' | 'published'
+export type ArticleStatus = 'draft' | 'published' | 'archived'
 
 export default class Article extends ArticleSchema {
   declare status: ArticleStatus
@@ -43,11 +43,12 @@ export default class Article extends ArticleSchema {
   }
 
   /**
-   * The slug is frozen once the URL has been publicly reachable, so an
-   * already shared link cannot break. A scheduled entry keeps a
-   * renamable slug until its date is reached.
+   * True once the URL has actually been reachable. Two rules derive
+   * from it: the slug is frozen so an already shared link cannot
+   * break, and the entry can no longer go back to draft, only be
+   * archived. A scheduled entry has not been online yet.
    */
-  get slugLocked() {
+  get hasBeenOnline() {
     return Boolean(this.publishedAt) && this.publishedAt! <= DateTime.now()
   }
 

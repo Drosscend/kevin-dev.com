@@ -43,6 +43,7 @@
     "readingTime": "{minutes} min read",
     "publishedOn": "Published on",
     "draft": "Draft, only visible while signed in",
+    "archived": "Withdrawn from the site, only visible while signed in",
     "empty": "No articles yet.",
     "allCategories": "All categories",
     "technologies": "Technologies covered",

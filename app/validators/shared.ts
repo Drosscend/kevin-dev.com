@@ -2,21 +2,21 @@ import vine from '@vinejs/vine'
 import type { FieldContext } from '@vinejs/vine/types'
 
 /**
- * Metadata carried by every validator using the shared slug rule:
- * the id of the row being edited, so it is excluded from the
- * uniqueness lookup (absent when creating), and the current slug when
- * it is frozen because the entry has already been online.
+ * Metadata describing the row being edited: its id, so it is excluded
+ * from the uniqueness lookup (absent when creating), its slug and
+ * whether its URL has already been reachable, which is what freezes
+ * the slug and restricts the reachable statuses.
  */
-export type EditedRow = { id?: number; lockedSlug?: string }
+export type EditedRow = { id?: number; currentSlug?: string; wasOnline?: boolean }
 
 /**
  * Rejects any change to a slug whose URL has already been reachable,
  * so a link published elsewhere can never end up broken.
  */
 const frozenSlug = vine.createRule((value: unknown, _options: undefined, field: FieldContext) => {
-  const { lockedSlug } = field.meta as EditedRow
+  const { currentSlug, wasOnline } = field.meta as EditedRow
 
-  if (lockedSlug && value !== lockedSlug) {
+  if (wasOnline && value !== currentSlug) {
     field.report(
       "Le slug ne peut plus être modifié une fois l'entrée mise en ligne",
       'slug.frozen',
@@ -46,6 +46,41 @@ export function slug(table: string) {
 
       return !(await query.first())
     })
+}
+
+/**
+ * Rejects the two transitions the admin must never allow: going back
+ * to draft once the URL has been public, which would turn a live page
+ * into a bare 404, and archiving an entry that was never online.
+ */
+const publicationTransition = vine.createRule(
+  (value: unknown, _options: undefined, field: FieldContext) => {
+    const { wasOnline } = field.meta as EditedRow
+
+    if (wasOnline && value === 'draft') {
+      field.report(
+        'Une entrée déjà en ligne ne peut plus revenir en brouillon, retirez-la du site à la place',
+        'status.transition',
+        field
+      )
+    }
+
+    if (!wasOnline && value === 'archived') {
+      field.report(
+        'Seule une entrée déjà mise en ligne peut être retirée du site',
+        'status.transition',
+        field
+      )
+    }
+  }
+)
+
+/**
+ * Publication status, narrowed by what the entry already went
+ * through. See the rule above for the two rejected transitions.
+ */
+export function status() {
+  return vine.enum(['draft', 'published', 'archived'] as const).use(publicationTransition())
 }
 
 /**

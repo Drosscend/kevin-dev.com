@@ -1,17 +1,29 @@
+import type { PublicationStatus } from '~/components/admin/publication_actions'
+
 /**
  * Publication status badge shared by admin lists. Green dot for
  * published entries, amber dot for scheduled ones (published status
- * with a future date), hollow dot for drafts.
+ * with a future date), red dot for entries withdrawn from the site,
+ * hollow dot for drafts.
  */
 export default function StatusBadge({
   status,
   detail,
   scheduled = false,
 }: {
-  status: 'draft' | 'published'
+  status: PublicationStatus
   detail?: string | null
   scheduled?: boolean
 }) {
+  if (status === 'archived') {
+    return (
+      <span className="text-muted-foreground inline-flex items-center gap-1.5 text-sm">
+        <span aria-hidden className="bg-destructive size-2 rounded-full" />
+        Retiré du site
+      </span>
+    )
+  }
+
   if (status !== 'published') {
     return (
       <span className="text-muted-foreground inline-flex items-center gap-1.5 text-sm">

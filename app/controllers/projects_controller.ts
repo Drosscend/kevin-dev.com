@@ -5,6 +5,7 @@ import Project from '#models/project'
 import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
+import PublicationService from '#services/publication_service'
 import { localePath, type Locale } from '#types/i18n'
 
 function formatDate(date: DateTime | null, locale: Locale) {
@@ -105,13 +106,10 @@ export default class ProjectsController {
       throw new Exception('Not found', { status: 404 })
     }
 
-    const isDraftPreview = !project.isPublished
-    if (isDraftPreview && !auth.user) {
-      throw new Exception('Not found', { status: 404 })
-    }
+    const preview = PublicationService.preview(project, Boolean(auth.user))
 
     return inertia.render('portfolio/show', {
-      isDraftPreview,
+      preview,
       project: {
         slug: project.slug,
         title: translation.title,
@@ -141,6 +139,7 @@ export default class ProjectsController {
       labels: {
         backToList: i18n.t('messages.portfolio.backToList'),
         draft: i18n.t('messages.blog.draft'),
+        archived: i18n.t('messages.blog.archived'),
         ongoing: i18n.t('messages.portfolio.ongoing'),
         technologies: i18n.t('messages.portfolio.technologies'),
         relatedArticles: i18n.t('messages.portfolio.relatedArticles'),

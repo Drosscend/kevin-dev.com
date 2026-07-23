@@ -1,6 +1,7 @@
 import { ExternalLink } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
 import { BackLink } from '~/components/page_header'
+import PreviewBanner, { type PreviewMode } from '~/components/preview_banner'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
@@ -8,7 +9,7 @@ import { localePath } from '~/lib/locale'
 
 type TalksShowProps = {
   locale: 'fr' | 'en'
-  isDraftPreview: boolean
+  preview: PreviewMode
   talk: {
     slug: string
     title: string
@@ -26,24 +27,21 @@ type TalksShowProps = {
   labels: {
     backToList: string
     draft: string
+    archived: string
     upcoming: string
     technologies: string
   }
   meta: SeoMeta
 }
 
-export default function TalksShow({ locale, isDraftPreview, talk, labels, meta }: TalksShowProps) {
+export default function TalksShow({ locale, preview, talk, labels, meta }: TalksShowProps) {
   const to = (path: string) => localePath(locale, path)
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
       <div className="mx-auto max-w-[720px] space-y-10">
-        {isDraftPreview && (
-          <p className="border-destructive text-destructive rounded-lg border px-4 py-2.5 text-sm">
-            {labels.draft}
-          </p>
-        )}
+        {preview && <PreviewBanner label={labels[preview]} />}
 
         <div className="text-sm">
           <BackLink href={to('/talks')} label={labels.backToList} />

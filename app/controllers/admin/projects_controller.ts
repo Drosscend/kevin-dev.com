@@ -122,7 +122,7 @@ export default class ProjectsController {
           type: link.type,
         })),
         publishedAt: project.publishedAt?.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
-        slugLocked: project.slugLocked,
+        hasBeenOnline: project.hasBeenOnline,
         fr: {
           title: fr?.title ?? '',
           summary: fr?.summary ?? '',
@@ -139,7 +139,7 @@ export default class ProjectsController {
   async update({ params, request, response, session }: HttpContext) {
     const project = await Project.findOrFail(params.id)
     const payload = await request.validateUsing(projectValidator, {
-      meta: { id: project.id, lockedSlug: project.slugLocked ? project.slug : undefined },
+      meta: { id: project.id, currentSlug: project.slug, wasOnline: project.hasBeenOnline },
     })
 
     await ProjectService.save(project, payloadFromRequest(payload))

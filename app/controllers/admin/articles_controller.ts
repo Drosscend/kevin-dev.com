@@ -106,7 +106,7 @@ export default class ArticlesController {
         coverMediaId: article.coverMediaId,
         technologyIds: article.technologies.map((technology) => technology.id),
         publishedAt: article.publishedAt?.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
-        slugLocked: article.slugLocked,
+        hasBeenOnline: article.hasBeenOnline,
         fr: {
           title: fr?.title ?? '',
           summary: fr?.summary ?? '',
@@ -123,7 +123,7 @@ export default class ArticlesController {
   async update({ params, request, response, session }: HttpContext) {
     const article = await Article.findOrFail(params.id)
     const payload = await request.validateUsing(articleValidator, {
-      meta: { id: article.id, lockedSlug: article.slugLocked ? article.slug : undefined },
+      meta: { id: article.id, currentSlug: article.slug, wasOnline: article.hasBeenOnline },
     })
 
     await ArticleService.save(article, {
