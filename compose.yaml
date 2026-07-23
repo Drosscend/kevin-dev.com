@@ -1,5 +1,5 @@
 # Local development Postgres only.
-# In production the database is a dedicated Dokploy service (see README).
+# In production the database ships in docker-compose.yml (`db` service).
 services:
   postgres:
     image: postgres:17-alpine

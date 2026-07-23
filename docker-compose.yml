@@ -10,17 +10,22 @@
 #   - no secret in here, every variable is listed as ${VAR} AND set in
 #     the Environment tab — one missing here is silently never passed.
 #
-# The database is a dedicated Dokploy Postgres service reached over
-# dokploy-network. The `mail` network is the shared Proton Mail Bridge
-# (service `mailbridge`, project `infra`): it is the only way out for
-# emails and is never exposed publicly.
+# The database ships in this compose, isolated on the `internal`
+# network so only `app` can reach it (same pattern as the other VPS
+# apps). The `mail` network is the shared Proton Mail Bridge (service
+# `mailbridge`, project `infra`): it is the only way out for emails and
+# is never exposed publicly.
 
 services:
   app:
     build: .
     restart: always
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - dokploy-network
+      - internal
       - mail
     environment:
       - TZ=UTC
@@ -29,9 +34,9 @@ services:
       - APP_URL=${APP_URL}
       - SESSION_DRIVER=cookie
 
-      # Database (dedicated Dokploy Postgres service)
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
+      # Database (the `db` service below, internal network only)
+      - DB_HOST=db
+      - DB_PORT=5432
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=${DB_DATABASE}
@@ -65,11 +70,30 @@ services:
     volumes:
       - storage:/app/storage
 
+  db:
+    image: postgres:17-alpine
+    restart: always
+    networks:
+      - internal
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   storage:
+  postgres_data:
 
 networks:
   dokploy-network:
     external: true
   mail:
     external: true
+  internal:
