@@ -31,7 +31,7 @@ export default function Cv({ contentHtml, pdfAvailable, labels, meta }: CvProps)
         )}
       </div>
 
-      <div className="mt-10">
+      <div className="mt-10 max-w-[720px]">
         {contentHtml ? (
           <ArticleContent html={contentHtml} />
         ) : (
