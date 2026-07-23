@@ -93,14 +93,14 @@ export default class UmamiService {
       }
 
       const stats = (await statsResponse.json()) as {
-        pageviews: { value: number }
-        visitors: { value: number }
+        pageviews: number
+        visitors: number
       }
       const pages = (await pagesResponse.json()) as { x: string; y: number }[]
 
       return {
-        pageviews: stats.pageviews.value,
-        visitors: stats.visitors.value,
+        pageviews: stats.pageviews,
+        visitors: stats.visitors,
         topPages: pages.map((page) => ({ path: page.x, views: page.y })),
       }
     } catch (error) {
