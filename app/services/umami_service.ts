@@ -81,7 +81,7 @@ export default class UmamiService {
           headers,
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         }),
-        fetch(`${websiteBase}/metrics?type=url&limit=5&${range}`, {
+        fetch(`${websiteBase}/metrics?type=path&limit=5&${range}`, {
           headers,
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         }),
