@@ -252,6 +252,7 @@ export class ProjectSchema extends BaseModel {
     'featured',
     'id',
     'publishedAt',
+    'readingTime',
     'slug',
     'startedAt',
     'status',
@@ -270,6 +271,8 @@ export class ProjectSchema extends BaseModel {
   declare id: number
   @column.dateTime()
   declare publishedAt: DateTime | null
+  @column()
+  declare readingTime: number
   @column()
   declare slug: string
   @column.date()
@@ -365,6 +368,7 @@ export class TalkSchema extends BaseModel {
     'eventName',
     'id',
     'publishedAt',
+    'readingTime',
     'slug',
     'status',
     'updatedAt',
@@ -384,6 +388,8 @@ export class TalkSchema extends BaseModel {
   declare id: number
   @column.dateTime()
   declare publishedAt: DateTime | null
+  @column()
+  declare readingTime: number
   @column()
   declare slug: string
   @column()

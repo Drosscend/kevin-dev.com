@@ -13,6 +13,7 @@ type TalkCard = {
   eventName: string
   eventDate: string
   city: string
+  readingTimeLabel: string
   upcoming: boolean
   links: ExternalLinkRef[]
   technologies: TechnologyRef[]
@@ -49,7 +50,7 @@ export default function TalksIndex({ locale, talks, labels, meta }: TalksIndexPr
                 <>
                   <span>
                     {talk.eventDate} · {talk.eventName}
-                    {talk.city && ` · ${talk.city}`}
+                    {talk.city && ` · ${talk.city}`} · {talk.readingTimeLabel}
                   </span>
                   {talk.upcoming && <StatusBadge>{labels.upcoming}</StatusBadge>}
                 </>

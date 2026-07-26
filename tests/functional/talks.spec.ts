@@ -14,6 +14,7 @@ function makeTalk(
     technologyIds?: number[]
     links?: boolean
     eventDate?: string
+    contentMarkdown?: string
   } = {}
 ) {
   return TalkService.save(new Talk(), {
@@ -30,7 +31,7 @@ function makeTalk(
     fr: {
       title: `Intervention ${slug}`,
       summary: 'Résumé de l’intervention',
-      contentMarkdown: '# Présentation\n\nContenu **français**.',
+      contentMarkdown: options.contentMarkdown ?? '# Présentation\n\nContenu **français**.',
     },
     en: options.english
       ? { title: `Talk ${slug}`, summary: 'Summary', contentMarkdown: '# About' }
@@ -115,6 +116,24 @@ test.group('Interventions publiques', (group) => {
       talk.technologies.map((item) => item.slug),
       ['adonisjs']
     )
+  })
+
+  test('le temps de lecture vient du contenu français, en liste comme en fiche', async ({
+    client,
+    assert,
+  }) => {
+    await makeTalk('longue-intervention', 'published', {
+      english: true,
+      contentMarkdown: Array(600).fill('mot').join(' '),
+    })
+
+    const listing = await client.get('/talks').withInertia()
+    const talks = listing.inertiaProps.talks as { readingTimeLabel: string }[]
+    assert.equal(talks[0].readingTimeLabel, '3 min de lecture')
+
+    const detail = await client.get('/en/talks/longue-intervention').withInertia()
+    const talk = detail.inertiaProps.talk as { readingTimeLabel: string }
+    assert.equal(talk.readingTimeLabel, '3 min read')
   })
 
   test('une intervention brouillon est introuvable pour un visiteur', async ({ client }) => {

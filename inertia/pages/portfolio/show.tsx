@@ -21,6 +21,7 @@ type PortfolioShowProps = {
     coverUrl: string | null
     startedAt: string | null
     endedAt: string | null
+    readingTimeLabel: string
     ongoing: boolean
     links: ExternalLinkRef[]
     technologies: TechnologyRef[]
@@ -63,15 +64,19 @@ export default function PortfolioShow({
 
         <header>
           <h1 className="text-3xl font-bold md:text-4xl">{project.title}</h1>
-          {(project.startedAt || project.endedAt || project.ongoing) && (
-            <p className="text-muted-foreground mt-3 flex flex-wrap items-center gap-x-2.5 font-mono text-[13px]">
-              <span>
-                {project.startedAt}
-                {project.endedAt ? ` → ${project.endedAt}` : ''}
-              </span>
-              {project.ongoing && <StatusBadge>{labels.ongoing}</StatusBadge>}
-            </p>
-          )}
+          <p className="text-muted-foreground mt-3 flex flex-wrap items-center gap-x-2.5 font-mono text-[13px]">
+            {(project.startedAt || project.endedAt) && (
+              <>
+                <span>
+                  {project.startedAt}
+                  {project.endedAt ? ` → ${project.endedAt}` : ''}
+                </span>
+                <span aria-hidden>·</span>
+              </>
+            )}
+            <span>{project.readingTimeLabel}</span>
+            {project.ongoing && <StatusBadge>{labels.ongoing}</StatusBadge>}
+          </p>
           <ExternalLinkList links={project.links} className="mt-5" />
         </header>
 

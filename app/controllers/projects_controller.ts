@@ -50,6 +50,9 @@ export default class ProjectsController {
           summary: translation.summary,
           coverUrl: MediaService.url(project.cover),
           period: formatPeriod(project, locale),
+          readingTimeLabel: i18n.t('messages.blog.readingTime', {
+            minutes: project.readingTime,
+          }),
           ongoing: project.isOngoing,
           technologies: project.technologies.map((technology) => ({
             slug: technology.slug,
@@ -118,6 +121,9 @@ export default class ProjectsController {
         coverUrl: MediaService.url(project.cover),
         startedAt: formatDate(project.startedAt, locale),
         endedAt: formatDate(project.endedAt, locale),
+        readingTimeLabel: i18n.t('messages.blog.readingTime', {
+          minutes: project.readingTime,
+        }),
         ongoing: project.isOngoing,
         links: project.links.map((link) => ({
           label: link.label,

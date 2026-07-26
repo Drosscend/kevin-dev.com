@@ -37,6 +37,9 @@ export default class TalksController {
           eventName: talk.eventName,
           eventDate: formatDate(talk.eventDate, locale),
           city: talk.city,
+          readingTimeLabel: i18n.t('messages.blog.readingTime', {
+            minutes: talk.readingTime,
+          }),
           upcoming: talk.isUpcoming,
           links: talk.links.map((link) => ({
             label: link.label,
@@ -105,6 +108,9 @@ export default class TalksController {
         eventName: talk.eventName,
         eventDate: formatDate(talk.eventDate, locale),
         city: talk.city,
+        readingTimeLabel: i18n.t('messages.blog.readingTime', {
+          minutes: talk.readingTime,
+        }),
         upcoming: talk.isUpcoming,
         links: talk.links.map((link) => ({
           label: link.label,

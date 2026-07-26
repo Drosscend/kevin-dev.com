@@ -36,7 +36,8 @@ export interface TalkPayload {
  * technology associations inside a single DB transaction, so a
  * failure can never leave the talk half-saved (the links are
  * replaced wholesale). Markdown is rendered before the transaction
- * starts and publishedAt is set on the first publication only.
+ * starts, reading time is computed from the French content, and
+ * publishedAt is set on the first publication only.
  */
 export default class TalkService {
   static async save(talk: Talk, payload: TalkPayload) {
@@ -51,6 +52,7 @@ export default class TalkService {
       talk.eventDate = DateTime.fromISO(payload.eventDate)
       talk.eventName = payload.eventName
       talk.city = payload.city
+      talk.readingTime = MarkdownService.readingTime(payload.fr.contentMarkdown)
 
       // An explicit date wins (future = scheduled); otherwise the date
       // is stamped automatically on the first publication.

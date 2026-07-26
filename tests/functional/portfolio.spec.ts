@@ -8,7 +8,12 @@ import ProjectService from '#services/project_service'
 function makeProject(
   slug: string,
   status: 'draft' | 'published',
-  options: { english?: boolean; technologyIds?: number[]; links?: boolean } = {}
+  options: {
+    english?: boolean
+    technologyIds?: number[]
+    links?: boolean
+    contentMarkdown?: string
+  } = {}
 ) {
   return ProjectService.save(new Project(), {
     slug,
@@ -25,7 +30,7 @@ function makeProject(
     fr: {
       title: `Projet ${slug}`,
       summary: 'Résumé du projet',
-      contentMarkdown: '# Présentation\n\nContenu **français**.',
+      contentMarkdown: options.contentMarkdown ?? '# Présentation\n\nContenu **français**.',
     },
     en: options.english
       ? { title: `Project ${slug}`, summary: 'Summary', contentMarkdown: '# About' }
@@ -90,6 +95,24 @@ test.group('Portfolio public', (group) => {
       project.technologies.map((item) => item.slug),
       ['adonisjs']
     )
+  })
+
+  test('le temps de lecture vient du contenu français, en liste comme en fiche', async ({
+    client,
+    assert,
+  }) => {
+    await makeProject('long-projet', 'published', {
+      english: true,
+      contentMarkdown: Array(600).fill('mot').join(' '),
+    })
+
+    const listing = await client.get('/projects').withInertia()
+    const projects = listing.inertiaProps.projects as { readingTimeLabel: string }[]
+    assert.equal(projects[0].readingTimeLabel, '3 min de lecture')
+
+    const detail = await client.get('/en/projects/long-projet').withInertia()
+    const project = detail.inertiaProps.project as { readingTimeLabel: string }
+    assert.equal(project.readingTimeLabel, '3 min read')
   })
 
   test('un projet brouillon est introuvable pour un visiteur', async ({ client }) => {

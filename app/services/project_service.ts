@@ -37,8 +37,8 @@ export interface ProjectPayload {
  * technology/article associations inside a single DB transaction,
  * so a failure can never leave the project half-saved (the links
  * are replaced wholesale). Markdown is rendered before the
- * transaction starts and publishedAt is set on the first
- * publication only.
+ * transaction starts, reading time is computed from the French
+ * content, and publishedAt is set on the first publication only.
  */
 export default class ProjectService {
   static async save(project: Project, payload: ProjectPayload) {
@@ -53,6 +53,7 @@ export default class ProjectService {
       project.startedAt = payload.startedAt ? DateTime.fromISO(payload.startedAt) : null
       project.endedAt = payload.endedAt ? DateTime.fromISO(payload.endedAt) : null
       project.featured = payload.featured
+      project.readingTime = MarkdownService.readingTime(payload.fr.contentMarkdown)
 
       // An explicit date wins (future = scheduled); otherwise the date
       // is stamped automatically on the first publication.

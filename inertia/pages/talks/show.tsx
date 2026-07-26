@@ -19,6 +19,7 @@ type TalksShowProps = {
     eventName: string
     eventDate: string
     city: string
+    readingTimeLabel: string
     upcoming: boolean
     links: ExternalLinkRef[]
     technologies: TechnologyRef[]
@@ -59,6 +60,8 @@ export default function TalksShow({ locale, preview, talk, labels, meta }: Talks
                 <span>{talk.city}</span>
               </>
             )}
+            <span aria-hidden>·</span>
+            <span>{talk.readingTimeLabel}</span>
             {talk.upcoming && <StatusBadge>{labels.upcoming}</StatusBadge>}
           </p>
           <ExternalLinkList links={talk.links} className="mt-5" />

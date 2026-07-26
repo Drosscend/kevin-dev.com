@@ -11,6 +11,7 @@ type ProjectCard = {
   summary: string
   coverUrl: string | null
   period: string | null
+  readingTimeLabel: string
   ongoing: boolean
   technologies: TechnologyRef[]
 }
@@ -42,12 +43,13 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
               summary={project.summary}
               thumbnailUrl={project.coverUrl}
               meta={
-                (project.period || project.ongoing) && (
-                  <>
-                    {project.period && <span>{project.period}</span>}
-                    {project.ongoing && <StatusBadge>{labels.ongoing}</StatusBadge>}
-                  </>
-                )
+                <>
+                  <span>
+                    {project.period && `${project.period} · `}
+                    {project.readingTimeLabel}
+                  </span>
+                  {project.ongoing && <StatusBadge>{labels.ongoing}</StatusBadge>}
+                </>
               }
               footer={
                 project.technologies.length > 0 && (
