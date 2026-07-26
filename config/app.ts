@@ -73,7 +73,7 @@ export const http = defineConfig({
     /**
      * Default lifetime for cookies managed by the HTTP layer.
      */
-    maxAge: '2h',
+    maxAge: '12h',
 
     /**
      * Prevent JavaScript access to the cookie in the browser.
