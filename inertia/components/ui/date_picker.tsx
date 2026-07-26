@@ -42,7 +42,7 @@ export function DatePicker({
   className,
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false)
-  const parsed = React.useMemo(() => parse(value), [value])
+  const parsed = parse(value)
 
   function selectDay(day: Date | undefined) {
     if (!day) {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Check, FileText, ImageIcon, Search } from 'lucide-react'
 import { cn } from '~/lib/utils'
 import { Button } from '~/components/ui/button'
@@ -89,23 +89,19 @@ export function MediaPicker({ media, value, onChange, accept = 'image', id }: Me
 
   const labels = LABELS[accept]
 
-  const pool = useMemo(
-    () => media.filter((item) => (accept === 'document' ? item.isDocument : !item.isDocument)),
-    [media, accept]
-  )
+  const pool = media.filter((item) => (accept === 'document' ? item.isDocument : !item.isDocument))
 
   const selected = value === null ? null : (media.find((item) => item.id === value) ?? null)
 
-  const results = useMemo(() => {
-    const needle = search.trim().toLowerCase()
-    if (needle === '') {
-      return pool
-    }
-    return pool.filter(
-      (item) =>
-        item.alt.toLowerCase().includes(needle) || item.originalName.toLowerCase().includes(needle)
-    )
-  }, [pool, search])
+  const needle = search.trim().toLowerCase()
+  const results =
+    needle === ''
+      ? pool
+      : pool.filter(
+          (item) =>
+            item.alt.toLowerCase().includes(needle) ||
+            item.originalName.toLowerCase().includes(needle)
+        )
 
   function openPicker() {
     setSearch('')

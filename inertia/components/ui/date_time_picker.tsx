@@ -23,6 +23,15 @@ function pad(value: number) {
   return String(value).padStart(2, '0')
 }
 
+function parseValue(value: string | null) {
+  if (!value) {
+    return null
+  }
+
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
 /** Build the "YYYY-MM-DDTHH:mm" string the server expects, in local time. */
 function compose(day: Date, hours: string, minutes: string) {
   return `${day.getFullYear()}-${pad(day.getMonth() + 1)}-${pad(day.getDate())}T${hours}:${minutes}`
@@ -44,11 +53,7 @@ export function DateTimePicker({
 }: DateTimePickerProps) {
   const [open, setOpen] = React.useState(false)
 
-  const parsed = React.useMemo(() => {
-    if (!value) return null
-    const date = new Date(value)
-    return Number.isNaN(date.getTime()) ? null : date
-  }, [value])
+  const parsed = parseValue(value)
 
   // Time kept aside only while no day is picked yet; once a value exists it is
   // the single source of truth for the hour and minute shown.

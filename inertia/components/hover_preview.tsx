@@ -81,6 +81,11 @@ export function HoverPreviewProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  /**
+   * Memoized by hand although the compiler handles the rest of the file:
+   * this object is both the context value and an effect dependency, so
+   * its identity has to hold for the life of the provider.
+   */
   const api = useMemo<PreviewApi>(() => {
     function apply() {
       const card = cardRef.current

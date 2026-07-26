@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useSyncExternalStore, type MouseEvent } from 'react'
+import { useSyncExternalStore, type MouseEvent } from 'react'
 import { cn } from '~/lib/utils'
 
 type Heading = { id: string; text: string; level: number }
@@ -72,17 +72,17 @@ function currentHeading(headings: Heading[]) {
   return passed.at(-1)?.id ?? headings[0].id
 }
 
+function subscribe(notify: () => void) {
+  window.addEventListener('scroll', notify, { passive: true })
+  window.addEventListener('resize', notify)
+
+  return () => {
+    window.removeEventListener('scroll', notify)
+    window.removeEventListener('resize', notify)
+  }
+}
+
 function useActiveHeading(headings: Heading[]) {
-  const subscribe = useCallback((notify: () => void) => {
-    window.addEventListener('scroll', notify, { passive: true })
-    window.addEventListener('resize', notify)
-
-    return () => {
-      window.removeEventListener('scroll', notify)
-      window.removeEventListener('resize', notify)
-    }
-  }, [])
-
   return useSyncExternalStore(
     subscribe,
     () => currentHeading(headings),
@@ -117,7 +117,7 @@ function scrollToHeading(event: MouseEvent<HTMLAnchorElement>, id: string) {
  * the content is too flat to be worth navigating.
  */
 export default function TableOfContents({ html, label }: { html: string; label: string }) {
-  const headings = useMemo(() => parseHeadings(html), [html])
+  const headings = parseHeadings(html)
   const active = useActiveHeading(headings)
 
   if (headings.length < MINIMUM_HEADINGS) {
