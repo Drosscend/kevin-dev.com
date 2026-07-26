@@ -1,0 +1,34 @@
+# Dependencies and AdonisJS build
+node_modules
+build
+tmp/*
+!tmp/.gitkeep
+
+# Uploads (persistent volume in production)
+storage
+
+# Internal documents (not published)
+docs/SPEC.md
+
+# Secrets
+.env
+.env.test
+.env.local
+.env.production.local
+.env.development.local
+
+# Frontend assets compiled code
+public/assets
+
+# Build tools specific
+npm-debug.log
+yarn-error.log
+
+# Editors specific
+.fleet
+.idea
+.vscode
+.claude
+
+# Platform specific
+.DS_Store

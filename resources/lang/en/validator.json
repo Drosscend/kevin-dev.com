@@ -1,0 +1,24 @@
+{
+  "shared": {
+    "messages": {
+      "required": "This field is required.",
+      "string": "This field must be text.",
+      "number": "This field must be a number.",
+      "boolean": "This field must be checked or unchecked.",
+      "array": "This field must be a list.",
+      "object": "This field is malformed.",
+      "enum": "This value is not allowed.",
+      "email": "Invalid email address.",
+      "url": "Invalid URL.",
+      "regex": "The format is invalid.",
+      "positive": "This value must be positive.",
+      "minLength": "This field must be at least {min} characters long.",
+      "maxLength": "This field must not exceed {max} characters.",
+      "fixedLength": "This field must be exactly {size} characters long.",
+      "database.exists": "This selection does not exist.",
+      "database.unique": "This value is already taken.",
+      "slug.database.unique": "This slug is already taken.",
+      "slug.regex": "The slug may only contain lowercase letters, digits and dashes."
+    }
+  }
+}

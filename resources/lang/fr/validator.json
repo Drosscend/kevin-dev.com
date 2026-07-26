@@ -1,0 +1,24 @@
+{
+  "shared": {
+    "messages": {
+      "required": "Ce champ est obligatoire.",
+      "string": "Ce champ doit être du texte.",
+      "number": "Ce champ doit être un nombre.",
+      "boolean": "Ce champ doit être coché ou décoché.",
+      "array": "Ce champ doit être une liste.",
+      "object": "Ce champ est mal formé.",
+      "enum": "Cette valeur n'est pas autorisée.",
+      "email": "Adresse email invalide.",
+      "url": "URL invalide.",
+      "regex": "Le format n'est pas valide.",
+      "positive": "Cette valeur doit être positive.",
+      "minLength": "Ce champ doit contenir au moins {min} caractères.",
+      "maxLength": "Ce champ ne doit pas dépasser {max} caractères.",
+      "fixedLength": "Ce champ doit contenir exactement {size} caractères.",
+      "database.exists": "Cette sélection n'existe pas.",
+      "database.unique": "Cette valeur est déjà utilisée.",
+      "slug.database.unique": "Ce slug est déjà utilisé.",
+      "slug.regex": "Le slug ne peut contenir que des minuscules, des chiffres et des tirets."
+    }
+  }
+}

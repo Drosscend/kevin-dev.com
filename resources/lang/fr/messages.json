@@ -1,0 +1,111 @@
+{
+  "nav": {
+    "projects": "Projets",
+    "blog": "Blog",
+    "talks": "Interventions",
+    "cv": "CV",
+    "technologies": "Technos",
+    "contact": "Contact",
+    "legal": "Mentions légales",
+    "primary": "Navigation principale",
+    "secondary": "Navigation secondaire",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "theme": "Basculer le thème clair ou sombre"
+  },
+  "home": {
+    "metaDescription": "Site personnel de Kévin Véronési : blog technique (AdonisJS, React, auto-hébergement), portfolio de projets et CV.",
+    "downloadCv": "Télécharger mon CV",
+    "contactMe": "Me contacter",
+    "photoAlt": "Kévin en conférence, au micro",
+    "now": "En ce moment",
+    "featuredProjects": "Projets",
+    "latestArticles": "Derniers articles",
+    "allArticles": "Tous les articles",
+    "allProjects": "Tous mes projets",
+    "timeline": "Parcours",
+    "stack": "Stack",
+    "allTechnologies": "Toutes mes technologies",
+    "talks": "Interventions",
+    "allTalks": "Toutes mes interventions",
+    "honours": {
+      "fair": "Mention assez bien",
+      "good": "Mention bien",
+      "very_good": "Mention très bien"
+    }
+  },
+  "toc": {
+    "title": "Sommaire"
+  },
+  "blog": {
+    "title": "Blog",
+    "metaDescription": "Articles techniques sur AdonisJS, React, l'auto-hébergement et le développement web, par Kévin Véronési.",
+    "readingTime": "{minutes} min de lecture",
+    "publishedOn": "Publié le",
+    "draft": "Brouillon, visible uniquement connecté",
+    "archived": "Retiré du site, visible uniquement connecté",
+    "empty": "Aucun article pour l'instant.",
+    "allCategories": "Toutes les catégories",
+    "technologies": "Technologies abordées",
+    "backToList": "Tous les articles",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "metaDescription": "Projets de développement de Kévin Véronési : applications web, outils et expérimentations.",
+    "empty": "Aucun projet pour l'instant.",
+    "ongoing": "En cours",
+    "backToList": "Tous les projets",
+    "technologies": "Technologies utilisées",
+    "relatedArticles": "Articles liés"
+  },
+  "talks": {
+    "title": "Interventions",
+    "metaDescription": "Conférences, meetups et ateliers animés par Kévin Véronési : supports, vidéos et retours d'expérience.",
+    "empty": "Aucune intervention pour l'instant.",
+    "backToList": "Toutes les interventions",
+    "upcoming": "À venir",
+    "technologies": "Technologies abordées"
+  },
+  "cv": {
+    "title": "CV",
+    "metaDescription": "Parcours, formations et expériences de Kévin Véronési, consultant Data Migration et développeur web.",
+    "download": "Télécharger le CV (PDF)",
+    "empty": "Le CV n'est pas encore disponible dans cette langue."
+  },
+  "legal": {
+    "title": "Mentions légales",
+    "empty": "Contenu à venir."
+  },
+  "contact": {
+    "title": "Contact",
+    "intro": "Une question, une proposition ? Écrivez-moi via ce formulaire.",
+    "name": "Nom",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Envoyer",
+    "sent": "Message envoyé, merci ! Je vous répondrai par email.",
+    "privacy": "Vos nom et email ne servent qu'à vous répondre. Ils ne sont ni partagés ni utilisés autrement, et sont supprimés sur simple demande."
+  },
+  "technologies": {
+    "title": "Technologies",
+    "metaDescription": "Les langages, frameworks et outils utilisés dans les projets de Kévin Véronési.",
+    "empty": "Aucune technologie pour l'instant.",
+    "backToList": "Toutes les technologies",
+    "docs": "Documentation officielle",
+    "usedIn": "Projets utilisant cette technologie",
+    "writtenAbout": "Articles sur cette technologie",
+    "spokenAbout": "Interventions sur cette technologie",
+    "unused": "Rien de publié sur cette technologie pour l'instant.",
+    "projectsCount": "{count, plural, =0 {aucun projet} one {# projet} other {# projets}}",
+    "articlesCount": "{count, plural, =0 {aucun article} one {# article} other {# articles}}",
+    "talksCount": "{count, plural, =0 {aucune intervention} one {# intervention} other {# interventions}}",
+    "categories": {
+      "langage": "Langages",
+      "framework": "Frameworks",
+      "outil": "Outils",
+      "infra": "Infrastructure"
+    }
+  }
+}

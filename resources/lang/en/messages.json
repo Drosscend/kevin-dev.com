@@ -1,0 +1,111 @@
+{
+  "nav": {
+    "projects": "Projects",
+    "blog": "Blog",
+    "talks": "Speaking",
+    "cv": "Resume",
+    "technologies": "Tech",
+    "contact": "Contact",
+    "legal": "Legal notice",
+    "primary": "Main navigation",
+    "secondary": "Secondary navigation",
+    "openMenu": "Open the menu",
+    "closeMenu": "Close the menu",
+    "theme": "Toggle light or dark theme"
+  },
+  "home": {
+    "metaDescription": "Kévin Véronési's personal site: tech blog (AdonisJS, React, self-hosting), project portfolio and resume.",
+    "downloadCv": "Download my resume",
+    "contactMe": "Contact me",
+    "photoAlt": "Kévin speaking at a conference",
+    "now": "Right now",
+    "featuredProjects": "Projects",
+    "latestArticles": "Latest articles",
+    "allArticles": "All articles",
+    "allProjects": "All my projects",
+    "timeline": "Background",
+    "stack": "Stack",
+    "allTechnologies": "All my technologies",
+    "talks": "Speaking",
+    "allTalks": "All my talks",
+    "honours": {
+      "fair": "With honours: fair",
+      "good": "With honours: good",
+      "very_good": "With honours: very good"
+    }
+  },
+  "toc": {
+    "title": "Contents"
+  },
+  "blog": {
+    "title": "Blog",
+    "metaDescription": "Technical articles about AdonisJS, React, self-hosting and web development, by Kévin Véronési.",
+    "readingTime": "{minutes} min read",
+    "publishedOn": "Published on",
+    "draft": "Draft, only visible while signed in",
+    "archived": "Withdrawn from the site, only visible while signed in",
+    "empty": "No articles yet.",
+    "allCategories": "All categories",
+    "technologies": "Technologies covered",
+    "backToList": "All articles",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "metaDescription": "Development projects by Kévin Véronési: web applications, tools and experiments.",
+    "empty": "No projects yet.",
+    "ongoing": "Ongoing",
+    "backToList": "All projects",
+    "technologies": "Technologies used",
+    "relatedArticles": "Related articles"
+  },
+  "talks": {
+    "title": "Speaking",
+    "metaDescription": "Conference talks, meetups and workshops given by Kévin Véronési: slides, recordings and field notes.",
+    "empty": "No talks yet.",
+    "backToList": "All talks",
+    "upcoming": "Upcoming",
+    "technologies": "Technologies covered"
+  },
+  "cv": {
+    "title": "Resume",
+    "metaDescription": "Background, education and experience of Kévin Véronési, Data Migration consultant and web developer.",
+    "download": "Download the resume (PDF)",
+    "empty": "The resume is not available in this language yet."
+  },
+  "legal": {
+    "title": "Legal notice",
+    "empty": "Content coming soon."
+  },
+  "contact": {
+    "title": "Contact",
+    "intro": "A question or a proposal? Drop me a line through this form.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send",
+    "sent": "Message sent, thank you! I will reply by email.",
+    "privacy": "Your name and email are only used to reply to you. They are never shared or used for anything else, and deleted on request."
+  },
+  "technologies": {
+    "title": "Technologies",
+    "metaDescription": "The languages, frameworks and tools used across Kévin Véronési's projects.",
+    "empty": "No technologies yet.",
+    "backToList": "All technologies",
+    "docs": "Official documentation",
+    "usedIn": "Projects using this technology",
+    "writtenAbout": "Articles about this technology",
+    "spokenAbout": "Talks about this technology",
+    "unused": "Nothing published about this technology yet.",
+    "projectsCount": "{count, plural, =0 {no project} one {# project} other {# projects}}",
+    "articlesCount": "{count, plural, =0 {no article} one {# article} other {# articles}}",
+    "talksCount": "{count, plural, =0 {no talk} one {# talk} other {# talks}}",
+    "categories": {
+      "langage": "Languages",
+      "framework": "Frameworks",
+      "outil": "Tools",
+      "infra": "Infrastructure"
+    }
+  }
+}
