@@ -1,6 +1,7 @@
 import { Link } from '@adonisjs/inertia/react'
 import ArticleContent from '~/components/article_content'
 import ExternalLinkList, { type ExternalLinkRef } from '~/components/external_link_list'
+import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner, { type PreviewMode } from '~/components/preview_banner'
 import ReadingLayout from '~/components/reading_layout'
@@ -80,11 +81,13 @@ export default function PortfolioShow({
           <ExternalLinkList links={project.links} className="mt-5" />
         </header>
 
-        {project.coverUrl && (
-          <img src={project.coverUrl} alt="" className="w-full rounded-lg border" />
-        )}
+        <Lightbox className="space-y-10">
+          {project.coverUrl && (
+            <img src={project.coverUrl} alt="" className="w-full rounded-lg border" />
+          )}
 
-        <ArticleContent html={project.contentHtml} />
+          <ArticleContent html={project.contentHtml} />
+        </Lightbox>
 
         <TechnologySection
           locale={locale}

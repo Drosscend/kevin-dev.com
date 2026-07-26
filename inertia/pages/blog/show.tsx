@@ -1,5 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import ArticleContent from '~/components/article_content'
+import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner, { type PreviewMode } from '~/components/preview_banner'
 import ReadingLayout from '~/components/reading_layout'
@@ -70,9 +71,9 @@ export default function BlogShow({ locale, preview, article, labels, meta }: Blo
           </p>
         </header>
 
-        <div className="mt-10">
+        <Lightbox className="mt-10">
           <ArticleContent html={article.contentHtml} />
-        </div>
+        </Lightbox>
 
         <TechnologySection
           className="mt-12"

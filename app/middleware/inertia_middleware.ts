@@ -54,6 +54,25 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         theme: i18n?.t('messages.nav.theme') ?? 'Basculer le thème clair ou sombre',
       }),
       /**
+       * Labels of the image viewer. It hangs off the article body, which
+       * several pages render without a controller of their own, so like
+       * the layout chrome it travels with every page.
+       */
+      lightbox: ctx.inertia.always({
+        open: i18n?.t('messages.lightbox.open') ?? "Agrandir l'image",
+        viewer: i18n?.t('messages.lightbox.viewer') ?? "Visionneuse d'images",
+        close: i18n?.t('messages.lightbox.close') ?? 'Fermer',
+        previous: i18n?.t('messages.lightbox.previous') ?? 'Image précédente',
+        next: i18n?.t('messages.lightbox.next') ?? 'Image suivante',
+        zoomIn: i18n?.t('messages.lightbox.zoomIn') ?? 'Zoom avant',
+        zoomOut: i18n?.t('messages.lightbox.zoomOut') ?? 'Zoom arrière',
+        reset: i18n?.t('messages.lightbox.reset') ?? "Taille d'origine",
+        hintClose: i18n?.t('messages.lightbox.hintClose') ?? 'fermer',
+        hintNavigate: i18n?.t('messages.lightbox.hintNavigate') ?? 'naviguer',
+        hintZoom: i18n?.t('messages.lightbox.hintZoom') ?? 'zoomer',
+        hintReset: i18n?.t('messages.lightbox.hintReset') ?? 'ajuster',
+      }),
+      /**
        * Unread contact messages, displayed as a badge in the admin
        * sidebar. Only computed for authenticated (admin) requests.
        */

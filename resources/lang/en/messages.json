@@ -107,5 +107,19 @@
       "outil": "Tools",
       "infra": "Infrastructure"
     }
+  },
+  "lightbox": {
+    "open": "Enlarge the image",
+    "viewer": "Image viewer",
+    "close": "Close",
+    "previous": "Previous image",
+    "next": "Next image",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Actual size",
+    "hintClose": "close",
+    "hintNavigate": "browse",
+    "hintZoom": "zoom",
+    "hintReset": "fit"
   }
 }

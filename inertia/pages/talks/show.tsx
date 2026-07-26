@@ -1,5 +1,6 @@
 import ArticleContent from '~/components/article_content'
 import ExternalLinkList, { type ExternalLinkRef } from '~/components/external_link_list'
+import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner, { type PreviewMode } from '~/components/preview_banner'
 import Seo, { type SeoMeta } from '~/components/seo'
@@ -67,9 +68,11 @@ export default function TalksShow({ locale, preview, talk, labels, meta }: Talks
           <ExternalLinkList links={talk.links} className="mt-5" />
         </header>
 
-        {talk.coverUrl && <img src={talk.coverUrl} alt="" className="w-full rounded-lg border" />}
+        <Lightbox className="space-y-10">
+          {talk.coverUrl && <img src={talk.coverUrl} alt="" className="w-full rounded-lg border" />}
 
-        <ArticleContent html={talk.contentHtml} />
+          <ArticleContent html={talk.contentHtml} />
+        </Lightbox>
 
         <TechnologySection
           locale={locale}

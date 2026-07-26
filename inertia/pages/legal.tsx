@@ -1,4 +1,5 @@
 import ArticleContent from '~/components/article_content'
+import Lightbox from '~/components/lightbox'
 import Seo, { type SeoMeta } from '~/components/seo'
 
 type LegalProps = {
@@ -18,13 +19,13 @@ export default function Legal({ contentHtml, labels, meta }: LegalProps) {
       <div className="mx-auto max-w-[720px]">
         <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
 
-        <div className="mt-10">
+        <Lightbox className="mt-10">
           {contentHtml ? (
             <ArticleContent html={contentHtml} />
           ) : (
             <p className="text-muted-foreground">{labels.empty}</p>
           )}
-        </div>
+        </Lightbox>
       </div>
     </div>
   )
