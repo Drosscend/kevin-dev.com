@@ -76,9 +76,24 @@ function enhanceCodeBlock(pre: HTMLPreElement) {
 }
 
 /**
+ * A table wider than the reading column scrolls inside its own box
+ * rather than pushing the whole page sideways on narrow screens.
+ */
+function enhanceTable(table: HTMLTableElement) {
+  if (table.parentElement?.classList.contains('typeset-scroll')) {
+    return
+  }
+
+  const wrapper = document.createElement('div')
+  wrapper.className = 'typeset-scroll'
+  table.replaceWith(wrapper)
+  wrapper.append(table)
+}
+
+/**
  * Renders pre-rendered article HTML and progressively enhances it:
- * a copy/download toolbar on shiki code blocks, and lazy client-side
- * rendering of mermaid diagram blocks into SVG.
+ * a copy/download toolbar on shiki code blocks, and horizontal
+ * scrolling for tables wider than the reading column.
  */
 export default function ArticleContent({ html, className }: { html: string; className?: string }) {
   const container = useRef<HTMLDivElement>(null)
@@ -90,14 +105,7 @@ export default function ArticleContent({ html, className }: { html: string; clas
     }
 
     root.querySelectorAll<HTMLPreElement>('pre[data-language]').forEach(enhanceCodeBlock)
-
-    const diagrams = [...root.querySelectorAll<HTMLElement>('.mermaid:not([data-processed])')]
-    if (diagrams.length > 0) {
-      import('mermaid').then(({ default: mermaid }) => {
-        mermaid.initialize({ startOnLoad: false, theme: 'neutral' })
-        mermaid.run({ nodes: diagrams })
-      })
-    }
+    root.querySelectorAll<HTMLTableElement>('table').forEach(enhanceTable)
   }, [html])
 
   return (
