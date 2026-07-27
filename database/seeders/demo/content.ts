@@ -30,7 +30,7 @@ export const TECHNOLOGIES = [
     name: 'TypeScript',
     category: 'langage' as const,
     docs: 'https://www.typescriptlang.org/docs/',
-    fr: "Typage statique sur toute la stack, du contrôleur AdonisJS jusqu'aux composants React.",
+    fr: 'Typage statique sur toute la stack, du contrôleur AdonisJS jusqu’aux composants React.',
     en: 'Static typing across the whole stack, from AdonisJS controllers down to React components.',
   },
   {
@@ -38,7 +38,7 @@ export const TECHNOLOGIES = [
     name: 'Python',
     category: 'langage' as const,
     docs: 'https://docs.python.org/3/',
-    fr: "Scripts d'ingestion, traitement de données et prototypage rapide de modèles.",
+    fr: 'Scripts d’ingestion, traitement de données et prototypage rapide de modèles.',
     en: 'Ingestion scripts, data processing and quick model prototyping.',
   },
   {
@@ -54,7 +54,7 @@ export const TECHNOLOGIES = [
     name: 'AdonisJS',
     category: 'framework' as const,
     docs: 'https://docs.adonisjs.com',
-    fr: "Framework Node.js complet : ORM, validation, sessions et files d'attente sans assemblage manuel.",
+    fr: 'Framework Node.js complet : ORM, validation, sessions et files d’attente sans assemblage manuel.',
     en: 'Full-featured Node.js framework: ORM, validation, sessions and queues without manual wiring.',
   },
   {
@@ -62,7 +62,7 @@ export const TECHNOLOGIES = [
     name: 'React',
     category: 'framework' as const,
     docs: 'https://react.dev/learn',
-    fr: "Interfaces déclaratives, aujourd'hui compilées par le React Compiler pour éviter la mémoïsation manuelle.",
+    fr: 'Interfaces déclaratives, aujourd’hui compilées par le React Compiler pour éviter la mémoïsation manuelle.',
     en: 'Declarative interfaces, now compiled by the React Compiler to avoid manual memoization.',
   },
   {
@@ -94,7 +94,7 @@ export const TECHNOLOGIES = [
     name: 'Redis',
     category: 'infra' as const,
     docs: 'https://redis.io/docs/latest/',
-    fr: "Cache applicatif, limitation de débit et files d'attente légères.",
+    fr: 'Cache applicatif, limitation de débit et files d’attente légères.',
     en: 'Application cache, rate limiting and lightweight queues.',
   },
   {
@@ -161,8 +161,8 @@ export const ARTICLES = [
     fr: {
       title: 'Inertia, ou comment supprimer sa couche API',
       summary:
-        "Sur un monolithe rendu côté client, la moitié du code d'API existe uniquement pour transporter des données vers le front. Inertia le rend inutile.",
-      contentMarkdown: `## Le coût caché d'une API interne
+        'Sur un monolithe rendu côté client, la moitié du code d’API existe uniquement pour transporter des données vers le front. Inertia le rend inutile.',
+      contentMarkdown: `## Le coût caché d’une API interne
 
 Une application dont le seul consommateur est son propre front-end paie
 deux fois le prix de son API : une fois pour la sérialisation côté
@@ -191,17 +191,13 @@ export default class ProjectsController {
 }
 \`\`\`
 
-## Le cycle d'une requête
+## Le cycle d’une requête
 
-\`\`\`mermaid
-flowchart LR
-  A[Clic sur un lien] --> B[Requête XHR Inertia]
-  B --> C[Contrôleur AdonisJS]
-  C --> D[Props JSON]
-  D --> E[Montage du composant React]
-\`\`\`
+Un clic sur un lien déclenche une requête XHR Inertia. Le contrôleur
+AdonisJS répond par un objet de props JSON, et le client monte le
+composant React correspondant.
 
-## Ce qu'on gagne, ce qu'on perd
+## Ce qu’on gagne, ce qu’on perd
 
 | Aspect | API REST interne | Inertia |
 | --- | --- | --- |
@@ -209,9 +205,9 @@ flowchart LR
 | Typage bout en bout | Duplication des schémas | Props du contrôleur |
 | Client mobile natif | Prêt | À ajouter plus tard |
 
-Le compromis est net : tant qu'aucun tiers ne consomme les données, la
+Le compromis est net : tant qu’aucun tiers ne consomme les données, la
 couche API est un poids mort. Le jour où un client mobile arrive, rien
-n'empêche d'exposer un sous-ensemble en REST à côté.
+n’empêche d’exposer un sous-ensemble en REST à côté.
 
 ## En pratique
 
@@ -221,7 +217,7 @@ Trois règles suffisent à garder les pages lisibles :
    son contexte.
 2. Les props sont mises en forme dans le contrôleur, pas dans le
    composant.
-3. Tout ce qui n'est pas affiché n'est pas envoyé : les requêtes
+3. Tout ce qui n’est pas affiché n’est pas envoyé : les requêtes
    sélectionnent les colonnes utiles.`,
     },
     en: {
@@ -264,10 +260,10 @@ API layer is dead weight.`,
     fr: {
       title: 'Index partiels : diviser par dix la taille de ses index',
       summary:
-        "La plupart des requêtes d'un site filtrent sur un statut publié. Indexer les brouillons ne sert alors strictement à rien.",
+        'La plupart des requêtes d’un site filtrent sur un statut publié. Indexer les brouillons ne sert alors strictement à rien.',
       contentMarkdown: `## Le constat
 
-Sur une table d'articles, environ 15 % des lignes sont des brouillons.
+Sur une table d’articles, environ 15 % des lignes sont des brouillons.
 Elles ne sont jamais lues par le site public, et pourtant chaque index
 sur \`published_at\` les contient.
 
@@ -287,8 +283,8 @@ ORDER BY published_at DESC
 LIMIT 10;
 \`\`\`
 
-Le planificateur n'utilise l'index partiel que si la clause \`WHERE\` de
-la requête implique logiquement celle de l'index. Un \`status = $1\`
+Le planificateur n’utilise l’index partiel que si la clause \`WHERE\` de
+la requête implique logiquement celle de l’index. Un \`status = $1\`
 paramétré ne suffit pas toujours : la constante doit être visible au
 moment de la planification.
 
@@ -314,12 +310,12 @@ cache : un index dix fois plus petit reste en mémoire.`,
     fr: {
       title: 'Le React Compiler en production : six mois plus tard',
       summary:
-        "Retirer tous les useMemo et useCallback d'une base de code fait peur. Le résultat est plus lisible, et mesurablement plus rapide.",
+        'Retirer tous les useMemo et useCallback d’une base de code fait peur. Le résultat est plus lisible, et mesurablement plus rapide.',
       contentMarkdown: `## Ce que le compilateur fait à votre place
 
 Le React Compiler analyse les composants et insère la mémoïsation là où
 elle est nécessaire. La contrepartie : le code doit respecter les règles
-de React, sans mutation d'état pendant le rendu.
+de React, sans mutation d’état pendant le rendu.
 
 \`\`\`tsx
 // Avant
@@ -328,7 +324,7 @@ export const sorted = useMemo(
   [items]
 )
 
-// Après : le compilateur s'en charge
+// Après : le compilateur s’en charge
 export const sorted = [...items].sort((a, b) => a.position - b.position)
 \`\`\`
 
@@ -341,9 +337,9 @@ export const sorted = [...items].sort((a, b) => a.position - b.position)
 
 ## Ce qui a réellement changé
 
-Les rendus inutiles ont baissé d'environ 40 % sur les écrans de
+Les rendus inutiles ont baissé d’environ 40 % sur les écrans de
 formulaire, où la mémoïsation manuelle était la plus incomplète. Sur les
-pages statiques, aucune différence mesurable, et c'est normal.
+pages statiques, aucune différence mesurable, et c’est normal.
 
 Le vrai bénéfice est ailleurs : les revues de code ne discutent plus des
 tableaux de dépendances.`,
@@ -381,15 +377,9 @@ measurable difference, as expected.`,
 Dix-sept minutes par pull request, dont onze passées à réinstaller des
 dépendances déjà installées la veille.
 
-\`\`\`mermaid
-flowchart TD
-  A[Push] --> B{Fichiers modifiés}
-  B -->|app/| C[Tests serveur]
-  B -->|inertia/| D[Tests client]
-  B -->|database/| C
-  C --> E[Build image]
-  D --> E
-\`\`\`
+Le pipeline part des fichiers modifiés : \`app/\` et \`database/\`
+déclenchent les tests serveur, \`inertia/\` les tests client, et la
+construction de l’image n’attend que les tests réellement lancés.
 
 ## Trois décisions
 
@@ -434,11 +424,11 @@ a réglé le problème.
       title: 'Un RAG maison avec pgvector, sans base vectorielle dédiée',
       summary:
         'Pour quelques dizaines de milliers de documents, PostgreSQL suffit largement. Ajouter une base vectorielle serait un service de plus à exploiter.',
-      contentMarkdown: `## Poser le problème avant l'outil
+      contentMarkdown: `## Poser le problème avant l’outil
 
-La question n'est pas « quelle base vectorielle choisir » mais « combien
+La question n’est pas « quelle base vectorielle choisir » mais « combien
 de vecteurs, pour quelle latence ». À 50 000 documents et 200 ms de
-budget, l'extension \`pgvector\` répond sans introduire de nouveau
+budget, l’extension \`pgvector\` répond sans introduire de nouveau
 service à sauvegarder, surveiller et mettre à jour.
 
 \`\`\`sql
@@ -452,9 +442,9 @@ CREATE INDEX documents_embedding_idx
 
 ## Le découpage compte plus que le modèle
 
-Les gains les plus nets ne sont pas venus du modèle d'embedding, mais du
+Les gains les plus nets ne sont pas venus du modèle d’embedding, mais du
 découpage : des blocs de 400 à 600 tokens alignés sur les titres de
-section, avec un chevauchement d'un paragraphe.
+section, avec un chevauchement d’un paragraphe.
 
 \`\`\`ts
 export const results = await db
@@ -468,7 +458,7 @@ export const results = await db
 
 Récupérer huit blocs puis les reclasser avec un modèle de rerank a fait
 plus pour la qualité des réponses que doubler la taille du corpus
-indexé. La recherche vectorielle sert à réduire l'espace, pas à choisir.
+indexé. La recherche vectorielle sert à réduire l’espace, pas à choisir.
 
 ## Quand migrer
 
@@ -504,8 +494,8 @@ of overlap.`,
     fr: {
       title: 'Des tests end-to-end qui ne mentent pas',
       summary:
-        "Un test instable est pire qu'un test absent : il apprend à l'équipe à ignorer le rouge.",
-      contentMarkdown: `## L'instabilité n'est pas une fatalité
+        'Un test instable est pire qu’un test absent : il apprend à l’équipe à ignorer le rouge.',
+      contentMarkdown: `## L’instabilité n’est pas une fatalité
 
 Presque toutes les instabilités observées se ramenaient à trois causes :
 une attente basée sur le temps, un état partagé entre tests, ou un
@@ -516,15 +506,15 @@ sélecteur lié à la mise en page.
 await page.waitForTimeout(500)
 await page.click('.btn-primary')
 
-// Stable : dépend de l'état observable
+// Stable : dépend de l’état observable
 await page.getByRole('button', { name: 'Publier' }).click()
 await expect(page.getByText('Article publié')).toBeVisible()
 \`\`\`
 
-## Isoler l'état
+## Isoler l’état
 
-Chaque test s'exécute dans sa propre transaction, annulée à la fin. Le
-coût d'exécution est négligeable devant celui d'une journée passée à
+Chaque test s’exécute dans sa propre transaction, annulée à la fin. Le
+coût d’exécution est négligeable devant celui d’une journée passée à
 chercher pourquoi le test 12 échoue seulement après le test 7.
 
 ## Le bon nombre de tests
@@ -545,15 +535,15 @@ plus vite que la confiance.`,
     fr: {
       title: 'Instrumenter une application AdonisJS avec OpenTelemetry',
       summary:
-        "Notes de travail sur la mise en place des traces distribuées, du contexte de requête jusqu'aux requêtes SQL.",
+        'Notes de travail sur la mise en place des traces distribuées, du contexte de requête jusqu’aux requêtes SQL.',
       contentMarkdown: `## Brouillon
 
 Plan prévu :
 
 - Le contexte de trace propagé par le middleware HTTP
-- L'instrumentation automatique de Lucid, et ses angles morts
-- Les attributs à ne surtout pas enregistrer (jetons, en-têtes d'auth)
-- Le coût réel de l'échantillonnage à 100 %
+- L’instrumentation automatique de Lucid, et ses angles morts
+- Les attributs à ne surtout pas enregistrer (jetons, en-têtes d’auth)
+- Le coût réel de l’échantillonnage à 100 %
 
 À compléter après la mise en production du collecteur.`,
     },
@@ -572,14 +562,14 @@ Plan prévu :
         'Article programmé : bilan de trois ans de rendu en périphérie, et des cas où un simple serveur bien placé fait mieux.',
       contentMarkdown: `## Programmé
 
-Cet article est planifié : il n'apparaîtra sur le site public qu'à sa
+Cet article est planifié : il n’apparaîtra sur le site public qu’à sa
 date de publication.
 
 ## Plan
 
 1. Ce que la latence réseau coûte réellement
 2. Les bases de données, angle mort du rendu en périphérie
-3. Le cas d'un serveur unique bien placé et d'un CDN devant`,
+3. Le cas d’un serveur unique bien placé et d’un CDN devant`,
     },
     en: null,
   },
@@ -607,20 +597,20 @@ export const PROJECTS = [
     fr: {
       title: 'Atlas CMS',
       summary:
-        "Un CMS bilingue sans compromis sur les performances : contenus versionnés, rendu Markdown à l'écriture, aucune requête de rendu à la lecture.",
+        'Un CMS bilingue sans compromis sur les performances : contenus versionnés, rendu Markdown à l’écriture, aucune requête de rendu à la lecture.',
       contentMarkdown: `## Le problème
 
 Les CMS génériques rendent le Markdown à chaque affichage de page. Sur
-un site de contenu, c'est du travail répété des milliers de fois pour un
+un site de contenu, c’est du travail répété des milliers de fois pour un
 résultat identique.
 
-## L'approche
+## L’approche
 
-Atlas rend le Markdown une seule fois, au moment de l'enregistrement, et
-stocke le HTML nettoyé. La page publique ne fait plus qu'une lecture.
+Atlas rend le Markdown une seule fois, au moment de l’enregistrement, et
+stocke le HTML nettoyé. La page publique ne fait plus qu’une lecture.
 
 - Traductions françaises et anglaises par entité, jamais dupliquées
-- Coloration syntaxique et diagrammes Mermaid rendus à l'écriture
+- Coloration syntaxique et diagrammes Mermaid rendus à l’écriture
 - Médias ré-encodés en WebP avec variantes responsives
 
 ## Résultat
@@ -667,30 +657,25 @@ public page is a plain read.`,
     fr: {
       title: 'Flux Analytics',
       summary:
-        "Mesure d'audience sans cookie ni donnée personnelle, conçue pour tenir sur un seul serveur jusqu'à cinq millions d'événements par jour.",
+        'Mesure d’audience sans cookie ni donnée personnelle, conçue pour tenir sur un seul serveur jusqu’à cinq millions d’événements par jour.',
       contentMarkdown: `## Contrainte de départ
 
 Aucun identifiant persistant, aucune donnée personnelle stockée, et une
-facture d'infrastructure qui tient sur un seul serveur.
+facture d’infrastructure qui tient sur un seul serveur.
 
 ## Architecture
 
-\`\`\`mermaid
-flowchart LR
-  A[Script client] --> B[Collecteur Go]
-  B --> C[(Redis)]
-  C --> D[Agrégateur]
-  D --> E[(PostgreSQL)]
-  E --> F[Tableaux de bord]
-\`\`\`
+Le script client pousse ses événements vers un collecteur Go, qui les
+dépose dans Redis. Un agrégateur les consomme, écrit dans PostgreSQL, et
+les tableaux de bord lisent cette table.
 
-Les événements sont agrégés en fenêtres d'une minute avant écriture :
-PostgreSQL ne voit jamais l'événement unitaire, seulement des compteurs.
+Les événements sont agrégés en fenêtres d’une minute avant écriture :
+PostgreSQL ne voit jamais l’événement unitaire, seulement des compteurs.
 
 ## Ce que ça a coûté
 
-Deux mois de développement, et une leçon : l'agrégation en amont rend
-impossible toute analyse rétrospective non prévue. C'est un choix
+Deux mois de développement, et une leçon : l’agrégation en amont rend
+impossible toute analyse rétrospective non prévue. C’est un choix
 assumé, pas un oubli.`,
     },
     en: null,
@@ -711,7 +696,7 @@ assumé, pas un oubli.`,
     fr: {
       title: 'Mnemo',
       summary:
-        "Assistant de recherche documentaire sur base privée : indexation incrémentale, citations vérifiables, aucune donnée envoyée à un tiers pour l'indexation.",
+        'Assistant de recherche documentaire sur base privée : indexation incrémentale, citations vérifiables, aucune donnée envoyée à un tiers pour l’indexation.',
       contentMarkdown: `## Objectif
 
 Répondre à des questions sur un corpus interne de plusieurs milliers de
@@ -773,13 +758,13 @@ de composants réellement utilisés.
 ## Principes
 
 1. Aucune dépendance runtime en dehors de React
-2. Chaque composant testé au clavier et au lecteur d'écran
+2. Chaque composant testé au clavier et au lecteur d’écran
 3. Les tokens de couleur sont la seule source de vérité du thème
 
 ## État
 
 Quarante composants, 96 % de couverture sur les interactions clavier,
-et une taille de bundle de 18 ko compressés pour l'ensemble.`,
+et une taille de bundle de 18 ko compressés pour l’ensemble.`,
     },
     en: null,
   },
@@ -802,13 +787,13 @@ et une taille de bundle de 18 ko compressés pour l'ensemble.`,
         'Passerelle de déploiement pour environnements éphémères : une branche poussée devient une URL de prévisualisation en moins de quarante secondes.',
       contentMarkdown: `## Le besoin
 
-Faire relire une modification d'interface sans demander à la personne
-qui relit d'installer quoi que ce soit.
+Faire relire une modification d’interface sans demander à la personne
+qui relit d’installer quoi que ce soit.
 
 ## Fonctionnement
 
-Chaque branche déclenche la construction d'une image et le déploiement
-d'un espace isolé, détruit automatiquement sept jours après le dernier
+Chaque branche déclenche la construction d’une image et le déploiement
+d’un espace isolé, détruit automatiquement sept jours après le dernier
 commit.
 
 ## Bilan
@@ -833,13 +818,13 @@ dans la plateforme utilisée. Le code reste public à titre de référence.`,
       title: 'Sentinelle',
       summary:
         'Surveillance de disponibilité auto-hébergée, avec alertes contextuelles et historique de disponibilité public. Projet en cours.',
-      contentMarkdown: `## En cours d'écriture
+      contentMarkdown: `## En cours d’écriture
 
-Ce projet n'est pas encore publié. Les points à documenter :
+Ce projet n’est pas encore publié. Les points à documenter :
 
 - Le format des sondes et leur planification
 - La déduplication des alertes pendant un incident
-- La page d'état publique et son cache`,
+- La page d’état publique et son cache`,
     },
     en: null,
   },
@@ -1060,7 +1045,7 @@ Points à développer :
 export const TIMELINE = [
   {
     fr: {
-      period: "2024-aujourd'hui",
+      period: '2024-aujourd’hui',
       title: 'Développeur full-stack indépendant',
       place: 'Lyon, France',
     },
@@ -1099,7 +1084,7 @@ export const TIMELINE = [
     },
     en: {
       period: '2016-2019',
-      title: "Master's in computer science, software engineering",
+      title: 'Master’s in computer science, software engineering',
       place: 'Université Lyon 1',
     },
   },
@@ -1130,7 +1115,7 @@ export const CONTACT_MESSAGES = [
   {
     name: 'Julien Ferrand',
     email: 'j.ferrand@exemple.com',
-    body: "Bonjour, seriez-vous intéressé par une intervention d'une heure sur le RAG lors de notre meetup de novembre ? Format retour d'expérience, une trentaine de personnes.",
+    body: 'Bonjour, seriez-vous intéressé par une intervention d’une heure sur le RAG lors de notre meetup de novembre ? Format retour d’expérience, une trentaine de personnes.',
     readAt: daysAgo(15),
     createdAt: daysAgo(21),
   },
@@ -1145,33 +1130,33 @@ export const CONTACT_MESSAGES = [
 
 export const CV_FR = `## Profil
 
-Développeur full-stack, huit ans d'expérience sur des applications web
-de contenu et des plateformes SaaS. Je conçois des systèmes que l'on
+Développeur full-stack, huit ans d’expérience sur des applications web
+de contenu et des plateformes SaaS. Je conçois des systèmes que l’on
 peut exploiter à deux, pas seulement construire à dix.
 
 ## Expérience
 
 ### Développeur indépendant · depuis 2024
 
-Conception et développement d'applications sur mesure : CMS bilingues,
+Conception et développement d’applications sur mesure : CMS bilingues,
 outils internes, intégration de modèles de langage sur données privées.
-Accompagnement d'équipes sur la performance back-end et la CI.
+Accompagnement d’équipes sur la performance back-end et la CI.
 
 ### Lead développeur · Nova Systems, 2021 à 2024
 
-Encadrement technique d'une équipe de cinq personnes sur une plateforme
+Encadrement technique d’une équipe de cinq personnes sur une plateforme
 SaaS multi-tenant. Division par sept du temps de réponse au 95e centile,
-et passage d'un déploiement mensuel à un déploiement quotidien.
+et passage d’un déploiement mensuel à un déploiement quotidien.
 
 ### Développeur back-end · Groupe Meridian, 2019 à 2021
 
-Services de facturation et d'export de données, migration progressive
-d'un monolithe PHP vers des services Node.js.
+Services de facturation et d’export de données, migration progressive
+d’un monolithe PHP vers des services Node.js.
 
 ## Compétences
 
 - **Langages** : TypeScript, Python, Go, SQL
-- **Back-end** : AdonisJS, PostgreSQL, Redis, conception d'API
+- **Back-end** : AdonisJS, PostgreSQL, Redis, conception d’API
 - **Front-end** : React, Inertia.js, Tailwind CSS
 - **Infrastructure** : Docker, Kubernetes, CI/CD, observabilité
 

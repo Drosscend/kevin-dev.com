@@ -243,13 +243,15 @@ export default class extends BaseSeeder {
   }
 
   async #seedSettings() {
+    // The block already carries a "En ce moment" heading, so the text
+    // itself starts on the substance.
     await SettingsService.set(
       'now_fr',
-      "En ce moment : refonte du back-office d'Atlas CMS, et une série d'articles sur la recherche vectorielle dans PostgreSQL."
+      'Refonte du back-office d’Atlas CMS, et une série d’articles sur la recherche vectorielle dans PostgreSQL.'
     )
     await SettingsService.set(
       'now_en',
-      'Right now: rebuilding the Atlas CMS back-office, and writing a series on vector search inside PostgreSQL.'
+      'Rebuilding the Atlas CMS back-office, and writing a series on vector search inside PostgreSQL.'
     )
     await SettingsService.set('hero_roles_fr', 'Développeur full-stack\nArchitecte applicatif')
     await SettingsService.set('hero_roles_en', 'Full-stack developer\nApplication architect')
