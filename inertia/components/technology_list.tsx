@@ -7,7 +7,8 @@ export type TechnologyRef = { slug: string; name: string }
 
 /**
  * Technologies of a listing row, named on the same monospaced rhythm as
- * the metadata line above the title.
+ * the metadata line above the title, and separated by the same middle
+ * dot so two names never read as one.
  */
 export function TechnologyNames({ technologies }: { technologies: TechnologyRef[] }) {
   if (technologies.length === 0) {
@@ -15,10 +16,8 @@ export function TechnologyNames({ technologies }: { technologies: TechnologyRef[
   }
 
   return (
-    <p className="text-muted-foreground flex flex-wrap gap-x-2.5 gap-y-1 font-mono text-[13px]">
-      {technologies.map((technology) => (
-        <span key={technology.slug}>{technology.name}</span>
-      ))}
+    <p className="text-muted-foreground font-mono text-[13px] leading-relaxed">
+      {technologies.map((technology) => technology.name).join(' · ')}
     </p>
   )
 }

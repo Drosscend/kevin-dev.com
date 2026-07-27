@@ -52,7 +52,7 @@
     "next": "Suivant"
   },
   "portfolio": {
-    "title": "Portfolio",
+    "title": "Projets",
     "metaDescription": "Projets de développement de Kévin Véronési : applications web, outils et expérimentations.",
     "empty": "Aucun projet pour l'instant.",
     "ongoing": "En cours",
@@ -77,6 +77,12 @@
   "legal": {
     "title": "Mentions légales",
     "empty": "Contenu à venir."
+  },
+  "errors": {
+    "notFound": "Page introuvable",
+    "gone": "Ce contenu a été retiré",
+    "server": "Une erreur est survenue",
+    "backHome": "Retour à l'accueil"
   },
   "contact": {
     "title": "Contact",

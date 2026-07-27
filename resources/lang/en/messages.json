@@ -29,9 +29,9 @@
     "talks": "Speaking",
     "allTalks": "All my talks",
     "honours": {
-      "fair": "With honours: fair",
-      "good": "With honours: good",
-      "very_good": "With honours: very good"
+      "fair": "With honours",
+      "good": "With high honours",
+      "very_good": "With highest honours"
     }
   },
   "toc": {
@@ -52,7 +52,7 @@
     "next": "Next"
   },
   "portfolio": {
-    "title": "Portfolio",
+    "title": "Projects",
     "metaDescription": "Development projects by Kévin Véronési: web applications, tools and experiments.",
     "empty": "No projects yet.",
     "ongoing": "Ongoing",
@@ -77,6 +77,12 @@
   "legal": {
     "title": "Legal notice",
     "empty": "Content coming soon."
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "gone": "This content has been withdrawn",
+    "server": "Something went wrong",
+    "backHome": "Back to home"
   },
   "contact": {
     "title": "Contact",

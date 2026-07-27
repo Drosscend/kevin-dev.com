@@ -20,25 +20,29 @@ export default function Cv({ contentHtml, pdfAvailable, labels, meta }: CvProps)
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
-        {pdfAvailable && (
-          <Button asChild size="lg" className="w-full sm:w-auto">
-            <a href="/cv.pdf" download>
-              <Download aria-hidden className="size-4" />
-              {labels.download}
-            </a>
-          </Button>
-        )}
-      </div>
+      {/* Same centred reading column as the legal page: two pages of
+          plain prose should not sit at different places on screen. */}
+      <div className="mx-auto max-w-[720px]">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
+          {pdfAvailable && (
+            <Button asChild size="lg" className="w-full sm:w-auto">
+              <a href="/cv.pdf" download>
+                <Download aria-hidden className="size-4" />
+                {labels.download}
+              </a>
+            </Button>
+          )}
+        </div>
 
-      <Lightbox className="mt-10 max-w-[720px]">
-        {contentHtml ? (
-          <ArticleContent html={contentHtml} />
-        ) : (
-          <p className="text-muted-foreground">{labels.empty}</p>
-        )}
-      </Lightbox>
+        <Lightbox className="mt-10">
+          {contentHtml ? (
+            <ArticleContent html={contentHtml} />
+          ) : (
+            <p className="text-muted-foreground">{labels.empty}</p>
+          )}
+        </Lightbox>
+      </div>
     </div>
   )
 }

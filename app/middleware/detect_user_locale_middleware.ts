@@ -2,6 +2,7 @@ import { I18n } from '@adonisjs/i18n'
 import i18nManager from '@adonisjs/i18n/services/main'
 import type { NextFn } from '@adonisjs/core/types/http'
 import { type HttpContext, RequestValidator } from '@adonisjs/core/http'
+import { localeFromPath } from '#types/i18n'
 
 /**
  * The "DetectUserLocaleMiddleware" middleware uses i18n service to share
@@ -23,8 +24,7 @@ export default class DetectUserLocaleMiddleware {
    * everything else serves French (the default locale).
    */
   protected getRequestLocale(ctx: HttpContext) {
-    const path = ctx.request.url()
-    return path === '/en' || path.startsWith('/en/') ? 'en' : 'fr'
+    return localeFromPath(ctx.request.url())
   }
 
   async handle(ctx: HttpContext, next: NextFn) {

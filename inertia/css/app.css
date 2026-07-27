@@ -40,8 +40,11 @@
   --card-foreground: oklch(0.95 0.002 106);
   --popover: oklch(0.235 0.004 106);
   --popover-foreground: oklch(0.95 0.002 106);
+  /* The accent stays light so it reads as a link on the dark paper.
+     Buttons therefore carry dark ink: white on this red only reaches
+     3.7:1, short of the 4.5:1 floor. */
   --primary: oklch(0.62 0.13 20);
-  --primary-foreground: oklch(0.984 0.002 106);
+  --primary-foreground: oklch(0.2 0.02 20);
   --secondary: oklch(0.27 0.004 106);
   --secondary-foreground: oklch(0.95 0.002 106);
   --muted: oklch(0.27 0.004 106);

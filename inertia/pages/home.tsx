@@ -257,7 +257,11 @@ export default function Home({
         <section className="pb-24 md:pb-28">
           <SectionHead
             title={labels.stack}
-            more={{ href: to('/technologies'), label: labels.allTechnologies }}
+            more={{
+              href: to('/technologies'),
+              label: labels.allTechnologies,
+              count: technologies.length + hiddenTechnologies,
+            }}
           />
           <ChipList className="max-w-[720px]">
             {technologies.map((technology) => (
