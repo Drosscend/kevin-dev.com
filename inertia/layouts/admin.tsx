@@ -1,13 +1,16 @@
 import { type Data } from '@generated/data'
 import { Toaster } from 'sonner'
 import { usePage } from '@inertiajs/react'
-import { type ReactElement, useState } from 'react'
+import { type ReactElement, type ReactNode, useState } from 'react'
 import { Form, Link } from '@adonisjs/inertia/react'
 import {
+  type LucideIcon,
   LayoutDashboard,
   Home,
   Image,
   Menu,
+  Milestone,
+  Scale,
   ShieldCheck,
   LogOut,
   Newspaper,
@@ -26,24 +29,49 @@ import { cn } from '~/lib/utils'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
 
 /**
- * Sidebar entries. Paths are resolved from the route registry, so a
- * renamed URL can never desync the active-item highlight. The
- * dashboard needs an exact match: every other path starts with its
- * own "/admin" prefix.
+ * The dashboard stands above the groups, and is the only entry
+ * matched exactly: its path is the "/admin" prefix every other one
+ * starts with.
  */
-const navigation = [
-  { route: 'admin.dashboard', exact: true, label: 'Dashboard', icon: LayoutDashboard },
-  { route: 'admin.home.index', label: 'Accueil', icon: Home },
-  { route: 'admin.articles.index', label: 'Articles', icon: Newspaper },
-  { route: 'admin.categories.index', label: 'Catégories', icon: FolderOpen },
-  { route: 'admin.projects.index', label: 'Projets', icon: FolderGit2 },
-  { route: 'admin.talks.index', label: 'Interventions', icon: Mic },
-  { route: 'admin.technologies.index', label: 'Technologies', icon: Cpu },
-  { route: 'admin.media.index', label: 'Médias', icon: Image },
-  { route: 'admin.pages.index', label: 'Pages', icon: FileText },
-  { route: 'admin.messages.index', label: 'Messages', icon: Inbox },
-  { route: 'admin.security', label: 'Sécurité', icon: ShieldCheck },
+const DASHBOARD = { route: 'admin.dashboard', label: 'Dashboard', icon: LayoutDashboard } as const
+
+/**
+ * The rest of the sidebar, grouped by what an entry edits: the items
+ * of a content model, the site pages that exist on their own, and the
+ * administration of the instance. Paths are resolved from the route
+ * registry, so a renamed URL can never desync the active highlight.
+ */
+const NAVIGATION = [
+  {
+    label: 'Contenu',
+    items: [
+      { route: 'admin.articles.index', label: 'Articles', icon: Newspaper },
+      { route: 'admin.categories.index', label: 'Catégories', icon: FolderOpen },
+      { route: 'admin.projects.index', label: 'Projets', icon: FolderGit2 },
+      { route: 'admin.talks.index', label: 'Interventions', icon: Mic },
+      { route: 'admin.technologies.index', label: 'Technologies', icon: Cpu },
+      { route: 'admin.media.index', label: 'Médias', icon: Image },
+    ],
+  },
+  {
+    label: 'Pages du site',
+    items: [
+      { route: 'admin.home.index', label: 'Accueil', icon: Home },
+      { route: 'admin.timeline.index', label: 'Parcours', icon: Milestone },
+      { route: 'admin.cv.index', label: 'CV', icon: FileText },
+      { route: 'admin.legal.index', label: 'Mentions légales', icon: Scale },
+    ],
+  },
+  {
+    label: 'Administration',
+    items: [
+      { route: 'admin.messages.index', label: 'Messages', icon: Inbox },
+      { route: 'admin.security', label: 'Sécurité', icon: ShieldCheck },
+    ],
+  },
 ] as const
+
+type NavRoute = Parameters<typeof client.urlFor>[0]
 
 function UnreadBadge({ count }: { count: number }) {
   if (count === 0) {
@@ -56,11 +84,46 @@ function UnreadBadge({ count }: { count: number }) {
   )
 }
 
+function NavLink({
+  route,
+  label,
+  icon: Icon,
+  active,
+  onNavigate,
+  children,
+}: {
+  route: NavRoute
+  label: string
+  icon: LucideIcon
+  active: boolean
+  onNavigate: () => void
+  children?: ReactNode
+}) {
+  return (
+    <Link
+      route={route}
+      onClick={onNavigate}
+      aria-current={active ? 'page' : undefined}
+      className={cn(
+        'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+        active
+          ? 'bg-accent text-foreground'
+          : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+      )}
+    >
+      <Icon className="size-4" />
+      {label}
+      {children}
+    </Link>
+  )
+}
+
 export default function AdminLayout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const { url } = usePage()
   const [mobileOpen, setMobileOpen] = useState(false)
   const currentPath = url.split('?')[0]
   const unread = (children.props as { unreadMessages?: number }).unreadMessages ?? 0
+  const closeMobile = () => setMobileOpen(false)
 
   useFlashToasts(children.props.flash)
 
@@ -76,36 +139,36 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
           size="sm"
           className="lg:hidden"
           aria-label="Fermer le menu"
-          onClick={() => setMobileOpen(false)}
+          onClick={closeMobile}
         >
           <X className="size-4" />
         </Button>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
-        {navigation.map(({ route, label, icon: Icon, ...item }) => {
-          const path = client.urlFor(route)
-          const active =
-            'exact' in item && item.exact ? currentPath === path : currentPath.startsWith(path)
-          return (
-            <Link
-              key={route}
-              route={route}
-              onClick={() => setMobileOpen(false)}
-              aria-current={active ? 'page' : undefined}
-              className={cn(
-                'flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                active
-                  ? 'bg-accent text-foreground'
-                  : 'text-muted-foreground hover:bg-accent hover:text-foreground'
-              )}
-            >
-              <Icon className="size-4" />
-              {label}
-              {route === 'admin.messages.index' && <UnreadBadge count={unread} />}
-            </Link>
-          )
-        })}
+        <NavLink
+          {...DASHBOARD}
+          active={currentPath === client.urlFor(DASHBOARD.route)}
+          onNavigate={closeMobile}
+        />
+
+        {NAVIGATION.map((group) => (
+          <div key={group.label} className="flex flex-col gap-1">
+            <p className="text-muted-foreground px-3 pt-4 pb-1 text-xs font-medium">
+              {group.label}
+            </p>
+            {group.items.map((item) => (
+              <NavLink
+                key={item.route}
+                {...item}
+                active={currentPath.startsWith(client.urlFor(item.route))}
+                onNavigate={closeMobile}
+              >
+                {item.route === 'admin.messages.index' && <UnreadBadge count={unread} />}
+              </NavLink>
+            ))}
+          </div>
+        ))}
       </nav>
 
       <div className="border-t p-3">
@@ -147,7 +210,7 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
         <div
           aria-hidden
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-          onClick={() => setMobileOpen(false)}
+          onClick={closeMobile}
         />
       )}
 

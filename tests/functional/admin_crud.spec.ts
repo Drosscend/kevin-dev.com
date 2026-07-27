@@ -189,7 +189,7 @@ test.group('Admin parcours', (group) => {
     const user = await admin()
 
     const response = await client
-      .post('/admin/home/timeline')
+      .post('/admin/timeline')
       .loginAs(user)
       .withCsrfToken()
       .redirects(0)
@@ -218,7 +218,7 @@ test.group('Admin parcours', (group) => {
     ])
 
     const response = await client
-      .put(`/admin/home/timeline/${created.id}`)
+      .put(`/admin/timeline/${created.id}`)
       .loginAs(user)
       .withCsrfToken()
       .redirects(0)
@@ -233,7 +233,7 @@ test.group('Admin parcours', (group) => {
     const user = await admin()
 
     const store = await client
-      .post('/admin/home/timeline')
+      .post('/admin/timeline')
       .loginAs(user)
       .withCsrfToken()
       .redirects(0)
@@ -244,7 +244,7 @@ test.group('Admin parcours', (group) => {
     assert.equal(created.honours, 'none')
 
     const update = await client
-      .put(`/admin/home/timeline/${created.id}`)
+      .put(`/admin/timeline/${created.id}`)
       .loginAs(user)
       .withCsrfToken()
       .redirects(0)
@@ -629,29 +629,78 @@ test.group('Admin écrans de contenu', (group) => {
   })
 })
 
-test.group('Admin éditeur de pages', (group) => {
+/**
+ * The site pages are edited one screen per subject: each of them has
+ * to render on its own, with only the props it needs.
+ */
+test.group('Admin pages du site', (group) => {
+  group.each.setup(() => testUtils.db().withGlobalTransaction())
+
+  test('chaque écran se rend séparément', async ({ client, assert }) => {
+    const user = await admin()
+
+    const home = await client.get('/admin/home').loginAs(user).withInertia()
+    home.assertStatus(200)
+    assert.properties(home.inertiaProps.settings, ['heroRolesFr', 'heroLocation', 'nowFr'])
+    assert.notProperty(home.inertiaProps, 'timeline')
+
+    const timeline = await client.get('/admin/timeline').loginAs(user).withInertia()
+    timeline.assertStatus(200)
+    assert.isArray(timeline.inertiaProps.timeline)
+
+    const cv = await client.get('/admin/cv').loginAs(user).withInertia()
+    cv.assertStatus(200)
+    assert.properties(cv.inertiaProps, ['fr', 'en', 'pdf'])
+
+    const legal = await client.get('/admin/legal').loginAs(user).withInertia()
+    legal.assertStatus(200)
+    assert.properties(legal.inertiaProps, ['fr', 'en'])
+  })
+})
+
+test.group('Admin pages markdown', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test('enregistrer le CV rend le HTML et vider efface', async ({ client, assert }) => {
     const user = await admin()
 
     const save = await client
-      .put('/admin/pages')
+      .put('/admin/cv')
       .loginAs(user)
       .withCsrfToken()
       .redirects(0)
-      .form({ cvFr: '## Parcours', cvEn: '', legalFr: '', legalEn: '' })
+      .form({ fr: '## Parcours', en: '' })
     save.assertStatus(302)
 
     assert.include(await SettingsService.get('cv_html_fr'), '<h2 id="parcours">Parcours</h2>')
 
     const clear = await client
-      .put('/admin/pages')
+      .put('/admin/cv')
       .loginAs(user)
       .withCsrfToken()
       .redirects(0)
-      .form({ cvFr: '', cvEn: '', legalFr: '', legalEn: '' })
+      .form({ fr: '', en: '' })
     clear.assertStatus(302)
     assert.equal(await SettingsService.get('cv_html_fr'), '')
+  })
+
+  test('les mentions légales ont leur propre page', async ({ client, assert }) => {
+    const user = await admin()
+
+    const save = await client
+      .put('/admin/legal')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .form({ fr: '## Éditeur', en: '## Publisher' })
+    save.assertStatus(302)
+
+    assert.include(await SettingsService.get('legal_html_fr'), 'Éditeur')
+    assert.include(await SettingsService.get('legal_html_en'), 'Publisher')
+    assert.equal(
+      await SettingsService.get('cv_markdown_fr'),
+      '',
+      'enregistrer une page n’en touche pas une autre'
+    )
   })
 })

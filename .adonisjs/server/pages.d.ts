@@ -15,17 +15,19 @@ declare module '@adonisjs/inertia/types' {
     'admin/articles/form': ExtractProps<(typeof import('../../inertia/pages/admin/articles/form.tsx'))['default']>
     'admin/articles/index': ExtractProps<(typeof import('../../inertia/pages/admin/articles/index.tsx'))['default']>
     'admin/categories': ExtractProps<(typeof import('../../inertia/pages/admin/categories.tsx'))['default']>
+    'admin/cv': ExtractProps<(typeof import('../../inertia/pages/admin/cv.tsx'))['default']>
     'admin/dashboard': ExtractProps<(typeof import('../../inertia/pages/admin/dashboard.tsx'))['default']>
     'admin/home': ExtractProps<(typeof import('../../inertia/pages/admin/home.tsx'))['default']>
+    'admin/legal': ExtractProps<(typeof import('../../inertia/pages/admin/legal.tsx'))['default']>
     'admin/media': ExtractProps<(typeof import('../../inertia/pages/admin/media.tsx'))['default']>
     'admin/messages': ExtractProps<(typeof import('../../inertia/pages/admin/messages.tsx'))['default']>
-    'admin/pages': ExtractProps<(typeof import('../../inertia/pages/admin/pages.tsx'))['default']>
     'admin/projects/form': ExtractProps<(typeof import('../../inertia/pages/admin/projects/form.tsx'))['default']>
     'admin/projects/index': ExtractProps<(typeof import('../../inertia/pages/admin/projects/index.tsx'))['default']>
     'admin/security': ExtractProps<(typeof import('../../inertia/pages/admin/security.tsx'))['default']>
     'admin/talks/form': ExtractProps<(typeof import('../../inertia/pages/admin/talks/form.tsx'))['default']>
     'admin/talks/index': ExtractProps<(typeof import('../../inertia/pages/admin/talks/index.tsx'))['default']>
     'admin/technologies': ExtractProps<(typeof import('../../inertia/pages/admin/technologies.tsx'))['default']>
+    'admin/timeline': ExtractProps<(typeof import('../../inertia/pages/admin/timeline.tsx'))['default']>
     'auth/login': ExtractProps<(typeof import('../../inertia/pages/auth/login.tsx'))['default']>
     'auth/verify': ExtractProps<(typeof import('../../inertia/pages/auth/verify.tsx'))['default']>
     'blog/index': ExtractProps<(typeof import('../../inertia/pages/blog/index.tsx'))['default']>

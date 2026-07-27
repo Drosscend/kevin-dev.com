@@ -90,23 +90,6 @@ export interface ApiDefinition {
     }
     dashboard: typeof routes['admin.dashboard']
     logout: typeof routes['admin.logout']
-    home: {
-      index: typeof routes['admin.home.index']
-      update: typeof routes['admin.home.update']
-      timeline: {
-        store: typeof routes['admin.home.timeline.store']
-        update: typeof routes['admin.home.timeline.update']
-        move: typeof routes['admin.home.timeline.move']
-        destroy: typeof routes['admin.home.timeline.destroy']
-      }
-    }
-    security: typeof routes['admin.security'] & {
-      store: typeof routes['admin.security.store']
-      destroy: typeof routes['admin.security.destroy']
-      recovery: {
-        store: typeof routes['admin.security.recovery.store']
-      }
-    }
     media: {
       index: typeof routes['admin.media.index']
       store: typeof routes['admin.media.store']
@@ -149,17 +132,39 @@ export interface ApiDefinition {
       update: typeof routes['admin.talks.update']
       destroy: typeof routes['admin.talks.destroy']
     }
-    pages: {
-      index: typeof routes['admin.pages.index']
-      update: typeof routes['admin.pages.update']
+    home: {
+      index: typeof routes['admin.home.index']
+      update: typeof routes['admin.home.update']
+    }
+    timeline: {
+      index: typeof routes['admin.timeline.index']
+      store: typeof routes['admin.timeline.store']
+      update: typeof routes['admin.timeline.update']
+      move: typeof routes['admin.timeline.move']
+      destroy: typeof routes['admin.timeline.destroy']
+    }
+    cv: {
+      index: typeof routes['admin.cv.index']
+      update: typeof routes['admin.cv.update']
       pdf: {
-        store: typeof routes['admin.pages.pdf.store']
+        store: typeof routes['admin.cv.pdf.store']
       }
+    }
+    legal: {
+      index: typeof routes['admin.legal.index']
+      update: typeof routes['admin.legal.update']
     }
     messages: {
       index: typeof routes['admin.messages.index']
       read: typeof routes['admin.messages.read']
       destroy: typeof routes['admin.messages.destroy']
+    }
+    security: typeof routes['admin.security'] & {
+      store: typeof routes['admin.security.store']
+      destroy: typeof routes['admin.security.destroy']
+      recovery: {
+        store: typeof routes['admin.security.recovery.store']
+      }
     }
   }
 }

@@ -118,28 +118,6 @@ router
     router.get('/', [controllers.admin.Dashboard, 'handle']).as('admin.dashboard')
     router.post('logout', [controllers.admin.Session, 'destroy']).as('admin.logout')
 
-    router.get('home', [controllers.admin.Home, 'show']).as('admin.home.index')
-    router.put('home', [controllers.admin.Home, 'update']).as('admin.home.update')
-    router
-      .post('home/timeline', [controllers.admin.Home, 'timelineStore'])
-      .as('admin.home.timeline.store')
-    router
-      .put('home/timeline/:id', [controllers.admin.Home, 'timelineUpdate'])
-      .as('admin.home.timeline.update')
-    router
-      .put('home/timeline/:id/move', [controllers.admin.Home, 'timelineMove'])
-      .as('admin.home.timeline.move')
-    router
-      .delete('home/timeline/:id', [controllers.admin.Home, 'timelineDestroy'])
-      .as('admin.home.timeline.destroy')
-
-    router.get('security', [controllers.admin.Security, 'show']).as('admin.security')
-    router.post('security', [controllers.admin.Security, 'store']).as('admin.security.store')
-    router.delete('security', [controllers.admin.Security, 'destroy']).as('admin.security.destroy')
-    router
-      .post('security/recovery', [controllers.admin.Security, 'regenerateRecovery'])
-      .as('admin.security.recovery.store')
-
     router.get('media', [controllers.admin.Media, 'index']).as('admin.media.index')
     router.post('media', [controllers.admin.Media, 'store']).as('admin.media.store')
     router.post('media/upload', [controllers.admin.Media, 'upload']).as('admin.media.upload')
@@ -196,9 +174,28 @@ router
     router.put('talks/:id', [controllers.admin.Talks, 'update']).as('admin.talks.update')
     router.delete('talks/:id', [controllers.admin.Talks, 'destroy']).as('admin.talks.destroy')
 
-    router.get('pages', [controllers.admin.Pages, 'show']).as('admin.pages.index')
-    router.put('pages', [controllers.admin.Pages, 'update']).as('admin.pages.update')
-    router.post('pages/cv-pdf', [controllers.admin.Pages, 'uploadPdf']).as('admin.pages.pdf.store')
+    /**
+     * The site pages that are edited as a whole rather than as
+     * entries: the homepage blocks, its career timeline, and the two
+     * markdown pages.
+     */
+    router.get('home', [controllers.admin.Home, 'show']).as('admin.home.index')
+    router.put('home', [controllers.admin.Home, 'update']).as('admin.home.update')
+
+    router.get('timeline', [controllers.admin.Timeline, 'index']).as('admin.timeline.index')
+    router.post('timeline', [controllers.admin.Timeline, 'store']).as('admin.timeline.store')
+    router.put('timeline/:id', [controllers.admin.Timeline, 'update']).as('admin.timeline.update')
+    router.put('timeline/:id/move', [controllers.admin.Timeline, 'move']).as('admin.timeline.move')
+    router
+      .delete('timeline/:id', [controllers.admin.Timeline, 'destroy'])
+      .as('admin.timeline.destroy')
+
+    router.get('cv', [controllers.admin.Cv, 'show']).as('admin.cv.index')
+    router.put('cv', [controllers.admin.Cv, 'update']).as('admin.cv.update')
+    router.post('cv/pdf', [controllers.admin.Cv, 'uploadPdf']).as('admin.cv.pdf.store')
+
+    router.get('legal', [controllers.admin.Legal, 'show']).as('admin.legal.index')
+    router.put('legal', [controllers.admin.Legal, 'update']).as('admin.legal.update')
 
     router.get('messages', [controllers.admin.Messages, 'index']).as('admin.messages.index')
     router
@@ -207,6 +204,13 @@ router
     router
       .delete('messages/:id', [controllers.admin.Messages, 'destroy'])
       .as('admin.messages.destroy')
+
+    router.get('security', [controllers.admin.Security, 'show']).as('admin.security')
+    router.post('security', [controllers.admin.Security, 'store']).as('admin.security.store')
+    router.delete('security', [controllers.admin.Security, 'destroy']).as('admin.security.destroy')
+    router
+      .post('security/recovery', [controllers.admin.Security, 'regenerateRecovery'])
+      .as('admin.security.recovery.store')
   })
   .prefix('/admin')
   .use(middleware.auth())
