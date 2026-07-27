@@ -43,7 +43,10 @@ export default function ArticlesIndex({ articles }: ArticlesIndexProps) {
       ) : (
         <ul className="divide-y border-y">
           {articles.map((article) => (
-            <li key={article.id} className="flex items-center justify-between gap-4 py-3">
+            <li
+              key={article.id}
+              className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+            >
               <div className="min-w-0">
                 <Link
                   route="admin.articles.edit"
@@ -58,33 +61,35 @@ export default function ArticlesIndex({ articles }: ArticlesIndexProps) {
                   {article.hasEnglish ? ' · FR + EN' : ' · FR'}
                 </p>
               </div>
-              <div className="flex shrink-0 items-center gap-3">
+              <div className="flex items-center justify-between gap-3 sm:shrink-0 sm:justify-end">
                 <StatusBadge
                   status={article.status}
                   detail={article.publishedAt}
                   scheduled={article.scheduled}
                 />
-                <PreviewLink kind="articles" slug={article.slug} title={article.title} />
-                <ConfirmButton
-                  description={`Supprimer « ${article.title} » ? Cette action est définitive.`}
-                  onConfirm={() =>
-                    router.visit(
-                      { route: 'admin.articles.destroy', routeParams: { id: article.id } },
-                      { preserveScroll: true }
-                    )
-                  }
-                  trigger={
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="text-destructive"
-                      aria-label={`Supprimer ${article.title}`}
-                    >
-                      <Trash2 className="size-4" />
-                    </Button>
-                  }
-                />
+                <span className="flex items-center gap-3">
+                  <PreviewLink kind="articles" slug={article.slug} title={article.title} />
+                  <ConfirmButton
+                    description={`Supprimer « ${article.title} » ? Cette action est définitive.`}
+                    onConfirm={() =>
+                      router.visit(
+                        { route: 'admin.articles.destroy', routeParams: { id: article.id } },
+                        { preserveScroll: true }
+                      )
+                    }
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive"
+                        aria-label={`Supprimer ${article.title}`}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    }
+                  />
+                </span>
               </div>
             </li>
           ))}

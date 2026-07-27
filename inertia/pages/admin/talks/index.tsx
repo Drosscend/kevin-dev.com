@@ -46,7 +46,10 @@ export default function TalksIndex({ talks }: TalksIndexProps) {
       ) : (
         <ul className="divide-y border-y">
           {talks.map((talk) => (
-            <li key={talk.id} className="flex items-center justify-between gap-4 py-3">
+            <li
+              key={talk.id}
+              className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+            >
               <div className="min-w-0">
                 <span className="flex items-center gap-2">
                   <Link
@@ -68,33 +71,35 @@ export default function TalksIndex({ talks }: TalksIndexProps) {
                   {talk.hasEnglish ? ' · FR + EN' : ' · FR'}
                 </p>
               </div>
-              <div className="flex shrink-0 items-center gap-3">
+              <div className="flex items-center justify-between gap-3 sm:shrink-0 sm:justify-end">
                 <StatusBadge
                   status={talk.status}
                   detail={talk.publishedAt}
                   scheduled={talk.scheduled}
                 />
-                <PreviewLink kind="talks" slug={talk.slug} title={talk.title} />
-                <ConfirmButton
-                  description={`Supprimer « ${talk.title} » ? Cette action est définitive.`}
-                  onConfirm={() =>
-                    router.visit(
-                      { route: 'admin.talks.destroy', routeParams: { id: talk.id } },
-                      { preserveScroll: true }
-                    )
-                  }
-                  trigger={
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="text-destructive"
-                      aria-label={`Supprimer ${talk.title}`}
-                    >
-                      <Trash2 className="size-4" />
-                    </Button>
-                  }
-                />
+                <span className="flex items-center gap-3">
+                  <PreviewLink kind="talks" slug={talk.slug} title={talk.title} />
+                  <ConfirmButton
+                    description={`Supprimer « ${talk.title} » ? Cette action est définitive.`}
+                    onConfirm={() =>
+                      router.visit(
+                        { route: 'admin.talks.destroy', routeParams: { id: talk.id } },
+                        { preserveScroll: true }
+                      )
+                    }
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive"
+                        aria-label={`Supprimer ${talk.title}`}
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    }
+                  />
+                </span>
               </div>
             </li>
           ))}

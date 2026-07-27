@@ -12,6 +12,7 @@ import FieldError from '~/components/field_error'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
+import { plural } from '~/lib/plural'
 
 const CATEGORIES = [
   { value: 'langage', label: 'Langage' },
@@ -19,6 +20,11 @@ const CATEGORIES = [
   { value: 'outil', label: 'Outil' },
   { value: 'infra', label: 'Infra' },
 ] as const
+
+/** Reading name of a stored category value, for the list below the form. */
+function categoryLabel(value: string) {
+  return CATEGORIES.find((category) => category.value === value)?.label ?? value
+}
 
 type TechnologyItem = {
   id: number
@@ -211,9 +217,12 @@ export default function Technologies({ technologies, mediaOptions }: Technologie
                   )}
                   <div>
                     <span className="font-medium">{item.name}</span>
-                    <span className="text-muted-foreground text-sm"> · {item.category}</span>
+                    <span className="text-muted-foreground text-sm">
+                      {' '}
+                      · {categoryLabel(item.category)}
+                    </span>
                     <span className="text-muted-foreground block text-xs">
-                      {item.slug} · {item.projectsCount} projet(s)
+                      {item.slug} · {plural(item.projectsCount, 'projet')}
                     </span>
                     {item.docsUrl && (
                       <a

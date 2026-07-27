@@ -55,6 +55,9 @@ export default class ProjectsController {
         translations.select('id', 'project_id', 'locale', 'title')
       )
       .withCount('technologies')
+      // Ordered by the date the list shows. Drafts carry none, so they
+      // surface first, where the work waiting to be finished belongs.
+      .orderByRaw('published_at desc nulls first')
       .orderBy('created_at', 'desc')
 
     return inertia.render('admin/projects/index', {

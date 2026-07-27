@@ -15,6 +15,7 @@ import DraftBanner from '~/components/admin/draft_banner'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
 import PreviewLink from '~/components/admin/preview_link'
 import PublicationActions, { type PublicationStatus } from '~/components/admin/publication_actions'
+import ToggleList from '~/components/admin/toggle_list'
 import TranslationCard from '~/components/admin/translation_card'
 import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
 import { EMPTY_TRANSLATION, SLUG_LOCKED_HINT, slugify, type TranslationValues } from '~/lib/admin'
@@ -234,24 +235,15 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
 
             <div className="space-y-2">
               <Label>Technologies abordées</Label>
-              <div className="flex flex-wrap gap-2">
-                {options.technologies.length === 0 && (
-                  <p className="text-muted-foreground text-sm">Aucune technologie définie.</p>
-                )}
-                {options.technologies.map((technology) => (
-                  <label
-                    key={technology.id}
-                    className="flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-sm"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={form.data.technologyIds.includes(technology.id)}
-                      onChange={() => toggleTechnology(technology.id)}
-                    />
-                    {technology.name}
-                  </label>
-                ))}
-              </div>
+              <ToggleList
+                options={options.technologies.map((technology) => ({
+                  id: technology.id,
+                  label: technology.name,
+                }))}
+                selected={form.data.technologyIds}
+                onToggle={toggleTechnology}
+                empty="Aucune technologie définie."
+              />
             </div>
           </CardContent>
         </Card>

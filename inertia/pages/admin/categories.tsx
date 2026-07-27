@@ -10,6 +10,7 @@ import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
 import FieldError from '~/components/field_error'
+import { plural } from '~/lib/plural'
 
 type Category = {
   id: number
@@ -116,7 +117,7 @@ export default function Categories({ categories }: CategoriesProps) {
                     <span className="text-muted-foreground text-sm"> · {category.nameEn}</span>
                   )}
                   <span className="text-muted-foreground block font-mono text-xs">
-                    {category.slug} · {category.articlesCount} article(s)
+                    {category.slug} · {plural(category.articlesCount, 'article')}
                   </span>
                 </div>
                 <div className="flex gap-1">

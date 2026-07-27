@@ -15,6 +15,7 @@ import DraftBanner from '~/components/admin/draft_banner'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
 import PreviewLink from '~/components/admin/preview_link'
 import PublicationActions, { type PublicationStatus } from '~/components/admin/publication_actions'
+import ToggleList, { SwitchField } from '~/components/admin/toggle_list'
 import TranslationCard from '~/components/admin/translation_card'
 import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
 import { EMPTY_TRANSLATION, SLUG_LOCKED_HINT, slugify, type TranslationValues } from '~/lib/admin'
@@ -222,57 +223,36 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
               </div>
             </div>
 
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={form.data.featured}
-                onChange={(event) => form.setData('featured', event.target.checked)}
-              />
-              Mis en avant sur l’accueil
-            </label>
+            <SwitchField
+              label="Mis en avant sur l’accueil"
+              checked={form.data.featured}
+              onCheckedChange={(checked) => form.setData('featured', checked)}
+            />
 
             <div className="space-y-2">
               <Label>Technologies</Label>
-              <div className="flex flex-wrap gap-2">
-                {options.technologies.length === 0 && (
-                  <p className="text-muted-foreground text-sm">Aucune technologie définie.</p>
-                )}
-                {options.technologies.map((technology) => (
-                  <label
-                    key={technology.id}
-                    className="flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-sm"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={form.data.technologyIds.includes(technology.id)}
-                      onChange={() => toggleId('technologyIds', technology.id)}
-                    />
-                    {technology.name}
-                  </label>
-                ))}
-              </div>
+              <ToggleList
+                options={options.technologies.map((technology) => ({
+                  id: technology.id,
+                  label: technology.name,
+                }))}
+                selected={form.data.technologyIds}
+                onToggle={(id) => toggleId('technologyIds', id)}
+                empty="Aucune technologie définie."
+              />
             </div>
 
             <div className="space-y-2">
               <Label>Articles liés</Label>
-              <div className="flex flex-wrap gap-2">
-                {options.articles.length === 0 && (
-                  <p className="text-muted-foreground text-sm">Aucun article.</p>
-                )}
-                {options.articles.map((article) => (
-                  <label
-                    key={article.id}
-                    className="flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-sm"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={form.data.articleIds.includes(article.id)}
-                      onChange={() => toggleId('articleIds', article.id)}
-                    />
-                    {article.title}
-                  </label>
-                ))}
-              </div>
+              <ToggleList
+                options={options.articles.map((article) => ({
+                  id: article.id,
+                  label: article.title,
+                }))}
+                selected={form.data.articleIds}
+                onToggle={(id) => toggleId('articleIds', id)}
+                empty="Aucun article."
+              />
             </div>
           </CardContent>
         </Card>

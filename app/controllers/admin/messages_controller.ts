@@ -13,7 +13,9 @@ export default class MessagesController {
         email: message.email,
         body: message.body,
         isRead: message.isRead,
-        createdAt: message.createdAt.setLocale('fr').toLocaleString(DateTime.DATETIME_MED),
+        // Raw value: the admin formats every date through one helper,
+        // so a message reads like a publication date.
+        createdAt: message.createdAt.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
       })),
     })
   }

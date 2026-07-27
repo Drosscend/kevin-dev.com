@@ -18,9 +18,20 @@ export default class DashboardController {
       unreadMessages,
       umami,
     ] = await Promise.all([
-      Article.query().where('status', 'published').count('* as total').firstOrFail().then(asTotal),
+      // The published scope, not the status alone: an entry dated in the
+      // future is scheduled, and counting it as online would contradict
+      // what the site actually serves.
+      Article.query()
+        .withScopes((scopes) => scopes.published())
+        .count('* as total')
+        .firstOrFail()
+        .then(asTotal),
       Article.query().where('status', 'draft').count('* as total').firstOrFail().then(asTotal),
-      Project.query().where('status', 'published').count('* as total').firstOrFail().then(asTotal),
+      Project.query()
+        .withScopes((scopes) => scopes.published())
+        .count('* as total')
+        .firstOrFail()
+        .then(asTotal),
       Project.query().where('status', 'draft').count('* as total').firstOrFail().then(asTotal),
       Media.query().count('* as total').firstOrFail().then(asTotal),
       ContactMessage.query().whereNull('read_at').count('* as total').firstOrFail().then(asTotal),

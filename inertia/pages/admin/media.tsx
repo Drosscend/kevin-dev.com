@@ -2,6 +2,7 @@ import { Form, useRouter } from '@adonisjs/inertia/react'
 import { Copy, FileText, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '~/components/ui/button'
+import { FileInput } from '~/components/ui/file_input'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
@@ -63,7 +64,7 @@ export default function MediaPage({ media }: MediaPageProps) {
               <>
                 <div className="space-y-2">
                   <Label htmlFor="file">Image ou PDF</Label>
-                  <Input type="file" name="file" id="file" accept="image/*,application/pdf" />
+                  <FileInput name="file" id="file" accept="image/*,application/pdf" />
                   <FieldError errors={errors} field="file" />
                 </div>
 

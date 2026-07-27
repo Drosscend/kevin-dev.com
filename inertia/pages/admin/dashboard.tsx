@@ -3,6 +3,7 @@ import { ExternalLink, Plus } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import AdminPage from '~/components/admin/admin_page'
+import { plural } from '~/lib/plural'
 
 interface DashboardProps {
   totpEnabled: boolean
@@ -90,15 +91,15 @@ export default function Dashboard({ totpEnabled, umami, stats }: DashboardProps)
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="Articles publiés"
+          label="Articles en ligne"
           value={stats.articlesPublished}
-          detail={`${stats.articlesDraft} brouillon(s)`}
+          detail={plural(stats.articlesDraft, 'brouillon')}
           route="admin.articles.index"
         />
         <StatCard
-          label="Projets publiés"
+          label="Projets en ligne"
           value={stats.projectsPublished}
-          detail={`${stats.projectsDraft} brouillon(s)`}
+          detail={plural(stats.projectsDraft, 'brouillon')}
           route="admin.projects.index"
         />
         <StatCard
@@ -120,7 +121,8 @@ export default function Dashboard({ totpEnabled, umami, stats }: DashboardProps)
           <CardHeader>
             <CardTitle>Visites sur 30 jours</CardTitle>
             <CardDescription>
-              {umami.pageviews} pages vues · {umami.visitors} visiteur(s)
+              {plural(umami.pageviews, 'page vue', 'pages vues')} ·{' '}
+              {plural(umami.visitors, 'visiteur')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -129,7 +131,7 @@ export default function Dashboard({ totpEnabled, umami, stats }: DashboardProps)
                 <li key={page.path} className="flex items-baseline justify-between gap-4 py-2">
                   <span className="truncate font-mono text-sm">{page.path}</span>
                   <span className="text-muted-foreground shrink-0 text-sm">
-                    {page.views} vue(s)
+                    {plural(page.views, 'vue')}
                   </span>
                 </li>
               ))}

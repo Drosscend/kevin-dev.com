@@ -41,6 +41,9 @@ export default class ArticlesController {
             translations.select('id', 'category_id', 'locale', 'name')
           )
       )
+      // Ordered by the date the list shows. Drafts carry none, so they
+      // surface first, where the work waiting to be finished belongs.
+      .orderByRaw('published_at desc nulls first')
       .orderBy('created_at', 'desc')
 
     return inertia.render('admin/articles/index', {

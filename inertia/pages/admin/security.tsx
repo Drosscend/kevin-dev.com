@@ -5,6 +5,7 @@ import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import FieldError from '~/components/field_error'
 import AdminPage from '~/components/admin/admin_page'
+import { plural } from '~/lib/plural'
 
 interface SecurityProps {
   totpEnabled: boolean
@@ -83,8 +84,8 @@ export default function Security({
           <CardHeader>
             <CardTitle>Codes de secours</CardTitle>
             <CardDescription>
-              {recoveryCodesRemaining} code(s) restant(s). En régénérer un nouveau jeu invalide tous
-              les codes précédents.
+              {plural(recoveryCodesRemaining, 'code restant', 'codes restants')}. En régénérer un
+              nouveau jeu invalide tous les codes précédents.
             </CardDescription>
           </CardHeader>
           <CardContent>

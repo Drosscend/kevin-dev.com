@@ -11,18 +11,20 @@ const DATE_TIME_FORMAT = new Intl.DateTimeFormat('fr-FR', {
   timeStyle: 'short',
 })
 
-function parseLocal(value: string | null | undefined) {
+type DateInput = string | Date | null | undefined
+
+function parseLocal(value: DateInput) {
   if (!value) return null
-  const date = new Date(value)
+  const date = value instanceof Date ? value : new Date(value)
   return Number.isNaN(date.getTime()) ? null : date
 }
 
-export function formatFrDate(value: string | null | undefined): string {
+export function formatFrDate(value: DateInput): string {
   const date = parseLocal(value)
   return date ? DATE_FORMAT.format(date) : ''
 }
 
-export function formatFrDateTime(value: string | null | undefined): string {
+export function formatFrDateTime(value: DateInput): string {
   const date = parseLocal(value)
   return date ? DATE_TIME_FORMAT.format(date) : ''
 }

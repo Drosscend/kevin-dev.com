@@ -4,6 +4,7 @@ import { Button } from '~/components/ui/button'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
+import { formatFrDateTime } from '~/lib/dates'
 import { cn } from '~/lib/utils'
 
 type Message = {
@@ -12,7 +13,7 @@ type Message = {
   email: string
   body: string
   isRead: boolean
-  createdAt: string
+  createdAt: string | null
 }
 
 type MessagesProps = {
@@ -57,7 +58,9 @@ export default function Messages({ messages }: MessagesProps) {
                       &lt;{message.email}&gt;
                     </a>
                   </p>
-                  <p className="text-muted-foreground font-mono text-xs">{message.createdAt}</p>
+                  <p className="text-muted-foreground font-mono text-xs">
+                    {formatFrDateTime(message.createdAt)}
+                  </p>
                 </div>
                 <div className="flex shrink-0 gap-1">
                   <Button

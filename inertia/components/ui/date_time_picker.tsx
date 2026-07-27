@@ -104,7 +104,7 @@ export function DateTimePicker({
           <Clock className="text-muted-foreground size-4 shrink-0" />
           <Select
             aria-label="Heures"
-            className="h-8 w-auto px-2"
+            className="h-8 w-auto pr-7 pl-2"
             value={hours}
             onChange={(event) => changeTime(event.target.value, minutes)}
           >
@@ -117,7 +117,7 @@ export function DateTimePicker({
           <span className="text-muted-foreground">:</span>
           <Select
             aria-label="Minutes"
-            className="h-8 w-auto px-2"
+            className="h-8 w-auto pr-7 pl-2"
             value={minutes}
             onChange={(event) => changeTime(hours, event.target.value)}
           >
