@@ -61,7 +61,7 @@ export default class SeoService {
       '@type': 'Person',
       'name': 'Kévin Véronési',
       'url': this.absolute('/'),
-      'jobTitle': 'Consultant Data Migration',
+      'jobTitle': 'Développeur full-stack et consultant IA',
       'sameAs': ['https://github.com/Drosscend', 'https://www.linkedin.com/in/kveronesi'],
     }
   }
