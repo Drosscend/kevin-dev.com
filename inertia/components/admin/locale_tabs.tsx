@@ -6,23 +6,33 @@ export type AdminLocale = 'fr' | 'en'
 
 export type TranslationStatus = 'empty' | 'partial' | 'complete'
 
-const STORAGE_KEY = 'admin:locale'
+const STORAGE_PREFIX = 'admin:locale:'
 
 /**
  * Active locale of an admin editor. Kept in sessionStorage because a
  * save re-mounts the page: without it, every save would throw the
- * editor back to French in the middle of a translation.
+ * editor back to French in the middle of a translation. The `scope`
+ * gives each editor its own memory, so translating an article does
+ * not open the homepage in English.
+ *
+ * `hasTranslation` is what the entry loaded with: an editor whose
+ * entry has none opens on French, otherwise a remembered English tab
+ * would greet it with an empty state instead of its content.
  */
-export function useAdminLocale() {
+export function useAdminLocale(scope: string, hasTranslation = true) {
+  const storageKey = STORAGE_PREFIX + scope
+
   const [locale, setLocale] = useState<AdminLocale>(() =>
-    typeof window !== 'undefined' && window.sessionStorage.getItem(STORAGE_KEY) === 'en'
+    hasTranslation &&
+    typeof window !== 'undefined' &&
+    window.sessionStorage.getItem(storageKey) === 'en'
       ? 'en'
       : 'fr'
   )
 
   function changeLocale(value: string) {
     const next: AdminLocale = value === 'en' ? 'en' : 'fr'
-    window.sessionStorage.setItem(STORAGE_KEY, next)
+    window.sessionStorage.setItem(storageKey, next)
     setLocale(next)
   }
 

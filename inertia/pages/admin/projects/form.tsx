@@ -1,4 +1,4 @@
-import { type FormEvent, useRef, useState } from 'react'
+import { type FormEvent, useRef } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 import { Trash2 } from 'lucide-react'
@@ -10,18 +10,12 @@ import { Select } from '~/components/ui/select'
 import { DateTimePicker } from '~/components/ui/date_time_picker'
 import { DatePicker } from '~/components/ui/date_picker'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
-import { Tabs, TabsContent } from '~/components/ui/tabs'
 import FieldError from '~/components/field_error'
-import ConfirmButton from '~/components/admin/confirm_button'
 import DraftBanner from '~/components/admin/draft_banner'
-import EmptyState from '~/components/admin/empty_state'
-import LocaleTabsList, {
-  entryTranslationStatus,
-  useAdminLocale,
-} from '~/components/admin/locale_tabs'
+import { useAdminLocale } from '~/components/admin/locale_tabs'
 import PreviewLink from '~/components/admin/preview_link'
 import PublicationActions, { type PublicationStatus } from '~/components/admin/publication_actions'
-import TranslationFields from '~/components/admin/translation_fields'
+import TranslationCard from '~/components/admin/translation_card'
 import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
 import { EMPTY_TRANSLATION, SLUG_LOCKED_HINT, slugify, type TranslationValues } from '~/lib/admin'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
@@ -84,20 +78,16 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
     links: project?.links ?? [],
     publishedAt: project?.publishedAt ?? null,
     fr: project?.fr ?? { ...EMPTY_TRANSLATION },
-    en: project?.en,
+    en: project?.en ?? undefined,
   })
 
   const slugTouched = useRef(project !== null)
-  const [withEnglish, setWithEnglish] = useState(Boolean(project?.en))
-  const { locale, setLocale, focusErrors } = useAdminLocale()
+  const { locale, setLocale, focusErrors } = useAdminLocale('projects', Boolean(project?.en))
 
   const draft = useDraftAutosave({
     storageKey: `project:${project?.id ?? 'new'}`,
     data: form.data,
-    restore: (data) => {
-      form.setData(data)
-      setWithEnglish(Boolean(data.en))
-    },
+    restore: (data) => form.setData(data),
   })
 
   function setFrench(values: TranslationValues) {
@@ -120,23 +110,11 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
     )
   }
 
-  function addEnglish() {
-    setWithEnglish(true)
-    form.setData('en', { ...EMPTY_TRANSLATION })
-  }
-
-  function removeEnglish() {
-    setWithEnglish(false)
-    form.setData('en', undefined)
-    setLocale('fr')
-  }
-
   function save(status: PublicationStatus) {
     form.transform((data) => ({
       ...data,
       status,
       links: data.links.filter((link) => link.label.trim() !== '' || link.url.trim() !== ''),
-      en: withEnglish ? (data.en ?? { ...EMPTY_TRANSLATION }) : undefined,
     }))
     const visitOptions = {
       preserveScroll: true,
@@ -359,61 +337,17 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
           </CardContent>
         </Card>
 
-        <Tabs value={locale} onValueChange={setLocale}>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Contenu</CardTitle>
-              <LocaleTabsList
-                status={entryTranslationStatus(form.data.fr, withEnglish ? form.data.en : null)}
-              />
-            </CardHeader>
-            <CardContent>
-              <TabsContent value="fr">
-                <TranslationFields
-                  prefix="fr"
-                  values={form.data.fr}
-                  onChange={setFrench}
-                  errors={errors}
-                />
-              </TabsContent>
-              <TabsContent value="en" className="space-y-4">
-                {withEnglish ? (
-                  <>
-                    <TranslationFields
-                      prefix="en"
-                      values={form.data.en ?? EMPTY_TRANSLATION}
-                      onChange={(values) => form.setData('en', values)}
-                      errors={errors}
-                    />
-                    <ConfirmButton
-                      title="Retirer la traduction"
-                      description="Supprimer la version anglaise de ce projet ? Elle disparaîtra du site au prochain enregistrement."
-                      confirmLabel="Retirer"
-                      onConfirm={removeEnglish}
-                      trigger={
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="text-destructive"
-                        >
-                          Retirer la traduction anglaise
-                        </Button>
-                      }
-                    />
-                  </>
-                ) : (
-                  <div className="space-y-3">
-                    <EmptyState>Ce projet n’existe qu’en français.</EmptyState>
-                    <Button type="button" variant="outline" size="sm" onClick={addEnglish}>
-                      Ajouter la traduction anglaise
-                    </Button>
-                  </div>
-                )}
-              </TabsContent>
-            </CardContent>
-          </Card>
-        </Tabs>
+        <TranslationCard
+          locale={locale}
+          onLocaleChange={setLocale}
+          fr={form.data.fr}
+          en={form.data.en}
+          errors={errors}
+          onFrChange={setFrench}
+          onEnChange={(values) => form.setData('en', values)}
+          untranslatedLabel="Ce projet n’existe qu’en français."
+          removalDescription="Supprimer la version anglaise de ce projet ? Elle disparaîtra du site au prochain enregistrement."
+        />
 
         <div className="flex items-center gap-3">
           <PublicationActions

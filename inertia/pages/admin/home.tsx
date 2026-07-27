@@ -40,39 +40,44 @@ type TimelineItem = {
   placeEn: string
 }
 
+type HomeSettings = {
+  heroRolesFr: string
+  heroRolesEn: string
+  heroLocation: string
+  nowFr: string
+  nowEn: string
+}
+
 type HomeAdminProps = {
-  settings: {
-    heroRolesFr: string
-    heroRolesEn: string
-    heroLocation: string
-    nowFr: string
-    nowEn: string
-  }
+  settings: HomeSettings
   timeline: TimelineItem[]
 }
 
 function SettingsTextarea({
-  id,
+  field,
   label,
   value,
   onChange,
   rows = 2,
 }: {
-  id: string
+  field: keyof HomeSettings
   label: string
   value: string
   onChange: (value: string) => void
   rows?: number
 }) {
+  const { errors } = usePage().props
+
   return (
     <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={field}>{label}</Label>
       <Textarea
-        id={id}
+        id={field}
         rows={rows}
         value={value}
         onChange={(event) => onChange(event.target.value)}
       />
+      <FieldError errors={errors} field={field} />
     </div>
   )
 }
@@ -83,17 +88,15 @@ function SettingsTextarea({
  */
 function HomeContents({
   locale,
-  roles,
-  now,
-  onRolesChange,
-  onNowChange,
+  settings,
+  onChange,
 }: {
   locale: AdminLocale
-  roles: string
-  now: string
-  onRolesChange: (value: string) => void
-  onNowChange: (value: string) => void
+  settings: HomeSettings
+  onChange: (field: keyof HomeSettings, value: string) => void
 }) {
+  const rolesField = locale === 'fr' ? 'heroRolesFr' : 'heroRolesEn'
+  const nowField = locale === 'fr' ? 'nowFr' : 'nowEn'
   const fallbackHint =
     locale === 'en' ? ' Laissé vide, le bloc français est servi aux deux langues.' : ''
 
@@ -108,10 +111,10 @@ function HomeContents({
         </CardHeader>
         <CardContent>
           <SettingsTextarea
-            id={`heroRoles-${locale}`}
+            field={rolesField}
             label="Métiers (un par ligne)"
-            value={roles}
-            onChange={onRolesChange}
+            value={settings[rolesField]}
+            onChange={(value) => onChange(rolesField, value)}
           />
         </CardContent>
       </Card>
@@ -126,10 +129,10 @@ function HomeContents({
         </CardHeader>
         <CardContent>
           <SettingsTextarea
-            id={`now-${locale}`}
+            field={nowField}
             label="En ce moment"
-            value={now}
-            onChange={onNowChange}
+            value={settings[nowField]}
+            onChange={(value) => onChange(nowField, value)}
           />
         </CardContent>
       </Card>
@@ -249,14 +252,26 @@ function TimelineForm({
 }
 
 export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
+  const { errors } = usePage().props
   const form = useForm(settings)
   const router = useRouter()
   const [editingId, setEditingId] = useState<number | null>(null)
-  const { locale, setLocale, focusErrors } = useAdminLocale()
+  const { locale, setLocale, focusErrors } = useAdminLocale('home')
+
+  /**
+   * Everything the English tab of this page holds: the two settings
+   * blocks and the timeline entries, which are edited through the
+   * very same switch.
+   */
+  const englishValues = [
+    form.data.heroRolesEn,
+    form.data.nowEn,
+    ...timeline.flatMap((item) => [item.periodEn, item.titleEn, item.placeEn]),
+  ]
 
   function submitSettings(event: FormEvent) {
     event.preventDefault()
-    form.put(client.urlFor('admin.home.update'), { preserveScroll: true })
+    form.put(client.urlFor('admin.home.update'), { preserveScroll: true, onError: focusErrors })
   }
 
   function move(item: TimelineItem, direction: 'up' | 'down') {
@@ -270,9 +285,7 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
     <Tabs value={locale} onValueChange={setLocale} className="contents">
       <AdminPage
         title="Accueil"
-        action={
-          <LocaleTabsList status={translationStatus([form.data.heroRolesEn, form.data.nowEn])} />
-        }
+        action={<LocaleTabsList status={translationStatus(englishValues)} />}
       >
         <form onSubmit={submitSettings} className="space-y-6">
           <Card>
@@ -288,6 +301,7 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
                   value={form.data.heroLocation}
                   onChange={(event) => form.setData('heroLocation', event.target.value)}
                 />
+                <FieldError errors={errors} field="heroLocation" />
               </div>
             </CardContent>
           </Card>
@@ -295,19 +309,15 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
           <TabsContent value="fr" className="space-y-6">
             <HomeContents
               locale="fr"
-              roles={form.data.heroRolesFr}
-              now={form.data.nowFr}
-              onRolesChange={(value) => form.setData('heroRolesFr', value)}
-              onNowChange={(value) => form.setData('nowFr', value)}
+              settings={form.data}
+              onChange={(field, value) => form.setData(field, value)}
             />
           </TabsContent>
           <TabsContent value="en" className="space-y-6">
             <HomeContents
               locale="en"
-              roles={form.data.heroRolesEn}
-              now={form.data.nowEn}
-              onRolesChange={(value) => form.setData('heroRolesEn', value)}
-              onNowChange={(value) => form.setData('nowEn', value)}
+              settings={form.data}
+              onChange={(field, value) => form.setData(field, value)}
             />
           </TabsContent>
 

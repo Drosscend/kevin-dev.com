@@ -78,7 +78,7 @@ function PageContents({
 
 export default function Pages({ cvFr, cvEn, legalFr, legalEn, pdf }: PagesProps) {
   const form = useForm({ cvFr, cvEn, legalFr, legalEn })
-  const { locale, setLocale } = useAdminLocale()
+  const { locale, setLocale } = useAdminLocale('pages')
 
   function submit(event: FormEvent) {
     event.preventDefault()

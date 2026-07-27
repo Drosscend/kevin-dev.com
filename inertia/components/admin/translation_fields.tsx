@@ -38,6 +38,7 @@ export default function TranslationFields({
           value={values.summary}
           onChange={(event) => onChange({ ...values, summary: event.target.value })}
         />
+        <FieldError errors={errors} field={`${prefix}.summary`} />
       </div>
       <div className="space-y-2">
         <MarkdownEditor
