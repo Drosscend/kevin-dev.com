@@ -2,14 +2,22 @@ import { type FormEvent, useRef, useState } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 import { client } from '~/client'
+import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Select } from '~/components/ui/select'
 import { DateTimePicker } from '~/components/ui/date_time_picker'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { Tabs, TabsContent } from '~/components/ui/tabs'
 import FieldError from '~/components/field_error'
 import { formatFrDateTime } from '~/lib/dates'
+import ConfirmButton from '~/components/admin/confirm_button'
 import DraftBanner from '~/components/admin/draft_banner'
+import EmptyState from '~/components/admin/empty_state'
+import LocaleTabsList, {
+  entryTranslationStatus,
+  useAdminLocale,
+} from '~/components/admin/locale_tabs'
 import PreviewLink from '~/components/admin/preview_link'
 import PublicationActions, { type PublicationStatus } from '~/components/admin/publication_actions'
 import TranslationFields from '~/components/admin/translation_fields'
@@ -53,6 +61,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
 
   const slugTouched = useRef(article !== null)
   const [withEnglish, setWithEnglish] = useState(Boolean(article?.en))
+  const { locale, setLocale, focusErrors } = useAdminLocale()
 
   const draft = useDraftAutosave({
     storageKey: `article:${article?.id ?? 'new'}`,
@@ -79,13 +88,28 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
     )
   }
 
+  function addEnglish() {
+    setWithEnglish(true)
+    form.setData('en', { ...EMPTY_TRANSLATION })
+  }
+
+  function removeEnglish() {
+    setWithEnglish(false)
+    form.setData('en', undefined)
+    setLocale('fr')
+  }
+
   function save(status: PublicationStatus) {
     form.transform((data) => ({
       ...data,
       status,
       en: withEnglish ? (data.en ?? { ...EMPTY_TRANSLATION }) : undefined,
     }))
-    const visitOptions = { preserveScroll: true, onSuccess: () => draft.clearDraft() }
+    const visitOptions = {
+      preserveScroll: true,
+      onSuccess: () => draft.clearDraft(),
+      onError: focusErrors,
+    }
     if (article) {
       form.put(client.urlFor('admin.articles.update', { id: article.id }), visitOptions)
     } else {
@@ -215,48 +239,61 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Français</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <TranslationFields
-              prefix="fr"
-              values={form.data.fr}
-              onChange={setFrench}
-              errors={errors}
-            />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>English (optionnel)</CardTitle>
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={withEnglish}
-                onChange={(event) => {
-                  setWithEnglish(event.target.checked)
-                  if (event.target.checked && !form.data.en) {
-                    form.setData('en', { ...EMPTY_TRANSLATION })
-                  }
-                }}
+        <Tabs value={locale} onValueChange={setLocale}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Contenu</CardTitle>
+              <LocaleTabsList
+                status={entryTranslationStatus(form.data.fr, withEnglish ? form.data.en : null)}
               />
-              Traduction anglaise
-            </label>
-          </CardHeader>
-          {withEnglish && (
-            <CardContent className="space-y-4">
-              <TranslationFields
-                prefix="en"
-                values={form.data.en ?? EMPTY_TRANSLATION}
-                onChange={(values) => form.setData('en', values)}
-                errors={errors}
-              />
+            </CardHeader>
+            <CardContent>
+              <TabsContent value="fr">
+                <TranslationFields
+                  prefix="fr"
+                  values={form.data.fr}
+                  onChange={setFrench}
+                  errors={errors}
+                />
+              </TabsContent>
+              <TabsContent value="en" className="space-y-4">
+                {withEnglish ? (
+                  <>
+                    <TranslationFields
+                      prefix="en"
+                      values={form.data.en ?? EMPTY_TRANSLATION}
+                      onChange={(values) => form.setData('en', values)}
+                      errors={errors}
+                    />
+                    <ConfirmButton
+                      title="Retirer la traduction"
+                      description="Supprimer la version anglaise de cet article ? Elle disparaîtra du site au prochain enregistrement."
+                      confirmLabel="Retirer"
+                      onConfirm={removeEnglish}
+                      trigger={
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive"
+                        >
+                          Retirer la traduction anglaise
+                        </Button>
+                      }
+                    />
+                  </>
+                ) : (
+                  <div className="space-y-3">
+                    <EmptyState>Cet article n’existe qu’en français.</EmptyState>
+                    <Button type="button" variant="outline" size="sm" onClick={addEnglish}>
+                      Ajouter la traduction anglaise
+                    </Button>
+                  </div>
+                )}
+              </TabsContent>
             </CardContent>
-          )}
-        </Card>
+          </Card>
+        </Tabs>
 
         <div className="flex items-center gap-3">
           <PublicationActions

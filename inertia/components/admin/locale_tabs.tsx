@@ -1,0 +1,101 @@
+import { useState } from 'react'
+import { TabsList, TabsTrigger } from '~/components/ui/tabs'
+import type { TranslationValues } from '~/lib/admin'
+
+export type AdminLocale = 'fr' | 'en'
+
+export type TranslationStatus = 'empty' | 'partial' | 'complete'
+
+const STORAGE_KEY = 'admin:locale'
+
+/**
+ * Active locale of an admin editor. Kept in sessionStorage because a
+ * save re-mounts the page: without it, every save would throw the
+ * editor back to French in the middle of a translation.
+ */
+export function useAdminLocale() {
+  const [locale, setLocale] = useState<AdminLocale>(() =>
+    typeof window !== 'undefined' && window.sessionStorage.getItem(STORAGE_KEY) === 'en'
+      ? 'en'
+      : 'fr'
+  )
+
+  function changeLocale(value: string) {
+    const next: AdminLocale = value === 'en' ? 'en' : 'fr'
+    window.sessionStorage.setItem(STORAGE_KEY, next)
+    setLocale(next)
+  }
+
+  /**
+   * Opens the tab holding a field the server rejected: an error on the
+   * hidden locale would be invisible otherwise. French first, since it
+   * is the locale that cannot be left incomplete. Both naming schemes
+   * are covered: the `fr`/`en` objects of the entries and the `Fr`/`En`
+   * suffixes of the homepage.
+   */
+  function focusErrors(fieldErrors: Record<string, string>) {
+    const fields = Object.keys(fieldErrors)
+
+    if (fields.some((field) => /^fr\.|Fr$/.test(field))) changeLocale('fr')
+    else if (fields.some((field) => /^en\.|En$/.test(field))) changeLocale('en')
+  }
+
+  return { locale, setLocale: changeLocale, focusErrors }
+}
+
+/**
+ * Badge state of the English tab, derived from its translated values:
+ * nothing filled, some of them, or all of them.
+ */
+export function translationStatus(values: string[]): TranslationStatus {
+  const filled = values.filter((value) => value.trim() !== '').length
+
+  if (filled === 0) return 'empty'
+  return filled === values.length ? 'complete' : 'partial'
+}
+
+/**
+ * Same badge for an article, a project or a talk. The summary only
+ * counts when the French entry has one, otherwise a translation with
+ * nothing left to translate would stay amber forever.
+ */
+export function entryTranslationStatus(
+  fr: TranslationValues,
+  en: TranslationValues | null | undefined
+): TranslationStatus {
+  if (!en) return 'empty'
+
+  const values = [en.title, en.contentMarkdown]
+  if (fr.summary.trim() !== '') values.push(en.summary)
+
+  return translationStatus(values)
+}
+
+const STATUS_LABEL: Record<TranslationStatus, string> = {
+  empty: 'traduction anglaise absente',
+  partial: 'traduction anglaise incomplète',
+  complete: 'traduction anglaise complète',
+}
+
+const STATUS_DOT: Record<TranslationStatus, string> = {
+  empty: 'border-muted-foreground size-2 rounded-full border',
+  partial: 'size-2 rounded-full bg-amber-500',
+  complete: 'size-2 rounded-full bg-emerald-500',
+}
+
+/**
+ * The single language switch of an admin page. The dot on the English
+ * tab tells how far the translation is without leaving the French one.
+ */
+export default function LocaleTabsList({ status }: { status: TranslationStatus }) {
+  return (
+    <TabsList>
+      <TabsTrigger value="fr">Français</TabsTrigger>
+      <TabsTrigger value="en">
+        English
+        <span aria-hidden className={STATUS_DOT[status]} />
+        <span className="sr-only">({STATUS_LABEL[status]})</span>
+      </TabsTrigger>
+    </TabsList>
+  )
+}

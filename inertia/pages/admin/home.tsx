@@ -9,10 +9,16 @@ import { Label } from '~/components/ui/label'
 import { Select } from '~/components/ui/select'
 import { Textarea } from '~/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import { Tabs, TabsContent } from '~/components/ui/tabs'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
 import FieldError from '~/components/field_error'
+import LocaleTabsList, {
+  type AdminLocale,
+  translationStatus,
+  useAdminLocale,
+} from '~/components/admin/locale_tabs'
 
 const HONOURS = [
   { value: 'none', label: 'Sans mention' },
@@ -72,10 +78,81 @@ function SettingsTextarea({
 }
 
 /**
- * Inline create/edit form for a timeline entry. The EN fields are
- * optional: left empty, the FR entry is shown to both locales.
+ * The translated blocks of the homepage for one locale. Both tabs get
+ * the same fields; the location stays out, it is shared.
  */
-function TimelineForm({ item, onDone }: { item: TimelineItem | null; onDone?: () => void }) {
+function HomeContents({
+  locale,
+  roles,
+  now,
+  onRolesChange,
+  onNowChange,
+}: {
+  locale: AdminLocale
+  roles: string
+  now: string
+  onRolesChange: (value: string) => void
+  onNowChange: (value: string) => void
+}) {
+  const fallbackHint =
+    locale === 'en' ? ' Laissé vide, le bloc français est servi aux deux langues.' : ''
+
+  return (
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>Hero</CardTitle>
+          <CardDescription>
+            Les métiers s’affichent sous ton nom, un par ligne. Laisser vide pour masquer la ligne.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <SettingsTextarea
+            id={`heroRoles-${locale}`}
+            label="Métiers (un par ligne)"
+            value={roles}
+            onChange={onRolesChange}
+          />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>En ce moment</CardTitle>
+          <CardDescription>
+            Texte brut affiché dans le bloc « En ce moment ». Laisser vide pour masquer la section.
+            {fallbackHint}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <SettingsTextarea
+            id={`now-${locale}`}
+            label="En ce moment"
+            value={now}
+            onChange={onNowChange}
+          />
+        </CardContent>
+      </Card>
+    </>
+  )
+}
+
+/**
+ * Inline create/edit form for a timeline entry. It shows the fields of
+ * the locale selected on the page; the honours are locale independent,
+ * so they stay visible in both tabs.
+ */
+function TimelineForm({
+  item,
+  locale,
+  onErrors,
+  onDone,
+}: {
+  item: TimelineItem | null
+  locale: AdminLocale
+  onErrors: (errors: Record<string, string>) => void
+  onDone?: () => void
+}) {
   const { errors } = usePage().props
   const router = useRouter()
   const empty = {
@@ -106,7 +183,7 @@ function TimelineForm({ item, onDone }: { item: TimelineItem | null; onDone?: ()
 
   function submit(event: FormEvent) {
     event.preventDefault()
-    const options = { preserveScroll: true, data: values, onSuccess: onDone }
+    const options = { preserveScroll: true, data: values, onSuccess: onDone, onError: onErrors }
 
     if (item) {
       router.visit({ route: 'admin.home.timeline.update', routeParams: { id: item.id } }, options)
@@ -120,40 +197,41 @@ function TimelineForm({ item, onDone }: { item: TimelineItem | null; onDone?: ()
   }
 
   const prefix = item?.id ?? 'new'
+  const suffix = locale === 'fr' ? 'Fr' : 'En'
 
   return (
     <form onSubmit={submit} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-2">
-          <Label htmlFor={`periodFr-${prefix}`}>Période (FR)</Label>
-          <Input id={`periodFr-${prefix}`} value={values.periodFr} onChange={set('periodFr')} />
-          <FieldError errors={errors} field="periodFr" />
+          <Label htmlFor={`period-${prefix}`}>Période</Label>
+          <Input
+            id={`period-${prefix}`}
+            value={values[`period${suffix}`]}
+            onChange={set(`period${suffix}`)}
+          />
+          <FieldError errors={errors} field={`period${suffix}`} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor={`titleFr-${prefix}`}>Intitulé (FR)</Label>
-          <Input id={`titleFr-${prefix}`} value={values.titleFr} onChange={set('titleFr')} />
-          <FieldError errors={errors} field="titleFr" />
+          <Label htmlFor={`title-${prefix}`}>Intitulé</Label>
+          <Input
+            id={`title-${prefix}`}
+            value={values[`title${suffix}`]}
+            onChange={set(`title${suffix}`)}
+          />
+          <FieldError errors={errors} field={`title${suffix}`} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor={`placeFr-${prefix}`}>Lieu / statut (FR)</Label>
-          <Input id={`placeFr-${prefix}`} value={values.placeFr} onChange={set('placeFr')} />
-          <FieldError errors={errors} field="placeFr" />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor={`periodEn-${prefix}`}>Période (EN, optionnel)</Label>
-          <Input id={`periodEn-${prefix}`} value={values.periodEn} onChange={set('periodEn')} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor={`titleEn-${prefix}`}>Intitulé (EN, optionnel)</Label>
-          <Input id={`titleEn-${prefix}`} value={values.titleEn} onChange={set('titleEn')} />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor={`placeEn-${prefix}`}>Lieu / statut (EN, optionnel)</Label>
-          <Input id={`placeEn-${prefix}`} value={values.placeEn} onChange={set('placeEn')} />
+          <Label htmlFor={`place-${prefix}`}>Lieu / statut</Label>
+          <Input
+            id={`place-${prefix}`}
+            value={values[`place${suffix}`]}
+            onChange={set(`place${suffix}`)}
+          />
+          <FieldError errors={errors} field={`place${suffix}`} />
         </div>
       </div>
       <div className="max-w-xs space-y-2">
-        <Label htmlFor={`honours-${prefix}`}>Mention</Label>
+        <Label htmlFor={`honours-${prefix}`}>Mention (commune aux deux langues)</Label>
         <Select id={`honours-${prefix}`} value={values.honours} onChange={set('honours')}>
           {HONOURS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -174,6 +252,7 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
   const form = useForm(settings)
   const router = useRouter()
   const [editingId, setEditingId] = useState<number | null>(null)
+  const { locale, setLocale, focusErrors } = useAdminLocale()
 
   function submitSettings(event: FormEvent) {
     event.preventDefault()
@@ -188,163 +267,156 @@ export default function HomeAdmin({ settings, timeline }: HomeAdminProps) {
   }
 
   return (
-    <AdminPage title="Accueil">
-      <form onSubmit={submitSettings} className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Hero</CardTitle>
-            <CardDescription>
-              Les métiers s’affichent sous ton nom, un par ligne. Laisser vide pour masquer la
-              ligne.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <SettingsTextarea
-                id="heroRolesFr"
-                label="Métiers (FR, un par ligne)"
-                value={form.data.heroRolesFr}
-                onChange={(value) => form.setData('heroRolesFr', value)}
-              />
-              <SettingsTextarea
-                id="heroRolesEn"
-                label="Métiers (EN, un par ligne, optionnel)"
-                value={form.data.heroRolesEn}
-                onChange={(value) => form.setData('heroRolesEn', value)}
-              />
-            </div>
-            <div className="max-w-sm space-y-2">
-              <Label htmlFor="heroLocation">Localisation</Label>
-              <Input
-                id="heroLocation"
-                value={form.data.heroLocation}
-                onChange={(event) => form.setData('heroLocation', event.target.value)}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>En ce moment</CardTitle>
-            <CardDescription>
-              Texte brut affiché dans le bloc « En ce moment ». Laisser vide pour masquer la
-              section.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <SettingsTextarea
-              id="nowFr"
-              label="En ce moment (FR)"
-              value={form.data.nowFr}
-              onChange={(value) => form.setData('nowFr', value)}
-            />
-            <SettingsTextarea
-              id="nowEn"
-              label="En ce moment (EN, optionnel)"
-              value={form.data.nowEn}
-              onChange={(value) => form.setData('nowEn', value)}
-            />
-          </CardContent>
-        </Card>
-
-        <Button type="submit" disabled={form.processing}>
-          Enregistrer le contenu
-        </Button>
-      </form>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Parcours</CardTitle>
-          <CardDescription>
-            La timeline affichée sur l’accueil, du plus récent au plus ancien.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <TimelineForm item={null} />
-        </CardContent>
-      </Card>
-
-      {timeline.length === 0 ? (
-        <EmptyState>Aucune étape pour l’instant.</EmptyState>
-      ) : (
-        <ul className="divide-y border-y">
-          {timeline.map((item, index) => (
-            <li key={item.id} className="space-y-3 py-3">
-              <div className="flex items-center justify-between gap-4">
-                <div className="min-w-0">
-                  <p className="font-medium">{item.titleFr}</p>
-                  <p className="text-muted-foreground truncate font-mono text-xs">
-                    {item.periodFr} · {item.placeFr}
-                    {item.honours !== 'none' ? ` · ${honoursLabel(item.honours)}` : ''}
-                    {item.titleEn ? ' · EN ✓' : ''}
-                  </p>
-                </div>
-                <div className="flex shrink-0 gap-1">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    disabled={index === 0}
-                    aria-label={`Monter ${item.titleFr}`}
-                    onClick={() => move(item, 'up')}
-                  >
-                    <ArrowUp className="size-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    disabled={index === timeline.length - 1}
-                    aria-label={`Descendre ${item.titleFr}`}
-                    onClick={() => move(item, 'down')}
-                  >
-                    <ArrowDown className="size-4" />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    aria-label={
-                      editingId === item.id ? 'Annuler la modification' : `Modifier ${item.titleFr}`
-                    }
-                    onClick={() => setEditingId(editingId === item.id ? null : item.id)}
-                  >
-                    {editingId === item.id ? (
-                      <X className="size-4" />
-                    ) : (
-                      <Pencil className="size-4" />
-                    )}
-                  </Button>
-                  <ConfirmButton
-                    description={`Supprimer « ${item.titleFr} » du parcours ?`}
-                    onConfirm={() =>
-                      router.visit(
-                        { route: 'admin.home.timeline.destroy', routeParams: { id: item.id } },
-                        { preserveScroll: true }
-                      )
-                    }
-                    trigger={
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="text-destructive"
-                        aria-label={`Supprimer ${item.titleFr}`}
-                      >
-                        <Trash2 className="size-4" />
-                      </Button>
-                    }
-                  />
-                </div>
+    <Tabs value={locale} onValueChange={setLocale} className="contents">
+      <AdminPage
+        title="Accueil"
+        action={
+          <LocaleTabsList status={translationStatus([form.data.heroRolesEn, form.data.nowEn])} />
+        }
+      >
+        <form onSubmit={submitSettings} className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Général</CardTitle>
+              <CardDescription>Affiché tel quel dans les deux langues.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="max-w-sm space-y-2">
+                <Label htmlFor="heroLocation">Localisation</Label>
+                <Input
+                  id="heroLocation"
+                  value={form.data.heroLocation}
+                  onChange={(event) => form.setData('heroLocation', event.target.value)}
+                />
               </div>
-              {editingId === item.id && (
-                <TimelineForm item={item} onDone={() => setEditingId(null)} />
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </AdminPage>
+            </CardContent>
+          </Card>
+
+          <TabsContent value="fr" className="space-y-6">
+            <HomeContents
+              locale="fr"
+              roles={form.data.heroRolesFr}
+              now={form.data.nowFr}
+              onRolesChange={(value) => form.setData('heroRolesFr', value)}
+              onNowChange={(value) => form.setData('nowFr', value)}
+            />
+          </TabsContent>
+          <TabsContent value="en" className="space-y-6">
+            <HomeContents
+              locale="en"
+              roles={form.data.heroRolesEn}
+              now={form.data.nowEn}
+              onRolesChange={(value) => form.setData('heroRolesEn', value)}
+              onNowChange={(value) => form.setData('nowEn', value)}
+            />
+          </TabsContent>
+
+          <Button type="submit" disabled={form.processing}>
+            Enregistrer le contenu
+          </Button>
+        </form>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Parcours</CardTitle>
+            <CardDescription>
+              La timeline affichée sur l’accueil, du plus récent au plus ancien. Les champs suivent
+              l’onglet de langue ; sans traduction anglaise, l’étape française est servie aux deux.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <TimelineForm item={null} locale={locale} onErrors={focusErrors} />
+          </CardContent>
+        </Card>
+
+        {timeline.length === 0 ? (
+          <EmptyState>Aucune étape pour l’instant.</EmptyState>
+        ) : (
+          <ul className="divide-y border-y">
+            {timeline.map((item, index) => (
+              <li key={item.id} className="space-y-3 py-3">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="font-medium">{item.titleFr}</p>
+                    <p className="text-muted-foreground truncate font-mono text-xs">
+                      {item.periodFr} · {item.placeFr}
+                      {item.honours !== 'none' ? ` · ${honoursLabel(item.honours)}` : ''}
+                      {item.titleEn ? ' · EN ✓' : ''}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 gap-1">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      disabled={index === 0}
+                      aria-label={`Monter ${item.titleFr}`}
+                      onClick={() => move(item, 'up')}
+                    >
+                      <ArrowUp className="size-4" />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      disabled={index === timeline.length - 1}
+                      aria-label={`Descendre ${item.titleFr}`}
+                      onClick={() => move(item, 'down')}
+                    >
+                      <ArrowDown className="size-4" />
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      aria-label={
+                        editingId === item.id
+                          ? 'Annuler la modification'
+                          : `Modifier ${item.titleFr}`
+                      }
+                      onClick={() => setEditingId(editingId === item.id ? null : item.id)}
+                    >
+                      {editingId === item.id ? (
+                        <X className="size-4" />
+                      ) : (
+                        <Pencil className="size-4" />
+                      )}
+                    </Button>
+                    <ConfirmButton
+                      description={`Supprimer « ${item.titleFr} » du parcours ?`}
+                      onConfirm={() =>
+                        router.visit(
+                          { route: 'admin.home.timeline.destroy', routeParams: { id: item.id } },
+                          { preserveScroll: true }
+                        )
+                      }
+                      trigger={
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive"
+                          aria-label={`Supprimer ${item.titleFr}`}
+                        >
+                          <Trash2 className="size-4" />
+                        </Button>
+                      }
+                    />
+                  </div>
+                </div>
+                {editingId === item.id && (
+                  <TimelineForm
+                    item={item}
+                    locale={locale}
+                    onErrors={focusErrors}
+                    onDone={() => setEditingId(null)}
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </AdminPage>
+    </Tabs>
   )
 }
