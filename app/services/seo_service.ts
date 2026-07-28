@@ -36,6 +36,7 @@ export default class SeoService {
     ogType?: 'website' | 'article'
     ogImage?: string | null
     jsonLd?: JsonLd[]
+    noindex?: boolean
   }): SeoMeta {
     return {
       title: options.title,
@@ -52,6 +53,7 @@ export default class SeoService {
       // Pages without a specific image fall back to the site card
       ogImage: options.ogImage ?? this.absolute('/images/og-default.jpg'),
       jsonLd: options.jsonLd ?? [],
+      noindex: options.noindex ?? false,
     }
   }
 

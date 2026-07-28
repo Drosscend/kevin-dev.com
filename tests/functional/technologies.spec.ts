@@ -185,6 +185,19 @@ test.group('Technologies publiques', (group) => {
     assert.equal((show.inertiaProps.labels as { docs: string }).docs, 'Documentation officielle')
   })
 
+  test('la fiche reste navigable mais sort des résultats de recherche', async ({
+    client,
+    assert,
+  }) => {
+    await Technology.create({ slug: 'adonisjs', name: 'AdonisJS' })
+
+    const list = await client.get('/technologies').withInertia()
+    const show = await client.get('/technologies/adonisjs').withInertia()
+
+    assert.isFalse((list.inertiaProps.meta as { noindex: boolean }).noindex)
+    assert.isTrue((show.inertiaProps.meta as { noindex: boolean }).noindex)
+  })
+
   test('une technologie inconnue renvoie 404', async ({ client }) => {
     const response = await client.get('/technologies/inexistante')
     response.assertStatus(404)

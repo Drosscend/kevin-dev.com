@@ -2,7 +2,6 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Article from '#models/article'
 import Project from '#models/project'
 import Talk from '#models/talk'
-import Technology from '#models/technology'
 import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
 import { localePath, type Locale } from '#types/i18n'
@@ -34,7 +33,7 @@ function sitemapUrl(entry: SitemapEntry) {
 
 export default class SeoController {
   async sitemap({ response }: HttpContext) {
-    const [articles, projects, talks, technologies, settings] = await Promise.all([
+    const [articles, projects, talks, settings] = await Promise.all([
       Article.query()
         .withScopes((scopes) => scopes.published())
         .preload('translations', (query) => query.select('id', 'article_id', 'locale')),
@@ -44,7 +43,6 @@ export default class SeoController {
       Talk.query()
         .withScopes((scopes) => scopes.published())
         .preload('translations', (query) => query.select('id', 'talk_id', 'locale')),
-      Technology.query(),
       SettingsService.getMany(['cv_html_fr', 'cv_html_en', 'legal_html_fr', 'legal_html_en']),
     ])
 
@@ -110,15 +108,6 @@ export default class SeoController {
       if (hasEnglish) {
         entries.push({ path: `/en/talks/${talk.slug}`, lastmod, alternates })
       }
-    }
-
-    for (const technology of technologies) {
-      const alternates = {
-        fr: `/technologies/${technology.slug}`,
-        en: `/en/technologies/${technology.slug}`,
-      }
-      entries.push({ path: `/technologies/${technology.slug}`, alternates })
-      entries.push({ path: `/en/technologies/${technology.slug}`, alternates })
     }
 
     const xml = [

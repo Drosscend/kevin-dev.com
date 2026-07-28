@@ -157,6 +157,9 @@ export default class TechnologiesController {
           fr: `/technologies/${technology.slug}`,
           en: `/en/technologies/${technology.slug}`,
         },
+        // One thin page per technology dilutes the site in search
+        // results: the pages stay for navigation, out of the index.
+        noindex: true,
         jsonLd: [
           SeoService.breadcrumbs([
             {

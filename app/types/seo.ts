@@ -18,4 +18,10 @@ export type SeoMeta = {
   ogType: 'website' | 'article'
   ogImage: string | null
   jsonLd: JsonLd[]
+  /**
+   * Keeps the page out of search results while its links stay
+   * followed. Used by pages that exist for navigation rather than
+   * for search traffic.
+   */
+  noindex: boolean
 }

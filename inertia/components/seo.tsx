@@ -14,6 +14,7 @@ export default function Seo({ meta }: { meta: SeoMeta }) {
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
       <link rel="canonical" href={meta.canonical} />
+      {meta.noindex && <meta name="robots" content="noindex, follow" />}
 
       {meta.alternates?.en && <link rel="alternate" hrefLang="fr" href={meta.alternates.fr} />}
       {meta.alternates?.en && <link rel="alternate" hrefLang="en" href={meta.alternates.en} />}

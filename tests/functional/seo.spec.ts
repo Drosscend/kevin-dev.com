@@ -2,6 +2,7 @@ import { test } from '@japa/runner'
 import env from '#start/env'
 import testUtils from '@adonisjs/core/services/test_utils'
 import Article from '#models/article'
+import Technology from '#models/technology'
 import ArticleService from '#services/article_service'
 
 function makeArticle(slug: string, status: 'draft' | 'published', english = false) {
@@ -38,6 +39,16 @@ test.group('SEO', (group) => {
     assert.notInclude(xml, '/en/blog/publie-fr</loc>')
     assert.notInclude(xml, 'cache-brouillon')
     assert.include(xml, 'hreflang="en"')
+  })
+
+  test('le sitemap liste les technologies sans leurs fiches', async ({ client, assert }) => {
+    await Technology.create({ slug: 'adonisjs', name: 'AdonisJS' })
+
+    const response = await client.get('/sitemap.xml')
+
+    const xml = response.text()
+    assert.include(xml, '/technologies</loc>')
+    assert.notInclude(xml, '/technologies/adonisjs</loc>')
   })
 
   test('le flux RSS FR contient les articles et pas les brouillons', async ({ client, assert }) => {
