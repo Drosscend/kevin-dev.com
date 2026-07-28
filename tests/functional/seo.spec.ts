@@ -1,4 +1,5 @@
 import { test } from '@japa/runner'
+import env from '#start/env'
 import testUtils from '@adonisjs/core/services/test_utils'
 import Article from '#models/article'
 import ArticleService from '#services/article_service'
@@ -51,6 +52,25 @@ test.group('SEO', (group) => {
     assert.include(xml, '<title>Titre article-rss</title>')
     assert.notInclude(xml, 'brouillon-rss')
     assert.include(xml, '<language>fr</language>')
+  })
+
+  test("le flux RSS est explorable mais hors de l'index", async ({ client }) => {
+    const response = await client.get('/blog/rss.xml')
+
+    response.assertStatus(200)
+    response.assertHeader('x-robots-tag', 'noindex, follow')
+  })
+
+  test('le sous-domaine www redirige vers le domaine canonique', async ({ client, assert }) => {
+    const canonical = new URL(env.get('APP_URL'))
+
+    const response = await client
+      .get('/blog?page=2')
+      .header('host', `www.${canonical.hostname}`)
+      .redirects(0)
+
+    response.assertStatus(301)
+    assert.equal(response.header('location'), `${canonical.origin}/blog?page=2`)
   })
 
   test('le flux RSS EN ne contient que les articles traduits', async ({ client, assert }) => {

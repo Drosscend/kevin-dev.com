@@ -177,6 +177,9 @@ export default class SeoController {
     ].join('\n')
 
     response.header('content-type', 'application/rss+xml; charset=utf-8')
+    // A feed cannot carry a canonical tag: keep it crawlable for feed
+    // readers, but out of the search index.
+    response.header('x-robots-tag', 'noindex, follow')
     return xml
   }
 
