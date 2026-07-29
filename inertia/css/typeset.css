@@ -32,6 +32,11 @@
       color-mix(in oklab, currentColor 60%, transparent)
     );
     --typeset-rule: var(--color-border, color-mix(in oklab, currentColor 20%, transparent));
+    --typeset-rule-strong: color-mix(
+      in oklab,
+      var(--color-foreground, currentColor) 25%,
+      transparent
+    );
   }
 
   .typeset *:not(:where(.not-typeset, [data-not-typeset], .not-typeset *, [data-not-typeset] *)) {
@@ -350,8 +355,10 @@
     }
 
     /* Tables. Separators sit on cells, not tr:last-child: append-safe.
-       Bare tables stay real tables (keep their semantics) and wrap to fit. */
+       Bare tables stay real tables (keep their semantics) and wrap to fit.
+       Full width so the header rule spans the same measure as the prose. */
     &:where(table) {
+      width: 100%;
       max-width: 100%;
       font-size: 1em;
       line-height: 1.5;
@@ -365,7 +372,8 @@
 
     /* Horizontal scroll for any wide block. Wrap it and the wrapper owns the
        flow margin. Tables shrink to fit, so widen the table to make it scroll
-       instead of compress. */
+       instead of compress. min-width holds narrow tables at the full measure
+       so the header rule lines up with the prose. */
     &:where(.typeset-scroll) {
       overflow-x: auto;
       margin-block-start: var(--typeset-flow);
@@ -375,13 +383,18 @@
     }
     &:where(.typeset-scroll table) {
       width: max-content;
+      min-width: 100%;
       max-width: none;
     }
     &:where(thead th) {
       font-weight: 500;
+      font-size: 0.8125em;
+      letter-spacing: 0.05em;
+      color: var(--typeset-muted);
       text-align: start;
       white-space: nowrap;
-      padding: 0.65em 1em;
+      padding: 0 1em 0.6em;
+      border-block-end: 1px solid var(--typeset-rule-strong);
     }
     &:where(:is(tbody, tfoot) :is(td, th)) {
       padding: 0.75em 1em;
@@ -394,6 +407,9 @@
     }
     &:where(th:first-child, td:first-child) {
       padding-inline-start: 0;
+    }
+    &:where(th:last-child, td:last-child) {
+      padding-inline-end: 0;
     }
     &:where(th[align='center'], td[align='center']) {
       text-align: center;
