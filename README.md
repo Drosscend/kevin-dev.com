@@ -16,6 +16,7 @@ Prérequis : Node ≥ 24, Docker (pour Postgres local).
 docker compose up -d       # Postgres local (localhost:5432)
 npm install
 cp .env.test.example .env.test
+docker compose exec postgres createdb -U kevin_dev kevin_dev_test
 node ace migration:run
 npm run dev                # http://localhost:3333
 ```

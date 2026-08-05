@@ -1,6 +1,7 @@
 import { assert } from '@japa/assert'
 import { apiClient } from '@japa/api-client'
 import app from '@adonisjs/core/services/app'
+import env from '#start/env'
 import type { Config } from '@japa/runner/types'
 import { pluginAdonisJS } from '@japa/plugin-adonisjs'
 import { dbAssertions } from '@adonisjs/lucid/plugins/db'
@@ -36,8 +37,22 @@ export const plugins: Config['plugins'] = [
  * The setup functions are executed before all the tests
  * The teardown functions are executed after all the tests
  */
+/**
+ * The runner migrates on the configured connection and rolls back at
+ * the end, so a missing .env.test would wipe the development database.
+ * Fail before the first migration rather than after the last rollback.
+ */
+function assertTestDatabase() {
+  const database = env.get('DB_DATABASE')
+  if (!database.endsWith('_test')) {
+    throw new Error(
+      `Refusing to run the suite on "${database}": copy .env.test.example to .env.test`
+    )
+  }
+}
+
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
-  setup: [() => testUtils.db().migrate()],
+  setup: [assertTestDatabase, () => testUtils.db().migrate()],
   teardown: [],
 }
 
