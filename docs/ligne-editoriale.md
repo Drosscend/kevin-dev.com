@@ -69,9 +69,9 @@ pas.
 
 ## Publication
 
-Les fiches préparées hors de l'application passent par la commande d'import,
-qui écrit à travers `ProjectService` et fait donc le rendu markdown comme une
-sauvegarde depuis l'admin :
+Les textes préparés hors de l'application passent par une commande d'import, qui
+écrit à travers `ProjectService` ou `ArticleService` et fait donc le rendu
+markdown comme une sauvegarde depuis l'admin :
 
 ```sh
 node ace projects:import <fichier.json>            # crée en brouillon
@@ -79,6 +79,11 @@ node ace projects:import <fichier.json> --update   # écrase un slug connu
 node ace projects:import <fichier.json> --publish  # publie au lieu du brouillon
 ```
 
+```sh
+node ace articles:import <fichier.json>            # mêmes drapeaux
+```
+
 Le markdown du fichier JSON ne reprend pas le titre en `#` : il vit dans son
-propre champ. Les technologies sont référencées par slug, celles qui n'existent
-pas en base sont ignorées et signalées.
+propre champ. Les technologies, et pour un article sa catégorie, sont
+référencées par slug ; celles qui n'existent pas en base sont ignorées et
+signalées.
