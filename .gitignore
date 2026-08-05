@@ -10,6 +10,9 @@ storage
 # Internal documents (not published)
 docs/SPEC.md
 
+# Article and project drafts, pushed straight to the server
+docs/drafts
+
 # Secrets
 .env
 .env.test
