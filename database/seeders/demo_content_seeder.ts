@@ -33,7 +33,7 @@ import {
   TECHNOLOGIES,
   TIMELINE,
   type Cover,
-} from '#database/seeders/demo/content'
+} from '#database/fixtures/demo_content'
 
 /**
  * Content tables wiped before reseeding, ordered so that the
