@@ -34,7 +34,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
    */
   const translated = (children.props as { hasOtherLocale?: boolean }).hasOtherLocale ?? true
 
-  useFlashToasts(children.props.flash)
+  useFlashToasts()
 
   /**
    * Closes the panel on navigation, including history moves that no

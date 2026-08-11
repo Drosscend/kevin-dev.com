@@ -3,7 +3,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import FieldError from '~/components/field_error'
+import FieldError, { type FieldErrors } from '~/components/field_error'
 import AdminPage from '~/components/admin/admin_page'
 import { plural } from '~/lib/plural'
 
@@ -91,6 +91,12 @@ export default function Security({
           <CardContent>
             <Form route="admin.security.recovery.store" className="space-y-4">
               {({ errors, processing }) => (
+                /**
+                 * The three forms of the page post the same "code" field, so
+                 * the controller flashes this one under "recoveryCode" to keep
+                 * the message on its own form. That key sits outside the route
+                 * body, hence the widening.
+                 */
                 <>
                   <div className="space-y-2">
                     <Label htmlFor="recovery-code">Code TOTP actuel</Label>
@@ -101,7 +107,7 @@ export default function Security({
                       inputMode="numeric"
                       autoComplete="one-time-code"
                       maxLength={6}
-                      aria-invalid={errors.recoveryCode ? true : undefined}
+                      aria-invalid={(errors as FieldErrors).recoveryCode ? true : undefined}
                     />
                     <FieldError errors={errors} field="recoveryCode" />
                   </div>

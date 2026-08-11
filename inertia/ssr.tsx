@@ -4,7 +4,7 @@ import Layout from '~/layouts/default'
 import AdminLayout from '~/layouts/admin'
 import { type Data } from '@generated/data'
 import ReactDOMServer from 'react-dom/server'
-import { createInertiaApp } from '@inertiajs/react'
+import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
@@ -15,10 +15,10 @@ export default function render(page: any) {
     page,
     render: ReactDOMServer.renderToString,
     title: (title) => (title && title !== appName ? `${title} · ${appName}` : appName),
-    resolve: (name) => {
-      return resolvePageComponent(
+    resolve: async (name) => {
+      const resolved = await resolvePageComponent(
         `./pages/${name}.tsx`,
-        import.meta.glob('./pages/**/*.tsx', { eager: true }),
+        import.meta.glob<{ default: ResolvedComponent }>('./pages/**/*.tsx', { eager: true }),
         (resolvedPage: ReactElement<Data.SharedProps>) =>
           name.startsWith('admin/') ? (
             <AdminLayout children={resolvedPage} />
@@ -26,6 +26,8 @@ export default function render(page: any) {
             <Layout children={resolvedPage} />
           )
       )
+
+      return resolved.default
     },
     setup: ({ App, props }) => {
       return (

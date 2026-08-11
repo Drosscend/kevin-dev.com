@@ -125,7 +125,7 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
   const unread = (children.props as { unreadMessages?: number }).unreadMessages ?? 0
   const closeMobile = () => setMobileOpen(false)
 
-  useFlashToasts(children.props.flash)
+  useFlashToasts()
 
   const sidebar = (
     <>
