@@ -80,7 +80,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
   }
 
   return (
-    <>
+    <div className="flex min-h-dvh flex-col">
       <header className="bg-background/85 sticky top-0 z-40 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <Link
@@ -166,7 +166,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
       </header>
 
       <HoverPreviewProvider>
-        <main>{children}</main>
+        <main className="flex-1">{children}</main>
       </HoverPreviewProvider>
       <footer className="border-t">
         <div className="text-muted-foreground mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-9 text-sm">
@@ -210,6 +210,6 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
         </div>
       </footer>
       <Toaster position="top-center" richColors />
-    </>
+    </div>
   )
 }

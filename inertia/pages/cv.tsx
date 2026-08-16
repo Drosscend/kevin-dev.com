@@ -1,5 +1,6 @@
 import { Download } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
+import { EmptyState } from '~/components/empty_state'
 import Lightbox from '~/components/lightbox'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { Button } from '~/components/ui/button'
@@ -39,7 +40,7 @@ export default function Cv({ contentHtml, pdfAvailable, labels, meta }: CvProps)
           {contentHtml ? (
             <ArticleContent html={contentHtml} />
           ) : (
-            <p className="text-muted-foreground">{labels.empty}</p>
+            <EmptyState>{labels.empty}</EmptyState>
           )}
         </Lightbox>
       </div>

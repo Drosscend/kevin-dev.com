@@ -1,4 +1,5 @@
 import { ListingList, ListingRow } from '~/components/content_link'
+import { EmptyState } from '~/components/empty_state'
 import ExternalLinkList from '~/components/external_link_list'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
@@ -45,7 +46,7 @@ export default function TechnologiesIndex({
       <Seo meta={meta} />
       <PageHeader title={labels.title} />
 
-      {grouped.length === 0 && <p className="text-muted-foreground">{labels.empty}</p>}
+      {grouped.length === 0 && <EmptyState>{labels.empty}</EmptyState>}
 
       <div className="space-y-14">
         {grouped.map((group) => (

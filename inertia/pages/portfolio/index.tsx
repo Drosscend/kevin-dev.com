@@ -1,4 +1,5 @@
 import { ListingList, ListingRow } from '~/components/content_link'
+import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
@@ -32,7 +33,7 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
       <PageHeader title={labels.title} />
 
       {projects.length === 0 ? (
-        <p className="text-muted-foreground">{labels.empty}</p>
+        <EmptyState>{labels.empty}</EmptyState>
       ) : (
         <ListingList>
           {projects.map((project) => (

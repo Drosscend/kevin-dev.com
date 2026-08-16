@@ -2,6 +2,7 @@ import { router } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
 import { ChipButton, ChipList } from '~/components/chip'
 import { LinkArrow, ListingList, ListingRow } from '~/components/content_link'
+import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
@@ -90,7 +91,7 @@ export default function BlogIndex({
       )}
 
       {articles.length === 0 ? (
-        <p className="text-muted-foreground">{labels.empty}</p>
+        <EmptyState className="mt-12">{labels.empty}</EmptyState>
       ) : (
         <div className="mt-12">
           <ListingList>
