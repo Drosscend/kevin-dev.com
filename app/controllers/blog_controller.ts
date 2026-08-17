@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 import { Exception } from '@adonisjs/core/exceptions'
 import Article from '#models/article'
@@ -7,13 +6,10 @@ import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
 import PublicationService from '#services/publication_service'
+import { longDate } from '#services/date_format'
 import { localePath, type Locale } from '#types/i18n'
 
 const PER_PAGE = 9
-
-function formatDate(date: DateTime | null, locale: Locale) {
-  return date?.setLocale(locale).toLocaleString(DateTime.DATE_FULL) ?? null
-}
 
 function listQueryString(category: string | null, page: number) {
   const params = new URLSearchParams()
@@ -67,7 +63,7 @@ export default class BlogController {
           slug: article.slug,
           title: translation.title,
           summary: translation.summary,
-          publishedAt: formatDate(article.publishedAt, locale),
+          publishedAt: longDate(article.publishedAt, locale),
           readingTimeLabel: i18n.t('messages.blog.readingTime', {
             minutes: article.readingTime,
           }),
@@ -140,7 +136,7 @@ export default class BlogController {
       article: {
         title: translation.title,
         contentHtml: translation.contentHtml,
-        publishedAt: formatDate(article.publishedAt, locale),
+        publishedAt: longDate(article.publishedAt, locale),
         readingTimeLabel: i18n.t('messages.blog.readingTime', {
           minutes: article.readingTime,
         }),

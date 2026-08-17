@@ -3,6 +3,7 @@ import Talk from '#models/talk'
 import Technology from '#models/technology'
 import TalkService from '#services/talk_service'
 import MediaService from '#services/media_service'
+import { longDate, pickerDateTime } from '#services/date_format'
 import { talkValidator } from '#validators/portfolio'
 
 async function formOptions() {
@@ -52,15 +53,10 @@ export default class TalksController {
         hasEnglish: talk.translation('en') !== undefined,
         status: talk.status,
         eventName: talk.eventName,
-        eventDate: talk.eventDate
-          .setLocale('fr')
-          .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' }),
+        eventDate: longDate(talk.eventDate),
         city: talk.city,
         upcoming: talk.isUpcoming,
-        publishedAt:
-          talk.publishedAt
-            ?.setLocale('fr')
-            .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' }) ?? null,
+        publishedAt: longDate(talk.publishedAt),
         scheduled: !talk.isPublished && talk.status === 'published',
       })),
     })
@@ -110,7 +106,7 @@ export default class TalksController {
           url: link.url,
           type: link.type,
         })),
-        publishedAt: talk.publishedAt?.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
+        publishedAt: pickerDateTime(talk.publishedAt),
         hasBeenOnline: talk.hasBeenOnline,
         fr: {
           title: fr?.title ?? '',

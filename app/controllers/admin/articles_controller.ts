@@ -4,6 +4,7 @@ import Category from '#models/category'
 import Technology from '#models/technology'
 import ArticleService from '#services/article_service'
 import MediaService from '#services/media_service'
+import { longDate, pickerDateTime } from '#services/date_format'
 import { articleValidator } from '#validators/blog'
 
 async function formOptions() {
@@ -53,10 +54,7 @@ export default class ArticlesController {
         title: article.translation('fr')?.title ?? article.slug,
         hasEnglish: article.translation('en') !== undefined,
         status: article.status,
-        publishedAt:
-          article.publishedAt
-            ?.setLocale('fr')
-            .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' }) ?? null,
+        publishedAt: longDate(article.publishedAt),
         scheduled: !article.isPublished && article.status === 'published',
         category: article.category?.name('fr') ?? null,
       })),
@@ -108,7 +106,7 @@ export default class ArticlesController {
         categoryId: article.categoryId,
         coverMediaId: article.coverMediaId,
         technologyIds: article.technologies.map((technology) => technology.id),
-        publishedAt: article.publishedAt?.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
+        publishedAt: pickerDateTime(article.publishedAt),
         hasBeenOnline: article.hasBeenOnline,
         fr: {
           title: fr?.title ?? '',

@@ -8,6 +8,7 @@ import TimelineEntry from '#models/timeline_entry'
 import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import SettingsService from '#services/settings_service'
+import { longDate, monthYear } from '#services/date_format'
 import { CV_PDF_KEY } from '#controllers/cv_controller'
 import { localePath, type Locale } from '#types/i18n'
 
@@ -125,10 +126,7 @@ export default class HomeController {
         slug: article.slug,
         title: article.translation(locale)!.title,
         summary: article.translation(locale)!.summary,
-        publishedAt:
-          article.publishedAt
-            ?.setLocale(locale)
-            .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' }) ?? null,
+        publishedAt: longDate(article.publishedAt, locale),
         coverUrl: MediaService.url(article.cover),
       })),
       articlesTotal,
@@ -150,9 +148,7 @@ export default class HomeController {
         slug: talk.slug,
         title: talk.translation(locale)!.title,
         eventName: talk.eventName,
-        eventDate: talk.eventDate
-          .setLocale(locale)
-          .toLocaleString({ month: 'long', year: 'numeric' }),
+        eventDate: monthYear(talk.eventDate, locale),
         city: talk.city,
         upcoming: talk.isUpcoming,
         summary: talk.translation(locale)!.summary,

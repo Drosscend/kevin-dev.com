@@ -1,4 +1,3 @@
-import { type DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 import { Exception } from '@adonisjs/core/exceptions'
 import Talk from '#models/talk'
@@ -6,11 +5,8 @@ import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
 import PublicationService from '#services/publication_service'
+import { longDate } from '#services/date_format'
 import { localePath, type Locale } from '#types/i18n'
-
-function formatDate(date: DateTime, locale: Locale) {
-  return date.setLocale(locale).toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' })
-}
 
 export default class TalksController {
   async index({ inertia, i18n }: HttpContext) {
@@ -35,7 +31,7 @@ export default class TalksController {
           title: translation.title,
           summary: translation.summary,
           eventName: talk.eventName,
-          eventDate: formatDate(talk.eventDate, locale),
+          eventDate: longDate(talk.eventDate, locale),
           city: talk.city,
           readingTimeLabel: i18n.t('messages.blog.readingTime', {
             minutes: talk.readingTime,
@@ -104,7 +100,7 @@ export default class TalksController {
         contentHtml: translation.contentHtml,
         coverUrl: MediaService.url(talk.cover),
         eventName: talk.eventName,
-        eventDate: formatDate(talk.eventDate, locale),
+        eventDate: longDate(talk.eventDate, locale),
         city: talk.city,
         readingTimeLabel: i18n.t('messages.blog.readingTime', {
           minutes: talk.readingTime,

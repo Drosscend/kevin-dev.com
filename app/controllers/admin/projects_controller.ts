@@ -4,6 +4,7 @@ import Technology from '#models/technology'
 import Article from '#models/article'
 import ProjectService from '#services/project_service'
 import MediaService from '#services/media_service'
+import { longDate, pickerDateTime } from '#services/date_format'
 import { projectValidator } from '#validators/portfolio'
 
 async function formOptions() {
@@ -68,10 +69,7 @@ export default class ProjectsController {
         hasEnglish: project.translation('en') !== undefined,
         status: project.status,
         featured: project.featured,
-        publishedAt:
-          project.publishedAt
-            ?.setLocale('fr')
-            .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' }) ?? null,
+        publishedAt: longDate(project.publishedAt),
         scheduled: !project.isPublished && project.status === 'published',
         technologiesCount: Number(project.$extras.technologies_count ?? 0),
       })),
@@ -124,7 +122,7 @@ export default class ProjectsController {
           url: link.url,
           type: link.type,
         })),
-        publishedAt: project.publishedAt?.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
+        publishedAt: pickerDateTime(project.publishedAt),
         hasBeenOnline: project.hasBeenOnline,
         fr: {
           title: fr?.title ?? '',

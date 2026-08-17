@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import { pickerDateTime } from '#services/date_format'
 import type { HttpContext } from '@adonisjs/core/http'
 import ContactMessage from '#models/contact_message'
 
@@ -15,7 +16,7 @@ export default class MessagesController {
         isRead: message.isRead,
         // Raw value: the admin formats every date through one helper,
         // so a message reads like a publication date.
-        createdAt: message.createdAt.toISO({ includeOffset: false })?.slice(0, 16) ?? null,
+        createdAt: pickerDateTime(message.createdAt),
       })),
     })
   }

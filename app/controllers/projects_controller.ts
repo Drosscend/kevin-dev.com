@@ -1,4 +1,3 @@
-import { type DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 import { Exception } from '@adonisjs/core/exceptions'
 import Project from '#models/project'
@@ -6,19 +5,16 @@ import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
 import PublicationService from '#services/publication_service'
+import { monthYear } from '#services/date_format'
 import { localePath, type Locale } from '#types/i18n'
-
-function formatDate(date: DateTime | null, locale: Locale) {
-  return date?.setLocale(locale).toLocaleString({ month: 'long', year: 'numeric' }) ?? null
-}
 
 /**
  * Timespan shown on the listing: an open-ended project keeps only its
  * start, an undated one has no metadata line at all.
  */
 function formatPeriod(project: Project, locale: Locale) {
-  const startedAt = formatDate(project.startedAt, locale)
-  const endedAt = formatDate(project.endedAt, locale)
+  const startedAt = monthYear(project.startedAt, locale)
+  const endedAt = monthYear(project.endedAt, locale)
 
   if (startedAt && endedAt) {
     return `${startedAt} - ${endedAt}`
@@ -117,8 +113,8 @@ export default class ProjectsController {
         title: translation.title,
         contentHtml: translation.contentHtml,
         coverUrl: MediaService.url(project.cover),
-        startedAt: formatDate(project.startedAt, locale),
-        endedAt: formatDate(project.endedAt, locale),
+        startedAt: monthYear(project.startedAt, locale),
+        endedAt: monthYear(project.endedAt, locale),
         readingTimeLabel: i18n.t('messages.blog.readingTime', {
           minutes: project.readingTime,
         }),
