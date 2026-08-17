@@ -4,6 +4,6 @@ import { HealthChecks, DiskSpaceCheck, MemoryHeapCheck } from '@adonisjs/core/he
 
 export const healthChecks = new HealthChecks().register([
   new DiskSpaceCheck(),
-  new MemoryHeapCheck(),
+  new MemoryHeapCheck().warnWhenExceeds('400 mb').failWhenExceeds('500 mb'),
   new DbCheck(db.connection()),
 ])
