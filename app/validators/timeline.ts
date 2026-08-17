@@ -1,5 +1,5 @@
 import vine from '@vinejs/vine'
-import { TIMELINE_HONOURS } from '#models/timeline_entry'
+import { TIMELINE_HONOURS } from '#types/content'
 
 /**
  * A homepage timeline entry. The English translation is optional as a

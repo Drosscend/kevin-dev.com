@@ -14,7 +14,8 @@ import FieldError from '~/components/field_error'
 import DraftBanner from '~/components/admin/draft_banner'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
 import PreviewLink from '~/components/admin/preview_link'
-import PublicationActions, { type PublicationStatus } from '~/components/admin/publication_actions'
+import PublicationActions from '~/components/admin/publication_actions'
+import { PROJECT_LINK_TYPES, type ProjectLinkType, type PublicationStatus } from '#types/content'
 import ToggleList, { SwitchField } from '~/components/admin/toggle_list'
 import TranslationCard from '~/components/admin/translation_card'
 import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
@@ -55,14 +56,16 @@ type ProjectFormProps = {
 
 const EMPTY_LINK: LinkValues = { label: '', url: '', type: 'github' }
 
-const LINK_TYPES = [
-  { value: 'github', label: 'GitHub' },
-  { value: 'demo', label: 'Démo' },
-  { value: 'release', label: 'Release' },
-  { value: 'store', label: 'Store' },
-  { value: 'paper', label: 'Mémoire / rapport' },
-  { value: 'other', label: 'Autre' },
-] as const
+const LINK_TYPE_LABELS: Record<ProjectLinkType, string> = {
+  github: 'GitHub',
+  demo: 'Démo',
+  release: 'Release',
+  store: 'Store',
+  paper: 'Mémoire / rapport',
+  other: 'Autre',
+}
+
+const LINK_TYPES = PROJECT_LINK_TYPES.map((value) => ({ value, label: LINK_TYPE_LABELS[value] }))
 
 export default function ProjectForm({ project, options }: ProjectFormProps) {
   const { errors } = usePage().props

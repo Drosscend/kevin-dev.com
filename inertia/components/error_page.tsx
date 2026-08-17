@@ -1,8 +1,8 @@
 import { Link } from '@adonisjs/inertia/react'
-import { localePath } from '~/lib/locale'
+import { localePath, type Locale } from '#types/i18n'
 
 export type ErrorPageProps = {
-  locale: 'fr' | 'en'
+  locale: Locale
   labels: { title: string; backHome: string }
 }
 

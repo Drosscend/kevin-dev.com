@@ -1,7 +1,5 @@
 import vine from '@vinejs/vine'
-import { PROJECT_LINK_TYPES } from '#models/project_link'
-import { TALK_LINK_TYPES } from '#models/talk_link'
-import { TECHNOLOGY_CATEGORIES } from '#models/technology'
+import { PROJECT_LINK_TYPES, TALK_LINK_TYPES, TECHNOLOGY_CATEGORIES } from '#types/content'
 import {
   publishedAt,
   relationId,

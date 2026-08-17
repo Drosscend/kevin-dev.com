@@ -13,13 +13,16 @@ import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
 import { plural } from '~/lib/plural'
+import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
 
-const CATEGORIES = [
-  { value: 'langage', label: 'Langage' },
-  { value: 'framework', label: 'Framework' },
-  { value: 'outil', label: 'Outil' },
-  { value: 'infra', label: 'Infra' },
-] as const
+const CATEGORY_LABELS: Record<TechnologyCategory, string> = {
+  langage: 'Langage',
+  framework: 'Framework',
+  outil: 'Outil',
+  infra: 'Infra',
+}
+
+const CATEGORIES = TECHNOLOGY_CATEGORIES.map((value) => ({ value, label: CATEGORY_LABELS[value] }))
 
 /** Reading name of a stored category value, for the list below the form. */
 function categoryLabel(value: string) {

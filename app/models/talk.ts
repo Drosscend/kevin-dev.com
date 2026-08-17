@@ -7,11 +7,10 @@ import TalkLink from '#models/talk_link'
 import Media from '#models/media'
 import Technology from '#models/technology'
 import type { Locale } from '#types/i18n'
-
-export type TalkStatus = 'draft' | 'published' | 'archived'
+import type { PublicationStatus } from '#types/content'
 
 export default class Talk extends TalkSchema {
-  declare status: TalkStatus
+  declare status: PublicationStatus
 
   @hasMany(() => TalkTranslation)
   declare translations: HasMany<typeof TalkTranslation>

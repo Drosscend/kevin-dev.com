@@ -12,18 +12,18 @@ import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
 import FieldError from '~/components/field_error'
-import LocaleTabsList, {
-  type AdminLocale,
-  translationStatus,
-  useAdminLocale,
-} from '~/components/admin/locale_tabs'
+import type { Locale } from '#types/i18n'
+import { TIMELINE_HONOURS, type TimelineHonours } from '#types/content'
+import LocaleTabsList, { translationStatus, useAdminLocale } from '~/components/admin/locale_tabs'
 
-const HONOURS = [
-  { value: 'none', label: 'Sans mention' },
-  { value: 'fair', label: 'Assez bien' },
-  { value: 'good', label: 'Bien' },
-  { value: 'very_good', label: 'Très bien' },
-] as const
+const HONOURS_LABELS: Record<TimelineHonours, string> = {
+  none: 'Sans mention',
+  fair: 'Assez bien',
+  good: 'Bien',
+  very_good: 'Très bien',
+}
+
+const HONOURS = TIMELINE_HONOURS.map((value) => ({ value, label: HONOURS_LABELS[value] }))
 
 const honoursLabel = (value: string) => HONOURS.find((option) => option.value === value)?.label
 
@@ -54,7 +54,7 @@ function TimelineForm({
   onDone,
 }: {
   item: TimelineItem | null
-  locale: AdminLocale
+  locale: Locale
   onErrors: (errors: Record<string, string>) => void
   onDone?: () => void
 }) {

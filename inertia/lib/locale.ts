@@ -1,16 +1,4 @@
-import type { Locale } from '#types/i18n'
-
-/**
- * Prefixes a public path with the locale segment: French lives at
- * the root, English under /en. Client-side twin of the server
- * helper in app/types/i18n.ts.
- */
-export function localePath(locale: Locale, path: string) {
-  if (locale === 'fr') {
-    return path
-  }
-  return path === '/' ? '/en' : `/en${path}`
-}
+import { localePath, type Locale } from '#types/i18n'
 
 /**
  * Current URL in the other locale, query string included. Feeds the

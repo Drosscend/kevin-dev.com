@@ -1,8 +1,7 @@
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import type Talk from '#models/talk'
-import type { TalkStatus } from '#models/talk'
-import type { TalkLinkType } from '#models/talk_link'
+import type { PublicationStatus, TalkLinkType } from '#types/content'
 import MarkdownService from '#services/markdown_service'
 
 interface TalkTranslationPayload {
@@ -19,7 +18,7 @@ interface TalkLinkPayload {
 
 export interface TalkPayload {
   slug: string
-  status: TalkStatus
+  status: PublicationStatus
   coverMediaId: number | null
   eventDate: string
   eventName: string

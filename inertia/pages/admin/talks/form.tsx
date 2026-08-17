@@ -14,7 +14,8 @@ import FieldError from '~/components/field_error'
 import DraftBanner from '~/components/admin/draft_banner'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
 import PreviewLink from '~/components/admin/preview_link'
-import PublicationActions, { type PublicationStatus } from '~/components/admin/publication_actions'
+import PublicationActions from '~/components/admin/publication_actions'
+import { TALK_LINK_TYPES, type TalkLinkType, type PublicationStatus } from '#types/content'
 import ToggleList from '~/components/admin/toggle_list'
 import TranslationCard from '~/components/admin/translation_card'
 import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
@@ -53,13 +54,15 @@ type TalkFormProps = {
 
 const EMPTY_LINK: LinkValues = { label: '', url: '', type: 'slides' }
 
-const LINK_TYPES = [
-  { value: 'slides', label: 'Slides' },
-  { value: 'video', label: 'Vidéo' },
-  { value: 'event', label: 'Événement' },
-  { value: 'code', label: 'Code' },
-  { value: 'other', label: 'Autre' },
-] as const
+const LINK_TYPE_LABELS: Record<TalkLinkType, string> = {
+  slides: 'Slides',
+  video: 'Vidéo',
+  event: 'Événement',
+  code: 'Code',
+  other: 'Autre',
+}
+
+const LINK_TYPES = TALK_LINK_TYPES.map((value) => ({ value, label: LINK_TYPE_LABELS[value] }))
 
 export default function TalkForm({ talk, options }: TalkFormProps) {
   const { errors } = usePage().props

@@ -5,9 +5,10 @@ import { Label } from '~/components/ui/label'
 import { Textarea } from '~/components/ui/textarea'
 import Seo, { type SeoMeta } from '~/components/seo'
 import FieldError from '~/components/field_error'
+import type { Locale } from '#types/i18n'
 
 type ContactProps = {
-  locale: 'fr' | 'en'
+  locale: Locale
   labels: {
     title: string
     intro: string

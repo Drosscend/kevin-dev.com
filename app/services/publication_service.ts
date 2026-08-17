@@ -1,6 +1,5 @@
 import { Exception } from '@adonisjs/core/exceptions'
-
-export type PreviewMode = 'draft' | 'archived' | null
+import type { PreviewMode } from '#types/content'
 
 type PublishableEntry = { status: string; isPublished: boolean }
 

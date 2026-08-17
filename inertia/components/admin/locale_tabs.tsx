@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { TabsList, TabsTrigger } from '~/components/ui/tabs'
+import type { Locale } from '#types/i18n'
 import type { TranslationValues } from '~/lib/admin'
-
-export type AdminLocale = 'fr' | 'en'
 
 type TranslationStatus = 'empty' | 'partial' | 'complete'
 
@@ -22,12 +21,12 @@ const STORAGE_PREFIX = 'admin:locale:'
 export function useAdminLocale(scope: string, hasTranslation = true) {
   const storageKey = STORAGE_PREFIX + scope
 
-  const [locale, setLocale] = useState<AdminLocale>(() =>
+  const [locale, setLocale] = useState<Locale>(() =>
     hasTranslation && window.sessionStorage.getItem(storageKey) === 'en' ? 'en' : 'fr'
   )
 
   function changeLocale(value: string) {
-    const next: AdminLocale = value === 'en' ? 'en' : 'fr'
+    const next: Locale = value === 'en' ? 'en' : 'fr'
     window.sessionStorage.setItem(storageKey, next)
     setLocale(next)
   }

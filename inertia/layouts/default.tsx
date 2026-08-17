@@ -8,7 +8,8 @@ import { HoverPreviewProvider } from '~/components/hover_preview'
 import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
-import { localePath, otherLocaleUrl } from '~/lib/locale'
+import { localePath } from '#types/i18n'
+import { otherLocaleUrl } from '~/lib/locale'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
 
 /** Order of the header and footer links; labels come from shared props. */

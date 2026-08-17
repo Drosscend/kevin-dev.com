@@ -1,4 +1,4 @@
-import type { PublicationStatus } from '~/components/admin/publication_actions'
+import type { PublicationStatus } from '#types/content'
 
 /**
  * Publication status badge shared by admin lists. Green dot for

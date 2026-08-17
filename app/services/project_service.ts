@@ -1,8 +1,7 @@
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import type Project from '#models/project'
-import type { ProjectStatus } from '#models/project'
-import type { ProjectLinkType } from '#models/project_link'
+import type { ProjectLinkType, PublicationStatus } from '#types/content'
 import MarkdownService from '#services/markdown_service'
 
 interface ProjectTranslationPayload {
@@ -19,7 +18,7 @@ interface ProjectLinkPayload {
 
 export interface ProjectPayload {
   slug: string
-  status: ProjectStatus
+  status: PublicationStatus
   coverMediaId: number | null
   startedAt: string | null
   endedAt: string | null

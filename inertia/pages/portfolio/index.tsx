@@ -4,7 +4,7 @@ import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
-import { localePath } from '~/lib/locale'
+import { localePath, type Locale } from '#types/i18n'
 
 type ProjectCard = {
   slug: string
@@ -18,7 +18,7 @@ type ProjectCard = {
 }
 
 type PortfolioIndexProps = {
-  locale: 'fr' | 'en'
+  locale: Locale
   projects: ProjectCard[]
   labels: { title: string; empty: string; ongoing: string }
   meta: SeoMeta

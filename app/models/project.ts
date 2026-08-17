@@ -8,11 +8,10 @@ import Media from '#models/media'
 import Technology from '#models/technology'
 import Article from '#models/article'
 import type { Locale } from '#types/i18n'
-
-export type ProjectStatus = 'draft' | 'published' | 'archived'
+import type { PublicationStatus } from '#types/content'
 
 export default class Project extends ProjectSchema {
-  declare status: ProjectStatus
+  declare status: PublicationStatus
 
   @hasMany(() => ProjectTranslation)
   declare translations: HasMany<typeof ProjectTranslation>

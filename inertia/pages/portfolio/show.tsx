@@ -3,16 +3,17 @@ import ArticleContent from '~/components/article_content'
 import ExternalLinkList, { type ExternalLinkRef } from '~/components/external_link_list'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
-import PreviewBanner, { type PreviewMode } from '~/components/preview_banner'
+import PreviewBanner from '~/components/preview_banner'
+import type { PreviewMode } from '#types/content'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import TableOfContents from '~/components/table_of_contents'
 import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
-import { localePath } from '~/lib/locale'
+import { localePath, type Locale } from '#types/i18n'
 
 type PortfolioShowProps = {
-  locale: 'fr' | 'en'
+  locale: Locale
   preview: PreviewMode
   project: {
     title: string

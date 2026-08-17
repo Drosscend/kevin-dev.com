@@ -5,10 +5,10 @@ import { LinkArrow, LinkList, LinkRow } from '~/components/content_link'
 import { Button } from '~/components/ui/button'
 import StatusBadge from '~/components/status_badge'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath } from '~/lib/locale'
+import { localePath, type Locale } from '#types/i18n'
 
 type HomeProps = {
-  locale: 'fr' | 'en'
+  locale: Locale
   now: string | null
   roles: string[]
   location: string | null

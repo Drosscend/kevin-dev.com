@@ -3,12 +3,13 @@ import { EmptyState } from '~/components/empty_state'
 import ExternalLinkList from '~/components/external_link_list'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath } from '~/lib/locale'
+import { localePath, type Locale } from '#types/i18n'
+import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
 
 type TechnologyCard = {
   slug: string
   name: string
-  category: 'langage' | 'framework' | 'outil' | 'infra'
+  category: TechnologyCategory
   logoUrl: string | null
   docsUrl: string | null
   description: string
@@ -16,7 +17,7 @@ type TechnologyCard = {
 }
 
 type TechnologiesIndexProps = {
-  locale: 'fr' | 'en'
+  locale: Locale
   technologies: TechnologyCard[]
   labels: {
     title: string
@@ -27,8 +28,6 @@ type TechnologiesIndexProps = {
   meta: SeoMeta
 }
 
-const CATEGORY_ORDER: TechnologyCard['category'][] = ['langage', 'framework', 'outil', 'infra']
-
 export default function TechnologiesIndex({
   locale,
   technologies,
@@ -36,7 +35,7 @@ export default function TechnologiesIndex({
   meta,
 }: TechnologiesIndexProps) {
   const to = (path: string) => localePath(locale, path)
-  const grouped = CATEGORY_ORDER.map((category) => ({
+  const grouped = TECHNOLOGY_CATEGORIES.map((category) => ({
     category,
     items: technologies.filter((technology) => technology.category === category),
   })).filter((group) => group.items.length > 0)

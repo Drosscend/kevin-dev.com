@@ -6,7 +6,7 @@ import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
-import { localePath } from '~/lib/locale'
+import { localePath, type Locale } from '#types/i18n'
 
 type ArticleCard = {
   slug: string
@@ -20,7 +20,7 @@ type ArticleCard = {
 }
 
 type BlogIndexProps = {
-  locale: 'fr' | 'en'
+  locale: Locale
   filters: { category: string | null }
   articles: ArticleCard[]
   pagination: { currentPage: number; lastPage: number }

@@ -1,7 +1,6 @@
 import { Button } from '~/components/ui/button'
 import ConfirmButton from '~/components/admin/confirm_button'
-
-export type PublicationStatus = 'draft' | 'published' | 'archived'
+import type { PublicationStatus } from '#types/content'
 
 /**
  * Actions offered by a content form, driven by what the entry has

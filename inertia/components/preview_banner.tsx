@@ -1,7 +1,5 @@
 import { cn } from '~/lib/utils'
 
-export type PreviewMode = 'draft' | 'archived' | null
-
 /**
  * Tells the signed-in author that the page below is not what the
  * public sees: a draft, or an entry withdrawn from the site.

@@ -6,7 +6,7 @@ import type { CommandOptions } from '@adonisjs/core/types/ace'
 import Project from '#models/project'
 import Technology from '#models/technology'
 import ProjectService from '#services/project_service'
-import { PROJECT_LINK_TYPES, type ProjectLinkType } from '#models/project_link'
+import { PROJECT_LINK_TYPES, type ProjectLinkType } from '#types/content'
 
 interface Entry {
   slug: string

@@ -1,6 +1,5 @@
-import type { Locale } from '#types/i18n'
+import { localePath, type Locale } from '#types/i18n'
 import { ChipLink, ChipList } from '~/components/chip'
-import { localePath } from '~/lib/locale'
 import { cn } from '~/lib/utils'
 
 export type TechnologyRef = { slug: string; name: string }

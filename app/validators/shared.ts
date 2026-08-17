@@ -1,5 +1,6 @@
 import vine from '@vinejs/vine'
 import type { FieldContext } from '@vinejs/vine/types'
+import { PUBLICATION_STATUSES } from '#types/content'
 
 /**
  * Metadata describing the row being edited: its id, so it is excluded
@@ -80,7 +81,7 @@ const publicationTransition = vine.createRule(
  * through. See the rule above for the two rejected transitions.
  */
 export function status() {
-  return vine.enum(['draft', 'published', 'archived'] as const).use(publicationTransition())
+  return vine.enum(PUBLICATION_STATUSES).use(publicationTransition())
 }
 
 /**

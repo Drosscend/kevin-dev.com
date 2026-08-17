@@ -7,11 +7,10 @@ import Category from '#models/category'
 import Technology from '#models/technology'
 import Media from '#models/media'
 import type { Locale } from '#types/i18n'
-
-export type ArticleStatus = 'draft' | 'published' | 'archived'
+import type { PublicationStatus } from '#types/content'
 
 export default class Article extends ArticleSchema {
-  declare status: ArticleStatus
+  declare status: PublicationStatus
 
   @hasMany(() => ArticleTranslation)
   declare translations: HasMany<typeof ArticleTranslation>

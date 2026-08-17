@@ -2,12 +2,12 @@ import { ListingList, ListingRow } from '~/components/content_link'
 import ExternalLinkList from '~/components/external_link_list'
 import { BackLink } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath } from '~/lib/locale'
+import { localePath, type Locale } from '#types/i18n'
 
 type Entry = { slug: string; title: string; summary: string; coverUrl: string | null }
 
 type TechnologyShowProps = {
-  locale: 'fr' | 'en'
+  locale: Locale
   technology: {
     name: string
     logoUrl: string | null

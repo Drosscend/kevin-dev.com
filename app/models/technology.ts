@@ -7,9 +7,7 @@ import Project from '#models/project'
 import Article from '#models/article'
 import Talk from '#models/talk'
 import type { Locale } from '#types/i18n'
-
-export const TECHNOLOGY_CATEGORIES = ['langage', 'framework', 'outil', 'infra'] as const
-export type TechnologyCategory = (typeof TECHNOLOGY_CATEGORIES)[number]
+import type { TechnologyCategory } from '#types/content'
 
 export default class Technology extends TechnologySchema {
   declare category: TechnologyCategory

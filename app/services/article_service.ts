@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import type Article from '#models/article'
-import type { ArticleStatus } from '#models/article'
+import type { PublicationStatus } from '#types/content'
 import MarkdownService from '#services/markdown_service'
 
 interface TranslationPayload {
@@ -12,7 +12,7 @@ interface TranslationPayload {
 
 export interface ArticlePayload {
   slug: string
-  status: ArticleStatus
+  status: PublicationStatus
   categoryId: number | null
   coverMediaId: number | null
   technologyIds: number[]

@@ -6,7 +6,7 @@ import ConfirmButton from '~/components/admin/confirm_button'
 import PreviewLink from '~/components/admin/preview_link'
 import EmptyState from '~/components/admin/empty_state'
 import StatusBadge from '~/components/admin/status_badge'
-import type { PublicationStatus } from '~/components/admin/publication_actions'
+import type { PublicationStatus } from '#types/content'
 
 type TalkRow = {
   id: number

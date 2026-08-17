@@ -9,11 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { Tabs, TabsContent } from '~/components/ui/tabs'
 import AdminPage from '~/components/admin/admin_page'
 import FieldError from '~/components/field_error'
-import LocaleTabsList, {
-  type AdminLocale,
-  translationStatus,
-  useAdminLocale,
-} from '~/components/admin/locale_tabs'
+import type { Locale } from '#types/i18n'
+import LocaleTabsList, { translationStatus, useAdminLocale } from '~/components/admin/locale_tabs'
 
 type HomeSettings = {
   heroRolesFr: string
@@ -63,7 +60,7 @@ function HomeContents({
   settings,
   onChange,
 }: {
-  locale: AdminLocale
+  locale: Locale
   settings: HomeSettings
   onChange: (field: keyof HomeSettings, value: string) => void
 }) {
