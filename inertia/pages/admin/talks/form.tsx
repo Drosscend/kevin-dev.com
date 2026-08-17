@@ -1,33 +1,29 @@
 import { type FormEvent, useRef } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
-import { Link } from '@adonisjs/inertia/react'
-import { Trash2 } from 'lucide-react'
 import { client } from '~/client'
-import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-import { Select } from '~/components/ui/select'
 import { DateTimePicker } from '~/components/ui/date_time_picker'
 import { DatePicker } from '~/components/ui/date_picker'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import FieldError from '~/components/field_error'
+import AdminPage, { AdminBackLink } from '~/components/admin/admin_page'
 import DraftBanner from '~/components/admin/draft_banner'
+import ExternalLinksCard, {
+  type LinkValues,
+  withoutEmptyLinks,
+} from '~/components/admin/external_links_card'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
 import PreviewLink from '~/components/admin/preview_link'
 import PublicationActions from '~/components/admin/publication_actions'
 import { TALK_LINK_TYPES, type TalkLinkType, type PublicationStatus } from '#types/content'
+import SlugField from '~/components/admin/slug_field'
 import ToggleList from '~/components/admin/toggle_list'
 import TranslationCard from '~/components/admin/translation_card'
 import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
-import { EMPTY_TRANSLATION, SLUG_LOCKED_HINT, slugify, type TranslationValues } from '~/lib/admin'
+import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
 import { formatFrDateTime } from '~/lib/dates'
-
-type LinkValues = {
-  label: string
-  url: string
-  type: string
-}
 
 type TalkData = {
   id: number
@@ -51,8 +47,6 @@ type TalkFormProps = {
   talk: TalkData | null
   options: { technologies: Option[]; media: MediaPickerItem[] }
 }
-
-const EMPTY_LINK: LinkValues = { label: '', url: '', type: 'slides' }
 
 const LINK_TYPE_LABELS: Record<TalkLinkType, string> = {
   slides: 'Slides',
@@ -106,19 +100,8 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
     )
   }
 
-  function setLink(index: number, link: LinkValues) {
-    form.setData(
-      'links',
-      form.data.links.map((current, i) => (i === index ? link : current))
-    )
-  }
-
   function save(status: PublicationStatus) {
-    form.transform((data) => ({
-      ...data,
-      status,
-      links: data.links.filter((link) => link.label.trim() !== '' || link.url.trim() !== ''),
-    }))
+    form.transform((data) => ({ ...data, status, links: withoutEmptyLinks(data.links) }))
     const visitOptions = {
       preserveScroll: true,
       onSuccess: () => draft.clearDraft(),
@@ -137,22 +120,16 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
   }
 
   return (
-    <div className="max-w-5xl space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">
-          {talk ? 'Modifier l’intervention' : 'Nouvelle intervention'}
-        </h1>
+    <AdminPage
+      title={talk ? 'Modifier l’intervention' : 'Nouvelle intervention'}
+      className="max-w-5xl"
+      action={
         <div className="flex items-center gap-4">
           {talk && <PreviewLink kind="talks" slug={talk.slug} title={talk.fr.title} showLabel />}
-          <Link
-            route="admin.talks.index"
-            className="text-muted-foreground hover:text-primary text-sm transition-colors"
-          >
-            ← Toutes les interventions
-          </Link>
+          <AdminBackLink route="admin.talks.index">Toutes les interventions</AdminBackLink>
         </div>
-      </div>
-
+      }
+    >
       <form onSubmit={submit} className="space-y-6">
         {draft.hasDraft && (
           <DraftBanner
@@ -168,22 +145,15 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="slug">Slug (partagé FR/EN)</Label>
-                <Input
-                  id="slug"
-                  value={form.data.slug}
-                  disabled={talk?.hasBeenOnline}
-                  onChange={(event) => {
-                    slugTouched.current = true
-                    form.setData('slug', event.target.value)
-                  }}
-                />
-                {talk?.hasBeenOnline && (
-                  <p className="text-muted-foreground text-xs">{SLUG_LOCKED_HINT}</p>
-                )}
-                <FieldError errors={errors} field="slug" />
-              </div>
+              <SlugField
+                value={form.data.slug}
+                locked={Boolean(talk?.hasBeenOnline)}
+                onChange={(value) => {
+                  slugTouched.current = true
+                  form.setData('slug', value)
+                }}
+                errors={errors}
+              />
               <div className="space-y-2">
                 <Label htmlFor="cover">Image de couverture</Label>
                 <MediaPicker
@@ -254,65 +224,12 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Liens externes</CardTitle>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => form.setData('links', [...form.data.links, { ...EMPTY_LINK }])}
-            >
-              Ajouter un lien
-            </Button>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {form.data.links.length === 0 && (
-              <p className="text-muted-foreground text-sm">Aucun lien.</p>
-            )}
-            {form.data.links.map((link, index) => (
-              <div key={index} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto_auto]">
-                <Input
-                  placeholder="Libellé"
-                  value={link.label}
-                  onChange={(event) => setLink(index, { ...link, label: event.target.value })}
-                />
-                <Input
-                  placeholder="https://…"
-                  value={link.url}
-                  onChange={(event) => setLink(index, { ...link, url: event.target.value })}
-                />
-                <Select
-                  className="w-auto"
-                  value={link.type}
-                  onChange={(event) => setLink(index, { ...link, type: event.target.value })}
-                >
-                  {LINK_TYPES.map((type) => (
-                    <option key={type.value} value={type.value}>
-                      {type.label}
-                    </option>
-                  ))}
-                </Select>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="text-destructive"
-                  aria-label={`Retirer le lien ${index + 1}`}
-                  onClick={() =>
-                    form.setData(
-                      'links',
-                      form.data.links.filter((_, i) => i !== index)
-                    )
-                  }
-                >
-                  <Trash2 className="size-4" />
-                </Button>
-              </div>
-            ))}
-            <FieldError errors={errors} field="links" />
-          </CardContent>
-        </Card>
+        <ExternalLinksCard
+          links={form.data.links}
+          types={LINK_TYPES}
+          onChange={(links) => form.setData('links', links)}
+          errors={errors}
+        />
 
         <TranslationCard
           locale={locale}
@@ -341,6 +258,6 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
         </div>
         <FieldError errors={errors} field="status" />
       </form>
-    </div>
+    </AdminPage>
   )
 }

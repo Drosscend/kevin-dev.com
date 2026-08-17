@@ -1,4 +1,6 @@
-import { type ReactNode } from 'react'
+import { type ComponentProps, type ReactNode } from 'react'
+import { Link } from '@adonisjs/inertia/react'
+import { LinkArrow } from '~/components/content_link'
 
 /**
  * Standard admin page frame: title row with an optional action slot
@@ -23,5 +25,23 @@ export default function AdminPage({
       </div>
       {children}
     </div>
+  )
+}
+
+/** Link back to the listing an admin form was opened from. */
+export function AdminBackLink({
+  route,
+  children,
+}: {
+  route: NonNullable<ComponentProps<typeof Link>['route']>
+  children: ReactNode
+}) {
+  return (
+    <Link
+      route={route}
+      className="group text-muted-foreground hover:text-primary text-sm transition-colors"
+    >
+      <LinkArrow direction="back" /> {children}
+    </Link>
   )
 }

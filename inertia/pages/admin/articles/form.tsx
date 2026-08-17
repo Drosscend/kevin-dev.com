@@ -1,23 +1,23 @@
 import { type FormEvent, useRef } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
-import { Link } from '@adonisjs/inertia/react'
 import { client } from '~/client'
-import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Select } from '~/components/ui/select'
 import { DateTimePicker } from '~/components/ui/date_time_picker'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import FieldError from '~/components/field_error'
 import { formatFrDateTime } from '~/lib/dates'
+import AdminPage, { AdminBackLink } from '~/components/admin/admin_page'
 import DraftBanner from '~/components/admin/draft_banner'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
 import PreviewLink from '~/components/admin/preview_link'
 import PublicationActions from '~/components/admin/publication_actions'
 import type { PublicationStatus } from '#types/content'
+import SlugField from '~/components/admin/slug_field'
 import ToggleList from '~/components/admin/toggle_list'
 import TranslationCard from '~/components/admin/translation_card'
 import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
-import { EMPTY_TRANSLATION, SLUG_LOCKED_HINT, slugify, type TranslationValues } from '~/lib/admin'
+import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
 
 type ArticleData = {
@@ -99,24 +99,18 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
   }
 
   return (
-    <div className="max-w-5xl space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">
-          {article ? 'Modifier l’article' : 'Nouvel article'}
-        </h1>
+    <AdminPage
+      title={article ? 'Modifier l’article' : 'Nouvel article'}
+      className="max-w-5xl"
+      action={
         <div className="flex items-center gap-4">
           {article && (
             <PreviewLink kind="articles" slug={article.slug} title={article.fr.title} showLabel />
           )}
-          <Link
-            route="admin.articles.index"
-            className="text-muted-foreground hover:text-primary text-sm transition-colors"
-          >
-            ← Tous les articles
-          </Link>
+          <AdminBackLink route="admin.articles.index">Tous les articles</AdminBackLink>
         </div>
-      </div>
-
+      }
+    >
       <form onSubmit={submit} className="space-y-6">
         {draft.hasDraft && (
           <DraftBanner
@@ -132,22 +126,15 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="slug">Slug (partagé FR/EN)</Label>
-                <Input
-                  id="slug"
-                  value={form.data.slug}
-                  disabled={article?.hasBeenOnline}
-                  onChange={(event) => {
-                    slugTouched.current = true
-                    form.setData('slug', event.target.value)
-                  }}
-                />
-                {article?.hasBeenOnline && (
-                  <p className="text-muted-foreground text-xs">{SLUG_LOCKED_HINT}</p>
-                )}
-                <FieldError errors={errors} field="slug" />
-              </div>
+              <SlugField
+                value={form.data.slug}
+                locked={Boolean(article?.hasBeenOnline)}
+                onChange={(value) => {
+                  slugTouched.current = true
+                  form.setData('slug', value)
+                }}
+                errors={errors}
+              />
               <div className="space-y-2">
                 <Label htmlFor="category">Catégorie</Label>
                 <Select
@@ -237,6 +224,6 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
         </div>
         <FieldError errors={errors} field="status" />
       </form>
-    </div>
+    </AdminPage>
   )
 }
