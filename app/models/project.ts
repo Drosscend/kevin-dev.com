@@ -1,5 +1,5 @@
-import { DateTime } from 'luxon'
-import { belongsTo, hasMany, manyToMany, scope } from '@adonisjs/lucid/orm'
+import { belongsTo, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import { compose } from '@adonisjs/core/helpers'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { ProjectSchema } from '#database/schema'
 import ProjectTranslation from '#models/project_translation'
@@ -7,12 +7,10 @@ import ProjectLink from '#models/project_link'
 import Media from '#models/media'
 import Technology from '#models/technology'
 import Article from '#models/article'
+import { withPublication } from '#models/mixins/publishable'
 import type { Locale } from '#types/i18n'
-import type { PublicationStatus } from '#types/content'
 
-export default class Project extends ProjectSchema {
-  declare status: PublicationStatus
-
+export default class Project extends compose(ProjectSchema, withPublication) {
   @hasMany(() => ProjectTranslation)
   declare translations: HasMany<typeof ProjectTranslation>
 
@@ -28,36 +26,9 @@ export default class Project extends ProjectSchema {
   @manyToMany(() => Article, { pivotTable: 'article_project' })
   declare articles: ManyToMany<typeof Article>
 
-  /**
-   * Publicly visible entries: published status AND publication date
-   * reached. A future date means the entry is scheduled.
-   */
-  static published = scope((query) => {
-    query.where('status', 'published').where((inner) => {
-      inner.whereNull('published_at').orWhere('published_at', '<=', DateTime.now().toSQL())
-    })
-  })
-
   /** A started project with no end date yet is still running. */
   get isOngoing() {
     return this.startedAt !== null && this.endedAt === null
-  }
-
-  get isPublished() {
-    return (
-      this.status === 'published' &&
-      (this.publishedAt === null || this.publishedAt <= DateTime.now())
-    )
-  }
-
-  /**
-   * True once the URL has actually been reachable. Two rules derive
-   * from it: the slug is frozen so an already shared link cannot
-   * break, and the entry can no longer go back to draft, only be
-   * archived. A scheduled entry has not been online yet.
-   */
-  get hasBeenOnline() {
-    return Boolean(this.publishedAt) && this.publishedAt! <= DateTime.now()
   }
 
   translation(locale: Locale) {

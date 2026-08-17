@@ -1,102 +1,44 @@
 import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
 import type Project from '#models/project'
-import type { ProjectLinkType, PublicationStatus } from '#types/content'
-import MarkdownService from '#services/markdown_service'
+import type { ProjectLinkType } from '#types/content'
+import {
+  applyContentFields,
+  renderTranslations,
+  replaceLinks,
+  type ContentPayload,
+} from '#services/content_service'
+import { upsertTranslations } from '#services/translations_service'
 
-interface ProjectTranslationPayload {
-  title: string
-  summary: string
-  contentMarkdown: string
-}
-
-interface ProjectLinkPayload {
-  label: string
-  url: string
-  type: ProjectLinkType
-}
-
-export interface ProjectPayload {
-  slug: string
-  status: PublicationStatus
-  coverMediaId: number | null
+export interface ProjectPayload extends ContentPayload {
   startedAt: string | null
   endedAt: string | null
   featured: boolean
   technologyIds: number[]
   articleIds: number[]
-  links: ProjectLinkPayload[]
-  publishedAt?: string | null
-  fr: ProjectTranslationPayload
-  en: ProjectTranslationPayload | null
+  links: { label: string; url: string; type: ProjectLinkType }[]
 }
 
 /**
  * Persists a project with its translations, external links, and
- * technology/article associations inside a single DB transaction,
- * so a failure can never leave the project half-saved (the links
- * are replaced wholesale). Markdown is rendered before the
- * transaction starts, reading time is computed from the French
- * content, and publishedAt is set on the first publication only.
+ * technology/article associations inside a single DB transaction, so
+ * a failure can never leave the project half-saved.
  */
 export default class ProjectService {
   static async save(project: Project, payload: ProjectPayload) {
-    const frHtml = await MarkdownService.render(payload.fr.contentMarkdown)
-    const enHtml = payload.en ? await MarkdownService.render(payload.en.contentMarkdown) : null
+    const translations = await renderTranslations(payload)
 
     return db.transaction(async (trx) => {
       project.useTransaction(trx)
 
-      project.slug = payload.slug
-      project.coverMediaId = payload.coverMediaId
+      applyContentFields(project, payload)
       project.startedAt = payload.startedAt ? DateTime.fromISO(payload.startedAt) : null
       project.endedAt = payload.endedAt ? DateTime.fromISO(payload.endedAt) : null
       project.featured = payload.featured
-      project.readingTime = MarkdownService.readingTime(payload.fr.contentMarkdown)
-
-      // An explicit date wins (future = scheduled); otherwise the date
-      // is stamped automatically on the first publication.
-      if (payload.publishedAt) {
-        project.publishedAt = DateTime.fromISO(payload.publishedAt)
-      } else if (payload.status === 'published' && !project.publishedAt) {
-        project.publishedAt = DateTime.now()
-      }
-      project.status = payload.status
       await project.save()
 
-      await project.related('translations').updateOrCreate(
-        { locale: 'fr' },
-        {
-          locale: 'fr',
-          title: payload.fr.title,
-          summary: payload.fr.summary,
-          contentMarkdown: payload.fr.contentMarkdown,
-          contentHtml: frHtml,
-        }
-      )
-
-      if (payload.en) {
-        await project.related('translations').updateOrCreate(
-          { locale: 'en' },
-          {
-            locale: 'en',
-            title: payload.en.title,
-            summary: payload.en.summary,
-            contentMarkdown: payload.en.contentMarkdown,
-            contentHtml: enHtml!,
-          }
-        )
-      } else {
-        await project.related('translations').query().where('locale', 'en').delete()
-      }
-
-      await project.related('links').query().delete()
-      if (payload.links.length > 0) {
-        await project
-          .related('links')
-          .createMany(payload.links.map((link, index) => ({ ...link, position: index })))
-      }
-
+      await upsertTranslations(project.related('translations'), translations)
+      await replaceLinks(project.related('links'), payload.links)
       await project.related('technologies').sync(payload.technologyIds)
       await project.related('articles').sync(payload.articleIds)
 
