@@ -4,6 +4,7 @@ import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Textarea } from '~/components/ui/textarea'
 import Seo, { type SeoMeta } from '~/components/seo'
+import ReadingLayout from '~/components/reading_layout'
 import FieldError from '~/components/field_error'
 import type { Locale } from '#types/i18n'
 
@@ -23,9 +24,9 @@ type ContactProps = {
 
 export default function Contact({ locale, labels, meta }: ContactProps) {
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
+    <>
       <Seo meta={meta} />
-      <div className="mx-auto max-w-[720px]">
+      <ReadingLayout>
         <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
         <p className="text-muted-foreground mt-4">{labels.intro}</p>
 
@@ -87,7 +88,7 @@ export default function Contact({ locale, labels, meta }: ContactProps) {
             </>
           )}
         </Form>
-      </div>
-    </div>
+      </ReadingLayout>
+    </>
   )
 }

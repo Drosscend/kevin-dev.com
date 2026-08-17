@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react'
 
 /**
- * Reading column shared by the article and project pages. The prose stays
- * centred on the page, exactly where it sits without an aside, and the
- * aside is parked in the right margin. It only appears once the margin is
+ * Reading column of every prose page (articles, projects, talks, CV,
+ * legal notice, contact, technology sheets). The prose stays centred on
+ * the page, exactly where it sits without an aside, and the aside is
+ * parked in the right margin. It only appears once the margin is
  * wide enough to hold it, which keeps tablets and phones untouched.
  */
 export default function ReadingLayout({

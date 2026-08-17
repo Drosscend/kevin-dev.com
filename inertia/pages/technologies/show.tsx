@@ -2,6 +2,7 @@ import { ListingList, ListingRow } from '~/components/content_link'
 import ExternalLinkList from '~/components/external_link_list'
 import { BackLink } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
+import ReadingLayout from '~/components/reading_layout'
 import { localePath, type Locale } from '#types/i18n'
 
 type Entry = { slug: string; title: string; summary: string; coverUrl: string | null }
@@ -67,9 +68,9 @@ export default function TechnologyShow({ locale, technology, labels, meta }: Tec
   const to = (path: string) => localePath(locale, path)
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
+    <>
       <Seo meta={meta} />
-      <div className="mx-auto max-w-[720px]">
+      <ReadingLayout>
         <div className="text-sm">
           <BackLink href={to('/technologies')} label={labels.backToList} />
         </div>
@@ -119,7 +120,7 @@ export default function TechnologyShow({ locale, technology, labels, meta }: Tec
           technology.talks.length === 0 && (
             <p className="text-muted-foreground mt-14">{labels.unused}</p>
           )}
-      </div>
-    </div>
+      </ReadingLayout>
+    </>
   )
 }

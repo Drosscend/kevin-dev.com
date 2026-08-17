@@ -3,6 +3,7 @@ import ArticleContent from '~/components/article_content'
 import { EmptyState } from '~/components/empty_state'
 import Lightbox from '~/components/lightbox'
 import Seo, { type SeoMeta } from '~/components/seo'
+import ReadingLayout from '~/components/reading_layout'
 import { Button } from '~/components/ui/button'
 
 type CvProps = {
@@ -18,11 +19,9 @@ type CvProps = {
 
 export default function Cv({ contentHtml, pdfAvailable, labels, meta }: CvProps) {
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
+    <>
       <Seo meta={meta} />
-      {/* Same centred reading column as the legal page: two pages of
-          plain prose should not sit at different places on screen. */}
-      <div className="mx-auto max-w-[720px]">
+      <ReadingLayout>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
           {pdfAvailable && (
@@ -42,7 +41,7 @@ export default function Cv({ contentHtml, pdfAvailable, labels, meta }: CvProps)
             <EmptyState>{labels.empty}</EmptyState>
           )}
         </Lightbox>
-      </div>
-    </div>
+      </ReadingLayout>
+    </>
   )
 }

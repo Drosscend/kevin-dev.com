@@ -5,6 +5,7 @@ import { BackLink } from '~/components/page_header'
 import PreviewBanner from '~/components/preview_banner'
 import type { PreviewMode } from '#types/content'
 import Seo, { type SeoMeta } from '~/components/seo'
+import ReadingLayout from '~/components/reading_layout'
 import StatusBadge from '~/components/status_badge'
 import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
 import { localePath, type Locale } from '#types/i18n'
@@ -39,9 +40,9 @@ export default function TalksShow({ locale, preview, talk, labels, meta }: Talks
   const to = (path: string) => localePath(locale, path)
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
+    <>
       <Seo meta={meta} />
-      <div className="mx-auto max-w-[720px] space-y-10">
+      <ReadingLayout className="space-y-10">
         {preview && <PreviewBanner label={labels[preview]} />}
 
         <div className="text-sm">
@@ -78,7 +79,7 @@ export default function TalksShow({ locale, preview, talk, labels, meta }: Talks
           title={labels.technologies}
           technologies={talk.technologies}
         />
-      </div>
-    </div>
+      </ReadingLayout>
+    </>
   )
 }
