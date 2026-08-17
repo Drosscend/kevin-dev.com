@@ -1,28 +1,7 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import Project from '#models/project'
 import Technology from '#models/technology'
-import ProjectService from '#services/project_service'
-
-function makeProject(slug: string, technologyIds: number[]) {
-  return ProjectService.save(new Project(), {
-    slug,
-    status: 'published',
-    featured: false,
-    coverMediaId: null,
-    startedAt: '2025-01-01',
-    endedAt: null,
-    technologyIds,
-    articleIds: [],
-    links: [],
-    fr: {
-      title: `Projet ${slug}`,
-      summary: 'Résumé du projet',
-      contentMarkdown: '# Projet\n\nContenu.',
-    },
-    en: null,
-  })
-}
+import { makeProject } from '#tests/helpers/content'
 
 test.group("Page d'accueil", (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -38,8 +17,8 @@ test.group("Page d'accueil", (group) => {
       const suffix = String(index).padStart(2, '0')
       created.push(await Technology.create({ slug: `tech-${suffix}`, name: `Tech ${suffix}` }))
     }
-    await makeProject('un', [created[13].id])
-    await makeProject('deux', [created[13].id, created[12].id])
+    await makeProject('un', 'published', { technologyIds: [created[13].id] })
+    await makeProject('deux', 'published', { technologyIds: [created[13].id, created[12].id] })
 
     const response = await client.get('/').withInertia()
 

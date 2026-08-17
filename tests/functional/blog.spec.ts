@@ -1,30 +1,8 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import Article from '#models/article'
-import User from '#models/user'
 import ArticleService from '#services/article_service'
-
-function makeArticle(
-  slug: string,
-  status: 'draft' | 'published',
-  options: { english?: boolean } = {}
-) {
-  return ArticleService.save(new Article(), {
-    slug,
-    status,
-    categoryId: null,
-    coverMediaId: null,
-    technologyIds: [],
-    fr: {
-      title: `Titre ${slug}`,
-      summary: 'Résumé de test',
-      contentMarkdown: '# Bonjour\n\nContenu **français**.',
-    },
-    en: options.english
-      ? { title: `Title ${slug}`, summary: 'Test summary', contentMarkdown: '# Hello' }
-      : null,
-  })
-}
+import { admin } from '#tests/helpers/auth'
+import { makeArticle } from '#tests/helpers/content'
 
 test.group('Blog public', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -77,7 +55,7 @@ test.group('Blog public', (group) => {
   })
 
   test('un brouillon est prévisualisable connecté', async ({ client }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
     await makeArticle('brouillon-secret', 'draft')
 
     const response = await client.get('/blog/brouillon-secret').loginAs(user).withInertia()
@@ -97,7 +75,7 @@ test.group('Blog public', (group) => {
   })
 
   test('un article retiré du site reste consultable connecté', async ({ client }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
     const article = await makeArticle('article-retire', 'published')
     article.status = 'archived'
     await article.save()

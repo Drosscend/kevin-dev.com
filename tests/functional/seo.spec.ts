@@ -1,21 +1,8 @@
 import { test } from '@japa/runner'
 import env from '#start/env'
 import testUtils from '@adonisjs/core/services/test_utils'
-import Article from '#models/article'
 import Technology from '#models/technology'
-import ArticleService from '#services/article_service'
-
-function makeArticle(slug: string, status: 'draft' | 'published', english = false) {
-  return ArticleService.save(new Article(), {
-    slug,
-    status,
-    categoryId: null,
-    coverMediaId: null,
-    technologyIds: [],
-    fr: { title: `Titre ${slug}`, summary: 'Résumé', contentMarkdown: '# Contenu' },
-    en: english ? { title: `Title ${slug}`, summary: 'Summary', contentMarkdown: '# Body' } : null,
-  })
-}
+import { makeArticle } from '#tests/helpers/content'
 
 test.group('SEO', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -25,7 +12,7 @@ test.group('SEO', (group) => {
     assert,
   }) => {
     await makeArticle('publie-fr', 'published')
-    await makeArticle('publie-bilingue', 'published', true)
+    await makeArticle('publie-bilingue', 'published', { english: true })
     await makeArticle('cache-brouillon', 'draft')
 
     const response = await client.get('/sitemap.xml')
@@ -86,7 +73,7 @@ test.group('SEO', (group) => {
 
   test('le flux RSS EN ne contient que les articles traduits', async ({ client, assert }) => {
     await makeArticle('fr-seul', 'published')
-    await makeArticle('bilingue', 'published', true)
+    await makeArticle('bilingue', 'published', { english: true })
 
     const response = await client.get('/en/blog/rss.xml')
 
@@ -108,7 +95,7 @@ test.group('SEO', (group) => {
   })
 
   test('les pages publiques exposent leurs métadonnées', async ({ client, assert }) => {
-    await makeArticle('article-meta', 'published', true)
+    await makeArticle('article-meta', 'published', { english: true })
 
     const page = await client.get('/blog/article-meta').withInertia()
     page.assertStatus(200)

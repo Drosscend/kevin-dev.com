@@ -1,67 +1,7 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import Article from '#models/article'
-import Project from '#models/project'
-import Talk from '#models/talk'
 import Technology from '#models/technology'
-import ArticleService from '#services/article_service'
-import ProjectService from '#services/project_service'
-import TalkService from '#services/talk_service'
-
-function makeProject(slug: string, technologyIds: number[]) {
-  return ProjectService.save(new Project(), {
-    slug,
-    status: 'published',
-    featured: false,
-    coverMediaId: null,
-    startedAt: '2025-01-01',
-    endedAt: null,
-    technologyIds,
-    articleIds: [],
-    links: [],
-    fr: {
-      title: `Projet ${slug}`,
-      summary: 'Résumé du projet',
-      contentMarkdown: '# Projet\n\nContenu.',
-    },
-    en: null,
-  })
-}
-
-function makeArticle(slug: string, technologyIds: number[]) {
-  return ArticleService.save(new Article(), {
-    slug,
-    status: 'published',
-    categoryId: null,
-    coverMediaId: null,
-    technologyIds,
-    fr: {
-      title: `Article ${slug}`,
-      summary: "Résumé de l'article",
-      contentMarkdown: '# Article\n\nContenu.',
-    },
-    en: null,
-  })
-}
-
-function makeTalk(slug: string, technologyIds: number[]) {
-  return TalkService.save(new Talk(), {
-    slug,
-    status: 'published',
-    coverMediaId: null,
-    eventDate: '2025-06-01',
-    eventName: 'DevFest',
-    city: 'Toulouse',
-    technologyIds,
-    links: [],
-    fr: {
-      title: `Intervention ${slug}`,
-      summary: "Résumé de l'intervention",
-      contentMarkdown: '# Intervention\n\nContenu.',
-    },
-    en: null,
-  })
-}
+import { makeArticle, makeProject, makeTalk } from '#tests/helpers/content'
 
 test.group('Technologies publiques', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -76,10 +16,10 @@ test.group('Technologies publiques', (group) => {
       category: 'framework',
     })
     await Technology.create({ slug: 'go', name: 'Go', category: 'langage' })
-    await makeProject('un', [adonis.id])
-    await makeProject('deux', [adonis.id])
-    await makeArticle('un-article', [adonis.id])
-    await makeTalk('une-intervention', [adonis.id])
+    await makeProject('un', 'published', { technologyIds: [adonis.id] })
+    await makeProject('deux', 'published', { technologyIds: [adonis.id] })
+    await makeArticle('un-article', 'published', { technologyIds: [adonis.id] })
+    await makeTalk('une-intervention', 'published', { technologyIds: [adonis.id] })
 
     const response = await client.get('/technologies').withInertia()
 
@@ -102,7 +42,7 @@ test.group('Technologies publiques', (group) => {
   test('le compte est traduit et accordé en anglais', async ({ client, assert }) => {
     const adonis = await Technology.create({ slug: 'adonisjs', name: 'AdonisJS' })
     await Technology.create({ slug: 'go', name: 'Go' })
-    await makeProject('un', [adonis.id])
+    await makeProject('un', 'published', { technologyIds: [adonis.id] })
 
     const response = await client.get('/en/technologies').withInertia()
 
@@ -123,12 +63,12 @@ test.group('Technologies publiques', (group) => {
     assert,
   }) => {
     const adonis = await Technology.create({ slug: 'adonisjs', name: 'AdonisJS' })
-    await makeProject('avec-adonis', [adonis.id])
-    await makeProject('sans-adonis', [])
-    await makeArticle('article-adonis', [adonis.id])
-    await makeArticle('article-autre', [])
-    await makeTalk('intervention-adonis', [adonis.id])
-    await makeTalk('intervention-autre', [])
+    await makeProject('avec-adonis', 'published', { technologyIds: [adonis.id] })
+    await makeProject('sans-adonis')
+    await makeArticle('article-adonis', 'published', { technologyIds: [adonis.id] })
+    await makeArticle('article-autre')
+    await makeTalk('intervention-adonis', 'published', { technologyIds: [adonis.id] })
+    await makeTalk('intervention-autre')
 
     const response = await client.get('/technologies/adonisjs').withInertia()
 

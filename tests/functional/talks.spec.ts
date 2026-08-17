@@ -3,41 +3,8 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { DateTime } from 'luxon'
 import Talk from '#models/talk'
 import Technology from '#models/technology'
-import User from '#models/user'
-import TalkService from '#services/talk_service'
-
-function makeTalk(
-  slug: string,
-  status: 'draft' | 'published',
-  options: {
-    english?: boolean
-    technologyIds?: number[]
-    links?: boolean
-    eventDate?: string
-    contentMarkdown?: string
-  } = {}
-) {
-  return TalkService.save(new Talk(), {
-    slug,
-    status,
-    coverMediaId: null,
-    eventDate: options.eventDate ?? '2025-06-01',
-    eventName: 'DevFest Lyon',
-    city: 'Lyon',
-    technologyIds: options.technologyIds ?? [],
-    links: options.links
-      ? [{ label: 'Slides', url: 'https://slides.example.com/talk', type: 'slides' as const }]
-      : [],
-    fr: {
-      title: `Intervention ${slug}`,
-      summary: 'Résumé de l’intervention',
-      contentMarkdown: options.contentMarkdown ?? '# Présentation\n\nContenu **français**.',
-    },
-    en: options.english
-      ? { title: `Talk ${slug}`, summary: 'Summary', contentMarkdown: '# About' }
-      : null,
-  })
-}
+import { admin } from '#tests/helpers/auth'
+import { makeTalk } from '#tests/helpers/content'
 
 test.group('Interventions publiques', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -124,7 +91,7 @@ test.group('Interventions publiques', (group) => {
   }) => {
     await makeTalk('longue-intervention', 'published', {
       english: true,
-      contentMarkdown: Array(600).fill('mot').join(' '),
+      fr: { contentMarkdown: Array(600).fill('mot').join(' ') },
     })
 
     const listing = await client.get('/talks').withInertia()
@@ -144,7 +111,7 @@ test.group('Interventions publiques', (group) => {
   })
 
   test('une intervention brouillon est prévisualisable connecté', async ({ client }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
     await makeTalk('secrete', 'draft')
 
     const response = await client.get('/talks/secrete').loginAs(user).withInertia()
@@ -204,7 +171,7 @@ test.group('Admin CRUD interventions', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test('créer une intervention publiée avec liens et technologies', async ({ client, assert }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
     const technology = await Technology.create({ slug: 'adonisjs', name: 'AdonisJS' })
 
     const response = await client
@@ -239,7 +206,7 @@ test.group('Admin CRUD interventions', (group) => {
     client,
     assert,
   }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
     const technology = await Technology.create({ slug: 'adonisjs', name: 'AdonisJS' })
     const talk = await makeTalk('mon-talk', 'published', { technologyIds: [technology.id] })
 
@@ -257,7 +224,7 @@ test.group('Admin CRUD interventions', (group) => {
     client,
     assert,
   }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
 
     const response = await client
       .post('/admin/talks')
@@ -279,7 +246,7 @@ test.group('Admin CRUD interventions', (group) => {
   })
 
   test('supprimer une intervention', async ({ client, assert }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
     const talk = await makeTalk('a-supprimer', 'draft')
 
     const response = await client

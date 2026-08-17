@@ -1,7 +1,7 @@
 import sharp from 'sharp'
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import User from '#models/user'
+import { admin } from '#tests/helpers/auth'
 import Media from '#models/media'
 import MediaService from '#services/media_service'
 
@@ -9,7 +9,7 @@ test.group('Admin media', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test("l'upload réencode en webp et génère les variantes", async ({ client, assert }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
 
     const image = await sharp({
       create: { width: 800, height: 600, channels: 3, background: { r: 200, g: 100, b: 50 } },
@@ -50,7 +50,7 @@ test.group('Admin media', (group) => {
   })
 
   test('un fichier non-image est rejeté proprement', async ({ client, assert }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
 
     const response = await client
       .post('/admin/media')
@@ -71,7 +71,7 @@ test.group('Admin media', (group) => {
   })
 
   test('un PDF est stocké tel quel et servi en application/pdf', async ({ client, assert }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
     const pdf = Buffer.from('%PDF-1.7\n%stub\ntrailer\n%%EOF\n')
 
     const response = await client
@@ -104,7 +104,7 @@ test.group('Admin media', (group) => {
   })
 
   test('un faux PDF est rejeté', async ({ client, assert }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
 
     const response = await client
       .post('/admin/media')
@@ -125,7 +125,7 @@ test.group('Admin media', (group) => {
   })
 
   test('le sélecteur de couverture ignore les documents', async ({ client, assert }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
     await Media.create({
       key: 'a1b2c3d4e5f6',
       originalName: 'photo.png',

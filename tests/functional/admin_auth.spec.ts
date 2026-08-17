@@ -2,6 +2,7 @@ import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { TOTP, Secret } from 'otpauth'
 import User from '#models/user'
+import { admin } from '#tests/helpers/auth'
 import TotpService from '#services/totp_service'
 
 function currentCode(secret: string, email: string) {
@@ -25,7 +26,7 @@ test.group('Admin auth', (group) => {
   })
 
   test('le login échoue avec un mauvais mot de passe', async ({ client }) => {
-    await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    await admin()
 
     const response = await client
       .post('/admin/login')
@@ -39,7 +40,7 @@ test.group('Admin auth', (group) => {
   })
 
   test('le login sans 2FA ouvre une session directement', async ({ client }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
 
     const response = await client
       .post('/admin/login')

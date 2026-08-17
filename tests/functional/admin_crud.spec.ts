@@ -1,17 +1,13 @@
 import { test } from '@japa/runner'
 import { DateTime } from 'luxon'
 import testUtils from '@adonisjs/core/services/test_utils'
-import User from '#models/user'
 import Category from '#models/category'
 import Technology from '#models/technology'
 import Article from '#models/article'
 import Project from '#models/project'
 import TimelineEntry from '#models/timeline_entry'
 import SettingsService from '#services/settings_service'
-
-async function admin() {
-  return User.create({ email: 'admin@example.com', password: 'motdepasse' })
-}
+import { admin } from '#tests/helpers/auth'
 
 test.group('Admin CRUD catégories', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())

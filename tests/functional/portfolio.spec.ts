@@ -1,42 +1,8 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import Project from '#models/project'
 import Technology from '#models/technology'
-import User from '#models/user'
-import ProjectService from '#services/project_service'
-
-function makeProject(
-  slug: string,
-  status: 'draft' | 'published',
-  options: {
-    english?: boolean
-    technologyIds?: number[]
-    links?: boolean
-    contentMarkdown?: string
-  } = {}
-) {
-  return ProjectService.save(new Project(), {
-    slug,
-    status,
-    coverMediaId: null,
-    startedAt: '2024-01-01',
-    endedAt: null,
-    featured: false,
-    technologyIds: options.technologyIds ?? [],
-    articleIds: [],
-    links: options.links
-      ? [{ label: 'GitHub', url: 'https://github.com/Drosscend/test', type: 'github' as const }]
-      : [],
-    fr: {
-      title: `Projet ${slug}`,
-      summary: 'Résumé du projet',
-      contentMarkdown: options.contentMarkdown ?? '# Présentation\n\nContenu **français**.',
-    },
-    en: options.english
-      ? { title: `Project ${slug}`, summary: 'Summary', contentMarkdown: '# About' }
-      : null,
-  })
-}
+import { admin } from '#tests/helpers/auth'
+import { makeProject } from '#tests/helpers/content'
 
 test.group('Portfolio public', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -103,7 +69,7 @@ test.group('Portfolio public', (group) => {
   }) => {
     await makeProject('long-projet', 'published', {
       english: true,
-      contentMarkdown: Array(600).fill('mot').join(' '),
+      fr: { contentMarkdown: Array(600).fill('mot').join(' ') },
     })
 
     const listing = await client.get('/projects').withInertia()
@@ -123,7 +89,7 @@ test.group('Portfolio public', (group) => {
   })
 
   test('un projet brouillon est prévisualisable connecté', async ({ client }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
     await makeProject('secret', 'draft')
 
     const response = await client.get('/projects/secret').loginAs(user).withInertia()

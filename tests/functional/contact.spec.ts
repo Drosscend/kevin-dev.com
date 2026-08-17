@@ -3,7 +3,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import mail from '@adonisjs/mail/services/main'
 import ContactMessage from '#models/contact_message'
 import ContactMessageNotification from '#mails/contact_message_notification'
-import User from '#models/user'
+import { admin } from '#tests/helpers/auth'
 import SettingsService from '#services/settings_service'
 import MarkdownService from '#services/markdown_service'
 
@@ -128,7 +128,7 @@ test.group('Admin messages', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test('marquer lu puis supprimer un message', async ({ client, assert }) => {
-    const user = await User.create({ email: 'admin@example.com', password: 'motdepasse' })
+    const user = await admin()
     const message = await ContactMessage.create({
       name: 'Jean',
       email: 'jean@example.com',
