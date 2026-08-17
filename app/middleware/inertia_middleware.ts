@@ -3,6 +3,7 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import UserTransformer from '#transformers/user_transformer'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import ContactMessage from '#models/contact_message'
+import i18nManager from '@adonisjs/i18n/services/main'
 import type { Locale } from '#types/i18n'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
@@ -17,6 +18,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      */
     const { auth } = ctx as Partial<HttpContext>
     const { i18n } = ctx
+    const otherLocale = i18nManager.locale(i18n.locale === 'fr' ? 'en' : 'fr')
 
     /**
      * Data shared with all Inertia pages. Make sure you are using
@@ -43,6 +45,8 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         openMenu: i18n.t('messages.nav.openMenu'),
         closeMenu: i18n.t('messages.nav.closeMenu'),
         theme: i18n.t('messages.nav.theme'),
+        otherLanguage: otherLocale.t('messages.nav.otherLanguage'),
+        otherLanguageDismiss: otherLocale.t('messages.nav.otherLanguageDismiss'),
       }),
       /**
        * Labels of the image viewer. It hangs off the article body, which

@@ -54,13 +54,19 @@ export default class SeoService {
     }
   }
 
-  static person(): JsonLd {
+  static person(jobTitle: string): JsonLd {
     return {
       '@context': 'https://schema.org',
       '@type': 'Person',
       'name': 'Kévin Véronési',
+      'alternateName': 'Drosscend',
       'url': this.absolute('/'),
-      'jobTitle': 'Développeur full-stack et consultant IA',
+      'jobTitle': jobTitle,
+      'address': {
+        '@type': 'PostalAddress',
+        'addressLocality': 'Toulouse',
+        'addressCountry': 'FR',
+      },
       'sameAs': ['https://github.com/Drosscend', 'https://www.linkedin.com/in/kveronesi'],
     }
   }

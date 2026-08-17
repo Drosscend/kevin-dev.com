@@ -185,12 +185,12 @@ export default class HomeController {
         ongoingProject: i18n.t('messages.portfolio.ongoing'),
       },
       meta: SeoService.build({
-        title: 'kevin-dev.com',
+        title: i18n.t('messages.home.metaTitle'),
         description: i18n.t('messages.home.metaDescription'),
         locale,
         path: localePath(locale, '/'),
         alternates: { fr: '/', en: '/en' },
-        jsonLd: [SeoService.person()],
+        jsonLd: [SeoService.person(i18n.t('messages.home.jobTitle'))],
       }),
     })
   }

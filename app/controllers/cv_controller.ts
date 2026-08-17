@@ -26,7 +26,7 @@ export default class CvController {
         locale,
         path: localePath(locale, '/cv'),
         alternates: settings.cv_html_en ? { fr: '/cv', en: '/en/cv' } : null,
-        jsonLd: [SeoService.person()],
+        jsonLd: [SeoService.person(i18n.t('messages.home.jobTitle'))],
       }),
     })
   }

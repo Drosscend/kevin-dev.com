@@ -5,6 +5,7 @@ import { Link } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
 import { Menu, X } from 'lucide-react'
 import { HoverPreviewProvider } from '~/components/hover_preview'
+import LanguageSuggestion from '~/components/language_suggestion'
 import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
@@ -82,6 +83,15 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
 
   return (
     <div className="flex min-h-dvh flex-col">
+      {translated && (
+        <LanguageSuggestion
+          targetLocale={locale === 'fr' ? 'en' : 'fr'}
+          href={otherLocaleUrl(locale, url)}
+          label={chrome.otherLanguage}
+          dismissLabel={chrome.otherLanguageDismiss}
+        />
+      )}
+
       <header className="bg-background/85 sticky top-0 z-40 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <Link
@@ -196,7 +206,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
               target="_blank"
               className="hover:text-primary transition-colors"
             >
-              GitHub
+              GitHub @Drosscend
             </a>{' '}
             ·{' '}
             <a

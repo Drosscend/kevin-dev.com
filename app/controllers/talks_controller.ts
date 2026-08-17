@@ -60,6 +60,7 @@ export default class TalksController {
         locale,
         path: localePath(locale, '/talks'),
         alternates: { fr: '/talks', en: '/en/talks' },
+        noindex: talks.length === 0,
       }),
     })
   }

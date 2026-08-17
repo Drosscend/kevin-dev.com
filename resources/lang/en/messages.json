@@ -11,10 +11,14 @@
     "secondary": "Secondary navigation",
     "openMenu": "Open the menu",
     "closeMenu": "Close the menu",
-    "theme": "Toggle light or dark theme"
+    "theme": "Toggle light or dark theme",
+    "otherLanguage": "Read this page in English",
+    "otherLanguageDismiss": "Dismiss"
   },
   "home": {
-    "metaDescription": "Kévin Véronési's personal site: tech blog (AdonisJS, React, self-hosting), project portfolio and resume.",
+    "metaTitle": "Kévin Véronési, full-stack developer and AI consultant",
+    "jobTitle": "Full-stack developer and AI consultant",
+    "metaDescription": "Kévin Véronési, full-stack developer and AI consultant in Toulouse, France. Projects, tech blog and resume, around React, Next.js, TypeScript and AI.",
     "downloadCv": "Download my resume",
     "contactMe": "Contact me",
     "photoAlt": "Kévin speaking at a conference",
@@ -39,7 +43,7 @@
   },
   "blog": {
     "title": "Blog",
-    "metaDescription": "Technical articles about AdonisJS, React, self-hosting and web development, by Kévin Véronési.",
+    "metaDescription": "Technical articles about React, Next.js, TypeScript, AI and web development, by Kévin Véronési.",
     "readingTime": "{minutes} min read",
     "publishedOn": "Published on",
     "draft": "Draft, only visible while signed in",
@@ -62,7 +66,7 @@
   },
   "talks": {
     "title": "Speaking",
-    "metaDescription": "Conference talks, meetups and workshops given by Kévin Véronési: slides, recordings and field notes.",
+    "metaDescription": "Conference talks, meetups and workshops given by Kévin Véronési: slides and field notes.",
     "empty": "No talks yet.",
     "backToList": "All talks",
     "upcoming": "Upcoming",

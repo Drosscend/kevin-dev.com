@@ -49,17 +49,26 @@ export default class SeoController {
     const entries: SitemapEntry[] = [
       { path: '/', alternates: { fr: '/', en: '/en' } },
       { path: '/en', alternates: { fr: '/', en: '/en' } },
-      { path: '/blog', alternates: { fr: '/blog', en: '/en/blog' } },
-      { path: '/en/blog', alternates: { fr: '/blog', en: '/en/blog' } },
       { path: '/projects', alternates: { fr: '/projects', en: '/en/projects' } },
       { path: '/en/projects', alternates: { fr: '/projects', en: '/en/projects' } },
-      { path: '/talks', alternates: { fr: '/talks', en: '/en/talks' } },
-      { path: '/en/talks', alternates: { fr: '/talks', en: '/en/talks' } },
       { path: '/technologies', alternates: { fr: '/technologies', en: '/en/technologies' } },
       { path: '/en/technologies', alternates: { fr: '/technologies', en: '/en/technologies' } },
       { path: '/contact', alternates: { fr: '/contact', en: '/en/contact' } },
       { path: '/en/contact', alternates: { fr: '/contact', en: '/en/contact' } },
     ]
+
+    if (articles.length > 0) {
+      entries.push(
+        { path: '/blog', alternates: { fr: '/blog', en: '/en/blog' } },
+        { path: '/en/blog', alternates: { fr: '/blog', en: '/en/blog' } }
+      )
+    }
+    if (talks.length > 0) {
+      entries.push(
+        { path: '/talks', alternates: { fr: '/talks', en: '/en/talks' } },
+        { path: '/en/talks', alternates: { fr: '/talks', en: '/en/talks' } }
+      )
+    }
 
     if (settings.cv_html_fr) {
       entries.push({ path: '/cv' })

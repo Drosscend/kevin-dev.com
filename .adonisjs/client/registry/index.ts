@@ -198,6 +198,12 @@ const routes = {
     tokens: [{"old":"/cv.pdf","type":0,"val":"cv.pdf","end":""}],
     types: placeholder as Registry['cv.pdf']['types'],
   },
+  'cv.pdf.legacy': {
+    methods: ["GET","HEAD"],
+    pattern: '/assets/pdf/Véronési_Kévin_CV.pdf',
+    tokens: [{"old":"/assets/pdf/Véronési_Kévin_CV.pdf","type":0,"val":"assets","end":""},{"old":"/assets/pdf/Véronési_Kévin_CV.pdf","type":0,"val":"pdf","end":""},{"old":"/assets/pdf/Véronési_Kévin_CV.pdf","type":0,"val":"Véronési_Kévin_CV.pdf","end":""}],
+    types: placeholder as Registry['cv.pdf.legacy']['types'],
+  },
   'legal.show': {
     methods: ["GET","HEAD"],
     pattern: '/legal',

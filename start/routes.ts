@@ -63,6 +63,12 @@ router.get('/cv', [controllers.Cv, 'show']).as('cv.show')
 router.get('/en/cv', [controllers.Cv, 'show']).as('en.cv.show')
 router.get('/cv.pdf', [controllers.Cv, 'pdf']).as('cv.pdf')
 
+/** Legacy résumé URL, still ranked first by search engines. */
+router
+  .on('/assets/pdf/Véronési_Kévin_CV.pdf')
+  .redirectToPath('/cv.pdf', { status: 301 })
+  .as('cv.pdf.legacy')
+
 router.get('/legal', [controllers.Legal, 'show']).as('legal.show')
 router.get('/en/legal', [controllers.Legal, 'show']).as('en.legal.show')
 

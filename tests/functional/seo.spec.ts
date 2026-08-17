@@ -2,7 +2,7 @@ import { test } from '@japa/runner'
 import env from '#start/env'
 import testUtils from '@adonisjs/core/services/test_utils'
 import Technology from '#models/technology'
-import { makeArticle } from '#tests/helpers/content'
+import { makeArticle, makeTalk } from '#tests/helpers/content'
 
 test.group('SEO', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -26,6 +26,35 @@ test.group('SEO', (group) => {
     assert.notInclude(xml, '/en/blog/publie-fr</loc>')
     assert.notInclude(xml, 'cache-brouillon')
     assert.include(xml, 'hreflang="en"')
+  })
+
+  test('les listes vides sortent du sitemap et passent en noindex', async ({ client, assert }) => {
+    const response = await client.get('/sitemap.xml')
+    const xml = response.text()
+    assert.notInclude(xml, '/blog</loc>')
+    assert.notInclude(xml, '/talks</loc>')
+
+    const blog = await client.get('/blog').withInertia()
+    assert.isTrue(blog.body().props.meta.noindex)
+    const talks = await client.get('/talks').withInertia()
+    assert.isTrue(talks.body().props.meta.noindex)
+  })
+
+  test('une liste redevient indexable dès qu’elle a du contenu', async ({ client, assert }) => {
+    await makeArticle('premier-article', 'published')
+    await makeTalk('premiere-intervention', 'published')
+
+    const response = await client.get('/sitemap.xml')
+    const xml = response.text()
+    assert.include(xml, '/blog</loc>')
+    assert.include(xml, '/en/blog</loc>')
+    assert.include(xml, '/talks</loc>')
+    assert.include(xml, '/en/talks</loc>')
+
+    const blog = await client.get('/blog').withInertia()
+    assert.isFalse(blog.body().props.meta.noindex)
+    const talks = await client.get('/talks').withInertia()
+    assert.isFalse(talks.body().props.meta.noindex)
   })
 
   test('le sitemap liste les technologies sans leurs fiches', async ({ client, assert }) => {

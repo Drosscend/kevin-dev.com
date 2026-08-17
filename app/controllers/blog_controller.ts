@@ -98,6 +98,7 @@ export default class BlogController {
         locale,
         path: localePath(locale, '/blog') + listQueryString(categorySlug, page),
         alternates: !categorySlug && page === 1 ? { fr: '/blog', en: '/en/blog' } : null,
+        noindex: paginated.total === 0,
       }),
     })
   }

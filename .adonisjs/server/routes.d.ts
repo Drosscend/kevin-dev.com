@@ -36,6 +36,7 @@ export type ScannedRoutes = {
     'cv.show': { paramsTuple?: []; params?: {} }
     'en.cv.show': { paramsTuple?: []; params?: {} }
     'cv.pdf': { paramsTuple?: []; params?: {} }
+    'cv.pdf.legacy': { paramsTuple?: []; params?: {} }
     'legal.show': { paramsTuple?: []; params?: {} }
     'en.legal.show': { paramsTuple?: []; params?: {} }
     'contact.show': { paramsTuple?: []; params?: {} }
@@ -132,6 +133,7 @@ export type ScannedRoutes = {
     'cv.show': { paramsTuple?: []; params?: {} }
     'en.cv.show': { paramsTuple?: []; params?: {} }
     'cv.pdf': { paramsTuple?: []; params?: {} }
+    'cv.pdf.legacy': { paramsTuple?: []; params?: {} }
     'legal.show': { paramsTuple?: []; params?: {} }
     'en.legal.show': { paramsTuple?: []; params?: {} }
     'contact.show': { paramsTuple?: []; params?: {} }
@@ -192,6 +194,7 @@ export type ScannedRoutes = {
     'cv.show': { paramsTuple?: []; params?: {} }
     'en.cv.show': { paramsTuple?: []; params?: {} }
     'cv.pdf': { paramsTuple?: []; params?: {} }
+    'cv.pdf.legacy': { paramsTuple?: []; params?: {} }
     'legal.show': { paramsTuple?: []; params?: {} }
     'en.legal.show': { paramsTuple?: []; params?: {} }
     'contact.show': { paramsTuple?: []; params?: {} }
