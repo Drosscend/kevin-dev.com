@@ -27,6 +27,7 @@ server.use([
   () => import('#middleware/canonical_host_middleware'),
   () => import('@adonisjs/static/static_middleware'),
   () => import('@adonisjs/vite/vite_middleware'),
+  () => import('#middleware/detect_user_locale_middleware'),
   () => import('#middleware/inertia_middleware'),
 ])
 
@@ -40,7 +41,6 @@ router.use([
   () => import('@adonisjs/shield/shield_middleware'),
   () => import('@adonisjs/auth/initialize_auth_middleware'),
   () => import('#middleware/silent_auth_middleware'),
-  () => import('#middleware/detect_user_locale_middleware'),
 ])
 
 /**

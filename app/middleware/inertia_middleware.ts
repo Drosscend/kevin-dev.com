@@ -1,10 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
-import i18nManager from '@adonisjs/i18n/services/main'
 import UserTransformer from '#transformers/user_transformer'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import ContactMessage from '#models/contact_message'
-import { localeFromPath, type Locale } from '#types/i18n'
+import type { Locale } from '#types/i18n'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   share(ctx: HttpContext) {
@@ -17,13 +16,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      * with all the properties
      */
     const { auth } = ctx as Partial<HttpContext>
-
-    /**
-     * Outside the router (a 404 for instance) no locale middleware ran, so
-     * the locale is read back from the URL, like the error pages do.
-     */
-    const locale = localeFromPath(ctx.request.url())
-    const i18n = (ctx as Partial<HttpContext>).i18n ?? i18nManager.locale(locale)
+    const { i18n } = ctx
 
     /**
      * Data shared with all Inertia pages. Make sure you are using
