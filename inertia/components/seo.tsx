@@ -16,12 +16,17 @@ export default function Seo({ meta }: { meta: SeoMeta }) {
       <link rel="canonical" href={meta.canonical} />
       {meta.noindex && <meta name="robots" content="noindex, follow" />}
 
+      {/* Head serialises its children itself, one host element per node:
+          no fragment or component here, and attribute names written the
+          HTML way (React only types `hrefLang`, hence the spread). */}
       {meta.alternates && (
-        <>
-          <link rel="alternate" hrefLang="fr" href={meta.alternates.fr} />
-          <link rel="alternate" hrefLang="en" href={meta.alternates.en} />
-          <link rel="alternate" hrefLang="x-default" href={meta.alternates.fr} />
-        </>
+        <link rel="alternate" {...{ hreflang: 'fr' }} href={meta.alternates.fr} />
+      )}
+      {meta.alternates && (
+        <link rel="alternate" {...{ hreflang: 'en' }} href={meta.alternates.en} />
+      )}
+      {meta.alternates && (
+        <link rel="alternate" {...{ hreflang: 'x-default' }} href={meta.alternates.fr} />
       )}
 
       <meta property="og:site_name" content="kevin-dev.com" />

@@ -114,6 +114,25 @@ test.group('SEO', (group) => {
     assert.equal(meta.jsonLd[1]['@type'], 'BreadcrumbList')
   })
 
+  test('le head SSR porte les alternates hreflang et reste bien formé', async ({
+    client,
+    assert,
+  }) => {
+    await makeArticle('bilingue-head', 'published', { english: true })
+
+    const response = await client.get('/blog/bilingue-head')
+
+    response.assertStatus(200)
+    const head = response.text().split('</head>')[0]
+    assert.include(head, '<link rel="alternate" hreflang="fr" href="')
+    assert.include(head, '<link rel="alternate" hreflang="en" href="')
+    assert.include(head, '<link rel="alternate" hreflang="x-default" href="')
+    assert.include(head, '<meta property="og:title"')
+    // Inertia serialises Head children itself: a fragment or a component
+    // there leaks as an invalid tag that closes the head early.
+    assert.notMatch(head, /<Symbol\(|<function/)
+  })
+
   test("l'accueil liste les derniers articles avec ses métadonnées", async ({ client, assert }) => {
     await makeArticle('accueil-article', 'published')
 
