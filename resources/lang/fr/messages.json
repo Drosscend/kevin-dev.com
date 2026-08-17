@@ -104,9 +104,9 @@
     "writtenAbout": "Articles sur cette technologie",
     "spokenAbout": "Interventions sur cette technologie",
     "unused": "Rien de publié sur cette technologie pour l'instant.",
-    "projectsCount": "{count, plural, =0 {aucun projet} one {# projet} other {# projets}}",
-    "articlesCount": "{count, plural, =0 {aucun article} one {# article} other {# articles}}",
-    "talksCount": "{count, plural, =0 {aucune intervention} one {# intervention} other {# interventions}}",
+    "projectsCount": "{count, plural, one {# projet} other {# projets}}",
+    "articlesCount": "{count, plural, one {# article} other {# articles}}",
+    "talksCount": "{count, plural, one {# intervention} other {# interventions}}",
     "categories": {
       "langage": "Langages",
       "framework": "Frameworks",

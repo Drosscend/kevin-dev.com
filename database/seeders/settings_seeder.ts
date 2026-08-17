@@ -21,7 +21,8 @@ message) ne servent qu'à répondre à votre demande. Elles ne sont ni
 partagées ni utilisées à d'autres fins, et sont supprimées sur simple
 demande à l'adresse ci-dessus. Ce site utilise une instance Umami
 auto-hébergée pour mesurer son audience, sans cookies ni collecte de
-données personnelles.
+données personnelles. Seuls deux cookies techniques (session et
+protection anti-CSRF) sont déposés, sans aucun suivi.
 `
 
 /**

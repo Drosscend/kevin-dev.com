@@ -1,9 +1,10 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
+import i18nManager from '@adonisjs/i18n/services/main'
 import UserTransformer from '#transformers/user_transformer'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import ContactMessage from '#models/contact_message'
-import { DEFAULT_LOCALE, type Locale } from '#types/i18n'
+import { localeFromPath, type Locale } from '#types/i18n'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   share(ctx: HttpContext) {
@@ -15,7 +16,14 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      * In that case, we must always assume that HttpContext is not fully hydrated
      * with all the properties
      */
-    const { auth, i18n } = ctx as Partial<HttpContext>
+    const { auth } = ctx as Partial<HttpContext>
+
+    /**
+     * Outside the router (a 404 for instance) no locale middleware ran, so
+     * the locale is read back from the URL, like the error pages do.
+     */
+    const locale = localeFromPath(ctx.request.url())
+    const i18n = (ctx as Partial<HttpContext>).i18n ?? i18nManager.locale(locale)
 
     /**
      * Data shared with all Inertia pages. Make sure you are using
@@ -24,24 +32,24 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     return {
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
-      locale: ctx.inertia.always((i18n?.locale as Locale | undefined) ?? DEFAULT_LOCALE),
+      locale: ctx.inertia.always(i18n.locale as Locale),
       /**
        * Labels of the header, footer and window controls. They live in the
        * layout, which no controller feeds, so they travel with every page.
        */
       chrome: ctx.inertia.always({
-        projects: i18n?.t('messages.nav.projects') ?? 'Projets',
-        blog: i18n?.t('messages.nav.blog') ?? 'Blog',
-        talks: i18n?.t('messages.nav.talks') ?? 'Interventions',
-        cv: i18n?.t('messages.nav.cv') ?? 'CV',
-        technologies: i18n?.t('messages.nav.technologies') ?? 'Technos',
-        contact: i18n?.t('messages.nav.contact') ?? 'Contact',
-        legal: i18n?.t('messages.nav.legal') ?? 'Mentions légales',
-        primary: i18n?.t('messages.nav.primary') ?? 'Navigation principale',
-        secondary: i18n?.t('messages.nav.secondary') ?? 'Navigation secondaire',
-        openMenu: i18n?.t('messages.nav.openMenu') ?? 'Ouvrir le menu',
-        closeMenu: i18n?.t('messages.nav.closeMenu') ?? 'Fermer le menu',
-        theme: i18n?.t('messages.nav.theme') ?? 'Basculer le thème clair ou sombre',
+        projects: i18n.t('messages.nav.projects'),
+        blog: i18n.t('messages.nav.blog'),
+        talks: i18n.t('messages.nav.talks'),
+        cv: i18n.t('messages.nav.cv'),
+        technologies: i18n.t('messages.nav.technologies'),
+        contact: i18n.t('messages.nav.contact'),
+        legal: i18n.t('messages.nav.legal'),
+        primary: i18n.t('messages.nav.primary'),
+        secondary: i18n.t('messages.nav.secondary'),
+        openMenu: i18n.t('messages.nav.openMenu'),
+        closeMenu: i18n.t('messages.nav.closeMenu'),
+        theme: i18n.t('messages.nav.theme'),
       }),
       /**
        * Labels of the image viewer. It hangs off the article body, which
@@ -49,18 +57,18 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
        * the layout chrome it travels with every page.
        */
       lightbox: ctx.inertia.always({
-        open: i18n?.t('messages.lightbox.open') ?? "Agrandir l'image",
-        viewer: i18n?.t('messages.lightbox.viewer') ?? "Visionneuse d'images",
-        close: i18n?.t('messages.lightbox.close') ?? 'Fermer',
-        previous: i18n?.t('messages.lightbox.previous') ?? 'Image précédente',
-        next: i18n?.t('messages.lightbox.next') ?? 'Image suivante',
-        zoomIn: i18n?.t('messages.lightbox.zoomIn') ?? 'Zoom avant',
-        zoomOut: i18n?.t('messages.lightbox.zoomOut') ?? 'Zoom arrière',
-        reset: i18n?.t('messages.lightbox.reset') ?? "Taille d'origine",
-        hintClose: i18n?.t('messages.lightbox.hintClose') ?? 'fermer',
-        hintNavigate: i18n?.t('messages.lightbox.hintNavigate') ?? 'naviguer',
-        hintZoom: i18n?.t('messages.lightbox.hintZoom') ?? 'zoomer',
-        hintReset: i18n?.t('messages.lightbox.hintReset') ?? 'ajuster',
+        open: i18n.t('messages.lightbox.open'),
+        viewer: i18n.t('messages.lightbox.viewer'),
+        close: i18n.t('messages.lightbox.close'),
+        previous: i18n.t('messages.lightbox.previous'),
+        next: i18n.t('messages.lightbox.next'),
+        zoomIn: i18n.t('messages.lightbox.zoomIn'),
+        zoomOut: i18n.t('messages.lightbox.zoomOut'),
+        reset: i18n.t('messages.lightbox.reset'),
+        hintClose: i18n.t('messages.lightbox.hintClose'),
+        hintNavigate: i18n.t('messages.lightbox.hintNavigate'),
+        hintZoom: i18n.t('messages.lightbox.hintZoom'),
+        hintReset: i18n.t('messages.lightbox.hintReset'),
       }),
       /**
        * Unread contact messages, displayed as a badge in the admin

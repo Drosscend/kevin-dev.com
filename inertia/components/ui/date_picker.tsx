@@ -11,9 +11,7 @@ type DatePickerProps = {
   id?: string
   value: string | null
   onChange: (value: string | null) => void
-  placeholder?: string
   clearable?: boolean
-  className?: string
 }
 
 function pad(value: number) {
@@ -33,14 +31,7 @@ function parse(value: string | null) {
  * Value and onChange speak "YYYY-MM-DD", matching the DATE_PATTERN the
  * server validates, so it drops in for a native date input.
  */
-export function DatePicker({
-  id,
-  value,
-  onChange,
-  placeholder = 'Choisir une date',
-  clearable = true,
-  className,
-}: DatePickerProps) {
+export function DatePicker({ id, value, onChange, clearable = true }: DatePickerProps) {
   const [open, setOpen] = React.useState(false)
   const parsed = parse(value)
 
@@ -62,12 +53,11 @@ export function DatePicker({
           id={id}
           className={cn(
             'w-full justify-start px-3 text-left font-normal',
-            !value && 'text-muted-foreground',
-            className
+            !value && 'text-muted-foreground'
           )}
         >
           <CalendarIcon className="size-4 opacity-70" />
-          {value ? formatFrDate(value) : placeholder}
+          {value ? formatFrDate(value) : 'Choisir une date'}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

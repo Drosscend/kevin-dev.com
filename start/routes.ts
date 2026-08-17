@@ -17,10 +17,6 @@ router.get('/en', [controllers.Home, 'handle']).as('en.home')
 
 router.get('/health', [controllers.HealthChecks, 'handle']).as('health')
 
-/**
- * Crawling endpoints: sitemap with hreflang alternates, per-locale
- * RSS feeds and robots.txt.
- */
 router.get('/sitemap.xml', [controllers.Seo, 'sitemap']).as('seo.sitemap')
 router.get('/robots.txt', [controllers.Seo, 'robots']).as('seo.robots')
 router.get('/.well-known/security.txt', [controllers.Seo, 'securityTxt']).as('seo.security')
@@ -48,9 +44,6 @@ router.get('/blog/:slug', [controllers.Blog, 'show']).as('blog.show')
 router.get('/en/blog', [controllers.Blog, 'index']).as('en.blog.index')
 router.get('/en/blog/:slug', [controllers.Blog, 'show']).as('en.blog.show')
 
-/**
- * Public portfolio and technologies, same locale scheme as the blog.
- */
 router.get('/projects', [controllers.Projects, 'index']).as('projects.index')
 router.get('/projects/:slug', [controllers.Projects, 'show']).as('projects.show')
 router.get('/en/projects', [controllers.Projects, 'index']).as('en.projects.index')
@@ -66,10 +59,6 @@ router.get('/technologies/:slug', [controllers.Technologies, 'show']).as('techno
 router.get('/en/technologies', [controllers.Technologies, 'index']).as('en.technologies.index')
 router.get('/en/technologies/:slug', [controllers.Technologies, 'show']).as('en.technologies.show')
 
-/**
- * CV (settings-backed page + downloadable PDF), legal notice and
- * contact form, same locale scheme as the blog.
- */
 router.get('/cv', [controllers.Cv, 'show']).as('cv.show')
 router.get('/en/cv', [controllers.Cv, 'show']).as('en.cv.show')
 router.get('/cv.pdf', [controllers.Cv, 'pdf']).as('cv.pdf')
@@ -110,9 +99,6 @@ router
   .prefix('/admin')
   .use(middleware.guest())
 
-/**
- * Administration (authenticated session required).
- */
 router
   .group(() => {
     router.get('/', [controllers.admin.Dashboard, 'handle']).as('admin.dashboard')

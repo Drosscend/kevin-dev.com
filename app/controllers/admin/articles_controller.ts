@@ -15,7 +15,7 @@ async function formOptions() {
       )
       .orderBy('slug'),
     Technology.query().select('id', 'name').orderBy('name'),
-    MediaService.pickerOptions('image'),
+    MediaService.pickerOptions(),
   ])
 
   return {

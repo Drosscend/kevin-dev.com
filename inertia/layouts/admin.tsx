@@ -188,7 +188,6 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
 
   return (
     <div className="min-h-screen lg:flex">
-      {/* Mobile top bar */}
       <header className="flex h-14 items-center justify-between border-b px-4 lg:hidden">
         <Link route="home" className="font-display font-semibold tracking-tight">
           kevin-dev.com
@@ -205,7 +204,6 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
         </Button>
       </header>
 
-      {/* Mobile drawer overlay */}
       {mobileOpen && (
         <div
           aria-hidden

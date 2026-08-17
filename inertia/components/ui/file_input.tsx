@@ -12,7 +12,7 @@ export function FileInput({
   className,
   onChange,
   ...props
-}: Omit<ComponentProps<'input'>, 'type'> & { className?: string }) {
+}: Omit<ComponentProps<'input'>, 'type'>) {
   const input = useRef<HTMLInputElement>(null)
   const [selected, setSelected] = useState<string | null>(null)
 

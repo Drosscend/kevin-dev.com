@@ -69,7 +69,7 @@ function SectionHead({
   more,
 }: {
   title: string
-  more?: { href: string; label: string; count?: number }
+  more?: { href: string; label: string; count: number }
 }) {
   return (
     <div className="mb-10 flex items-baseline justify-between gap-4">
@@ -80,8 +80,7 @@ function SectionHead({
           className="group text-muted-foreground hover:text-primary text-sm transition-colors"
         >
           {more.label}
-          {more.count !== undefined && <span className="tabular-nums"> ({more.count})</span>}{' '}
-          <LinkArrow />
+          <span className="tabular-nums"> ({more.count})</span> <LinkArrow />
         </Link>
       )}
     </div>

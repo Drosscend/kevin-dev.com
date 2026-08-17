@@ -7,9 +7,6 @@ type DraftEnvelope = { savedAt: string; data: unknown }
  * data the page loaded with (otherwise there is nothing to restore).
  */
 function detectDraft(key: string, currentSerialized: string): Date | null {
-  if (typeof window === 'undefined') {
-    return null
-  }
   const raw = window.localStorage.getItem(key)
   if (raw === null) {
     return null
@@ -54,7 +51,7 @@ export function useDraftAutosave<T>({
   })
 
   useEffect(() => {
-    if (typeof window === 'undefined' || hasDraft) {
+    if (hasDraft) {
       return
     }
     timerRef.current = window.setTimeout(() => {
@@ -72,7 +69,7 @@ export function useDraftAutosave<T>({
   }, [key, serialized, hasDraft])
 
   function restoreDraft() {
-    const raw = typeof window === 'undefined' ? null : window.localStorage.getItem(key)
+    const raw = window.localStorage.getItem(key)
     if (raw !== null) {
       try {
         restoreRef.current((JSON.parse(raw) as DraftEnvelope).data as T)
@@ -84,16 +81,11 @@ export function useDraftAutosave<T>({
   }
 
   function discardDraft() {
-    if (typeof window !== 'undefined') {
-      window.localStorage.removeItem(key)
-    }
+    window.localStorage.removeItem(key)
     setHasDraft(false)
   }
 
   function clearDraft() {
-    if (typeof window === 'undefined') {
-      return
-    }
     if (timerRef.current !== null) {
       window.clearTimeout(timerRef.current)
     }

@@ -4,7 +4,7 @@ import type { TranslationValues } from '~/lib/admin'
 
 export type AdminLocale = 'fr' | 'en'
 
-export type TranslationStatus = 'empty' | 'partial' | 'complete'
+type TranslationStatus = 'empty' | 'partial' | 'complete'
 
 const STORAGE_PREFIX = 'admin:locale:'
 
@@ -23,11 +23,7 @@ export function useAdminLocale(scope: string, hasTranslation = true) {
   const storageKey = STORAGE_PREFIX + scope
 
   const [locale, setLocale] = useState<AdminLocale>(() =>
-    hasTranslation &&
-    typeof window !== 'undefined' &&
-    window.sessionStorage.getItem(storageKey) === 'en'
-      ? 'en'
-      : 'fr'
+    hasTranslation && window.sessionStorage.getItem(storageKey) === 'en' ? 'en' : 'fr'
   )
 
   function changeLocale(value: string) {

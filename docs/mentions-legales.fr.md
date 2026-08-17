@@ -31,7 +31,7 @@ L'ensemble des contenus de ce site (textes, images, code des projets présentés
 
 Le formulaire de contact collecte votre **nom**, votre **adresse email** et votre **message**, dans le seul but de pouvoir vous répondre (base légale : intérêt légitime). Ces données ne sont ni partagées, ni utilisées à d'autres fins, ni transférées hors de l'Union européenne.
 
-Les messages sont conservés **12 mois** au maximum, puis supprimés.
+Les messages sont conservés **12 mois** au maximum, puis supprimés manuellement par l'éditeur du site.
 
 Vous disposez d'un droit d'accès, de rectification et d'effacement de vos données. Pour l'exercer, écrivez à [contact@kevin-dev.com](mailto:contact@kevin-dev.com). Vous pouvez également adresser une réclamation à la [CNIL](https://www.cnil.fr).
 
@@ -43,5 +43,5 @@ Ce site utilise [Umami](https://umami.is), une solution de mesure d'audience aut
 
 Ce site ne dépose **aucun cookie de suivi**. Seuls sont utilisés :
 
-- un cookie de session, strictement nécessaire, limité à l'espace d'administration ;
+- deux cookies techniques strictement nécessaires, présents sur l'ensemble du site : un cookie de session (`adonis-session`) et un jeton de protection contre les requêtes forgées (`XSRF-TOKEN`), utilisés notamment par le formulaire de contact et l'espace d'administration ; aucun des deux ne sert au suivi ;
 - une préférence de thème (clair/sombre) enregistrée localement dans votre navigateur.

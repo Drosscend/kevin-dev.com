@@ -13,10 +13,13 @@ const WORDS_PER_MINUTE = 200
  * GitHub-style sanitize schema extended for the pipeline's own
  * output: language-tagged code blocks. Sanitize runs before slug and
  * shiki, so their generated markup (heading ids, inline styles) is
- * preserved.
+ * preserved. Footnote ids already carry the "user-content-" prefix
+ * from remark-rehype; sanitize must not prefix them a second time or
+ * the reference links would no longer match their targets.
  */
 const sanitizeSchema: typeof defaultSchema = {
   ...defaultSchema,
+  clobberPrefix: '',
   attributes: {
     ...defaultSchema.attributes,
     code: [...(defaultSchema.attributes?.code ?? []), ['className', /^language-/]],

@@ -32,6 +32,16 @@ test.group('Chrome de navigation', (group) => {
     assert.equal(english.legal, 'Legal notice')
   })
 
+  test('une page introuvable sous /en garde le chrome en anglais', async ({ client, assert }) => {
+    const response = await client.get('/en/nothing-here').withInertia()
+
+    response.assertStatus(404)
+    response.assertInertiaComponent('errors/not_found')
+    const chrome = response.inertiaProps.chrome as Record<string, string>
+    assert.equal(chrome.talks, 'Speaking')
+    assert.equal(response.inertiaProps.locale, 'en')
+  })
+
   test('les libellés d’accessibilité des contrôles sont traduits', async ({ client, assert }) => {
     const response = await client.get('/en').withInertia()
 

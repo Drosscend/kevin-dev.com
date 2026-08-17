@@ -1,8 +1,5 @@
 import vine from '@vinejs/vine'
 
-/**
- * Admin login validator (first step, email + password).
- */
 export const loginValidator = vine.create({
   email: vine.string().email().maxLength(254),
   password: vine.string().minLength(8).maxLength(72),

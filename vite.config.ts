@@ -8,10 +8,9 @@ export default defineConfig({
   plugins: [
     react(),
     /**
-     * The React compiler memoizes components and hooks at build time,
-     * so the editor screens no longer re-render every option list on
-     * each keystroke. The preset filters on the code itself, so it
-     * covers the hooks living in .ts files as well as the components.
+     * The React compiler memoizes components and hooks at build time.
+     * The preset filters on the code itself, so it covers the hooks
+     * living in .ts files as well as the components.
      */
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss(),

@@ -30,7 +30,7 @@ function StatCard({
 }: {
   label: string
   value: number
-  detail?: string
+  detail: string
   route:
     'admin.articles.index' | 'admin.projects.index' | 'admin.media.index' | 'admin.messages.index'
 }) {
@@ -41,7 +41,7 @@ function StatCard({
           <CardDescription>{label}</CardDescription>
           <CardTitle className="text-3xl">{value}</CardTitle>
         </CardHeader>
-        {detail && <CardContent className="text-muted-foreground text-sm">{detail}</CardContent>}
+        <CardContent className="text-muted-foreground text-sm">{detail}</CardContent>
       </Card>
     </Link>
   )

@@ -85,7 +85,7 @@ export function status() {
 
 /**
  * Title / summary / Markdown content of a single locale, shared by
- * the article and project validators.
+ * the article, project and talk validators.
  */
 export function translation() {
   return vine.object({

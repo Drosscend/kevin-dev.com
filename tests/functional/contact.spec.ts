@@ -99,7 +99,6 @@ test.group('CV et mentions légales', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test('la page CV rend le contenu des settings', async ({ client, assert }) => {
-    await SettingsService.set('cv_markdown_fr', '## Parcours')
     await SettingsService.set('cv_html_fr', await MarkdownService.render('## Parcours'))
 
     const response = await client.get('/cv').withInertia()

@@ -4,7 +4,7 @@ import type Article from '#models/article'
 import type { ArticleStatus } from '#models/article'
 import MarkdownService from '#services/markdown_service'
 
-export interface TranslationPayload {
+interface TranslationPayload {
   title: string
   summary: string
   contentMarkdown: string

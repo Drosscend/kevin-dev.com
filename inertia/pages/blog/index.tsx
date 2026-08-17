@@ -23,7 +23,7 @@ type BlogIndexProps = {
   locale: 'fr' | 'en'
   filters: { category: string | null }
   articles: ArticleCard[]
-  pagination: { currentPage: number; lastPage: number; total: number }
+  pagination: { currentPage: number; lastPage: number }
   categories: { slug: string; name: string }[]
   labels: {
     title: string

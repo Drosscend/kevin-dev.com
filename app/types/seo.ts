@@ -1,7 +1,6 @@
 import type { Locale } from '#types/i18n'
 
-export type JsonLdValue =
-  string | number | boolean | null | JsonLdValue[] | { [key: string]: JsonLdValue }
+type JsonLdValue = string | number | boolean | null | JsonLdValue[] | { [key: string]: JsonLdValue }
 
 export type JsonLd = { [key: string]: JsonLdValue }
 
@@ -14,7 +13,7 @@ export type SeoMeta = {
   description: string
   canonical: string
   locale: Locale
-  alternates: { fr: string; en: string | null } | null
+  alternates: { fr: string; en: string } | null
   ogType: 'website' | 'article'
   ogImage: string | null
   jsonLd: JsonLd[]

@@ -7,7 +7,7 @@ const PUBLIC_BASE = {
   talks: '/talks',
 } as const
 
-export type PreviewKind = keyof typeof PUBLIC_BASE
+type PreviewKind = keyof typeof PUBLIC_BASE
 
 type PreviewLinkProps = {
   kind: PreviewKind

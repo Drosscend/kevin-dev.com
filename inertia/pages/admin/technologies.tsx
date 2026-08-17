@@ -131,6 +131,7 @@ function TechnologyForm({
             </option>
           ))}
         </Select>
+        <FieldError errors={errors} field="category" />
       </div>
       <div className="space-y-2">
         <Label htmlFor={`logo-${key}`}>Logo (bibliothèque média)</Label>
@@ -151,6 +152,7 @@ function TechnologyForm({
             </option>
           ))}
         </Select>
+        <FieldError errors={errors} field="logoMediaId" />
       </div>
       <div className="space-y-2 sm:col-span-2">
         <Label htmlFor={`docsUrl-${key}`}>Documentation officielle (URL)</Label>
@@ -171,6 +173,7 @@ function TechnologyForm({
           value={values.descriptionFr}
           onChange={(event) => setValues({ ...values, descriptionFr: event.target.value })}
         />
+        <FieldError errors={errors} field="descriptionFr" />
       </div>
       <div className="space-y-2">
         <Label htmlFor={`descEn-${key}`}>Description (EN, optionnelle)</Label>
@@ -179,6 +182,7 @@ function TechnologyForm({
           value={values.descriptionEn}
           onChange={(event) => setValues({ ...values, descriptionEn: event.target.value })}
         />
+        <FieldError errors={errors} field="descriptionEn" />
       </div>
       <div className="sm:col-span-2">
         <Button type="submit" size="sm">

@@ -19,8 +19,8 @@ interface Entry {
 /**
  * Imports technologies from a JSON file, for inventories prepared
  * outside the app. Each entry is matched with the media whose original
- * name is `<slug>.png`, so a logo library imported beforehand gets
- * wired up automatically.
+ * name is `<slug>` plus an extension, so a logo library imported
+ * beforehand gets wired up automatically.
  *
  * Existing slugs are left untouched, since the back office is the source
  * of truth once an entry has been edited, unless --update is passed. A

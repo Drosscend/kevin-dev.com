@@ -3,7 +3,7 @@ import { ChipButton, ChipList } from '~/components/chip'
 import { Label } from '~/components/ui/label'
 import { Switch } from '~/components/ui/switch'
 
-export type ToggleOption = { id: number; label: string }
+type ToggleOption = { id: number; label: string }
 
 /**
  * Wrapping row of chips used wherever an entry picks several others:

@@ -13,9 +13,7 @@ type BlogShowProps = {
   locale: 'fr' | 'en'
   preview: PreviewMode
   article: {
-    slug: string
     title: string
-    summary: string
     contentHtml: string
     publishedAt: string | null
     readingTimeLabel: string

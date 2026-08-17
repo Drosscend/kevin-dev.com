@@ -8,7 +8,7 @@ import { talkValidator } from '#validators/portfolio'
 async function formOptions() {
   const [technologies, media] = await Promise.all([
     Technology.query().select('id', 'name').orderBy('name'),
-    MediaService.pickerOptions('image'),
+    MediaService.pickerOptions(),
   ])
 
   return {

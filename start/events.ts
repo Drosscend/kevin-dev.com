@@ -1,12 +1,3 @@
-/*
-|--------------------------------------------------------------------------
-| Event listeners
-|--------------------------------------------------------------------------
-|
-| Bindings between application events and their listeners.
-|
-*/
-
 import emitter from '@adonisjs/core/services/emitter'
 import logger from '@adonisjs/core/services/logger'
 

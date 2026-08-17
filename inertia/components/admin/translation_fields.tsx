@@ -6,8 +6,8 @@ import FieldError, { type FieldErrors } from '~/components/field_error'
 import type { TranslationValues } from '~/lib/admin'
 
 /**
- * Title / summary / markdown fields for one locale, shared by the
- * article and project admin forms.
+ * Title / summary / markdown fields for one locale, rendered by
+ * TranslationCard for each translation of a content entry.
  */
 export default function TranslationFields({
   prefix,

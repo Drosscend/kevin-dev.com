@@ -15,7 +15,7 @@ type TalkRow = {
   hasEnglish: boolean
   status: PublicationStatus
   eventName: string
-  eventDate: string | null
+  eventDate: string
   city: string
   upcoming: boolean
   publishedAt: string | null

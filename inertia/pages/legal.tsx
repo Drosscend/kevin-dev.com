@@ -4,7 +4,6 @@ import Lightbox from '~/components/lightbox'
 import Seo, { type SeoMeta } from '~/components/seo'
 
 type LegalProps = {
-  locale: 'fr' | 'en'
   contentHtml: string
   labels: {
     title: string

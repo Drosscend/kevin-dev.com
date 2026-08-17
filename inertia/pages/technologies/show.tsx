@@ -9,9 +9,7 @@ type Entry = { slug: string; title: string; summary: string; coverUrl: string | 
 type TechnologyShowProps = {
   locale: 'fr' | 'en'
   technology: {
-    slug: string
     name: string
-    category: string
     logoUrl: string | null
     docsUrl: string | null
     description: string

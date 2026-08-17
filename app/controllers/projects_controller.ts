@@ -114,9 +114,7 @@ export default class ProjectsController {
     return inertia.render('portfolio/show', {
       preview,
       project: {
-        slug: project.slug,
         title: translation.title,
-        summary: translation.summary,
         contentHtml: translation.contentHtml,
         coverUrl: MediaService.url(project.cover),
         startedAt: formatDate(project.startedAt, locale),

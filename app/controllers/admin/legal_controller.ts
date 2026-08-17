@@ -2,9 +2,6 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { readMarkdownPage, saveMarkdownPage } from '#services/markdown_page_service'
 import { markdownPageValidator } from '#validators/pages'
 
-/**
- * The legal notice page, markdown only.
- */
 export default class LegalController {
   async show({ inertia }: HttpContext) {
     const contents = await readMarkdownPage('legal')

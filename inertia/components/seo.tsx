@@ -16,10 +16,12 @@ export default function Seo({ meta }: { meta: SeoMeta }) {
       <link rel="canonical" href={meta.canonical} />
       {meta.noindex && <meta name="robots" content="noindex, follow" />}
 
-      {meta.alternates?.en && <link rel="alternate" hrefLang="fr" href={meta.alternates.fr} />}
-      {meta.alternates?.en && <link rel="alternate" hrefLang="en" href={meta.alternates.en} />}
-      {meta.alternates?.en && (
-        <link rel="alternate" hrefLang="x-default" href={meta.alternates.fr} />
+      {meta.alternates && (
+        <>
+          <link rel="alternate" hrefLang="fr" href={meta.alternates.fr} />
+          <link rel="alternate" hrefLang="en" href={meta.alternates.en} />
+          <link rel="alternate" hrefLang="x-default" href={meta.alternates.fr} />
+        </>
       )}
 
       <meta property="og:site_name" content="kevin-dev.com" />

@@ -4,9 +4,9 @@ import type Media from '#models/media'
 import type { Locale } from '#types/i18n'
 import type { JsonLd, SeoMeta } from '#types/seo'
 
-export interface SeoAlternates {
+interface SeoAlternates {
   fr: string
-  en: string | null
+  en: string
 }
 
 /**
@@ -44,10 +44,7 @@ export default class SeoService {
       canonical: this.absolute(options.path),
       locale: options.locale,
       alternates: options.alternates
-        ? {
-            fr: this.absolute(options.alternates.fr),
-            en: options.alternates.en ? this.absolute(options.alternates.en) : null,
-          }
+        ? { fr: this.absolute(options.alternates.fr), en: this.absolute(options.alternates.en) }
         : null,
       ogType: options.ogType ?? 'website',
       // Pages without a specific image fall back to the site card

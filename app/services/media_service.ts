@@ -55,8 +55,12 @@ export default class MediaService {
     if (media.isDocument) {
       return this.documentUrl(media)
     }
-    const variant = media.variants.find((item) => item.width === width)?.file ?? 'original.webp'
-    return router.makeUrl('uploads.show', { key: media.key, file: variant })
+    return this.variantUrl(media, width)
+  }
+
+  static variantUrl(media: Media, width: number) {
+    const file = media.variants.find((variant) => variant.width === width)?.file ?? 'original.webp'
+    return router.makeUrl('uploads.show', { key: media.key, file })
   }
 
   static documentUrl(media: Media) {
@@ -68,33 +72,23 @@ export default class MediaService {
    * documents, which carry no image to show.
    */
   static thumbnailUrl(media: Media) {
-    if (media.isDocument) {
-      return null
-    }
-    const file = media.variants.find((variant) => variant.width === 320)?.file ?? 'original.webp'
-    return router.makeUrl('uploads.show', { key: media.key, file })
+    return media.isDocument ? null : this.variantUrl(media, 320)
   }
 
   /**
-   * Media enriched for the admin picker: enough to render a searchable
-   * thumbnail grid in one payload, no second round-trip. `kind` scopes
-   * the pool so a cover field never offers a document, and vice versa.
+   * Images enriched for the admin cover picker: enough to render a
+   * searchable thumbnail grid in one payload, no second round-trip.
    */
-  static async pickerOptions(kind?: 'image' | 'document') {
-    const query = Media.query().orderBy('created_at', 'desc')
-    if (kind === 'image') {
-      query.withScopes((scopes) => scopes.images())
-    } else if (kind === 'document') {
-      query.where('mime_type', DOCUMENT_MIME_TYPE)
-    }
+  static async pickerOptions() {
+    const media = await Media.query()
+      .withScopes((scopes) => scopes.images())
+      .orderBy('created_at', 'desc')
 
-    const media = await query
     return media.map((item) => ({
       id: item.id,
       alt: item.alt,
       originalName: item.originalName,
-      isDocument: item.isDocument,
-      thumbnailUrl: this.thumbnailUrl(item),
+      thumbnailUrl: this.variantUrl(item, 320),
     }))
   }
 

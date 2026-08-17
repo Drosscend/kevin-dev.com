@@ -19,7 +19,6 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN node ace build
 
-# Final image
 FROM base AS production
 ENV NODE_ENV=production
 ENV PORT=3333

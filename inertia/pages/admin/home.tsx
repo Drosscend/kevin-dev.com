@@ -32,13 +32,11 @@ function SettingsTextarea({
   label,
   value,
   onChange,
-  rows = 2,
 }: {
   field: keyof HomeSettings
   label: string
   value: string
   onChange: (value: string) => void
-  rows?: number
 }) {
   const { errors } = usePage().props
 
@@ -47,7 +45,7 @@ function SettingsTextarea({
       <Label htmlFor={field}>{label}</Label>
       <Textarea
         id={field}
-        rows={rows}
+        rows={2}
         value={value}
         onChange={(event) => onChange(event.target.value)}
       />

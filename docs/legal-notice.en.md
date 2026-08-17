@@ -31,7 +31,7 @@ All content on this website (texts, images, code of the presented projects) is t
 
 The contact form collects your **name**, **email address** and **message**, for the sole purpose of replying to you (legal basis: legitimate interest). This data is never shared, used for any other purpose, or transferred outside the European Union.
 
-Messages are kept for a maximum of **12 months**, then deleted.
+Messages are kept for a maximum of **12 months**, then deleted manually by the site publisher.
 
 You have the right to access, rectify and erase your data. To exercise it, write to [contact@kevin-dev.com](mailto:contact@kevin-dev.com). You may also lodge a complaint with the French supervisory authority, the [CNIL](https://www.cnil.fr).
 
@@ -43,5 +43,5 @@ This website uses [Umami](https://umami.is), a self-hosted, **cookie-free** anal
 
 This website sets **no tracking cookies**. Only the following are used:
 
-- a strictly necessary session cookie, limited to the administration area;
+- two strictly necessary technical cookies, set on the whole site: a session cookie (`adonis-session`) and an anti-forgery token (`XSRF-TOKEN`), used in particular by the contact form and the administration area; neither is used for tracking;
 - a theme preference (light/dark) stored locally in your browser.

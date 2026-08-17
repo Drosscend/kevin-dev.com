@@ -1,10 +1,9 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import TimelineEntry, { type TimelineHonours } from '#models/timeline_entry'
+import TimelineEntry from '#models/timeline_entry'
 import { upsertTranslations } from '#services/translations_service'
 import { timelineEntryValidator, timelineMoveValidator } from '#validators/timeline'
 
 type TimelinePayload = {
-  honours?: TimelineHonours
   periodFr: string
   titleFr: string
   placeFr: string

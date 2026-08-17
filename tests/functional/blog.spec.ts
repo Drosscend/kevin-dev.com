@@ -6,7 +6,7 @@ import ArticleService from '#services/article_service'
 
 function makeArticle(
   slug: string,
-  status: 'draft' | 'published' | 'archived',
+  status: 'draft' | 'published',
   options: { english?: boolean } = {}
 ) {
   return ArticleService.save(new Article(), {

@@ -79,6 +79,7 @@ function CategoryForm({ category, onDone }: { category: Category | null; onDone?
           value={values.nameEn}
           onChange={(event) => setValues({ ...values, nameEn: event.target.value })}
         />
+        <FieldError errors={errors} field="nameEn" />
       </div>
       <div className="sm:col-span-3">
         <Button type="submit" size="sm">

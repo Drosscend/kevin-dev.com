@@ -1,12 +1,3 @@
-/*
-|--------------------------------------------------------------------------
-| Edge globals
-|--------------------------------------------------------------------------
-|
-| Values exposed to the root Edge layout (Umami analytics config).
-|
-*/
-
 import edge from 'edge.js'
 import env from '#start/env'
 

@@ -1,12 +1,3 @@
-/*
-|--------------------------------------------------------------------------
-| Health checks
-|--------------------------------------------------------------------------
-|
-| Checks exposed on /health, consumed by the monitoring probe.
-|
-*/
-
 import db from '@adonisjs/lucid/services/db'
 import { DbCheck } from '@adonisjs/lucid/database'
 import { HealthChecks, DiskSpaceCheck, MemoryHeapCheck } from '@adonisjs/core/health'

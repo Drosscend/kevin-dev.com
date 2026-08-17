@@ -36,7 +36,6 @@ export default class MediaController {
            */
           absoluteUrl: SeoService.absolute(url),
           thumbnailUrl: MediaService.thumbnailUrl(item),
-          createdAt: item.createdAt.toISO(),
         }
       }),
     })

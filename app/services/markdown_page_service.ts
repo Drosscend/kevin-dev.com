@@ -5,13 +5,10 @@ import MarkdownService from '#services/markdown_service'
  * The pages whose whole content is a markdown blob kept in the
  * settings table, as opposed to the entries of a content model.
  */
-export type MarkdownPage = 'cv' | 'legal'
+type MarkdownPage = 'cv' | 'legal'
 
-export type MarkdownPageContents = { fr: string; en: string }
+type MarkdownPageContents = { fr: string; en: string }
 
-/**
- * Reads both locales of a settings-backed markdown page.
- */
 export async function readMarkdownPage(page: MarkdownPage): Promise<MarkdownPageContents> {
   const settings = await SettingsService.getMany([`${page}_markdown_fr`, `${page}_markdown_en`])
 

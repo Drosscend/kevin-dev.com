@@ -166,6 +166,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
                     </option>
                   ))}
                 </Select>
+                <FieldError errors={errors} field="categoryId" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="cover">Image de couverture (Open Graph)</Label>
@@ -175,6 +176,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
                   value={form.data.coverMediaId}
                   onChange={(mediaId) => form.setData('coverMediaId', mediaId)}
                 />
+                <FieldError errors={errors} field="coverMediaId" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="publishedAt">Date de publication (optionnel)</Label>
@@ -187,6 +189,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
                   Une date future programme la publication : l’article restera invisible du public
                   jusque-là.
                 </p>
+                <FieldError errors={errors} field="publishedAt" />
               </div>
             </div>
 
@@ -201,6 +204,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
                 onToggle={toggleTechnology}
                 empty="Aucune technologie définie."
               />
+              <FieldError errors={errors} field="technologyIds" />
             </div>
           </CardContent>
         </Card>
@@ -230,6 +234,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
             </span>
           )}
         </div>
+        <FieldError errors={errors} field="status" />
       </form>
     </div>
   )

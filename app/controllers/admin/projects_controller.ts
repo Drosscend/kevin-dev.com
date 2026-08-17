@@ -15,7 +15,7 @@ async function formOptions() {
         translations.select('id', 'article_id', 'locale', 'title')
       )
       .orderBy('created_at', 'desc'),
-    MediaService.pickerOptions('image'),
+    MediaService.pickerOptions(),
   ])
 
   return {

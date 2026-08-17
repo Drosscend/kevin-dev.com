@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { cn } from '~/lib/utils'
 
 const DOWNLOAD_EXTENSIONS: Record<string, string> = {
   ts: 'ts',
@@ -95,7 +94,7 @@ function enhanceTable(table: HTMLTableElement) {
  * a copy/download toolbar on shiki code blocks, and horizontal
  * scrolling for tables wider than the reading column.
  */
-export default function ArticleContent({ html, className }: { html: string; className?: string }) {
+export default function ArticleContent({ html }: { html: string }) {
   const container = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -108,11 +107,5 @@ export default function ArticleContent({ html, className }: { html: string; clas
     root.querySelectorAll<HTMLTableElement>('table').forEach(enhanceTable)
   }, [html])
 
-  return (
-    <div
-      ref={container}
-      className={cn('typeset', className)}
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  )
+  return <div ref={container} className="typeset" dangerouslySetInnerHTML={{ __html: html }} />
 }

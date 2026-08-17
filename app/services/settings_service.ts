@@ -1,8 +1,8 @@
 import Setting from '#models/setting'
 
 /**
- * Key/value store backed by the settings table (CV content, legal
- * page content, CV PDF metadata…).
+ * Key/value store backed by the settings table: markdown pages (CV,
+ * legal notice) and the homepage blocks.
  */
 export default class SettingsService {
   static async get(key: string) {

@@ -6,7 +6,6 @@ import Seo, { type SeoMeta } from '~/components/seo'
 import { Button } from '~/components/ui/button'
 
 type CvProps = {
-  locale: 'fr' | 'en'
   contentHtml: string
   pdfAvailable: boolean
   labels: {

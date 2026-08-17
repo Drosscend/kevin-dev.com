@@ -24,12 +24,12 @@ export function slugify(value: string) {
 export const SLUG_LOCKED_HINT =
   'Le slug est figé depuis la mise en ligne : le modifier casserait l’URL déjà partagée.'
 
-export function xsrfToken() {
+function xsrfToken() {
   const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/)
   return match ? decodeURIComponent(match[1]) : ''
 }
 
-export type UploadedMedia = { id: number; alt: string; url: string }
+type UploadedMedia = { id: number; alt: string; url: string }
 
 /**
  * Uploads an image to the media library through the JSON endpoint

@@ -22,6 +22,15 @@ test.group('MarkdownService', () => {
     assert.include(html, '<table>')
   })
 
+  test('relie les notes de bas de page à leur appel', async ({ assert }) => {
+    const html = await MarkdownService.render('Texte[^1].\n\n[^1]: La note.')
+
+    assert.include(html, 'href="#user-content-fn-1"')
+    assert.include(html, 'id="user-content-fn-1"')
+    assert.include(html, 'href="#user-content-fnref-1"')
+    assert.include(html, 'id="user-content-fnref-1"')
+  })
+
   test('expose le langage des blocs de code via data-language', async ({ assert }) => {
     const html = await MarkdownService.render('```ts\nconst a = 1\n```')
 

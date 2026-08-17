@@ -22,7 +22,6 @@ type MediaItem = {
   url: string
   absoluteUrl: string
   thumbnailUrl: string | null
-  createdAt: string | null
 }
 
 type MediaPageProps = {

@@ -5,13 +5,13 @@ import type { ProjectStatus } from '#models/project'
 import type { ProjectLinkType } from '#models/project_link'
 import MarkdownService from '#services/markdown_service'
 
-export interface ProjectTranslationPayload {
+interface ProjectTranslationPayload {
   title: string
   summary: string
   contentMarkdown: string
 }
 
-export interface ProjectLinkPayload {
+interface ProjectLinkPayload {
   label: string
   url: string
   type: ProjectLinkType

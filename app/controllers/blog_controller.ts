@@ -84,7 +84,6 @@ export default class BlogController {
       pagination: {
         currentPage: paginated.currentPage,
         lastPage: paginated.lastPage,
-        total: paginated.total,
       },
       categories: categories.map((category) => ({
         slug: category.slug,
@@ -139,9 +138,7 @@ export default class BlogController {
     return inertia.render('blog/show', {
       preview,
       article: {
-        slug: article.slug,
         title: translation.title,
-        summary: translation.summary,
         contentHtml: translation.contentHtml,
         publishedAt: formatDate(article.publishedAt, locale),
         readingTimeLabel: i18n.t('messages.blog.readingTime', {

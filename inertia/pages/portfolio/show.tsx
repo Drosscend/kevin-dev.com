@@ -15,9 +15,7 @@ type PortfolioShowProps = {
   locale: 'fr' | 'en'
   preview: PreviewMode
   project: {
-    slug: string
     title: string
-    summary: string
     contentHtml: string
     coverUrl: string | null
     startedAt: string | null

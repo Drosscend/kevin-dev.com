@@ -100,9 +100,7 @@ export default class TalksController {
     return inertia.render('talks/show', {
       preview,
       talk: {
-        slug: talk.slug,
         title: translation.title,
-        summary: translation.summary,
         contentHtml: translation.contentHtml,
         coverUrl: MediaService.url(talk.cover),
         eventName: talk.eventName,

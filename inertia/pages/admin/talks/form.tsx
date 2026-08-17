@@ -189,6 +189,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
                   value={form.data.coverMediaId}
                   onChange={(mediaId) => form.setData('coverMediaId', mediaId)}
                 />
+                <FieldError errors={errors} field="coverMediaId" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="eventDate">Date de l’intervention</Label>
@@ -230,6 +231,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
                   Une date future programme la publication : l’intervention restera invisible du
                   public jusque-là.
                 </p>
+                <FieldError errors={errors} field="publishedAt" />
               </div>
             </div>
 
@@ -244,6 +246,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
                 onToggle={toggleTechnology}
                 empty="Aucune technologie définie."
               />
+              <FieldError errors={errors} field="technologyIds" />
             </div>
           </CardContent>
         </Card>
@@ -333,6 +336,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
             </span>
           )}
         </div>
+        <FieldError errors={errors} field="status" />
       </form>
     </div>
   )

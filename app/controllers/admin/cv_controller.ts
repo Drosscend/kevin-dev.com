@@ -4,10 +4,6 @@ import { readMarkdownPage, saveMarkdownPage } from '#services/markdown_page_serv
 import { markdownPageValidator } from '#validators/pages'
 import { CV_PDF_KEY } from '#controllers/cv_controller'
 
-/**
- * The /cv page: its markdown content in both locales, and the PDF
- * offered for download beside it.
- */
 export default class CvController {
   async show({ inertia }: HttpContext) {
     const contents = await readMarkdownPage('cv')

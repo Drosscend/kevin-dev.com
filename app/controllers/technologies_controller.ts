@@ -114,9 +114,7 @@ export default class TechnologiesController {
 
     return inertia.render('technologies/show', {
       technology: {
-        slug: technology.slug,
         name: technology.name,
-        category: technology.category,
         logoUrl: logoUrl(technology),
         docsUrl: technology.docsUrl,
         description: technology.description(locale),

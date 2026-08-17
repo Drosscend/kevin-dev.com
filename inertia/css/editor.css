@@ -23,8 +23,7 @@
   --code-attribute: #7ee787;
 }
 
-/* Rich text surface
-   ------------------------------------------------------------- */
+/* Rich text surface */
 
 /* ProseMirror keeps every source line break visible; the published
    article collapses them, and the editor should read the same. */
@@ -96,8 +95,7 @@
   border-block-start-color: var(--foreground);
 }
 
-/* Markdown source
-   ------------------------------------------------------------- */
+/* Markdown source */
 
 .markdown-source .cm-editor {
   background-color: transparent;

@@ -422,7 +422,7 @@ test.group('Admin CRUD articles et projets (HTTP)', (group) => {
     assert.equal(article.status, 'draft')
   })
 
-  test('une catégorie inexistante est rejetée en 422', async ({ client }) => {
+  test('une catégorie inexistante est refusée sans créer l’article', async ({ client, assert }) => {
     const user = await admin()
 
     const response = await client
@@ -440,6 +440,9 @@ test.group('Admin CRUD articles et projets (HTTP)', (group) => {
 
     response.assertStatus(200)
     response.assertInertiaComponent('admin/articles/form')
+    const errors = response.inertiaProps.errors as Record<string, unknown>
+    assert.property(errors, 'categoryId')
+    assert.isNull(await Article.findBy('slug', 'avec-categorie'))
   })
 
   test('créer un projet avec liens et technologie', async ({ client, assert }) => {

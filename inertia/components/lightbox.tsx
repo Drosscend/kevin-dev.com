@@ -36,11 +36,9 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max)
 }
 
-/**
- * A linked image keeps its link, and data-lightbox="off" opts out.
- */
+/** A linked image keeps its link instead of zooming. */
 function zoomable(image: HTMLImageElement) {
-  return !image.closest('a') && image.dataset.lightbox !== 'off'
+  return !image.closest('a')
 }
 
 function imagesOf(root: HTMLElement) {
@@ -48,11 +46,10 @@ function imagesOf(root: HTMLElement) {
 }
 
 function slideOf(image: HTMLImageElement): Slide {
-  const figcaption = image.closest('figure')?.querySelector('figcaption')?.textContent?.trim()
   return {
     src: image.currentSrc || image.src,
     alt: image.alt,
-    caption: figcaption || image.title || image.alt || '',
+    caption: image.title || image.alt || '',
   }
 }
 
@@ -71,7 +68,7 @@ export default function Lightbox({
   className?: string
   children: ReactNode
 }) {
-  const { lightbox } = usePage<Data.SharedProps>().props
+  const { lightbox } = usePage().props
   const container = useRef<HTMLDivElement>(null)
   const opener = useRef<HTMLImageElement | null>(null)
   const [gallery, setGallery] = useState<{ slides: Slide[]; start: number } | null>(null)

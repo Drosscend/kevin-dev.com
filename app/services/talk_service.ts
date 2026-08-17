@@ -5,13 +5,13 @@ import type { TalkStatus } from '#models/talk'
 import type { TalkLinkType } from '#models/talk_link'
 import MarkdownService from '#services/markdown_service'
 
-export interface TalkTranslationPayload {
+interface TalkTranslationPayload {
   title: string
   summary: string
   contentMarkdown: string
 }
 
-export interface TalkLinkPayload {
+interface TalkLinkPayload {
   label: string
   url: string
   type: TalkLinkType

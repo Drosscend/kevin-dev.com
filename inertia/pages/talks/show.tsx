@@ -12,9 +12,7 @@ type TalksShowProps = {
   locale: 'fr' | 'en'
   preview: PreviewMode
   talk: {
-    slug: string
     title: string
-    summary: string
     contentHtml: string
     coverUrl: string | null
     eventName: string

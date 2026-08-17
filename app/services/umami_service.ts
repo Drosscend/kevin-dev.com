@@ -1,7 +1,7 @@
 import env from '#start/env'
 import logger from '@adonisjs/core/services/logger'
 
-export interface UmamiStats {
+interface UmamiStats {
   pageviews: number
   visitors: number
   topPages: { path: string; views: number }[]

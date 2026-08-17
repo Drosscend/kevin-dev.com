@@ -192,6 +192,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                   value={form.data.coverMediaId}
                   onChange={(mediaId) => form.setData('coverMediaId', mediaId)}
                 />
+                <FieldError errors={errors} field="coverMediaId" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="startedAt">Début du projet</Label>
@@ -200,6 +201,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                   value={form.data.startedAt}
                   onChange={(next) => form.setData('startedAt', next)}
                 />
+                <FieldError errors={errors} field="startedAt" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="endedAt">Fin du projet (vide si en cours)</Label>
@@ -208,6 +210,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                   value={form.data.endedAt}
                   onChange={(next) => form.setData('endedAt', next)}
                 />
+                <FieldError errors={errors} field="endedAt" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="publishedAt">Date de publication (optionnel)</Label>
@@ -220,6 +223,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                   Une date future programme la publication : le projet restera invisible du public
                   jusque-là.
                 </p>
+                <FieldError errors={errors} field="publishedAt" />
               </div>
             </div>
 
@@ -240,6 +244,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                 onToggle={(id) => toggleId('technologyIds', id)}
                 empty="Aucune technologie définie."
               />
+              <FieldError errors={errors} field="technologyIds" />
             </div>
 
             <div className="space-y-2">
@@ -253,6 +258,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
                 onToggle={(id) => toggleId('articleIds', id)}
                 empty="Aucun article."
               />
+              <FieldError errors={errors} field="articleIds" />
             </div>
           </CardContent>
         </Card>
@@ -342,6 +348,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
             </span>
           )}
         </div>
+        <FieldError errors={errors} field="status" />
       </form>
     </div>
   )

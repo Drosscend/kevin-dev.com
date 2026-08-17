@@ -12,8 +12,6 @@ type DateTimePickerProps = {
   id?: string
   value: string | null
   onChange: (value: string | null) => void
-  placeholder?: string
-  className?: string
 }
 
 const HOURS = Array.from({ length: 24 }, (_, index) => pad(index))
@@ -44,13 +42,7 @@ function compose(day: Date, hours: string, minutes: string) {
  * "YYYY-MM-DDTHH:mm" string used everywhere else in the admin, which makes
  * it a drop-in replacement for a native datetime-local input.
  */
-export function DateTimePicker({
-  id,
-  value,
-  onChange,
-  placeholder = 'Choisir une date',
-  className,
-}: DateTimePickerProps) {
+export function DateTimePicker({ id, value, onChange }: DateTimePickerProps) {
   const [open, setOpen] = React.useState(false)
 
   const parsed = parseValue(value)
@@ -84,12 +76,11 @@ export function DateTimePicker({
           id={id}
           className={cn(
             'w-full justify-start px-3 text-left font-normal',
-            !value && 'text-muted-foreground',
-            className
+            !value && 'text-muted-foreground'
           )}
         >
           <CalendarIcon className="size-4 opacity-70" />
-          {value ? formatFrDateTime(value) : placeholder}
+          {value ? formatFrDateTime(value) : 'Choisir une date'}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

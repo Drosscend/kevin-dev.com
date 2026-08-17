@@ -226,7 +226,6 @@ export default function MarkdownEditor({
       </div>
 
       <div
-        data-mode={mode}
         className="bg-card focus-within:border-ring focus-within:ring-ring/50 overflow-hidden rounded-md border transition-[color,box-shadow] focus-within:ring-[3px]"
         onPasteCapture={handlePaste}
         onDropCapture={handleDrop}
