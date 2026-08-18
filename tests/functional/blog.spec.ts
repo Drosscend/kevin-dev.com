@@ -36,6 +36,15 @@ test.group('Blog public', (group) => {
     assert.equal(articles[0].title, 'Title fr-et-en')
   })
 
+  test('une page au-delà de la dernière ramène à la dernière', async ({ client }) => {
+    await makeArticle('article-publie', 'published')
+
+    const response = await client.get('/blog?page=99').redirects(0)
+
+    response.assertStatus(302)
+    response.assertHeader('location', '/blog')
+  })
+
   test('la page article rend le HTML pré-rendu', async ({ client, assert }) => {
     await makeArticle('mon-article', 'published')
 

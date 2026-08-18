@@ -50,8 +50,11 @@ export default class BlogController {
     ])
 
     if (paginated.total > 0 && page > paginated.lastPage) {
+      // The app forwards the query string on every redirect, and the
+      // target already carries the filter and the page.
       return response
         .redirect()
+        .withQs(false)
         .toPath(localePath(locale, '/blog') + listQueryString(categorySlug, paginated.lastPage))
     }
 
