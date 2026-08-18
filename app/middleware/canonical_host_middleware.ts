@@ -16,8 +16,8 @@ export default class CanonicalHostMiddleware {
 
     if (hostname === `www.${CanonicalHostMiddleware.#canonical.hostname}`) {
       const target = `${CanonicalHostMiddleware.#canonical.origin}${ctx.request.url(true)}`
-      // The target already carries the query string, and the app enables
-      // "forwardQueryString" globally: opt out or it gets appended twice.
+      // The app forwards the query string on every redirect, and the
+      // target already carries it.
       return ctx.response.redirect().withQs(false).status(301).toPath(target)
     }
 
