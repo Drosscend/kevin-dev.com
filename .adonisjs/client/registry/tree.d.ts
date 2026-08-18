@@ -69,9 +69,7 @@ export interface ApiDefinition {
   }
   cv: {
     show: typeof routes['cv.show']
-    pdf: typeof routes['cv.pdf'] & {
-      legacy: typeof routes['cv.pdf.legacy']
-    }
+    pdf: typeof routes['cv.pdf']
   }
   legal: {
     show: typeof routes['legal.show']

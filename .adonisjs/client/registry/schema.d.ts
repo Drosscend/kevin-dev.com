@@ -391,18 +391,6 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['pdf']>>>
     }
   }
-  'cv.pdf.legacy': {
-    methods: ["GET","HEAD"]
-    pattern: '/assets/pdf/Véronési_Kévin_CV.pdf'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: unknown
-      errorResponse: unknown
-    }
-  }
   'legal.show': {
     methods: ["GET","HEAD"]
     pattern: '/legal'
