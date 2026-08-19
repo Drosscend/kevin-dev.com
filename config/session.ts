@@ -10,8 +10,14 @@ const sessionConfig = defineConfig({
 
   /**
    * Cookie name storing the session identifier.
+   *
+   * The __Host- prefix makes the browser refuse the cookie unless it is
+   * Secure, path-wide and carries no Domain, so a sibling subdomain such as
+   * labs.kevin-dev.com cannot write a session id for this site. The prefix
+   * demands Secure, which the dev server over plain HTTP never sets, hence
+   * the production-only name.
    */
-  cookieName: 'adonis-session',
+  cookieName: app.inProduction ? '__Host-adonis-session' : 'adonis-session',
 
   /**
    * When set to true, the session id cookie will be deleted
