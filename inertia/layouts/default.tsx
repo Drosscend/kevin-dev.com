@@ -216,6 +216,15 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
               className="hover:text-primary transition-colors"
             >
               LinkedIn
+            </a>{' '}
+            ·{' '}
+            <a
+              href="https://labs.kevin-dev.com"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="hover:text-primary transition-colors"
+            >
+              Labs
             </a>
           </span>
         </div>
