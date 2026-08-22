@@ -22,14 +22,20 @@ export default defineConfig({
     'react/exhaustive-deps': 'warn',
     'react/rules-of-hooks': 'error',
     'react/self-closing-comp': 'error',
-    'typescript/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
     'unicorn/filename-case': ['error', { case: 'snakeCase' }],
     'unicorn/prefer-node-protocol': 'error',
   },
   overrides: [
     {
+      files: ['src/**/*.ts'],
+      rules: { 'project-style/no-app-import-in-core': 'error' },
+    },
+    {
       files: ['inertia/**/*.{ts,tsx}'],
       rules: {
+        // Only on the client: a constructor-injected type is also a runtime
+        // value, so the rule would break the container everywhere else.
+        'typescript/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
         'project-style/no-backend-import-in-frontend': 'error',
         'project-style/no-react-compiler-hooks': 'error',
         'project-style/prefer-adonisjs-inertia-component': 'error',
