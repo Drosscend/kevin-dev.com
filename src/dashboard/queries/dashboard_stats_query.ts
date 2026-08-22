@@ -1,14 +1,23 @@
+import { inject } from '@adonisjs/core'
 import Article from '#blog/models/article'
 import ContactMessage from '#contact/models/contact_message'
 import Media from '#media/models/media'
 import Project from '#portfolio/models/project'
-import UmamiService from '#services/umami_service'
-import type { HttpContext } from '@adonisjs/core/http'
 
 const asTotal = (row: { $extras: Record<string, unknown> }) => Number(row.$extras.total)
 
-export default class DashboardController {
-  async handle({ inertia, auth }: HttpContext) {
+export interface DashboardStats {
+  articlesPublished: number
+  articlesDraft: number
+  projectsPublished: number
+  projectsDraft: number
+  mediaCount: number
+  unreadMessages: number
+}
+
+@inject()
+export class DashboardStatsQuery {
+  async execute(): Promise<DashboardStats> {
     const [
       articlesPublished,
       articlesDraft,
@@ -16,7 +25,6 @@ export default class DashboardController {
       projectsDraft,
       mediaCount,
       unreadMessages,
-      umami,
     ] = await Promise.all([
       // The published scope, not the status alone: an entry dated in the
       // future is scheduled, and counting it as online would contradict
@@ -35,20 +43,15 @@ export default class DashboardController {
       Project.query().where('status', 'draft').count('* as total').firstOrFail().then(asTotal),
       Media.query().count('* as total').firstOrFail().then(asTotal),
       ContactMessage.query().whereNull('read_at').count('* as total').firstOrFail().then(asTotal),
-      UmamiService.statsLast30Days(),
     ])
 
-    return inertia.render('admin/dashboard', {
-      totpEnabled: auth.user!.totpEnabled,
-      umami,
-      stats: {
-        articlesPublished,
-        articlesDraft,
-        projectsPublished,
-        projectsDraft,
-        mediaCount,
-        unreadMessages,
-      },
-    })
+    return {
+      articlesPublished,
+      articlesDraft,
+      projectsPublished,
+      projectsDraft,
+      mediaCount,
+      unreadMessages,
+    }
   }
 }

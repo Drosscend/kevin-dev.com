@@ -3,9 +3,9 @@ import { test } from '@japa/runner'
 import { DateTime } from 'luxon'
 import Article from '#blog/models/article'
 import Category from '#blog/models/category'
-import TimelineEntry from '#models/timeline_entry'
+import TimelineEntry from '#pages/models/timeline_entry'
+import Settings from '#pages/repositories/settings_repository'
 import Project from '#portfolio/models/project'
-import SettingsService from '#services/settings_service'
 import Technology from '#technologies/models/technology'
 import { admin } from '#tests/helpers/auth'
 
@@ -671,7 +671,7 @@ test.group('Admin pages markdown', (group) => {
       .form({ fr: '## Parcours', en: '' })
     save.assertStatus(302)
 
-    assert.include(await SettingsService.get('cv_html_fr'), '<h2 id="parcours">Parcours</h2>')
+    assert.include(await Settings.get('cv_html_fr'), '<h2 id="parcours">Parcours</h2>')
 
     const clear = await client
       .put('/admin/cv')
@@ -680,7 +680,7 @@ test.group('Admin pages markdown', (group) => {
       .redirects(0)
       .form({ fr: '', en: '' })
     clear.assertStatus(302)
-    assert.equal(await SettingsService.get('cv_html_fr'), '')
+    assert.equal(await Settings.get('cv_html_fr'), '')
   })
 
   test('les mentions légales ont leur propre page', async ({ client, assert }) => {
@@ -694,10 +694,10 @@ test.group('Admin pages markdown', (group) => {
       .form({ fr: '## Éditeur', en: '## Publisher' })
     save.assertStatus(302)
 
-    assert.include(await SettingsService.get('legal_html_fr'), 'Éditeur')
-    assert.include(await SettingsService.get('legal_html_en'), 'Publisher')
+    assert.include(await Settings.get('legal_html_fr'), 'Éditeur')
+    assert.include(await Settings.get('legal_html_en'), 'Publisher')
     assert.equal(
-      await SettingsService.get('cv_markdown_fr'),
+      await Settings.get('cv_markdown_fr'),
       '',
       'enregistrer une page n’en touche pas une autre'
     )

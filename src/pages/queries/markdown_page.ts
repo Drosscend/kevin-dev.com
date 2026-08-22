@@ -1,4 +1,4 @@
-import SettingsService from '#services/settings_service'
+import Settings from '#pages/repositories/settings_repository'
 import Markdown from '#shared/content/markdown'
 
 /**
@@ -10,7 +10,7 @@ type MarkdownPage = 'cv' | 'legal'
 type MarkdownPageContents = { fr: string; en: string }
 
 export async function readMarkdownPage(page: MarkdownPage): Promise<MarkdownPageContents> {
-  const settings = await SettingsService.getMany([`${page}_markdown_fr`, `${page}_markdown_en`])
+  const settings = await Settings.getMany([`${page}_markdown_fr`, `${page}_markdown_en`])
 
   return { fr: settings[`${page}_markdown_fr`], en: settings[`${page}_markdown_en`] }
 }
@@ -24,8 +24,8 @@ export async function saveMarkdownPage(page: MarkdownPage, contents: MarkdownPag
   for (const locale of ['fr', 'en'] as const) {
     const markdown = contents[locale]
 
-    await SettingsService.set(`${page}_markdown_${locale}`, markdown)
-    await SettingsService.set(
+    await Settings.set(`${page}_markdown_${locale}`, markdown)
+    await Settings.set(
       `${page}_html_${locale}`,
       markdown.trim() === '' ? '' : await Markdown.render(markdown)
     )

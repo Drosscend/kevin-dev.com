@@ -20,17 +20,9 @@ export const controllers = {
     Messages: () => import('#app/contact/controllers/messages_controller'),
     ToggleMessageRead: () => import('#app/contact/controllers/toggle_message_read_controller'),
   },
-  admin: {
-    Cv: () => import('#app/controllers/admin/cv_controller'),
-    Dashboard: () => import('#app/controllers/admin/dashboard_controller'),
-    Home: () => import('#app/controllers/admin/home_controller'),
-    Legal: () => import('#app/controllers/admin/legal_controller'),
-    Timeline: () => import('#app/controllers/admin/timeline_controller'),
+  dashboard: {
+    Dashboard: () => import('#app/dashboard/controllers/dashboard_controller'),
   },
-  Cv: () => import('#app/controllers/cv_controller'),
-  HealthChecks: () => import('#app/controllers/health_checks_controller'),
-  Home: () => import('#app/controllers/home_controller'),
-  Legal: () => import('#app/controllers/legal_controller'),
   identity: {
     DisableTotp: () => import('#app/identity/controllers/disable_totp_controller'),
     EnableTotp: () => import('#app/identity/controllers/enable_totp_controller'),
@@ -47,6 +39,19 @@ export const controllers = {
     StoreMedia: () => import('#app/media/controllers/store_media_controller'),
     UploadImage: () => import('#app/media/controllers/upload_image_controller'),
   },
+  pages: {
+    Cv: () => import('#app/pages/controllers/cv_controller'),
+    CvPdf: () => import('#app/pages/controllers/cv_pdf_controller'),
+    DeleteTimelineEntry: () => import('#app/pages/controllers/delete_timeline_entry_controller'),
+    Home: () => import('#app/pages/controllers/home_controller'),
+    Legal: () => import('#app/pages/controllers/legal_controller'),
+    ManageCv: () => import('#app/pages/controllers/manage_cv_controller'),
+    ManageHome: () => import('#app/pages/controllers/manage_home_controller'),
+    ManageLegal: () => import('#app/pages/controllers/manage_legal_controller'),
+    ManageTimeline: () => import('#app/pages/controllers/manage_timeline_controller'),
+    MoveTimelineEntry: () => import('#app/pages/controllers/move_timeline_entry_controller'),
+    UploadCvPdf: () => import('#app/pages/controllers/upload_cv_pdf_controller'),
+  },
   portfolio: {
     DeleteProject: () => import('#app/portfolio/controllers/delete_project_controller'),
     ManageProjects: () => import('#app/portfolio/controllers/manage_projects_controller'),
@@ -62,6 +67,9 @@ export const controllers = {
     Robots: () => import('#app/seo/controllers/robots_controller'),
     SecurityTxt: () => import('#app/seo/controllers/security_txt_controller'),
     Sitemap: () => import('#app/seo/controllers/sitemap_controller'),
+  },
+  shared: {
+    HealthChecks: () => import('#app/shared/controllers/health_checks_controller'),
   },
   talks: {
     DeleteTalk: () => import('#app/talks/controllers/delete_talk_controller'),

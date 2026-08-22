@@ -24,7 +24,7 @@ const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000
  * (or on any API failure) it returns null and the dashboard hides
  * the stats card.
  */
-export default class UmamiService {
+export default class Umami {
   /**
    * Access token reused across dashboard loads, refreshed shortly
    * before the hour-long Umami token expires.

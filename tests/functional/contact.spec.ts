@@ -3,7 +3,7 @@ import mail from '@adonisjs/mail/services/main'
 import { test } from '@japa/runner'
 import ContactMessageNotification from '#contact/mails/contact_message_notification'
 import ContactMessage from '#contact/models/contact_message'
-import SettingsService from '#services/settings_service'
+import Settings from '#pages/repositories/settings_repository'
 import Markdown from '#shared/content/markdown'
 import { admin } from '#tests/helpers/auth'
 
@@ -99,7 +99,7 @@ test.group('CV et mentions légales', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test('la page CV rend le contenu des settings', async ({ client, assert }) => {
-    await SettingsService.set('cv_html_fr', await Markdown.render('## Parcours'))
+    await Settings.set('cv_html_fr', await Markdown.render('## Parcours'))
 
     const response = await client.get('/cv').withInertia()
 
@@ -115,7 +115,7 @@ test.group('CV et mentions légales', (group) => {
   })
 
   test('les mentions légales rendent le contenu seedé', async ({ client, assert }) => {
-    await SettingsService.set('legal_html_fr', '<p>Contenu légal</p>')
+    await Settings.set('legal_html_fr', '<p>Contenu légal</p>')
 
     const response = await client.get('/legal').withInertia()
 

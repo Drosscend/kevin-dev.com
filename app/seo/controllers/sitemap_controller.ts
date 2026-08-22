@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core'
 import SeoService from '#app/shared/seo_service'
+import Settings from '#pages/repositories/settings_repository'
 import { SitemapContentQuery } from '#seo/queries/sitemap_content_query'
-import SettingsService from '#services/settings_service'
 import type { SitemapEntryContent } from '#seo/queries/sitemap_content_query'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -56,7 +56,7 @@ export default class SitemapController {
   async execute({ response }: HttpContext) {
     const [content, settings] = await Promise.all([
       this.sitemapContent.execute(),
-      SettingsService.getMany(['cv_html_fr', 'cv_html_en', 'legal_html_fr', 'legal_html_en']),
+      Settings.getMany(['cv_html_fr', 'cv_html_en', 'legal_html_fr', 'legal_html_en']),
     ])
 
     const entries: SitemapEntry[] = [

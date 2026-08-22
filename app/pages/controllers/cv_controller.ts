@@ -1,19 +1,17 @@
 import drive from '@adonisjs/drive/services/main'
 import SeoService from '#app/shared/seo_service'
-import SettingsService from '#services/settings_service'
+import { CV_PDF_KEY } from '#pages/cv_document'
+import Settings from '#pages/repositories/settings_repository'
 import { localePath, type Locale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
-export const CV_PDF_KEY = 'cv/cv.pdf'
-
 export default class CvController {
-  async show({ inertia, i18n }: HttpContext) {
+  async render({ inertia, i18n }: HttpContext) {
     const locale = i18n.locale as Locale
-    const settings = await SettingsService.getMany(['cv_html_fr', 'cv_html_en'])
-    const contentHtml = locale === 'en' ? settings.cv_html_en : settings.cv_html_fr
+    const settings = await Settings.getMany(['cv_html_fr', 'cv_html_en'])
 
     return inertia.render('cv', {
-      contentHtml,
+      contentHtml: locale === 'en' ? settings.cv_html_en : settings.cv_html_fr,
       pdfAvailable: await drive.use().exists(CV_PDF_KEY),
       labels: {
         title: i18n.t('messages.cv.title'),
@@ -29,16 +27,5 @@ export default class CvController {
         jsonLd: [SeoService.person(i18n.t('messages.home.jobTitle'))],
       }),
     })
-  }
-
-  async pdf({ response }: HttpContext) {
-    const disk = drive.use()
-    if (!(await disk.exists(CV_PDF_KEY))) {
-      return response.notFound('Not found')
-    }
-
-    response.header('content-type', 'application/pdf')
-    response.header('content-disposition', 'attachment; filename="CV-Kevin-Veronesi.pdf"')
-    return response.stream(await disk.getStream(CV_PDF_KEY))
   }
 }

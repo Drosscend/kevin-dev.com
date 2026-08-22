@@ -1,6 +1,6 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
-import SettingsService from '#services/settings_service'
+import Settings from '#pages/repositories/settings_repository'
 import { makeArticle, makeProject } from '#tests/helpers/content'
 
 test.group('LLM markdown', (group) => {
@@ -64,7 +64,7 @@ test.group('LLM markdown', (group) => {
     const empty = await client.get('/cv.md')
     empty.assertStatus(404)
 
-    await SettingsService.set('cv_markdown_fr', '## Parcours')
+    await Settings.set('cv_markdown_fr', '## Parcours')
     const response = await client.get('/cv.md')
     response.assertStatus(200)
     assert.include(response.text(), '## Parcours')

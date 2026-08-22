@@ -25,9 +25,9 @@ import {
   type Cover,
 } from '#database/fixtures/demo_content'
 import { StoreImage } from '#media/actions/store_image'
-import TimelineEntry from '#models/timeline_entry'
+import TimelineEntry from '#pages/models/timeline_entry'
+import Settings from '#pages/repositories/settings_repository'
 import { SaveProject } from '#portfolio/actions/save_project'
-import SettingsService from '#services/settings_service'
 import Markdown from '#shared/content/markdown'
 import { SaveTalk } from '#talks/actions/save_talk'
 import Technology from '#technologies/models/technology'
@@ -266,22 +266,22 @@ export default class extends BaseSeeder {
   async #seedSettings() {
     // The block already carries a "En ce moment" heading, so the text
     // itself starts on the substance.
-    await SettingsService.set(
+    await Settings.set(
       'now_fr',
       'Refonte du back-office d’Atlas CMS, et une série d’articles sur la recherche vectorielle dans PostgreSQL.'
     )
-    await SettingsService.set(
+    await Settings.set(
       'now_en',
       'Rebuilding the Atlas CMS back-office, and writing a series on vector search inside PostgreSQL.'
     )
-    await SettingsService.set('hero_roles_fr', 'Développeur full-stack\nArchitecte applicatif')
-    await SettingsService.set('hero_roles_en', 'Full-stack developer\nApplication architect')
-    await SettingsService.set('hero_location', 'Lyon, France')
+    await Settings.set('hero_roles_fr', 'Développeur full-stack\nArchitecte applicatif')
+    await Settings.set('hero_roles_en', 'Full-stack developer\nApplication architect')
+    await Settings.set('hero_location', 'Lyon, France')
 
-    await SettingsService.set('cv_markdown_fr', CV_FR)
-    await SettingsService.set('cv_html_fr', await Markdown.render(CV_FR))
-    await SettingsService.set('cv_markdown_en', CV_EN)
-    await SettingsService.set('cv_html_en', await Markdown.render(CV_EN))
+    await Settings.set('cv_markdown_fr', CV_FR)
+    await Settings.set('cv_html_fr', await Markdown.render(CV_FR))
+    await Settings.set('cv_markdown_en', CV_EN)
+    await Settings.set('cv_html_en', await Markdown.render(CV_EN))
   }
 
   async #seedContactMessages() {

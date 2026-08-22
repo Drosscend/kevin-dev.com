@@ -1,31 +1,71 @@
-﻿import drive from '@adonisjs/drive/services/main'
-import { mediaUrl } from '#app/shared/media_url'
-import SeoService from '#app/shared/seo_service'
+import { inject } from '@adonisjs/core'
 import Article from '#blog/models/article'
-import { CV_PDF_KEY } from '#controllers/cv_controller'
-import TimelineEntry from '#models/timeline_entry'
+import Settings from '#pages/repositories/settings_repository'
 import Project from '#portfolio/models/project'
-import { longDate, monthYear } from '#services/date_format'
-import SettingsService from '#services/settings_service'
 import Talk from '#talks/models/talk'
 import Technology from '#technologies/models/technology'
-import { localePath, type Locale } from '#types/i18n'
-import type { HttpContext } from '@adonisjs/core/http'
+import type { MediaSource } from '#media/media_source'
+import type { Locale } from '#types/i18n'
+import type { DateTime } from 'luxon'
 
 /**
  * The stack section only shows the technologies carrying the most published
  * projects; the rest stays one click away on /technologies.
  */
 const TECHNOLOGIES_SHOWN = 12
+const SECTION_SIZE = 3
 
-export default class HomeController {
-  async handle({ inertia, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+export interface HomeArticle {
+  slug: string
+  title: string
+  summary: string
+  publishedAt: DateTime | null
+  cover: MediaSource | null
+}
 
-    // Every listed section only shows its first few entries, so each carries a
-    // total to hint at what the "see all" link leads to. The counts reuse the
-    // exact filters of the matching listing (/projects, /blog, /talks) to stay
-    // in sync with what the visitor lands on.
+export interface HomeProject {
+  slug: string
+  title: string
+  summary: string
+  cover: MediaSource | null
+  ongoing: boolean
+  technologies: string[]
+}
+
+export interface HomeTalk {
+  slug: string
+  title: string
+  summary: string
+  eventName: string
+  eventDate: DateTime
+  city: string
+  upcoming: boolean
+  cover: MediaSource | null
+}
+
+export interface HomeOverview {
+  now: string | null
+  roles: string[]
+  location: string | null
+  articles: HomeArticle[]
+  articlesTotal: number
+  projects: HomeProject[]
+  projectsTotal: number
+  talks: HomeTalk[]
+  talksTotal: number
+  technologies: { slug: string; name: string }[]
+  hiddenTechnologies: number
+}
+
+/**
+ * Every listed section only shows its first few entries, so each carries a
+ * total to hint at what the "see all" link leads to. The counts reuse the
+ * exact filters of the matching listing (/projects, /blog, /talks) to stay
+ * in sync with what the visitor lands on.
+ */
+@inject()
+export class HomeOverviewQuery {
+  async execute(locale: Locale): Promise<HomeOverview> {
     const [
       articles,
       articlesTotal,
@@ -36,7 +76,6 @@ export default class HomeController {
       technologies,
       technologiesTotal,
       settings,
-      timelineEntries,
     ] = await Promise.all([
       Article.query()
         .withScopes((scopes) => scopes.published())
@@ -46,7 +85,7 @@ export default class HomeController {
         )
         .preload('cover')
         .orderBy('published_at', 'desc')
-        .limit(3),
+        .limit(SECTION_SIZE),
       Article.query()
         .withScopes((scopes) => scopes.published())
         .whereHas('translations', (translations) => translations.where('locale', locale))
@@ -66,7 +105,7 @@ export default class HomeController {
         .preload('technologies', (query) => query.select('slug', 'name'))
         .orderBy('featured', 'desc')
         .orderBy('published_at', 'desc')
-        .limit(3),
+        .limit(SECTION_SIZE),
       Project.query()
         .withScopes((scopes) => scopes.published())
         .whereHas('translations', (translations) => translations.where('locale', locale))
@@ -81,7 +120,7 @@ export default class HomeController {
         )
         .preload('cover')
         .orderBy('event_date', 'desc')
-        .limit(3),
+        .limit(SECTION_SIZE),
       Talk.query()
         .withScopes((scopes) => scopes.published())
         .whereHas('translations', (translations) => translations.where('locale', locale))
@@ -98,100 +137,52 @@ export default class HomeController {
         .count('* as total')
         .firstOrFail()
         .then((row) => Number(row.$extras.total)),
-      SettingsService.getMany([
-        'now_fr',
-        'now_en',
-        'hero_roles_fr',
-        'hero_roles_en',
-        'hero_location',
-      ]),
-      TimelineEntry.query().preload('translations').orderBy('position'),
+      Settings.getMany(['now_fr', 'now_en', 'hero_roles_fr', 'hero_roles_en', 'hero_location']),
     ])
 
     const localized = (fr: string, en: string) => (locale === 'en' ? en || fr : fr)
-    const now = localized(settings.now_fr, settings.now_en) || null
 
-    // The hero comes entirely from the settings: an empty value hides its line.
-    const roles = localized(settings.hero_roles_fr, settings.hero_roles_en)
-      .split('\n')
-      .map((role) => role.trim())
-      .filter(Boolean)
-
-    return inertia.render('home', {
-      now,
-      roles,
+    return {
+      now: localized(settings.now_fr, settings.now_en) || null,
+      // The hero comes entirely from the settings: an empty value hides its line.
+      roles: localized(settings.hero_roles_fr, settings.hero_roles_en)
+        .split('\n')
+        .map((role) => role.trim())
+        .filter(Boolean),
       location: settings.hero_location || null,
-      cvPdfAvailable: await drive.use().exists(CV_PDF_KEY),
-      latestArticles: articles.map((article) => ({
+      articles: articles.map((article) => ({
         slug: article.slug,
         title: article.translation(locale)!.title,
         summary: article.translation(locale)!.summary,
-        publishedAt: longDate(article.publishedAt, locale),
-        coverUrl: mediaUrl(article.cover),
+        publishedAt: article.publishedAt,
+        cover: article.cover,
       })),
       articlesTotal,
       projects: projects.map((project) => ({
         slug: project.slug,
         title: project.translation(locale)!.title,
         summary: project.translation(locale)!.summary,
-        coverUrl: mediaUrl(project.cover),
+        cover: project.cover,
         ongoing: project.isOngoing,
         technologies: project.technologies.map((technology) => technology.name),
       })),
       projectsTotal,
+      talks: talks.map((talk) => ({
+        slug: talk.slug,
+        title: talk.translation(locale)!.title,
+        summary: talk.translation(locale)!.summary,
+        eventName: talk.eventName,
+        eventDate: talk.eventDate,
+        city: talk.city,
+        upcoming: talk.isUpcoming,
+        cover: talk.cover,
+      })),
+      talksTotal,
       technologies: technologies.map((technology) => ({
         slug: technology.slug,
         name: technology.name,
       })),
       hiddenTechnologies: Math.max(0, technologiesTotal - technologies.length),
-      talks: talks.map((talk) => ({
-        slug: talk.slug,
-        title: talk.translation(locale)!.title,
-        eventName: talk.eventName,
-        eventDate: monthYear(talk.eventDate, locale),
-        city: talk.city,
-        upcoming: talk.isUpcoming,
-        summary: talk.translation(locale)!.summary,
-        coverUrl: mediaUrl(talk.cover),
-      })),
-      talksTotal,
-      timeline: timelineEntries.map((entry) => {
-        const translation = entry.translation(locale)
-        return {
-          period: translation?.period ?? '',
-          title: translation?.title ?? '',
-          place: translation?.place ?? '',
-          // The honours are stored once for both locales, only their
-          // label is translated. "none" hides the mention.
-          honours:
-            entry.honours === 'none' ? null : i18n.t(`messages.home.honours.${entry.honours}`),
-        }
-      }),
-      labels: {
-        downloadCv: i18n.t('messages.home.downloadCv'),
-        contactMe: i18n.t('messages.home.contactMe'),
-        photoAlt: i18n.t('messages.home.photoAlt'),
-        now: i18n.t('messages.home.now'),
-        featuredProjects: i18n.t('messages.home.featuredProjects'),
-        latestArticles: i18n.t('messages.home.latestArticles'),
-        allArticles: i18n.t('messages.home.allArticles'),
-        allProjects: i18n.t('messages.home.allProjects'),
-        timeline: i18n.t('messages.home.timeline'),
-        stack: i18n.t('messages.home.stack'),
-        allTechnologies: i18n.t('messages.home.allTechnologies'),
-        talks: i18n.t('messages.home.talks'),
-        allTalks: i18n.t('messages.home.allTalks'),
-        upcomingTalk: i18n.t('messages.talks.upcoming'),
-        ongoingProject: i18n.t('messages.portfolio.ongoing'),
-      },
-      meta: SeoService.build({
-        title: i18n.t('messages.home.metaTitle'),
-        description: i18n.t('messages.home.metaDescription'),
-        locale,
-        path: localePath(locale, '/'),
-        alternates: { fr: '/', en: '/en' },
-        jsonLd: [SeoService.person(i18n.t('messages.home.jobTitle'))],
-      }),
-    })
+    }
   }
 }

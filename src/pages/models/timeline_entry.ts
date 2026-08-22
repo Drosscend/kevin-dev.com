@@ -1,6 +1,6 @@
 import { hasMany } from '@adonisjs/lucid/orm'
 import { TimelineEntrySchema } from '#database/schema'
-import TimelineEntryTranslation from '#models/timeline_entry_translation'
+import TimelineEntryTranslation from '#pages/models/timeline_entry_translation'
 import type { TimelineHonours } from '#types/content'
 import type { Locale } from '#types/i18n'
 import type { HasMany } from '@adonisjs/lucid/types/relations'

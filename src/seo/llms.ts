@@ -1,6 +1,6 @@
 import Article from '#blog/models/article'
+import Settings from '#pages/repositories/settings_repository'
 import Project from '#portfolio/models/project'
-import SettingsService from '#services/settings_service'
 import { absoluteUrl } from '#shared/site_url'
 import Talk from '#talks/models/talk'
 import { localePath, type Locale } from '#types/i18n'
@@ -33,7 +33,7 @@ export default class Llms {
           query.select('id', 'talk_id', 'locale', 'title', 'summary')
         )
         .orderBy('event_date', 'desc'),
-      SettingsService.getMany(['cv_markdown_fr', 'legal_markdown_fr']),
+      Settings.getMany(['cv_markdown_fr', 'legal_markdown_fr']),
     ])
 
     const lines: string[] = [
@@ -189,10 +189,7 @@ export default class Llms {
   }
 
   static async settingsMarkdown(prefix: 'cv' | 'legal', locale: Locale) {
-    const settings = await SettingsService.getMany([
-      `${prefix}_markdown_fr`,
-      `${prefix}_markdown_en`,
-    ])
+    const settings = await Settings.getMany([`${prefix}_markdown_fr`, `${prefix}_markdown_en`])
     const markdown =
       locale === 'en' ? settings[`${prefix}_markdown_en`] : settings[`${prefix}_markdown_fr`]
     return markdown ? markdown + '\n' : null

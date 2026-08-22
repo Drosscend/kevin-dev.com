@@ -1,10 +1,10 @@
-import Setting from '#models/setting'
+import Setting from '#pages/models/setting'
 
 /**
  * Key/value store backed by the settings table: markdown pages (CV,
  * legal notice) and the homepage blocks.
  */
-export default class SettingsService {
+export default class Settings {
   static async get(key: string) {
     const setting = await Setting.findBy('key', key)
     return setting?.value ?? ''
