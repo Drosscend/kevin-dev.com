@@ -1,8 +1,8 @@
 import { inject } from '@adonisjs/core'
+import { longDate } from '#app/shared/date_format'
 import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import { ArticleListQuery } from '#blog/queries/article_list_query'
-import { longDate } from '#services/date_format'
 import { localePath, type Locale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 

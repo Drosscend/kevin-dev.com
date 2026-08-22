@@ -1,5 +1,5 @@
 import { inject } from '@adonisjs/core'
-import { longDate } from '#services/date_format'
+import { longDate } from '#app/shared/date_format'
 import { TalkAdminListQuery } from '#talks/queries/talk_admin_list_query'
 import type { HttpContext } from '@adonisjs/core/http'
 

@@ -28,7 +28,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~/': `${import.meta.dirname}/inertia/`,
-      '#types': `${import.meta.dirname}/app/types/`,
+      '#types': `${import.meta.dirname}/src/shared/types/`,
       '@generated': `${import.meta.dirname}/.adonisjs/client/`,
     },
   },

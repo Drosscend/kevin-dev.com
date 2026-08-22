@@ -1,6 +1,6 @@
 import { inject } from '@adonisjs/core'
+import { longDate } from '#app/shared/date_format'
 import { ProjectAdminListQuery } from '#portfolio/queries/project_admin_list_query'
-import { longDate } from '#services/date_format'
 import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()

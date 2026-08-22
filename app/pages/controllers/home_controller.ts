@@ -1,11 +1,11 @@
 import { inject } from '@adonisjs/core'
 import drive from '@adonisjs/drive/services/main'
+import { longDate, monthYear } from '#app/shared/date_format'
 import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import { CV_PDF_KEY } from '#pages/cv_document'
 import { HomeOverviewQuery } from '#pages/queries/home_overview_query'
 import { TimelineQuery } from '#pages/queries/timeline_query'
-import { longDate, monthYear } from '#services/date_format'
 import { localePath, type Locale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
