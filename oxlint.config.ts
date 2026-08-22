@@ -7,13 +7,33 @@ export default defineConfig({
     '**/public/assets/**',
     '**/storage/**',
     'database/schema.ts',
+    // Vendored from dmmulroy/anti-slop, kept diffable with upstream.
+    'tools/oxlint/anti-slop/**',
   ],
   plugins: ['typescript', 'unicorn', 'react', 'import'],
-  jsPlugins: [{ name: 'project-style', specifier: './tools/oxlint/project-style/index.ts' }],
+  jsPlugins: [
+    { name: 'project-style', specifier: './tools/oxlint/project-style/index.ts' },
+    { name: 'anti-slop', specifier: './tools/oxlint/anti-slop/index.ts' },
+  ],
   settings: {
     react: { version: '19.2.8' },
   },
   rules: {
+    'anti-slop/no-chained-type-assertions': 'error',
+    'anti-slop/no-conditional-empty-object-spread': 'error',
+    'anti-slop/no-known-value-widening': 'error',
+    'anti-slop/no-module-mocking': 'error',
+    'anti-slop/no-object-parameters': 'error',
+    'anti-slop/no-reflect-apply': 'error',
+    'anti-slop/no-reflect-get': 'error',
+    'anti-slop/no-runtime-typeof': ['error', { allowInTypeGuards: true }],
+    'anti-slop/no-shape-in-symbol-names': 'error',
+    'anti-slop/no-unknown-parameters': 'error',
+    'anti-slop/no-unknown-returns': 'error',
+    'anti-slop/no-unknown-type-aliases': 'error',
+    'anti-slop/no-unsafe-dictionary-type': 'error',
+    'anti-slop/no-widen-then-assert': 'error',
+    'anti-slop/require-safety-comment-for-type-assertion': 'error',
     'eqeqeq': ['error', 'always'],
     'project-style/blank-line-after-imports': 'error',
     'project-style/blank-line-before-if': 'error',
@@ -59,6 +79,29 @@ export default defineConfig({
       // Starter kit files, kept diffable with upstream.
       files: ['bin/**', 'ace.js'],
       rules: { 'unicorn/no-useless-spread': 'off' },
+    },
+    {
+      // The status page table is keyed by the range type AdonisJS
+      // declares, and adding the production range needs that index.
+      // handle() and report() take the raw throw value, as declared by
+      // the ExceptionHandler they override.
+      files: ['app/exceptions/handler.ts'],
+      rules: {
+        'anti-slop/no-known-value-widening': 'off',
+        'anti-slop/no-unknown-parameters': 'off',
+      },
+    },
+    {
+      // A VineJS rule receives the field value before any schema ran:
+      // its signature is Validator, whose value parameter is unknown.
+      files: ['app/shared/validators.ts'],
+      rules: { 'anti-slop/no-unknown-parameters': 'off' },
+    },
+    {
+      // A shipped migration is history: the seed reads back whatever
+      // shape the driver returned the day it ran.
+      files: ['database/migrations/**'],
+      rules: { 'anti-slop/no-runtime-typeof': 'off' },
     },
   ],
 })

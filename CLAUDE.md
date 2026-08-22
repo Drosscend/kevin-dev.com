@@ -28,6 +28,9 @@ commentaire qui semble mort, le comparer à sa source : s'il en vient tel quel, 
   avec l'upstream.
 - **Généré** : `.adonisjs/` et `database/schema.ts`, réécrits à chaque `migration:run` ou
   démarrage du serveur de dev. Ne rien y éditer à la main.
+- **anti-slop** (`dmmulroy/anti-slop`) : `tools/oxlint/anti-slop/`, vendoré tel quel et
+  donc exclu du lint comme du format. Une règle se remplace en la resynchronisant avec
+  l'amont, pas en l'éditant sur place.
 - **Migrations** : de l'historique. On en ajoute, on n'en modifie pas.
 
 ## Contenu et données
@@ -49,4 +52,7 @@ npm run lint && npm run format && npm run typecheck && npm test
 
 Le lint porte les conventions que ce fichier énonce : elles vivent comme règles
 dans `tools/oxlint/project-style/`, et une nouvelle convention durable s'y écrit
-plutôt que de rester en prose.
+plutôt que de rester en prose. À côté, `tools/oxlint/anti-slop/` refuse les
+contrats à faible évidence : `unknown` en entrée ou en sortie, dictionnaires sans
+type de valeur, assertions non justifiées. Une exception se pose en override
+motivé dans `oxlint.config.ts`, jamais en désactivant la règle partout.
