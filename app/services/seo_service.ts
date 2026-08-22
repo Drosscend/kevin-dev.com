@@ -1,6 +1,6 @@
 import router from '@adonisjs/core/services/router'
 import env from '#start/env'
-import type Media from '#media/models/media'
+import type { MediaSource } from '#media/media_source'
 import type { Locale } from '#types/i18n'
 import type { JsonLd, SeoMeta } from '#types/seo'
 
@@ -20,7 +20,7 @@ export default class SeoService {
     return `${base}${path}`
   }
 
-  static mediaUrl(media: Media | null) {
+  static mediaUrl(media: MediaSource | null) {
     if (!media) {
       return null
     }

@@ -25,13 +25,12 @@ import { StoreImage } from '#media/actions/store_image'
 import Article from '#models/article'
 import Category from '#models/category'
 import Project from '#models/project'
-import Talk from '#models/talk'
 import TimelineEntry from '#models/timeline_entry'
 import ArticleService from '#services/article_service'
 import ProjectService from '#services/project_service'
 import SettingsService from '#services/settings_service'
-import TalkService from '#services/talk_service'
 import Markdown from '#shared/content/markdown'
+import { SaveTalk } from '#talks/actions/save_talk'
 import Technology from '#technologies/models/technology'
 import type Media from '#media/models/media'
 import type { MultipartFile } from '@adonisjs/core/bodyparser'
@@ -221,18 +220,22 @@ export default class extends BaseSeeder {
     for (const entry of TALKS) {
       const cover = await makeCover(entry.cover, entry.fr.title)
 
-      await TalkService.save(new Talk(), {
-        slug: entry.slug,
-        status: entry.status,
-        coverMediaId: cover?.id ?? null,
-        eventDate: entry.eventDate,
-        eventName: entry.eventName,
-        city: entry.city,
-        technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
-        links: entry.links,
-        publishedAt: entry.publishedAt,
-        fr: entry.fr,
-        en: entry.en,
+      const saveTalk = await app.container.make(SaveTalk)
+
+      await saveTalk.execute({
+        payload: {
+          slug: entry.slug,
+          status: entry.status,
+          coverMediaId: cover?.id ?? null,
+          eventDate: entry.eventDate,
+          eventName: entry.eventName,
+          city: entry.city,
+          technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
+          links: entry.links,
+          publishedAt: entry.publishedAt,
+          fr: entry.fr,
+          en: entry.en,
+        },
       })
     }
   }

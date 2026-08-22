@@ -9,6 +9,7 @@
 
 import '#app/contact/routes'
 import '#app/media/routes'
+import '#app/talks/routes'
 import '#app/technologies/routes'
 import '#app/identity/routes'
 import router from '@adonisjs/core/services/router'
@@ -51,11 +52,6 @@ router.get('/projects', [controllers.Projects, 'index']).as('projects.index')
 router.get('/projects/:slug', [controllers.Projects, 'show']).as('projects.show')
 router.get('/en/projects', [controllers.Projects, 'index']).as('en.projects.index')
 router.get('/en/projects/:slug', [controllers.Projects, 'show']).as('en.projects.show')
-
-router.get('/talks', [controllers.Talks, 'index']).as('talks.index')
-router.get('/talks/:slug', [controllers.Talks, 'show']).as('talks.show')
-router.get('/en/talks', [controllers.Talks, 'index']).as('en.talks.index')
-router.get('/en/talks/:slug', [controllers.Talks, 'show']).as('en.talks.show')
 
 router.get('/cv', [controllers.Cv, 'show']).as('cv.show')
 router.get('/en/cv', [controllers.Cv, 'show']).as('en.cv.show')
@@ -102,13 +98,6 @@ router
     router
       .delete('projects/:id', [controllers.admin.Projects, 'destroy'])
       .as('admin.projects.destroy')
-
-    router.get('talks', [controllers.admin.Talks, 'index']).as('admin.talks.index')
-    router.get('talks/create', [controllers.admin.Talks, 'create']).as('admin.talks.create')
-    router.post('talks', [controllers.admin.Talks, 'store']).as('admin.talks.store')
-    router.get('talks/:id/edit', [controllers.admin.Talks, 'edit']).as('admin.talks.edit')
-    router.put('talks/:id', [controllers.admin.Talks, 'update']).as('admin.talks.update')
-    router.delete('talks/:id', [controllers.admin.Talks, 'destroy']).as('admin.talks.destroy')
 
     /**
      * The site pages that are edited as a whole rather than as

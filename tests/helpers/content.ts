@@ -1,10 +1,11 @@
+import app from '@adonisjs/core/services/app'
 import Article from '#models/article'
 import Project from '#models/project'
-import Talk from '#models/talk'
 import ArticleService from '#services/article_service'
 import ProjectService from '#services/project_service'
-import TalkService from '#services/talk_service'
+import { SaveTalk } from '#talks/actions/save_talk'
 import type { ContentTranslationPayload } from '#shared/content/content_fields'
+import type { TalkPayload } from '#talks/repositories/talk_repository'
 import type { PublicationStatus } from '#types/content'
 
 type Translation = Partial<ContentTranslationPayload>
@@ -82,12 +83,23 @@ export function makeProject(
   })
 }
 
+async function saveTalk(payload: TalkPayload) {
+  const action = await app.container.make(SaveTalk)
+  const result = await action.execute({ payload })
+
+  if (!result.ok) {
+    throw new Error('Unable to save the talk fixture')
+  }
+
+  return result.value
+}
+
 export function makeTalk(
   slug: string,
   status: PublicationStatus = 'published',
   options: ContentOptions & { eventDate?: string } = {}
 ) {
-  return TalkService.save(new Talk(), {
+  return saveTalk({
     slug,
     status,
     coverMediaId: null,

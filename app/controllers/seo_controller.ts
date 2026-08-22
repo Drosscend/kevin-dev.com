@@ -1,8 +1,8 @@
 import Article from '#models/article'
 import Project from '#models/project'
-import Talk from '#models/talk'
 import SeoService from '#services/seo_service'
 import SettingsService from '#services/settings_service'
+import Talk from '#talks/models/talk'
 import { localePath, type Locale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 

@@ -7,7 +7,7 @@ import {
   type ContentPayload,
 } from '#shared/content/content_fields'
 import { upsertTranslations } from '#shared/content/translations'
-import type Talk from '#models/talk'
+import Talk from '#talks/models/talk'
 import type { TalkLinkType } from '#types/content'
 
 export interface TalkPayload extends ContentPayload {
@@ -23,8 +23,16 @@ export interface TalkPayload extends ContentPayload {
  * technology associations inside a single DB transaction, so a
  * failure can never leave the talk half-saved.
  */
-export default class TalkService {
-  static async save(talk: Talk, payload: TalkPayload) {
+export class TalkRepository {
+  async findById(id: number) {
+    return Talk.find(id)
+  }
+
+  async delete(talk: Talk) {
+    await talk.delete()
+  }
+
+  async save(talk: Talk, payload: TalkPayload) {
     const translations = await renderTranslations(payload)
 
     return db.transaction(async (trx) => {
