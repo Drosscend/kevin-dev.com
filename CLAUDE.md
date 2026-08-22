@@ -1,7 +1,17 @@
 # kevin-dev.com
 
-Invariants à connaître avant de modifier ce dépôt. Ce qu'est le site, comment l'installer,
-les commandes et le déploiement : [README.md](README.md).
+Invariants du dépôt. Ce qu'est le site, comment l'installer, les commandes et le
+déploiement : [README.md](README.md).
+
+## À lire avant d'écrire
+
+- [Architecture de l'application](docs/architecture/application.md) : direction
+  des dépendances, controllers, services, publication, bilinguisme, et les
+  checklists par type de changement.
+- [CONTEXT.md](CONTEXT.md) : vocabulaire du domaine, à employer tel quel.
+- [docs/adr/](docs/adr) : les décisions déjà tranchées, à ne pas rouvrir en
+  passant.
+- `app/CLAUDE.md` et `inertia/CLAUDE.md` : les règles propres à chaque couche.
 
 ## Code que nous n'avons pas écrit
 
@@ -19,50 +29,23 @@ commentaire qui semble mort, le comparer à sa source : s'il en vient tel quel, 
   démarrage du serveur de dev. Ne rien y éditer à la main.
 - **Migrations** : de l'historique. On en ajoute, on n'en modifie pas.
 
-## Frontière serveur / client
-
-- `app/types/` est le terrain commun : `i18n.ts` (locales, `localePath`), `content.ts`
-  (statuts de publication, catégories de technologies, types de liens, mentions du
-  parcours), `seo.ts`. Le client les importe par l'alias `#types` (déclaré dans
-  `vite.config.ts`, autorisé dans `eslint.config.js`). Une valeur partagée y vit une
-  seule fois ; ne jamais la recopier côté `inertia/`.
-- **Toute traduction est faite côté contrôleur.** Le client n'appelle jamais `t()` : il
-  reçoit des libellés déjà résolus (`labels` par page, `chrome` et `lightbox` en props
-  partagées depuis `inertia_middleware.ts`). Une chaîne visible en dur dans un composant
-  est un bug : le site est bilingue.
-- Le **compilateur React** est actif sur tout `inertia/` : pas de `useMemo`,
-  `useCallback` ni `memo`, sauf identité exigée par une API.
-- Les pages `admin/*` sont exclues du SSR (`config/inertia.ts`) : `window` y est toujours
-  défini.
-
-## Avant d'écrire un bloc d'interface
-
-Chercher le composant qui existe, et l'étendre par une prop plutôt que dupliquer :
-
-- Public : `page_header`, `reading_layout` (colonne de lecture de toutes les pages de
-  prose), `content_link` (listes, liens, `LinkArrow`), `technology_list`, `status_badge`,
-  `empty_state`, `seo`.
-- Admin : `admin_page` (+ `AdminBackLink`), `content_list` (rangée des listes de
-  contenu), `slug_field`, `external_links_card`, `translation_card`, `media_picker`,
-  `publication_actions`, `confirm_button`.
-- Les flèches (`←` `→`) appartiennent à `LinkArrow`, jamais aux chaînes traduites.
-
-Même réflexe côté serveur : `content_service` (rendu, date de publication, liens),
-`translations_service`, `date_format` (les trois formats de date du site),
-`publication_service`, `media_service`.
-
 ## Contenu et données
 
-- Les seeds de démo ne disent rien du contenu réel : avant de retirer un affichage parce
-  qu'il paraît vide ou inutile, le mesurer sur la base de production.
-- Un slug se fige dès que l'entrée a été en ligne, et une entrée publiée ne redevient pas
-  brouillon (seulement archivée) : `app/validators/shared.ts` et
-  `app/models/mixins/publishable.ts`.
-- Le markdown est rendu à l'enregistrement, jamais à l'affichage : les pages publiques ne
-  lisent que le HTML stocké.
+Les seeds de démo ne disent rien du contenu réel : avant de retirer un affichage parce
+qu'il paraît vide ou inutile, le mesurer sur la base de production.
 
 ## Vérifier un changement de rendu
 
 Sur le HTML réellement servi (`curl`), pas seulement dans le DOM du navigateur, qui répare
 silencieusement les structures invalides. C'est ainsi qu'un `<head>` cassé ou une balise
 mal sérialisée se voit.
+
+## Vérifier avant de committer
+
+```bash
+npm run lint && npm run format && npm run typecheck && npm test
+```
+
+Le lint porte les conventions que ce fichier énonce : elles vivent comme règles
+dans `tools/oxlint/project-style/`, et une nouvelle convention durable s'y écrit
+plutôt que de rester en prose.
