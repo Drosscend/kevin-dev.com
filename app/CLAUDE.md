@@ -12,6 +12,9 @@ d'ajouter un écran ou une mutation. Le vocabulaire du domaine est dans
 - Un controller traduit, met en forme les dates et les URL, mappe chaque variante
   d'erreur d'une Action, flashe et redirige. Il n'ouvre jamais de transaction et
   ne porte aucune règle réutilisable.
+- La forme reçue par une page est déclarée par un transformer de
+  `<capacité>/transformers/`, que le client lit en `Data.<Capacité>.<Nom>`.
+  Seul le premier niveau des props est résolu.
 - Les routes d'une capacité vivent dans son `routes.ts` ; `start/routes.ts` ne
   fait que les importer, dans un ordre qui compte quand les préfixes se
   recouvrent.

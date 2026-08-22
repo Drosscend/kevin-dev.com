@@ -106,6 +106,22 @@ Une Query est une lecture nommée, une par fichier, avec `execute`.
 médias, briques de validation, construction des métadonnées SEO, et la
 traduction d'un verdict de publication en réponse HTTP.
 
+## Transformers
+
+Un transformer est le contrat de sortie d'une page : il déclare la forme que le
+client recevra, et le codegen en dérive `Data.<Capacité>.<Nom>`, que la page
+consomme au lieu de redéclarer la même chose.
+
+- Un fichier par ressource, dans `app/<capacité>/transformers/`.
+- Il étend `BaseTransformer<T>` et sélectionne ses champs avec `pick`.
+- La ressource est l'objet que le controller a composé : dates déjà mises en
+  forme, URL déjà construites, libellés déjà traduits.
+- Le controller passe `XxxTransformer.transform(resource)` à `inertia.render`.
+- **Seul le premier niveau des props est résolu** : une collection transformée
+  imbriquée dans un objet ne l'est pas, et reste un tableau ordinaire.
+- Les listes de choix d'un formulaire n'en valent pas un : elles vivent sous
+  `options` et gardent un type local.
+
 ## Bilinguisme
 
 - Les libellés publics vivent dans `resources/lang/{fr,en}/`.
@@ -146,11 +162,13 @@ dans `app/blog/controllers/` devient `controllers.blog.<Nom>`.
 1. Query dans `src/<capacité>/queries/`, projection explicite.
 2. Controller `render` dans `app/<capacité>/controllers/` : libellés, `meta`,
    mise en forme des dates et des URL.
-3. Route dans `app/<capacité>/routes.ts`, en double, racine et `/en`.
-4. Traductions ajoutées dans les deux fichiers de `resources/lang/`.
-5. Page dans `inertia/pages/`, bâtie sur les composants partagés.
-6. URL ajoutée à `SitemapController` si elle doit être indexée.
-7. Test fonctionnel.
+3. Transformer dans `app/<capacité>/transformers/` pour la ressource affichée,
+   consommé par la page via `Data.<Capacité>.<Nom>`.
+4. Route dans `app/<capacité>/routes.ts`, en double, racine et `/en`.
+5. Traductions ajoutées dans les deux fichiers de `resources/lang/`.
+6. Page dans `inertia/pages/`, bâtie sur les composants partagés.
+7. URL ajoutée à `SitemapController` si elle doit être indexée.
+8. Test fonctionnel.
 
 ### Ajouter une mutation
 
