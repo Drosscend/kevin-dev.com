@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
+import HomeSettingsTransformer from '#app/pages/transformers/home_settings_transformer'
 import { SaveHomeSettings } from '#pages/actions/save_home_settings'
 import { HomeSettingsQuery } from '#pages/queries/home_settings_query'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -25,7 +26,9 @@ export default class ManageHomeController {
   ) {}
 
   async render({ inertia }: HttpContext) {
-    return inertia.render('admin/home', { settings: await this.homeSettings.execute() })
+    return inertia.render('admin/home', {
+      settings: HomeSettingsTransformer.transform(await this.homeSettings.execute()),
+    })
   }
 
   async execute({ request, response, session }: HttpContext) {

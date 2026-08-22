@@ -11,17 +11,10 @@ import { Label } from '~/components/ui/label'
 import { Tabs, TabsContent } from '~/components/ui/tabs'
 import { Textarea } from '~/components/ui/textarea'
 import type { Locale } from '#types/i18n'
-
-type HomeSettings = {
-  heroRolesFr: string
-  heroRolesEn: string
-  heroLocation: string
-  nowFr: string
-  nowEn: string
-}
+import type { Data } from '@generated/data'
 
 type HomeAdminProps = {
-  settings: HomeSettings
+  settings: Data.Pages.HomeSettings
 }
 
 function SettingsTextarea({
@@ -30,7 +23,7 @@ function SettingsTextarea({
   value,
   onChange,
 }: {
-  field: keyof HomeSettings
+  field: keyof Data.Pages.HomeSettings
   label: string
   value: string
   onChange: (value: string) => void
@@ -61,8 +54,8 @@ function HomeContents({
   onChange,
 }: {
   locale: Locale
-  settings: HomeSettings
-  onChange: (field: keyof HomeSettings, value: string) => void
+  settings: Data.Pages.HomeSettings
+  onChange: (field: keyof Data.Pages.HomeSettings, value: string) => void
 }) {
   const rolesField = locale === 'fr' ? 'heroRolesFr' : 'heroRolesEn'
   const nowField = locale === 'fr' ? 'nowFr' : 'nowEn'

@@ -17,6 +17,7 @@ import type IdentityUserTransformer from '#app/identity/transformers/user_transf
 import type MediaMediaItemTransformer from '#app/media/transformers/media_item_transformer'
 import type PagesHomeArticleTransformer from '#app/pages/transformers/home_article_transformer'
 import type PagesHomeProjectTransformer from '#app/pages/transformers/home_project_transformer'
+import type PagesHomeSettingsTransformer from '#app/pages/transformers/home_settings_transformer'
 import type PagesHomeTalkTransformer from '#app/pages/transformers/home_talk_transformer'
 import type PagesTimelineEntryTransformer from '#app/pages/transformers/timeline_entry_transformer'
 import type PagesTimelineRowTransformer from '#app/pages/transformers/timeline_row_transformer'
@@ -88,6 +89,10 @@ export namespace Data {
     export type HomeProject = InferData<PagesHomeProjectTransformer>
     export namespace HomeProject {
       export type Variants = InferVariants<PagesHomeProjectTransformer>
+    }
+    export type HomeSettings = InferData<PagesHomeSettingsTransformer>
+    export namespace HomeSettings {
+      export type Variants = InferVariants<PagesHomeSettingsTransformer>
     }
     export type HomeTalk = InferData<PagesHomeTalkTransformer>
     export namespace HomeTalk {
