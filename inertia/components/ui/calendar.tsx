@@ -1,10 +1,9 @@
-import * as React from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { DayPicker, getDefaultClassNames } from 'react-day-picker'
 import { fr } from 'date-fns/locale'
-
-import { cn } from '~/lib/utils'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import * as React from 'react'
+import { DayPicker, getDefaultClassNames } from 'react-day-picker'
 import { buttonVariants } from '~/components/ui/button'
+import { cn } from '~/lib/utils'
 
 /**
  * shadcn calendar wired for react-day-picker v10, forced to the French

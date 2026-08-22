@@ -1,8 +1,8 @@
-import { useState, useSyncExternalStore } from 'react'
 import { Link } from '@adonisjs/inertia/react'
 import { X } from 'lucide-react'
-import { Button } from '~/components/ui/button'
+import { useState, useSyncExternalStore } from 'react'
 import { type Locale } from '#types/i18n'
+import { Button } from '~/components/ui/button'
 
 const DISMISSED_KEY = 'language-suggestion-dismissed'
 

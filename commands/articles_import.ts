@@ -1,12 +1,12 @@
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { DateTime } from 'luxon'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
+import { DateTime } from 'luxon'
+import { SaveArticle } from '#blog/actions/save_article'
+import Article from '#blog/models/article'
+import Category from '#blog/models/category'
+import Technology from '#technologies/models/technology'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
-import Article from '#models/article'
-import Category from '#models/category'
-import Technology from '#models/technology'
-import ArticleService from '#services/article_service'
 
 interface Entry {
   slug: string
@@ -18,7 +18,7 @@ interface Entry {
 
 /**
  * Imports articles from a JSON file, for posts written outside the app.
- * Everything goes through ArticleService, so translations and
+ * Everything goes through the same action, so translations and
  * technology links are written exactly like a back office save, Markdown
  * rendering and reading time included.
  *
@@ -51,6 +51,7 @@ export default class ArticlesImport extends BaseCommand {
     const invalid = entries.filter(
       (entry) => !entry.slug || !entry.fr?.title || !entry.fr?.contentMarkdown
     )
+
     if (invalid.length > 0) {
       this.exitCode = 1
       for (const entry of invalid) {
@@ -67,6 +68,8 @@ export default class ArticlesImport extends BaseCommand {
     const categoryIdBySlug = new Map(categories.map((category) => [category.slug, category.id]))
 
     const now = DateTime.now()
+    const saveArticle = await this.app.container.make(SaveArticle)
+
     let created = 0
     let updated = 0
     let skipped = 0
@@ -75,6 +78,7 @@ export default class ArticlesImport extends BaseCommand {
 
     for (const [index, entry] of entries.entries()) {
       const known = await Article.findBy('slug', entry.slug)
+
       if (known && !this.update) {
         skipped += 1
         this.logger.info(`${entry.slug} · already there`)
@@ -84,6 +88,7 @@ export default class ArticlesImport extends BaseCommand {
       const technologyIds: number[] = []
       for (const slug of entry.technologies) {
         const id = technologyIdBySlug.get(slug)
+
         if (id === undefined) {
           unknownTechnologies.add(slug)
           continue
@@ -92,8 +97,10 @@ export default class ArticlesImport extends BaseCommand {
       }
 
       let categoryId = known?.categoryId ?? null
+
       if (entry.category) {
         const id = categoryIdBySlug.get(entry.category)
+
         if (id === undefined) {
           unknownCategories.add(entry.category)
         } else {
@@ -101,17 +108,20 @@ export default class ArticlesImport extends BaseCommand {
         }
       }
 
-      await ArticleService.save(known ?? new Article(), {
-        slug: entry.slug,
-        status: this.publish ? 'published' : 'draft',
-        categoryId,
-        coverMediaId: known?.coverMediaId ?? null,
-        technologyIds,
-        publishedAt: this.publish
-          ? now.minus({ minutes: index }).toISO({ includeOffset: false })
-          : null,
-        fr: entry.fr,
-        en: entry.en?.title ? entry.en : null,
+      await saveArticle.execute({
+        id: known?.id,
+        payload: {
+          slug: entry.slug,
+          status: this.publish ? 'published' : 'draft',
+          categoryId,
+          coverMediaId: known?.coverMediaId ?? null,
+          technologyIds,
+          publishedAt: this.publish
+            ? now.minus({ minutes: index }).toISO({ includeOffset: false })
+            : null,
+          fr: entry.fr,
+          en: entry.en?.title ? entry.en : null,
+        },
       })
 
       if (known) {
@@ -126,6 +136,7 @@ export default class ArticlesImport extends BaseCommand {
     if (unknownCategories.size > 0) {
       this.logger.warning(`Unknown categories, not linked: ${[...unknownCategories].join(', ')}`)
     }
+
     if (unknownTechnologies.size > 0) {
       this.logger.warning(
         `Unknown technologies, not linked: ${[...unknownTechnologies].join(', ')}`

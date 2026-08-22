@@ -1,32 +1,23 @@
 import { Link } from '@adonisjs/inertia/react'
+import { localePath } from '#types/i18n'
 import ArticleContent from '~/components/article_content'
-import ExternalLinkList, { type ExternalLinkRef } from '~/components/external_link_list'
+import { LinkArrow } from '~/components/content_link'
+import ExternalLinkList from '~/components/external_link_list'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner from '~/components/preview_banner'
-import type { PreviewMode } from '#types/content'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import TableOfContents from '~/components/table_of_contents'
-import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
-import { localePath, type Locale } from '#types/i18n'
+import { TechnologySection } from '~/components/technology_list'
+import { type InertiaProps } from '~/types'
+import type { PreviewMode } from '#types/content'
+import type { Data } from '@generated/data'
 
-type PortfolioShowProps = {
-  locale: Locale
+type PortfolioShowProps = InertiaProps<{
   preview: PreviewMode
-  project: {
-    title: string
-    contentHtml: string
-    coverUrl: string | null
-    startedAt: string | null
-    endedAt: string | null
-    readingTimeLabel: string
-    ongoing: boolean
-    links: ExternalLinkRef[]
-    technologies: TechnologyRef[]
-    articles: { slug: string; title: string }[]
-  }
+  project: Data.Portfolio.ProjectDetail
   hasOtherLocale: boolean
   labels: {
     backToList: string
@@ -38,7 +29,7 @@ type PortfolioShowProps = {
     contents: string
   }
   meta: SeoMeta
-}
+}>
 
 export default function PortfolioShow({
   locale,
@@ -69,6 +60,7 @@ export default function PortfolioShow({
               <>
                 <span>
                   {project.startedAt}
+                  {/* oxlint-disable-next-line project-style/no-ui-arrow */}
                   {project.endedAt ? ` → ${project.endedAt}` : ''}
                 </span>
                 <span aria-hidden>·</span>
@@ -104,9 +96,9 @@ export default function PortfolioShow({
                 <li key={article.slug}>
                   <Link
                     href={to(`/blog/${article.slug}`)}
-                    className="hover:text-primary font-medium transition-colors"
+                    className="group hover:text-primary font-medium transition-colors"
                   >
-                    {article.title} <span aria-hidden>→</span>
+                    {article.title} <LinkArrow />
                   </Link>
                 </li>
               ))}

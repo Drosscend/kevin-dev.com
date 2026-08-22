@@ -1,51 +1,40 @@
-import { type FormEvent, useRef } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
+import { type FormEvent, useRef } from 'react'
 import { client } from '~/client'
-import { Label } from '~/components/ui/label'
-import { Select } from '~/components/ui/select'
-import { DateTimePicker } from '~/components/ui/date_time_picker'
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
-import FieldError from '~/components/field_error'
-import { formatFrDateTime } from '~/lib/dates'
 import AdminPage, { AdminBackLink } from '~/components/admin/admin_page'
 import DraftBanner from '~/components/admin/draft_banner'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
+import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
 import PreviewLink from '~/components/admin/preview_link'
 import PublicationActions from '~/components/admin/publication_actions'
-import type { PublicationStatus } from '#types/content'
 import SlugField from '~/components/admin/slug_field'
 import ToggleList from '~/components/admin/toggle_list'
 import TranslationCard from '~/components/admin/translation_card'
-import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
+import FieldError from '~/components/field_error'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { DateTimePicker } from '~/components/ui/date_time_picker'
+import { Label } from '~/components/ui/label'
+import { Select } from '~/components/ui/select'
 import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
+import { formatFrDateTime } from '~/lib/dates'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
-
-type ArticleData = {
-  id: number
-  slug: string
-  status: PublicationStatus
-  categoryId: number | null
-  coverMediaId: number | null
-  technologyIds: number[]
-  publishedAt: string | null
-  hasBeenOnline: boolean
-  fr: TranslationValues
-  en: TranslationValues | null
-}
+import { type InertiaProps } from '~/types'
+import type { PublicationStatus } from '#types/content'
+import type { Data } from '@generated/data'
 
 type Option = { id: number; name: string }
 
-type ArticleFormProps = {
-  article: ArticleData | null
+type ArticleFormProps = InertiaProps<{
+  article: Data.Blog.ArticleForm | null
   options: { categories: Option[]; technologies: Option[]; media: MediaPickerItem[] }
-}
+}>
 
 export default function ArticleForm({ article, options }: ArticleFormProps) {
   const { errors } = usePage().props
 
   const form = useForm({
     slug: article?.slug ?? '',
-    status: article?.status ?? ('draft' as PublicationStatus),
+    status: article?.status ?? ('draft' satisfies PublicationStatus),
     categoryId: article?.categoryId ?? null,
     coverMediaId: article?.coverMediaId ?? null,
     technologyIds: article?.technologyIds ?? [],
@@ -86,6 +75,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
       onSuccess: () => draft.clearDraft(),
       onError: focusErrors,
     }
+
     if (article) {
       form.put(client.urlFor('admin.articles.update', { id: article.id }), visitOptions)
     } else {

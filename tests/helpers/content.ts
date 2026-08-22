@@ -1,10 +1,11 @@
-import Article from '#models/article'
-import Project from '#models/project'
-import Talk from '#models/talk'
-import ArticleService from '#services/article_service'
-import ProjectService from '#services/project_service'
-import TalkService from '#services/talk_service'
-import type { ContentTranslationPayload } from '#services/content_service'
+import app from '@adonisjs/core/services/app'
+import { SaveArticle } from '#blog/actions/save_article'
+import { SaveProject } from '#portfolio/actions/save_project'
+import { SaveTalk } from '#talks/actions/save_talk'
+import type { ArticlePayload } from '#blog/repositories/article_repository'
+import type { ProjectPayload } from '#portfolio/repositories/project_repository'
+import type { ContentTranslationPayload } from '#shared/content/content_fields'
+import type { TalkPayload } from '#talks/repositories/talk_repository'
 import type { PublicationStatus } from '#types/content'
 
 type Translation = Partial<ContentTranslationPayload>
@@ -26,12 +27,23 @@ function english(option: boolean | Translation | undefined, defaults: ContentTra
   return option === true ? defaults : { ...defaults, ...option }
 }
 
+async function saveArticle(payload: ArticlePayload) {
+  const action = await app.container.make(SaveArticle)
+  const result = await action.execute({ payload })
+
+  if (!result.ok) {
+    throw new Error('Unable to save the article fixture')
+  }
+
+  return result.value
+}
+
 export function makeArticle(
   slug: string,
   status: PublicationStatus = 'published',
   options: ContentOptions = {}
 ) {
-  return ArticleService.save(new Article(), {
+  return saveArticle({
     slug,
     status,
     categoryId: null,
@@ -51,12 +63,23 @@ export function makeArticle(
   })
 }
 
+async function saveProject(payload: ProjectPayload) {
+  const action = await app.container.make(SaveProject)
+  const result = await action.execute({ payload })
+
+  if (!result.ok) {
+    throw new Error('Unable to save the project fixture')
+  }
+
+  return result.value
+}
+
 export function makeProject(
   slug: string,
   status: PublicationStatus = 'published',
   options: ContentOptions = {}
 ) {
-  return ProjectService.save(new Project(), {
+  return saveProject({
     slug,
     status,
     coverMediaId: null,
@@ -82,12 +105,23 @@ export function makeProject(
   })
 }
 
+async function saveTalk(payload: TalkPayload) {
+  const action = await app.container.make(SaveTalk)
+  const result = await action.execute({ payload })
+
+  if (!result.ok) {
+    throw new Error('Unable to save the talk fixture')
+  }
+
+  return result.value
+}
+
 export function makeTalk(
   slug: string,
   status: PublicationStatus = 'published',
   options: ContentOptions & { eventDate?: string } = {}
 ) {
-  return TalkService.save(new Talk(), {
+  return saveTalk({
     slug,
     status,
     coverMediaId: null,

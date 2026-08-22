@@ -1,52 +1,57 @@
-import { type FormEvent, useState } from 'react'
-import { usePage } from '@inertiajs/react'
 import { useRouter } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
 import { BookOpen, Pencil, Trash2, X } from 'lucide-react'
+import { type FormEvent, useState } from 'react'
+import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
+import AdminPage from '~/components/admin/admin_page'
+import ConfirmButton from '~/components/admin/confirm_button'
+import EmptyState from '~/components/admin/empty_state'
+import FieldError from '~/components/field_error'
 import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Select } from '~/components/ui/select'
 import { Textarea } from '~/components/ui/textarea'
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
-import FieldError from '~/components/field_error'
-import AdminPage from '~/components/admin/admin_page'
-import ConfirmButton from '~/components/admin/confirm_button'
-import EmptyState from '~/components/admin/empty_state'
 import { plural } from '~/lib/plural'
-import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
-const CATEGORY_LABELS: Record<TechnologyCategory, string> = {
+const CATEGORY_LABELS = {
   langage: 'Langage',
   framework: 'Framework',
   outil: 'Outil',
   infra: 'Infra',
-}
+} satisfies Record<TechnologyCategory, string>
 
 const CATEGORIES = TECHNOLOGY_CATEGORIES.map((value) => ({ value, label: CATEGORY_LABELS[value] }))
+
+/** The select only offers the known categories; anything else is the default. */
+function toCategory(value: string) {
+  return TECHNOLOGY_CATEGORIES.find((category) => category === value) ?? 'outil'
+}
 
 /** Reading name of a stored category value, for the list below the form. */
 function categoryLabel(value: string) {
   return CATEGORIES.find((category) => category.value === value)?.label ?? value
 }
 
-type TechnologyItem = {
-  id: number
-  slug: string
-  name: string
-  category: string
-  logoMediaId: number | null
-  logoUrl: string | null
-  docsUrl: string | null
-  descriptionFr: string
-  descriptionEn: string
-  projectsCount: number
-}
-
 type MediaOption = { id: number; alt: string }
 
-type TechnologiesProps = {
-  technologies: TechnologyItem[]
+type TechnologiesProps = InertiaProps<{
+  technologies: Data.Technologies.TechnologyRow[]
   mediaOptions: MediaOption[]
+}>
+
+/** What the form edits, with the optional columns spelled out. */
+type TechnologyValues = {
+  slug: string
+  name: string
+  category: TechnologyCategory
+  logoMediaId: number | null
+  docsUrl: string
+  descriptionFr: string
+  descriptionEn: string
 }
 
 function TechnologyForm({
@@ -54,17 +59,17 @@ function TechnologyForm({
   mediaOptions,
   onDone,
 }: {
-  item: TechnologyItem | null
+  item: Data.Technologies.TechnologyRow | null
   mediaOptions: MediaOption[]
   onDone?: () => void
 }) {
   const { errors } = usePage().props
   const router = useRouter()
-  const empty = {
+  const empty: TechnologyValues = {
     slug: '',
     name: '',
     category: 'outil',
-    logoMediaId: null as number | null,
+    logoMediaId: null,
     docsUrl: '',
     descriptionFr: '',
     descriptionEn: '',
@@ -126,7 +131,7 @@ function TechnologyForm({
         <Select
           id={`category-${key}`}
           value={values.category}
-          onChange={(event) => setValues({ ...values, category: event.target.value })}
+          onChange={(event) => setValues({ ...values, category: toCategory(event.target.value) })}
         >
           {CATEGORIES.map((category) => (
             <option key={category.value} value={category.value}>

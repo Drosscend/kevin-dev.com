@@ -1,5 +1,5 @@
-import { type ComponentProps, type ReactNode } from 'react'
 import { Link } from '@adonisjs/inertia/react'
+import { type ComponentProps, type ReactNode } from 'react'
 import { LinkArrow } from '~/components/content_link'
 
 /**

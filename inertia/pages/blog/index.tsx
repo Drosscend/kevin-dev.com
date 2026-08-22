@@ -1,28 +1,18 @@
-import { router } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
+import { router } from '@inertiajs/react'
+import { localePath } from '#types/i18n'
 import { ChipButton, ChipList } from '~/components/chip'
 import { LinkArrow, ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
-import { localePath, type Locale } from '#types/i18n'
+import { TechnologyNames } from '~/components/technology_list'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
-type ArticleCard = {
-  slug: string
-  title: string
-  summary: string
-  publishedAt: string | null
-  readingTimeLabel: string
-  category: { slug: string; name: string } | null
-  technologies: TechnologyRef[]
-  coverUrl: string | null
-}
-
-type BlogIndexProps = {
-  locale: Locale
+type BlogIndexProps = InertiaProps<{
   filters: { category: string | null }
-  articles: ArticleCard[]
+  articles: Data.Blog.ArticleCard[]
   pagination: { currentPage: number; lastPage: number }
   categories: { slug: string; name: string }[]
   labels: {
@@ -33,7 +23,7 @@ type BlogIndexProps = {
     next: string
   }
   meta: SeoMeta
-}
+}>
 
 /**
  * Listing URL carrying the active filter and page. Client-side twin
@@ -42,9 +32,11 @@ type BlogIndexProps = {
  */
 function pageUrl(base: string, filters: { category: string | null }, page: number) {
   const params = new URLSearchParams()
+
   if (filters.category) {
     params.set('category', filters.category)
   }
+
   if (page > 1) {
     params.set('page', String(page))
   }

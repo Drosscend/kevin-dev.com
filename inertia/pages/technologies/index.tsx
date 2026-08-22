@@ -1,32 +1,23 @@
+import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
+import { localePath } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import ExternalLinkList from '~/components/external_link_list'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath, type Locale } from '#types/i18n'
-import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
-type TechnologyCard = {
-  slug: string
-  name: string
-  category: TechnologyCategory
-  logoUrl: string | null
-  docsUrl: string | null
-  description: string
-  usageLabel: string
-}
-
-type TechnologiesIndexProps = {
-  locale: Locale
-  technologies: TechnologyCard[]
+type TechnologiesIndexProps = InertiaProps<{
+  technologies: Data.Technologies.TechnologyCard[]
   labels: {
     title: string
     empty: string
     docs: string
-    categories: Record<TechnologyCard['category'], string>
+    categories: Record<TechnologyCategory, string>
   }
   meta: SeoMeta
-}
+}>
 
 export default function TechnologiesIndex({
   locale,

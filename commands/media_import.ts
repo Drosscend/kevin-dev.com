@@ -1,17 +1,16 @@
 import { readdir } from 'node:fs/promises'
 import { basename, extname, join, resolve } from 'node:path'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
+import { StoreImage } from '#media/actions/store_image'
+import Media from '#media/models/media'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
-import type { MultipartFile } from '@adonisjs/core/bodyparser'
-import Media from '#models/media'
-import MediaService, { InvalidImageError } from '#services/media_service'
 
 const EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif']
 
 /**
  * Bulk-imports a folder of images into the media library, for batches
  * prepared outside the app that would otherwise go through the admin
- * uploader one file at a time. Files go through MediaService, so they
+ * uploader one file at a time. Files go through the same action, so they
  * are re-encoded and get their variants exactly like an admin upload.
  * The file name without its extension becomes the alt text, and a name
  * already present in the library is skipped so the command can be run
@@ -45,6 +44,8 @@ export default class MediaImport extends BaseCommand {
     const library = this.force ? [] : await Media.query().select('originalName')
     const known = new Set(library.map((media) => media.originalName))
 
+    const storeImage = await this.app.container.make(StoreImage)
+
     let imported = 0
     let skipped = 0
 
@@ -55,19 +56,19 @@ export default class MediaImport extends BaseCommand {
         continue
       }
 
-      try {
-        await MediaService.store(
-          { tmpPath: join(folder, file), clientName: file } as MultipartFile,
-          basename(file, extname(file))
-        )
-        imported += 1
-        this.logger.success(`${file}`)
-      } catch (error) {
+      const result = await storeImage.execute({
+        file: { tmpPath: join(folder, file), clientName: file },
+        alt: basename(file, extname(file)),
+      })
+
+      if (!result.ok) {
         this.exitCode = 1
-        this.logger.error(
-          `${file} · ${error instanceof InvalidImageError ? 'unreadable image' : String(error)}`
-        )
+        this.logger.error(`${file} · unreadable image`)
+        continue
       }
+
+      imported += 1
+      this.logger.success(`${file}`)
     }
 
     this.logger.info(`${imported} imported, ${skipped} skipped, out of ${files.length} images`)

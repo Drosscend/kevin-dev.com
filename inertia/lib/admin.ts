@@ -50,14 +50,16 @@ export async function uploadMediaImage(
       headers: { 'X-XSRF-TOKEN': xsrfToken() },
       body,
     })
+
     if (!response.ok) {
-      const payload = (await response.json().catch(() => null)) as {
-        errors?: Record<string, string | string[]>
-      } | null
+      const payload: { errors?: Record<string, string | string[]> } | null = await response
+        .json()
+        .catch(() => null)
       const firstError = payload?.errors ? Object.values(payload.errors).flat()[0] : null
-      return { error: typeof firstError === 'string' ? firstError : 'Téléversement impossible' }
+      return { error: firstError ?? 'Téléversement impossible' }
     }
-    return { media: (await response.json()) as UploadedMedia }
+    const media: UploadedMedia = await response.json()
+    return { media }
   } catch {
     return { error: 'Téléversement impossible, vérifiez votre connexion' }
   }

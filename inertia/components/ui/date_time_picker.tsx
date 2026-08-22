@@ -1,12 +1,11 @@
-import * as React from 'react'
 import { CalendarIcon, Clock } from 'lucide-react'
-
-import { cn } from '~/lib/utils'
+import * as React from 'react'
 import { Button } from '~/components/ui/button'
 import { Calendar } from '~/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover'
 import { Select } from '~/components/ui/select'
 import { formatFrDateTime } from '~/lib/dates'
+import { cn } from '~/lib/utils'
 
 type DateTimePickerProps = {
   id?: string

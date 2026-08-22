@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
+import adonisjs from '@adonisjs/vite/client'
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
-import adonisjs from '@adonisjs/vite/client'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
@@ -28,7 +28,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '~/': `${import.meta.dirname}/inertia/`,
-      '#types': `${import.meta.dirname}/app/types/`,
+      '#types': `${import.meta.dirname}/src/shared/types/`,
       '@generated': `${import.meta.dirname}/.adonisjs/client/`,
     },
   },

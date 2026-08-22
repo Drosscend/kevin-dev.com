@@ -1,11 +1,12 @@
-import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
 import mail from '@adonisjs/mail/services/main'
-import ContactMessage from '#models/contact_message'
-import ContactMessageNotification from '#mails/contact_message_notification'
+import { test } from '@japa/runner'
+import ContactMessageNotification from '#contact/mails/contact_message_notification'
+import ContactMessage from '#contact/models/contact_message'
+import Settings from '#pages/repositories/settings_repository'
+import Markdown from '#shared/content/markdown'
 import { admin } from '#tests/helpers/auth'
-import SettingsService from '#services/settings_service'
-import MarkdownService from '#services/markdown_service'
+import { contactPage, cvPage, legalPage } from '#tests/helpers/pages'
 
 async function messagesCount() {
   const row = await ContactMessage.query().count('* as total').firstOrFail()
@@ -78,8 +79,7 @@ test.group('Contact', (group) => {
       .form({ name: 'Jean', email: 'jean@example.com', message: 'court' })
 
     response.assertStatus(200)
-    response.assertInertiaComponent('contact')
-    const errors = response.inertiaProps.errors as Record<string, unknown>
+    const { errors } = contactPage(response)
     assert.property(errors, 'message')
     assert.equal(await messagesCount(), 0)
   })
@@ -99,14 +99,13 @@ test.group('CV et mentions légales', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
   test('la page CV rend le contenu des settings', async ({ client, assert }) => {
-    await SettingsService.set('cv_html_fr', await MarkdownService.render('## Parcours'))
+    await Settings.set('cv_html_fr', await Markdown.render('## Parcours'))
 
     const response = await client.get('/cv').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('cv')
-    const html = response.inertiaProps.contentHtml as string
-    assert.include(html, '<h2 id="parcours">Parcours</h2>')
+    const { contentHtml } = cvPage(response)
+    assert.include(contentHtml, '<h2 id="parcours">Parcours</h2>')
   })
 
   test('le PDF absent répond 404', async ({ client }) => {
@@ -115,12 +114,12 @@ test.group('CV et mentions légales', (group) => {
   })
 
   test('les mentions légales rendent le contenu seedé', async ({ client, assert }) => {
-    await SettingsService.set('legal_html_fr', '<p>Contenu légal</p>')
+    await Settings.set('legal_html_fr', '<p>Contenu légal</p>')
 
     const response = await client.get('/legal').withInertia()
 
     response.assertStatus(200)
-    assert.include(response.inertiaProps.contentHtml as string, 'Contenu légal')
+    assert.include(legalPage(response).contentHtml, 'Contenu légal')
   })
 })
 

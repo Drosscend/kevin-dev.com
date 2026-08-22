@@ -1,12 +1,17 @@
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { DateTime } from 'luxon'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
-import type { CommandOptions } from '@adonisjs/core/types/ace'
-import Project from '#models/project'
-import Technology from '#models/technology'
-import ProjectService from '#services/project_service'
+import { DateTime } from 'luxon'
+import { SaveProject } from '#portfolio/actions/save_project'
+import Project from '#portfolio/models/project'
+import Technology from '#technologies/models/technology'
 import { PROJECT_LINK_TYPES, type ProjectLinkType } from '#types/content'
+import type { CommandOptions } from '@adonisjs/core/types/ace'
+
+/** An imported link type, defaulting to the catch-all one. */
+function linkType(value: string): ProjectLinkType {
+  return PROJECT_LINK_TYPES.find((type) => type === value) ?? 'other'
+}
 
 interface Entry {
   slug: string
@@ -21,7 +26,7 @@ interface Entry {
 
 /**
  * Imports projects from a JSON file, for inventories prepared outside
- * the app. Everything goes through ProjectService, so translations,
+ * the app. Everything goes through the same action, so translations,
  * links and technology links are written exactly like a back office
  * save, Markdown rendering included.
  *
@@ -56,8 +61,9 @@ export default class ProjectsImport extends BaseCommand {
         !entry.slug ||
         !entry.fr?.title ||
         !entry.fr?.contentMarkdown ||
-        entry.links.some((link) => !PROJECT_LINK_TYPES.includes(link.type as ProjectLinkType))
+        entry.links.some((link) => !PROJECT_LINK_TYPES.some((type) => type === link.type))
     )
+
     if (invalid.length > 0) {
       this.exitCode = 1
       for (const entry of invalid) {
@@ -70,6 +76,8 @@ export default class ProjectsImport extends BaseCommand {
     const idBySlug = new Map(technologies.map((technology) => [technology.slug, technology.id]))
 
     const now = DateTime.now()
+    const saveProject = await this.app.container.make(SaveProject)
+
     let created = 0
     let updated = 0
     let skipped = 0
@@ -77,6 +85,7 @@ export default class ProjectsImport extends BaseCommand {
 
     for (const [index, entry] of entries.entries()) {
       const known = await Project.findBy('slug', entry.slug)
+
       if (known && !this.update) {
         skipped += 1
         this.logger.info(`${entry.slug} · already there`)
@@ -86,6 +95,7 @@ export default class ProjectsImport extends BaseCommand {
       const technologyIds: number[] = []
       for (const slug of entry.technologies) {
         const id = idBySlug.get(slug)
+
         if (id === undefined) {
           unknownTechnologies.add(slug)
           continue
@@ -93,21 +103,24 @@ export default class ProjectsImport extends BaseCommand {
         technologyIds.push(id)
       }
 
-      await ProjectService.save(known ?? new Project(), {
-        slug: entry.slug,
-        status: this.publish ? 'published' : 'draft',
-        coverMediaId: known?.coverMediaId ?? null,
-        startedAt: entry.startedAt,
-        endedAt: entry.endedAt,
-        featured: entry.featured,
-        technologyIds,
-        articleIds: [],
-        links: entry.links.map((link) => ({ ...link, type: link.type as ProjectLinkType })),
-        publishedAt: this.publish
-          ? now.minus({ minutes: index }).toISO({ includeOffset: false })
-          : null,
-        fr: entry.fr,
-        en: entry.en?.title ? entry.en : null,
+      await saveProject.execute({
+        id: known?.id,
+        payload: {
+          slug: entry.slug,
+          status: this.publish ? 'published' : 'draft',
+          coverMediaId: known?.coverMediaId ?? null,
+          startedAt: entry.startedAt,
+          endedAt: entry.endedAt,
+          featured: entry.featured,
+          technologyIds,
+          articleIds: [],
+          links: entry.links.map((link) => ({ ...link, type: linkType(link.type) })),
+          publishedAt: this.publish
+            ? now.minus({ minutes: index }).toISO({ includeOffset: false })
+            : null,
+          fr: entry.fr,
+          en: entry.en?.title ? entry.en : null,
+        },
       })
 
       if (known) {

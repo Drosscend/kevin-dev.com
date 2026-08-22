@@ -1,9 +1,10 @@
-import sharp from 'sharp'
-import { test } from '@japa/runner'
+import app from '@adonisjs/core/services/app'
 import testUtils from '@adonisjs/core/services/test_utils'
+import { test } from '@japa/runner'
+import sharp from 'sharp'
+import { DeleteMedia } from '#media/actions/delete_media'
+import Media from '#media/models/media'
 import { admin } from '#tests/helpers/auth'
-import Media from '#models/media'
-import MediaService from '#services/media_service'
 
 test.group('Admin media', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -46,7 +47,7 @@ test.group('Admin media', (group) => {
     const variant = await client.get(`/uploads/${media.key}/w320.webp`)
     variant.assertStatus(200)
 
-    await MediaService.delete(media)
+    await (await app.container.make(DeleteMedia)).execute(media.id)
   })
 
   test('un fichier non-image est rejeté proprement', async ({ client, assert }) => {
@@ -100,7 +101,7 @@ test.group('Admin media', (group) => {
     const missing = await client.get(`/uploads/${media.key}/original.webp`)
     missing.assertStatus(404)
 
-    await MediaService.delete(media)
+    await (await app.container.make(DeleteMedia)).execute(media.id)
   })
 
   test('un faux PDF est rejeté', async ({ client, assert }) => {

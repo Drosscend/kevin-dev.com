@@ -1,27 +1,17 @@
 import { rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import app from '@adonisjs/core/services/app'
+import logger from '@adonisjs/core/services/logger'
+import drive from '@adonisjs/drive/services/main'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
 import sharp from 'sharp'
-import db from '@adonisjs/lucid/services/db'
-import drive from '@adonisjs/drive/services/main'
-import logger from '@adonisjs/core/services/logger'
-import type { MultipartFile } from '@adonisjs/core/bodyparser'
-import Article from '#models/article'
-import Category from '#models/category'
-import ContactMessage from '#models/contact_message'
-import Project from '#models/project'
-import Talk from '#models/talk'
-import Technology from '#models/technology'
-import TimelineEntry from '#models/timeline_entry'
-import type Media from '#models/media'
-import ArticleService from '#services/article_service'
-import MarkdownService from '#services/markdown_service'
-import MediaService from '#services/media_service'
-import ProjectService from '#services/project_service'
-import SettingsService from '#services/settings_service'
-import TalkService from '#services/talk_service'
+import { SaveArticle } from '#blog/actions/save_article'
+import Article from '#blog/models/article'
+import Category from '#blog/models/category'
+import ContactMessage from '#contact/models/contact_message'
 import {
   ARTICLES,
   CATEGORIES,
@@ -34,6 +24,14 @@ import {
   TIMELINE,
   type Cover,
 } from '#database/fixtures/demo_content'
+import { StoreImage } from '#media/actions/store_image'
+import TimelineEntry from '#pages/models/timeline_entry'
+import Settings from '#pages/repositories/settings_repository'
+import { SaveProject } from '#portfolio/actions/save_project'
+import Markdown from '#shared/content/markdown'
+import { SaveTalk } from '#talks/actions/save_talk'
+import Technology from '#technologies/models/technology'
+import type Media from '#media/models/media'
 
 /**
  * Content tables wiped before reseeding, ordered so that the
@@ -90,10 +88,17 @@ async function makeCover(cover: Cover | null, alt: string): Promise<Media | null
   await writeFile(path, await sharp(Buffer.from(svg)).png().toBuffer())
 
   try {
-    return await MediaService.store(
-      { tmpPath: path, clientName: `${cover.name}.png` } as MultipartFile,
-      alt
-    )
+    const storeImage = await app.container.make(StoreImage)
+    const result = await storeImage.execute({
+      file: { tmpPath: path, clientName: `${cover.name}.png` },
+      alt,
+    })
+
+    if (!result.ok) {
+      throw new Error(`Unreadable generated cover for ${cover.name}`)
+    }
+
+    return result.value
   } finally {
     await rm(path, { force: true })
   }
@@ -171,18 +176,25 @@ export default class extends BaseSeeder {
     for (const entry of ARTICLES) {
       const cover = await makeCover(entry.cover, entry.fr.title)
 
-      const article = await ArticleService.save(new Article(), {
-        slug: entry.slug,
-        status: entry.status,
-        categoryId: categories.get(entry.category)?.id ?? null,
-        coverMediaId: cover?.id ?? null,
-        technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
-        publishedAt: entry.publishedAt,
-        fr: entry.fr,
-        en: entry.en,
+      const saveArticle = await app.container.make(SaveArticle)
+      const result = await saveArticle.execute({
+        payload: {
+          slug: entry.slug,
+          status: entry.status,
+          categoryId: categories.get(entry.category)?.id ?? null,
+          coverMediaId: cover?.id ?? null,
+          technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
+          publishedAt: entry.publishedAt,
+          fr: entry.fr,
+          en: entry.en,
+        },
       })
 
-      bySlug.set(entry.slug, article)
+      if (!result.ok) {
+        throw new Error(`Unable to seed the article ${entry.slug}`)
+      }
+
+      bySlug.set(entry.slug, result.value)
     }
 
     return bySlug
@@ -192,19 +204,23 @@ export default class extends BaseSeeder {
     for (const entry of PROJECTS) {
       const cover = await makeCover(entry.cover, entry.fr.title)
 
-      await ProjectService.save(new Project(), {
-        slug: entry.slug,
-        status: entry.status,
-        coverMediaId: cover?.id ?? null,
-        startedAt: entry.startedAt,
-        endedAt: entry.endedAt,
-        featured: entry.featured,
-        technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
-        articleIds: entry.articles.map((slug) => articles.get(slug)!.id),
-        links: entry.links,
-        publishedAt: entry.publishedAt,
-        fr: entry.fr,
-        en: entry.en,
+      const saveProject = await app.container.make(SaveProject)
+
+      await saveProject.execute({
+        payload: {
+          slug: entry.slug,
+          status: entry.status,
+          coverMediaId: cover?.id ?? null,
+          startedAt: entry.startedAt,
+          endedAt: entry.endedAt,
+          featured: entry.featured,
+          technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
+          articleIds: entry.articles.map((slug) => articles.get(slug)!.id),
+          links: entry.links,
+          publishedAt: entry.publishedAt,
+          fr: entry.fr,
+          en: entry.en,
+        },
       })
     }
   }
@@ -213,18 +229,22 @@ export default class extends BaseSeeder {
     for (const entry of TALKS) {
       const cover = await makeCover(entry.cover, entry.fr.title)
 
-      await TalkService.save(new Talk(), {
-        slug: entry.slug,
-        status: entry.status,
-        coverMediaId: cover?.id ?? null,
-        eventDate: entry.eventDate,
-        eventName: entry.eventName,
-        city: entry.city,
-        technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
-        links: entry.links,
-        publishedAt: entry.publishedAt,
-        fr: entry.fr,
-        en: entry.en,
+      const saveTalk = await app.container.make(SaveTalk)
+
+      await saveTalk.execute({
+        payload: {
+          slug: entry.slug,
+          status: entry.status,
+          coverMediaId: cover?.id ?? null,
+          eventDate: entry.eventDate,
+          eventName: entry.eventName,
+          city: entry.city,
+          technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
+          links: entry.links,
+          publishedAt: entry.publishedAt,
+          fr: entry.fr,
+          en: entry.en,
+        },
       })
     }
   }
@@ -245,22 +265,22 @@ export default class extends BaseSeeder {
   async #seedSettings() {
     // The block already carries a "En ce moment" heading, so the text
     // itself starts on the substance.
-    await SettingsService.set(
+    await Settings.set(
       'now_fr',
       'Refonte du back-office d’Atlas CMS, et une série d’articles sur la recherche vectorielle dans PostgreSQL.'
     )
-    await SettingsService.set(
+    await Settings.set(
       'now_en',
       'Rebuilding the Atlas CMS back-office, and writing a series on vector search inside PostgreSQL.'
     )
-    await SettingsService.set('hero_roles_fr', 'Développeur full-stack\nArchitecte applicatif')
-    await SettingsService.set('hero_roles_en', 'Full-stack developer\nApplication architect')
-    await SettingsService.set('hero_location', 'Lyon, France')
+    await Settings.set('hero_roles_fr', 'Développeur full-stack\nArchitecte applicatif')
+    await Settings.set('hero_roles_en', 'Full-stack developer\nApplication architect')
+    await Settings.set('hero_location', 'Lyon, France')
 
-    await SettingsService.set('cv_markdown_fr', CV_FR)
-    await SettingsService.set('cv_html_fr', await MarkdownService.render(CV_FR))
-    await SettingsService.set('cv_markdown_en', CV_EN)
-    await SettingsService.set('cv_html_en', await MarkdownService.render(CV_EN))
+    await Settings.set('cv_markdown_fr', CV_FR)
+    await Settings.set('cv_html_fr', await Markdown.render(CV_FR))
+    await Settings.set('cv_markdown_en', CV_EN)
+    await Settings.set('cv_html_en', await Markdown.render(CV_EN))
   }
 
   async #seedContactMessages() {

@@ -1,29 +1,22 @@
 import { useRouter } from '@adonisjs/inertia/react'
 import { Mail, MailOpen, Trash2 } from 'lucide-react'
-import { Button } from '~/components/ui/button'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
+import { Button } from '~/components/ui/button'
 import { formatFrDateTime } from '~/lib/dates'
 import { cn } from '~/lib/utils'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
-type Message = {
-  id: number
-  name: string
-  email: string
-  body: string
-  isRead: boolean
-  createdAt: string | null
-}
-
-type MessagesProps = {
-  messages: Message[]
-}
+type MessagesProps = InertiaProps<{
+  messages: Data.Contact.ContactMessage[]
+}>
 
 export default function Messages({ messages }: MessagesProps) {
   const router = useRouter()
 
-  function toggleRead(message: Message) {
+  function toggleRead(message: Data.Contact.ContactMessage) {
     router.visit(
       { route: 'admin.messages.read', routeParams: { id: message.id } },
       { preserveScroll: true }

@@ -24,6 +24,7 @@ export default function FieldError({
   field: string
 }) {
   const message = errors?.[field]
+
   if (!message) {
     return null
   }

@@ -30,7 +30,7 @@ Les composants shadcn s'ajoutent avec `npx shadcn@latest add <composant>`
 | --------------------------------- | -------------------------------------------------- |
 | `npm run dev`                     | Serveur de dev avec HMR                            |
 | `npm run build`                   | Build de production (dans `build/`)                |
-| `npm run lint` / `npm run format` | ESLint / Prettier                                  |
+| `npm run lint` / `npm run format` | oxlint / oxfmt                                     |
 | `npm run typecheck`               | TypeScript serveur + front                         |
 | `node ace test unit functional`   | Tests Japa (la suite functional requiert Postgres) |
 

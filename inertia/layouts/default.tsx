@@ -1,17 +1,17 @@
-import { type Data } from '@generated/data'
-import { Toaster } from 'sonner'
-import { type ReactElement, useEffect, useState } from 'react'
 import { Link } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
 import { Menu, X } from 'lucide-react'
+import { type ReactElement, useEffect, useState } from 'react'
+import { Toaster } from 'sonner'
+import { localePath } from '#types/i18n'
+import { type Data } from '@generated/data'
 import { HoverPreviewProvider } from '~/components/hover_preview'
 import LanguageSuggestion from '~/components/language_suggestion'
 import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
-import { cn } from '~/lib/utils'
-import { localePath } from '#types/i18n'
 import { otherLocaleUrl } from '~/lib/locale'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
+import { cn } from '~/lib/utils'
 
 /** Order of the header and footer links; labels come from shared props. */
 const NAVIGATION = [
@@ -23,7 +23,9 @@ const NAVIGATION = [
   { path: '/contact', label: 'contact' },
 ] as const
 
-export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
+type PageElement = ReactElement<Data.SharedProps & { hasOtherLocale?: boolean }>
+
+export default function Layout({ children }: { children: PageElement }) {
   const locale = children.props.locale
   const chrome = children.props.chrome
   const { url } = usePage()
@@ -34,7 +36,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
    * Detail pages report whether the entry exists in the other locale;
    * listings always do, so the switch shows unless told otherwise.
    */
-  const translated = (children.props as { hasOtherLocale?: boolean }).hasOtherLocale ?? true
+  const translated = children.props.hasOtherLocale ?? true
 
   useFlashToasts()
 

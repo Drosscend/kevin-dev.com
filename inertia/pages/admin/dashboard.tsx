@@ -1,26 +1,21 @@
 import { Link } from '@adonisjs/inertia/react'
 import { ExternalLink, Plus } from 'lucide-react'
+import AdminPage from '~/components/admin/admin_page'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import AdminPage from '~/components/admin/admin_page'
 import { plural } from '~/lib/plural'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
-interface DashboardProps {
+type DashboardProps = InertiaProps<{
   totpEnabled: boolean
   umami: {
     pageviews: number
     visitors: number
     topPages: { path: string; views: number }[]
   } | null
-  stats: {
-    articlesPublished: number
-    articlesDraft: number
-    projectsPublished: number
-    projectsDraft: number
-    mediaCount: number
-    unreadMessages: number
-  }
-}
+  stats: Data.Dashboard.DashboardStats
+}>
 
 function StatCard({
   label,
@@ -32,7 +27,10 @@ function StatCard({
   value: number
   detail: string
   route:
-    'admin.articles.index' | 'admin.projects.index' | 'admin.media.index' | 'admin.messages.index'
+    | 'admin.articles.index'
+    | 'admin.projects.index'
+    | 'admin.media.index'
+    | 'admin.messages.index'
 }) {
   return (
     <Link route={route} className="group">

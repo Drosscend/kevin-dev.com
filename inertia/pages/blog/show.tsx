@@ -1,26 +1,20 @@
 import { Link } from '@adonisjs/inertia/react'
+import { localePath } from '#types/i18n'
 import ArticleContent from '~/components/article_content'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner from '~/components/preview_banner'
-import type { PreviewMode } from '#types/content'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import TableOfContents from '~/components/table_of_contents'
-import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
-import { localePath, type Locale } from '#types/i18n'
+import { TechnologySection } from '~/components/technology_list'
+import { type InertiaProps } from '~/types'
+import type { PreviewMode } from '#types/content'
+import type { Data } from '@generated/data'
 
-type BlogShowProps = {
-  locale: Locale
+type BlogShowProps = InertiaProps<{
   preview: PreviewMode
-  article: {
-    title: string
-    contentHtml: string
-    publishedAt: string | null
-    readingTimeLabel: string
-    category: { slug: string; name: string } | null
-    technologies: TechnologyRef[]
-  }
+  article: Data.Blog.ArticleDetail
   hasOtherLocale: boolean
   labels: {
     publishedOn: string
@@ -31,7 +25,7 @@ type BlogShowProps = {
     contents: string
   }
   meta: SeoMeta
-}
+}>
 
 export default function BlogShow({ locale, preview, article, labels, meta }: BlogShowProps) {
   const base = localePath(locale, '/blog')

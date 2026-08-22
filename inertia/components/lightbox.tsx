@@ -1,4 +1,5 @@
-import { type Data } from '@generated/data'
+import { usePage } from '@inertiajs/react'
+import { ChevronLeft, ChevronRight, Minus, Plus, Scan, X } from 'lucide-react'
 import {
   useEffect,
   useRef,
@@ -10,8 +11,7 @@ import {
   type WheelEvent as ReactWheelEvent,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { usePage } from '@inertiajs/react'
-import { ChevronLeft, ChevronRight, Minus, Plus, Scan, X } from 'lucide-react'
+import { type Data } from '@generated/data'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
 
@@ -37,6 +37,12 @@ function clamp(value: number, min: number, max: number) {
 }
 
 /** A linked image keeps its link instead of zooming. */
+
+/** The closest matching ancestor of an event target, when it is one. */
+function closest(target: EventTarget | null, selector: string) {
+  return target instanceof Element ? target.closest(selector) : null
+}
+
 function zoomable(image: HTMLImageElement) {
   return !image.closest('a')
 }
@@ -75,6 +81,7 @@ export default function Lightbox({
 
   useEffect(() => {
     const root = container.current
+
     if (!root) {
       return
     }
@@ -102,6 +109,7 @@ export default function Lightbox({
 
   function open(image: HTMLImageElement) {
     const root = container.current
+
     if (!root) {
       return
     }
@@ -112,12 +120,13 @@ export default function Lightbox({
   }
 
   function target(event: ReactMouseEvent | ReactKeyboardEvent) {
-    const image = (event.target as HTMLElement).closest('img')
+    const image = closest(event.target, 'img')
     return image instanceof HTMLImageElement && zoomable(image) ? image : null
   }
 
   function onClick(event: ReactMouseEvent<HTMLDivElement>) {
     const image = target(event)
+
     if (image) {
       open(image)
     }
@@ -129,6 +138,7 @@ export default function Lightbox({
     }
 
     const image = target(event)
+
     if (image) {
       event.preventDefault()
       open(image)
@@ -222,6 +232,7 @@ function Viewer({
   function zoomTo(scale: number, originX?: number, originY?: number) {
     const box = stage.current?.getBoundingClientRect()
     const bounded = clamp(scale, 1, MAX_SCALE)
+
     if (!box || bounded === 1) {
       apply(FIT)
       return
@@ -263,30 +274,32 @@ function Viewer({
   function onKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Tab') {
       const buttons = [...(overlay.current?.querySelectorAll<HTMLElement>('button') ?? [])]
+
       if (buttons.length === 0) {
         return
       }
 
       event.preventDefault()
-      const position = buttons.indexOf(document.activeElement as HTMLElement)
+      const position = buttons.findIndex((button) => button === document.activeElement)
       const step = event.shiftKey ? -1 : 1
       buttons[(position + step + buttons.length) % buttons.length].focus()
       return
     }
 
-    const actions: Record<string, () => void> = {
-      'Escape': onClose,
-      'ArrowLeft': () => go(-1),
-      'ArrowRight': () => go(1),
-      'Home': () => goTo(0),
-      'End': () => goTo(slides.length - 1),
-      '+': () => zoomTo(applied.current.scale * ZOOM_STEP),
-      '=': () => zoomTo(applied.current.scale * ZOOM_STEP),
-      '-': () => zoomTo(applied.current.scale / ZOOM_STEP),
-      '0': () => apply(FIT),
-    }
+    const actions = new Map<string, () => void>([
+      ['Escape', onClose],
+      ['ArrowLeft', () => go(-1)],
+      ['ArrowRight', () => go(1)],
+      ['Home', () => goTo(0)],
+      ['End', () => goTo(slides.length - 1)],
+      ['+', () => zoomTo(applied.current.scale * ZOOM_STEP)],
+      ['=', () => zoomTo(applied.current.scale * ZOOM_STEP)],
+      ['-', () => zoomTo(applied.current.scale / ZOOM_STEP)],
+      ['0', () => apply(FIT)],
+    ])
 
-    const action = actions[event.key]
+    const action = actions.get(event.key)
+
     if (action) {
       event.preventDefault()
       action()
@@ -329,7 +342,7 @@ function Viewer({
   }, [index, slides])
 
   function onPointerDown(event: ReactPointerEvent<HTMLDivElement>) {
-    if ((event.target as HTMLElement).closest('button')) {
+    if (closest(event.target, 'button')) {
       return
     }
 
@@ -363,12 +376,14 @@ function Viewer({
     }
 
     const state = drag.current
+
     if (!state) {
       return
     }
 
     const dx = event.clientX - state.x
     const dy = event.clientY - state.y
+
     if (Math.abs(dx) > CLICK_SLOP || Math.abs(dy) > CLICK_SLOP) {
       state.moved = true
     }
@@ -380,6 +395,7 @@ function Viewer({
 
   function onPointerUp(event: ReactPointerEvent<HTMLDivElement>) {
     pointers.current.delete(event.pointerId)
+
     if (pointers.current.size < 2) {
       pinch.current = null
     }
@@ -387,6 +403,7 @@ function Viewer({
     const state = drag.current
     drag.current = null
     setGesturing(false)
+
     if (!state) {
       return
     }
@@ -401,7 +418,7 @@ function Viewer({
     }
 
     // A plain click beside the image closes, like any modal backdrop.
-    if (!state.moved && !(event.target as HTMLElement).closest('img')) {
+    if (!state.moved && !closest(event.target, 'img')) {
       onClose()
     }
   }

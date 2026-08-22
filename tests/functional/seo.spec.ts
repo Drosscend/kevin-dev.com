@@ -1,8 +1,9 @@
+import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 import env from '#start/env'
-import testUtils from '@adonisjs/core/services/test_utils'
-import Technology from '#models/technology'
+import Technology from '#technologies/models/technology'
 import { makeArticle, makeTalk } from '#tests/helpers/content'
+import { articlePage, homePage } from '#tests/helpers/pages'
 
 test.group('SEO', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -128,13 +129,7 @@ test.group('SEO', (group) => {
 
     const page = await client.get('/blog/article-meta').withInertia()
     page.assertStatus(200)
-    const meta = page.inertiaProps.meta as {
-      title: string
-      canonical: string
-      alternates: { fr: string; en: string | null } | null
-      ogType: string
-      jsonLd: Record<string, unknown>[]
-    }
+    const { meta } = articlePage(page)
     assert.equal(meta.title, 'Titre article-meta')
     assert.include(meta.canonical, '/blog/article-meta')
     assert.include(meta.alternates!.en!, '/en/blog/article-meta')
@@ -168,13 +163,11 @@ test.group('SEO', (group) => {
     const response = await client.get('/').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('home')
-    const articles = response.inertiaProps.latestArticles as { slug: string }[]
+    const { latestArticles, meta } = homePage(response)
     assert.include(
-      articles.map((article) => article.slug),
+      latestArticles.map((article) => article.slug),
       'accueil-article'
     )
-    const meta = response.inertiaProps.meta as { jsonLd: Record<string, unknown>[] }
     assert.equal(meta.jsonLd[0]['@type'], 'Person')
   })
 })

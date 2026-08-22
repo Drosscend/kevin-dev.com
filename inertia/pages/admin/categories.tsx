@@ -1,34 +1,34 @@
-import { type FormEvent, useState } from 'react'
-import { usePage } from '@inertiajs/react'
 import { useRouter } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
 import { Pencil, Trash2, X } from 'lucide-react'
-import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { type FormEvent, useState } from 'react'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
 import FieldError from '~/components/field_error'
+import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
 import { plural } from '~/lib/plural'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
-type Category = {
-  id: number
-  slug: string
-  nameFr: string
-  nameEn: string
-  articlesCount: number
-}
-
-type CategoriesProps = {
-  categories: Category[]
-}
+type CategoriesProps = InertiaProps<{
+  categories: Data.Blog.CategoryRow[]
+}>
 
 /**
  * Creation form when `category` is null, inline edition otherwise. Both
  * cases post the same three fields, so the shape is shared.
  */
-function CategoryForm({ category, onDone }: { category: Category | null; onDone?: () => void }) {
+function CategoryForm({
+  category,
+  onDone,
+}: {
+  category: Data.Blog.CategoryRow | null
+  onDone?: () => void
+}) {
   const { errors } = usePage().props
   const router = useRouter()
   const [values, setValues] = useState({

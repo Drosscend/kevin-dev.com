@@ -1,18 +1,15 @@
 import { Link } from '@adonisjs/inertia/react'
 import { Plus } from 'lucide-react'
-import { Button } from '~/components/ui/button'
 import AdminPage from '~/components/admin/admin_page'
-import { ContentList, ContentListRow, type ContentListEntry } from '~/components/admin/content_list'
+import { ContentList, ContentListRow } from '~/components/admin/content_list'
 import EmptyState from '~/components/admin/empty_state'
+import { Button } from '~/components/ui/button'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
-type ArticleRow = ContentListEntry & {
-  hasEnglish: boolean
-  category: string | null
-}
-
-type ArticlesIndexProps = {
-  articles: ArticleRow[]
-}
+type ArticlesIndexProps = InertiaProps<{
+  articles: Data.Blog.ArticleRow[]
+}>
 
 export default function ArticlesIndex({ articles }: ArticlesIndexProps) {
   return (

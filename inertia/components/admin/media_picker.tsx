@@ -1,8 +1,6 @@
-import { useState } from 'react'
 import { Check, ImageIcon, Search } from 'lucide-react'
-import { cn } from '~/lib/utils'
+import { useState } from 'react'
 import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
 import {
   Dialog,
   DialogContent,
@@ -10,6 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '~/components/ui/dialog'
+import { Input } from '~/components/ui/input'
+import { cn } from '~/lib/utils'
 
 export type MediaPickerItem = {
   id: number

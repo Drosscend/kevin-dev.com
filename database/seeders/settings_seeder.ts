@@ -1,7 +1,7 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import Setting from '#models/setting'
-import SettingsService from '#services/settings_service'
-import MarkdownService from '#services/markdown_service'
+import Setting from '#pages/models/setting'
+import Settings from '#pages/repositories/settings_repository'
+import Markdown from '#shared/content/markdown'
 
 const DEFAULT_LEGAL_FR = `## Représentant
 
@@ -32,11 +32,12 @@ protection anti-CSRF) sont déposés, sans aucun suivi.
 export default class extends BaseSeeder {
   async run() {
     const existing = await Setting.findBy('key', 'legal_markdown_fr')
+
     if (existing && existing.value.trim() !== '') {
       return
     }
 
-    await SettingsService.set('legal_markdown_fr', DEFAULT_LEGAL_FR)
-    await SettingsService.set('legal_html_fr', await MarkdownService.render(DEFAULT_LEGAL_FR))
+    await Settings.set('legal_markdown_fr', DEFAULT_LEGAL_FR)
+    await Settings.set('legal_html_fr', await Markdown.render(DEFAULT_LEGAL_FR))
   }
 }

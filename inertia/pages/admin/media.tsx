@@ -1,32 +1,21 @@
 import { Form, useRouter } from '@adonisjs/inertia/react'
 import { Copy, FileText, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button } from '~/components/ui/button'
-import { FileInput } from '~/components/ui/file_input'
-import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import FieldError from '~/components/field_error'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
+import FieldError from '~/components/field_error'
+import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import { FileInput } from '~/components/ui/file_input'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
-type MediaItem = {
-  id: number
-  alt: string
-  originalName: string
-  isDocument: boolean
-  width: number | null
-  height: number | null
-  size: number
-  url: string
-  absoluteUrl: string
-  thumbnailUrl: string | null
-}
-
-type MediaPageProps = {
-  media: MediaItem[]
-}
+type MediaPageProps = InertiaProps<{
+  media: Data.Media.MediaItem[]
+}>
 
 function formatSize(bytes: number) {
   return bytes < 1024 * 1024
@@ -34,7 +23,7 @@ function formatSize(bytes: number) {
     : `${(bytes / (1024 * 1024)).toFixed(1)} Mo`
 }
 
-function describe(item: MediaItem) {
+function describe(item: Data.Media.MediaItem) {
   const details = item.isDocument ? 'PDF' : `${item.width}×${item.height}`
   return `${item.originalName} · ${details} · ${formatSize(item.size)}`
 }
@@ -42,7 +31,7 @@ function describe(item: MediaItem) {
 export default function MediaPage({ media }: MediaPageProps) {
   const router = useRouter()
 
-  async function copyUrl(item: MediaItem) {
+  async function copyUrl(item: Data.Media.MediaItem) {
     await navigator.clipboard.writeText(item.absoluteUrl)
     toast.success('Lien copié')
   }

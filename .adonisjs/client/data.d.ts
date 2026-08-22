@@ -6,13 +6,156 @@
 /// <reference path="./manifest.d.ts" />
 import type { InferData, InferVariants } from '@adonisjs/core/types/transformers'
 import type { InferSharedProps, InferFlashData } from '@adonisjs/inertia/types'
-import type UserTransformer from '#transformers/user_transformer'
-import type InertiaMiddleware from '#middleware/inertia_middleware'
+import type BlogArticleCardTransformer from '#app/blog/transformers/article_card_transformer'
+import type BlogArticleDetailTransformer from '#app/blog/transformers/article_detail_transformer'
+import type BlogArticleFormTransformer from '#app/blog/transformers/article_form_transformer'
+import type BlogArticleRowTransformer from '#app/blog/transformers/article_row_transformer'
+import type BlogCategoryRowTransformer from '#app/blog/transformers/category_row_transformer'
+import type ContactContactMessageTransformer from '#app/contact/transformers/contact_message_transformer'
+import type DashboardDashboardStatsTransformer from '#app/dashboard/transformers/dashboard_stats_transformer'
+import type IdentityUserTransformer from '#app/identity/transformers/user_transformer'
+import type MediaMediaItemTransformer from '#app/media/transformers/media_item_transformer'
+import type PagesHomeArticleTransformer from '#app/pages/transformers/home_article_transformer'
+import type PagesHomeProjectTransformer from '#app/pages/transformers/home_project_transformer'
+import type PagesHomeSettingsTransformer from '#app/pages/transformers/home_settings_transformer'
+import type PagesHomeTalkTransformer from '#app/pages/transformers/home_talk_transformer'
+import type PagesTimelineEntryTransformer from '#app/pages/transformers/timeline_entry_transformer'
+import type PagesTimelineRowTransformer from '#app/pages/transformers/timeline_row_transformer'
+import type PortfolioProjectCardTransformer from '#app/portfolio/transformers/project_card_transformer'
+import type PortfolioProjectDetailTransformer from '#app/portfolio/transformers/project_detail_transformer'
+import type PortfolioProjectFormTransformer from '#app/portfolio/transformers/project_form_transformer'
+import type PortfolioProjectRowTransformer from '#app/portfolio/transformers/project_row_transformer'
+import type TalksTalkCardTransformer from '#app/talks/transformers/talk_card_transformer'
+import type TalksTalkDetailTransformer from '#app/talks/transformers/talk_detail_transformer'
+import type TalksTalkFormTransformer from '#app/talks/transformers/talk_form_transformer'
+import type TalksTalkRowTransformer from '#app/talks/transformers/talk_row_transformer'
+import type TechnologiesTechnologyCardTransformer from '#app/technologies/transformers/technology_card_transformer'
+import type TechnologiesTechnologyDetailTransformer from '#app/technologies/transformers/technology_detail_transformer'
+import type TechnologiesTechnologyRowTransformer from '#app/technologies/transformers/technology_row_transformer'
+import type InertiaMiddleware from '#app/middleware/inertia_middleware'
 
 export namespace Data {
-  export type User = InferData<UserTransformer>
-  export namespace User {
-    export type Variants = InferVariants<UserTransformer>
+  export namespace Blog {
+    export type ArticleCard = InferData<BlogArticleCardTransformer>
+    export namespace ArticleCard {
+      export type Variants = InferVariants<BlogArticleCardTransformer>
+    }
+    export type ArticleDetail = InferData<BlogArticleDetailTransformer>
+    export namespace ArticleDetail {
+      export type Variants = InferVariants<BlogArticleDetailTransformer>
+    }
+    export type ArticleForm = InferData<BlogArticleFormTransformer>
+    export namespace ArticleForm {
+      export type Variants = InferVariants<BlogArticleFormTransformer>
+    }
+    export type ArticleRow = InferData<BlogArticleRowTransformer>
+    export namespace ArticleRow {
+      export type Variants = InferVariants<BlogArticleRowTransformer>
+    }
+    export type CategoryRow = InferData<BlogCategoryRowTransformer>
+    export namespace CategoryRow {
+      export type Variants = InferVariants<BlogCategoryRowTransformer>
+    }
+  }
+  export namespace Contact {
+    export type ContactMessage = InferData<ContactContactMessageTransformer>
+    export namespace ContactMessage {
+      export type Variants = InferVariants<ContactContactMessageTransformer>
+    }
+  }
+  export namespace Dashboard {
+    export type DashboardStats = InferData<DashboardDashboardStatsTransformer>
+    export namespace DashboardStats {
+      export type Variants = InferVariants<DashboardDashboardStatsTransformer>
+    }
+  }
+  export namespace Identity {
+    export type User = InferData<IdentityUserTransformer>
+    export namespace User {
+      export type Variants = InferVariants<IdentityUserTransformer>
+    }
+  }
+  export namespace Media {
+    export type MediaItem = InferData<MediaMediaItemTransformer>
+    export namespace MediaItem {
+      export type Variants = InferVariants<MediaMediaItemTransformer>
+    }
+  }
+  export namespace Pages {
+    export type HomeArticle = InferData<PagesHomeArticleTransformer>
+    export namespace HomeArticle {
+      export type Variants = InferVariants<PagesHomeArticleTransformer>
+    }
+    export type HomeProject = InferData<PagesHomeProjectTransformer>
+    export namespace HomeProject {
+      export type Variants = InferVariants<PagesHomeProjectTransformer>
+    }
+    export type HomeSettings = InferData<PagesHomeSettingsTransformer>
+    export namespace HomeSettings {
+      export type Variants = InferVariants<PagesHomeSettingsTransformer>
+    }
+    export type HomeTalk = InferData<PagesHomeTalkTransformer>
+    export namespace HomeTalk {
+      export type Variants = InferVariants<PagesHomeTalkTransformer>
+    }
+    export type TimelineEntry = InferData<PagesTimelineEntryTransformer>
+    export namespace TimelineEntry {
+      export type Variants = InferVariants<PagesTimelineEntryTransformer>
+    }
+    export type TimelineRow = InferData<PagesTimelineRowTransformer>
+    export namespace TimelineRow {
+      export type Variants = InferVariants<PagesTimelineRowTransformer>
+    }
+  }
+  export namespace Portfolio {
+    export type ProjectCard = InferData<PortfolioProjectCardTransformer>
+    export namespace ProjectCard {
+      export type Variants = InferVariants<PortfolioProjectCardTransformer>
+    }
+    export type ProjectDetail = InferData<PortfolioProjectDetailTransformer>
+    export namespace ProjectDetail {
+      export type Variants = InferVariants<PortfolioProjectDetailTransformer>
+    }
+    export type ProjectForm = InferData<PortfolioProjectFormTransformer>
+    export namespace ProjectForm {
+      export type Variants = InferVariants<PortfolioProjectFormTransformer>
+    }
+    export type ProjectRow = InferData<PortfolioProjectRowTransformer>
+    export namespace ProjectRow {
+      export type Variants = InferVariants<PortfolioProjectRowTransformer>
+    }
+  }
+  export namespace Talks {
+    export type TalkCard = InferData<TalksTalkCardTransformer>
+    export namespace TalkCard {
+      export type Variants = InferVariants<TalksTalkCardTransformer>
+    }
+    export type TalkDetail = InferData<TalksTalkDetailTransformer>
+    export namespace TalkDetail {
+      export type Variants = InferVariants<TalksTalkDetailTransformer>
+    }
+    export type TalkForm = InferData<TalksTalkFormTransformer>
+    export namespace TalkForm {
+      export type Variants = InferVariants<TalksTalkFormTransformer>
+    }
+    export type TalkRow = InferData<TalksTalkRowTransformer>
+    export namespace TalkRow {
+      export type Variants = InferVariants<TalksTalkRowTransformer>
+    }
+  }
+  export namespace Technologies {
+    export type TechnologyCard = InferData<TechnologiesTechnologyCardTransformer>
+    export namespace TechnologyCard {
+      export type Variants = InferVariants<TechnologiesTechnologyCardTransformer>
+    }
+    export type TechnologyDetail = InferData<TechnologiesTechnologyDetailTransformer>
+    export namespace TechnologyDetail {
+      export type Variants = InferVariants<TechnologiesTechnologyDetailTransformer>
+    }
+    export type TechnologyRow = InferData<TechnologiesTechnologyRowTransformer>
+    export namespace TechnologyRow {
+      export type Variants = InferVariants<TechnologiesTechnologyRowTransformer>
+    }
   }
   export type SharedProps = InferSharedProps<InertiaMiddleware>
   export type FlashMessages = InferFlashData<InertiaMiddleware>

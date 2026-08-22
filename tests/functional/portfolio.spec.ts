@@ -1,8 +1,14 @@
-import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import Technology from '#models/technology'
+import { test } from '@japa/runner'
+import Technology from '#technologies/models/technology'
 import { admin } from '#tests/helpers/auth'
 import { makeProject } from '#tests/helpers/content'
+import {
+  projectListPage,
+  projectPage,
+  technologyListPage,
+  technologyPage,
+} from '#tests/helpers/pages'
 
 test.group('Portfolio public', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -14,8 +20,7 @@ test.group('Portfolio public', (group) => {
     const response = await client.get('/projects').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('portfolio/index')
-    const projects = response.inertiaProps.projects as { slug: string }[]
+    const { projects } = projectListPage(response)
     const slugs = projects.map((project) => project.slug)
     assert.include(slugs, 'projet-publie')
     assert.notInclude(slugs, 'projet-brouillon')
@@ -28,7 +33,7 @@ test.group('Portfolio public', (group) => {
     const response = await client.get('/en/projects').withInertia()
 
     response.assertStatus(200)
-    const projects = response.inertiaProps.projects as { slug: string; title: string }[]
+    const { projects } = projectListPage(response)
     assert.deepEqual(
       projects.map((project) => project.slug),
       ['fr-et-en']
@@ -46,12 +51,7 @@ test.group('Portfolio public', (group) => {
     const response = await client.get('/projects/mon-projet').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('portfolio/show')
-    const project = response.inertiaProps.project as {
-      contentHtml: string
-      links: { type: string }[]
-      technologies: { slug: string }[]
-    }
+    const { project } = projectPage(response)
     assert.include(project.contentHtml, '<h1 id="présentation">Présentation</h1>')
     assert.deepEqual(
       project.links.map((link) => link.type),
@@ -73,11 +73,11 @@ test.group('Portfolio public', (group) => {
     })
 
     const listing = await client.get('/projects').withInertia()
-    const projects = listing.inertiaProps.projects as { readingTimeLabel: string }[]
+    const { projects } = projectListPage(listing)
     assert.equal(projects[0].readingTimeLabel, '3 min de lecture')
 
     const detail = await client.get('/en/projects/long-projet').withInertia()
-    const project = detail.inertiaProps.project as { readingTimeLabel: string }
+    const { project } = projectPage(detail)
     assert.equal(project.readingTimeLabel, '3 min read')
   })
 
@@ -106,10 +106,9 @@ test.group('Portfolio public', (group) => {
     const response = await client.get('/technologies/react').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('technologies/show')
-    const data = response.inertiaProps.technology as { projects: { slug: string }[] }
+    const { technology: shown } = technologyPage(response)
     assert.deepEqual(
-      data.projects.map((project) => project.slug),
+      shown.projects.map((project) => project.slug),
       ['projet-react']
     )
   })
@@ -129,10 +128,7 @@ test.group('Portfolio public', (group) => {
     const response = await client.get('/technologies').withInertia()
 
     response.assertStatus(200)
-    const technologies = response.inertiaProps.technologies as {
-      slug: string
-      usageLabel: string
-    }[]
+    const { technologies } = technologyListPage(response)
     const docker = technologies.find((item) => item.slug === 'docker')
     assert.equal(docker?.usageLabel, '1 projet')
   })

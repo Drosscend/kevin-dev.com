@@ -1,8 +1,8 @@
+import MarkdownEditor from '~/components/admin/markdown_editor'
+import FieldError, { type FieldErrors } from '~/components/field_error'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Textarea } from '~/components/ui/textarea'
-import MarkdownEditor from '~/components/admin/markdown_editor'
-import FieldError, { type FieldErrors } from '~/components/field_error'
 import type { TranslationValues } from '~/lib/admin'
 
 /**

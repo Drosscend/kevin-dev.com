@@ -2,11 +2,12 @@ import { Download } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
 import { EmptyState } from '~/components/empty_state'
 import Lightbox from '~/components/lightbox'
-import Seo, { type SeoMeta } from '~/components/seo'
 import ReadingLayout from '~/components/reading_layout'
+import Seo, { type SeoMeta } from '~/components/seo'
 import { Button } from '~/components/ui/button'
+import { type InertiaProps } from '~/types'
 
-type CvProps = {
+type CvProps = InertiaProps<{
   contentHtml: string
   pdfAvailable: boolean
   labels: {
@@ -15,7 +16,7 @@ type CvProps = {
     empty: string
   }
   meta: SeoMeta
-}
+}>
 
 export default function Cv({ contentHtml, pdfAvailable, labels, meta }: CvProps) {
   return (

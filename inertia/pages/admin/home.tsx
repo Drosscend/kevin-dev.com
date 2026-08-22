@@ -1,28 +1,22 @@
-import { type FormEvent } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
+import { type FormEvent } from 'react'
 import { client } from '~/client'
+import AdminPage from '~/components/admin/admin_page'
+import LocaleTabsList, { translationStatus, useAdminLocale } from '~/components/admin/locale_tabs'
+import FieldError from '~/components/field_error'
 import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-import { Textarea } from '~/components/ui/textarea'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Tabs, TabsContent } from '~/components/ui/tabs'
-import AdminPage from '~/components/admin/admin_page'
-import FieldError from '~/components/field_error'
+import { Textarea } from '~/components/ui/textarea'
+import { type InertiaProps } from '~/types'
 import type { Locale } from '#types/i18n'
-import LocaleTabsList, { translationStatus, useAdminLocale } from '~/components/admin/locale_tabs'
+import type { Data } from '@generated/data'
 
-type HomeSettings = {
-  heroRolesFr: string
-  heroRolesEn: string
-  heroLocation: string
-  nowFr: string
-  nowEn: string
-}
-
-type HomeAdminProps = {
-  settings: HomeSettings
-}
+type HomeAdminProps = InertiaProps<{
+  settings: Data.Pages.HomeSettings
+}>
 
 function SettingsTextarea({
   field,
@@ -30,7 +24,7 @@ function SettingsTextarea({
   value,
   onChange,
 }: {
-  field: keyof HomeSettings
+  field: keyof Data.Pages.HomeSettings
   label: string
   value: string
   onChange: (value: string) => void
@@ -61,8 +55,8 @@ function HomeContents({
   onChange,
 }: {
   locale: Locale
-  settings: HomeSettings
-  onChange: (field: keyof HomeSettings, value: string) => void
+  settings: Data.Pages.HomeSettings
+  onChange: (field: keyof Data.Pages.HomeSettings, value: string) => void
 }) {
   const rolesField = locale === 'fr' ? 'heroRolesFr' : 'heroRolesEn'
   const nowField = locale === 'fr' ? 'nowFr' : 'nowEn'

@@ -1,5 +1,5 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
-import MarkdownService from '#services/markdown_service'
+import Markdown from '#shared/content/markdown'
 
 /**
  * Projects and talks carry a reading time like articles do. The value is
@@ -30,7 +30,7 @@ export default class extends BaseSchema {
           await db
             .from(table)
             .where('id', translation[foreignKey])
-            .update({ reading_time: MarkdownService.readingTime(translation.content_markdown) })
+            .update({ reading_time: Markdown.readingTime(translation.content_markdown) })
         }
       }
     })

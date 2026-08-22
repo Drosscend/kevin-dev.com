@@ -1,60 +1,43 @@
-import { type FormEvent, useRef } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
+import { type FormEvent, useRef } from 'react'
+import { TALK_LINK_TYPES, type TalkLinkType, type PublicationStatus } from '#types/content'
 import { client } from '~/client'
-import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
-import { DateTimePicker } from '~/components/ui/date_time_picker'
-import { DatePicker } from '~/components/ui/date_picker'
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
-import FieldError from '~/components/field_error'
 import AdminPage, { AdminBackLink } from '~/components/admin/admin_page'
 import DraftBanner from '~/components/admin/draft_banner'
-import ExternalLinksCard, {
-  type LinkValues,
-  withoutEmptyLinks,
-} from '~/components/admin/external_links_card'
+import ExternalLinksCard, { withoutEmptyLinks } from '~/components/admin/external_links_card'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
+import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
 import PreviewLink from '~/components/admin/preview_link'
 import PublicationActions from '~/components/admin/publication_actions'
-import { TALK_LINK_TYPES, type TalkLinkType, type PublicationStatus } from '#types/content'
 import SlugField from '~/components/admin/slug_field'
 import ToggleList from '~/components/admin/toggle_list'
 import TranslationCard from '~/components/admin/translation_card'
-import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
+import FieldError from '~/components/field_error'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { DatePicker } from '~/components/ui/date_picker'
+import { DateTimePicker } from '~/components/ui/date_time_picker'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
 import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
-import { useDraftAutosave } from '~/lib/use_draft_autosave'
 import { formatFrDateTime } from '~/lib/dates'
-
-type TalkData = {
-  id: number
-  slug: string
-  status: PublicationStatus
-  coverMediaId: number | null
-  eventDate: string | null
-  eventName: string
-  city: string
-  technologyIds: number[]
-  links: LinkValues[]
-  publishedAt: string | null
-  hasBeenOnline: boolean
-  fr: TranslationValues
-  en: TranslationValues | null
-}
+import { useDraftAutosave } from '~/lib/use_draft_autosave'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
 type Option = { id: number; name: string }
 
-type TalkFormProps = {
-  talk: TalkData | null
+type TalkFormProps = InertiaProps<{
+  talk: Data.Talks.TalkForm | null
   options: { technologies: Option[]; media: MediaPickerItem[] }
-}
+}>
 
-const LINK_TYPE_LABELS: Record<TalkLinkType, string> = {
+const LINK_TYPE_LABELS = {
   slides: 'Slides',
   video: 'Vidéo',
   event: 'Événement',
   code: 'Code',
   other: 'Autre',
-}
+} satisfies Record<TalkLinkType, string>
 
 const LINK_TYPES = TALK_LINK_TYPES.map((value) => ({ value, label: LINK_TYPE_LABELS[value] }))
 
@@ -63,7 +46,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
 
   const form = useForm({
     slug: talk?.slug ?? '',
-    status: talk?.status ?? ('draft' as PublicationStatus),
+    status: talk?.status ?? ('draft' satisfies PublicationStatus),
     coverMediaId: talk?.coverMediaId ?? null,
     eventDate: talk?.eventDate ?? '',
     eventName: talk?.eventName ?? '',
@@ -107,6 +90,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
       onSuccess: () => draft.clearDraft(),
       onError: focusErrors,
     }
+
     if (talk) {
       form.put(client.urlFor('admin.talks.update', { id: talk.id }), visitOptions)
     } else {

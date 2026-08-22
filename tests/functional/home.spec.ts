@@ -1,7 +1,8 @@
-import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import Technology from '#models/technology'
+import { test } from '@japa/runner'
+import Technology from '#technologies/models/technology'
 import { makeProject } from '#tests/helpers/content'
+import { homePage } from '#tests/helpers/pages'
 
 test.group("Page d'accueil", (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -23,13 +24,13 @@ test.group("Page d'accueil", (group) => {
     const response = await client.get('/').withInertia()
 
     response.assertStatus(200)
-    const technologies = response.inertiaProps.technologies as { slug: string }[]
+    const { technologies, hiddenTechnologies } = homePage(response)
     assert.lengthOf(technologies, 12)
     assert.deepEqual(
       technologies.slice(0, 3).map((technology) => technology.slug),
       ['tech-14', 'tech-13', 'tech-01']
     )
-    assert.equal(response.inertiaProps.hiddenTechnologies, 2)
+    assert.equal(hiddenTechnologies, 2)
   })
 
   test('aucun compteur tant que toutes les technologies tiennent sur la page', async ({
@@ -41,7 +42,8 @@ test.group("Page d'accueil", (group) => {
     const response = await client.get('/').withInertia()
 
     response.assertStatus(200)
-    assert.lengthOf(response.inertiaProps.technologies as unknown[], 1)
-    assert.equal(response.inertiaProps.hiddenTechnologies, 0)
+    const { technologies, hiddenTechnologies } = homePage(response)
+    assert.lengthOf(technologies, 1)
+    assert.equal(hiddenTechnologies, 0)
   })
 })

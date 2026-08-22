@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  // oxlint-disable-next-line project-style/no-react-compiler-hooks
   useMemo,
   useRef,
   useState,
@@ -89,6 +90,7 @@ export function HoverPreviewProvider({ children }: { children: ReactNode }) {
   const api = useMemo<PreviewApi>(() => {
     function apply() {
       const card = cardRef.current
+
       if (!card) {
         return
       }

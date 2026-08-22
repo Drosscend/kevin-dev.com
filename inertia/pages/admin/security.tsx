@@ -1,19 +1,20 @@
 import { Form } from '@adonisjs/inertia/react'
+import AdminPage from '~/components/admin/admin_page'
+import FieldError from '~/components/field_error'
 import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import FieldError, { type FieldErrors } from '~/components/field_error'
-import AdminPage from '~/components/admin/admin_page'
 import { plural } from '~/lib/plural'
+import { type InertiaProps } from '~/types'
 
-interface SecurityProps {
+type SecurityProps = InertiaProps<{
   totpEnabled: boolean
   qrCode: string | null
   secret: string | null
   recoveryCodes: string[] | null
   recoveryCodesRemaining: number
-}
+}>
 
 export default function Security({
   totpEnabled,
@@ -107,7 +108,7 @@ export default function Security({
                       inputMode="numeric"
                       autoComplete="one-time-code"
                       maxLength={6}
-                      aria-invalid={(errors as FieldErrors).recoveryCode ? true : undefined}
+                      aria-invalid={errors.recoveryCode ? true : undefined}
                     />
                     <FieldError errors={errors} field="recoveryCode" />
                   </div>

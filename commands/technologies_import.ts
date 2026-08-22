@@ -1,12 +1,12 @@
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
-import type { CommandOptions } from '@adonisjs/core/types/ace'
-import Media from '#models/media'
-import Technology from '#models/technology'
+import Media from '#media/models/media'
+import Technology from '#technologies/models/technology'
+import TechnologyTranslation from '#technologies/models/technology_translation'
 import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
-import TechnologyTranslation from '#models/technology_translation'
 import { LOCALES, type Locale } from '#types/i18n'
+import type { CommandOptions } from '@adonisjs/core/types/ace'
 
 interface Entry {
   slug: string
@@ -63,6 +63,7 @@ export default class TechnologiesImport extends BaseCommand {
 
     for (const entry of entries) {
       const logo = logoBySlug.get(entry.slug)
+
       if (!logo) {
         withoutLogo.push(entry.slug)
       }
@@ -77,6 +78,7 @@ export default class TechnologiesImport extends BaseCommand {
           known.logoMediaId = logo.id
           filled.push('logo')
         }
+
         if (entry.docsUrl && !known.docsUrl) {
           known.docsUrl = entry.docsUrl
           filled.push('docs link')
@@ -101,10 +103,10 @@ export default class TechnologiesImport extends BaseCommand {
         }
       )
 
-      const descriptions: Record<Locale, string> = {
+      const descriptions = {
         fr: entry.descriptionFr,
         en: entry.descriptionEn,
-      }
+      } satisfies Record<Locale, string>
       for (const locale of LOCALES) {
         await TechnologyTranslation.updateOrCreate(
           { technologyId: technology.id, locale },

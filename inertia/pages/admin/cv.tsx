@@ -1,16 +1,17 @@
 import { Form } from '@adonisjs/inertia/react'
+import MarkdownPageEditor from '~/components/admin/markdown_page_editor'
+import FieldError from '~/components/field_error'
 import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { FileInput } from '~/components/ui/file_input'
 import { Label } from '~/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import FieldError from '~/components/field_error'
-import MarkdownPageEditor from '~/components/admin/markdown_page_editor'
+import { type InertiaProps } from '~/types'
 
-type CvProps = {
+type CvProps = InertiaProps<{
   fr: string
   en: string
   pdf: { size: number } | null
-}
+}>
 
 export default function Cv({ fr, en, pdf }: CvProps) {
   return (

@@ -1,20 +1,20 @@
-import { type ClipboardEvent, type DragEvent, useEffect, useRef, useState } from 'react'
-import { EditorContent, useEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import { Markdown } from '@tiptap/markdown'
 import { Image } from '@tiptap/extension-image'
 import { TaskItem, TaskList } from '@tiptap/extension-list'
 import { TableKit } from '@tiptap/extension-table'
 import { Placeholder } from '@tiptap/extensions'
-import type { ReactCodeMirrorRef } from '@uiw/react-codemirror'
+import { Markdown } from '@tiptap/markdown'
+import { EditorContent, useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
 import { Code2, Pilcrow } from 'lucide-react'
-import { Label } from '~/components/ui/label'
-import { ToggleGroup, ToggleGroupItem } from '~/components/ui/toggle_group'
-import { ErrorText } from '~/components/field_error'
+import { type ClipboardEvent, type DragEvent, useEffect, useRef, useState } from 'react'
 import MarkdownSource from '~/components/admin/markdown_source'
 import MarkdownToolbar from '~/components/admin/markdown_toolbar'
 import PromptDialog from '~/components/admin/prompt_dialog'
+import { ErrorText } from '~/components/field_error'
+import { Label } from '~/components/ui/label'
+import { ToggleGroup, ToggleGroupItem } from '~/components/ui/toggle_group'
 import { uploadMediaImage } from '~/lib/admin'
+import type { ReactCodeMirrorRef } from '@uiw/react-codemirror'
 
 const PLACEHOLDER = 'Rédigez le contenu…'
 
@@ -127,11 +127,15 @@ export default function MarkdownEditor({
     if (next === '' || next === mode) {
       return
     }
+
     if (next === 'rich') {
       editor?.commands.setContent(value, { contentType: 'markdown', emitUpdate: false })
       emittedRef.current = value
+      setMode('rich')
+      return
     }
-    setMode(next as Mode)
+
+    setMode('source')
   }
 
   function insertImage(alt: string, url: string) {
@@ -140,6 +144,7 @@ export default function MarkdownEditor({
       return
     }
     const view = sourceRef.current?.view
+
     if (view) {
       view.dispatch(view.state.replaceSelection(`![${alt}](${url})`))
       view.focus()
@@ -177,6 +182,7 @@ export default function MarkdownEditor({
 
   function handlePaste(event: ClipboardEvent) {
     const file = [...event.clipboardData.files].find((item) => item.type.startsWith('image/'))
+
     if (file) {
       event.preventDefault()
       event.stopPropagation()
@@ -186,6 +192,7 @@ export default function MarkdownEditor({
 
   function handleDrop(event: DragEvent) {
     const file = [...event.dataTransfer.files].find((item) => item.type.startsWith('image/'))
+
     if (file) {
       event.preventDefault()
       event.stopPropagation()

@@ -1,46 +1,37 @@
-import { type FormEvent, useState } from 'react'
-import { usePage } from '@inertiajs/react'
 import { useRouter } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
 import { ArrowDown, ArrowUp, Pencil, Trash2, X } from 'lucide-react'
-import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
-import { Select } from '~/components/ui/select'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import { Tabs } from '~/components/ui/tabs'
+import { type FormEvent, useState } from 'react'
+import { TIMELINE_HONOURS, type TimelineHonours } from '#types/content'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
-import FieldError from '~/components/field_error'
-import type { Locale } from '#types/i18n'
-import { TIMELINE_HONOURS, type TimelineHonours } from '#types/content'
 import LocaleTabsList, { translationStatus, useAdminLocale } from '~/components/admin/locale_tabs'
+import FieldError from '~/components/field_error'
+import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
+import { Select } from '~/components/ui/select'
+import { Tabs } from '~/components/ui/tabs'
+import { type InertiaProps } from '~/types'
+import type { Locale } from '#types/i18n'
+import type { Data } from '@generated/data'
 
-const HONOURS_LABELS: Record<TimelineHonours, string> = {
+const HONOURS_LABELS = {
   none: 'Sans mention',
   fair: 'Assez bien',
   good: 'Bien',
   very_good: 'Très bien',
-}
+} satisfies Record<TimelineHonours, string>
 
 const HONOURS = TIMELINE_HONOURS.map((value) => ({ value, label: HONOURS_LABELS[value] }))
 
 const honoursLabel = (value: string) => HONOURS.find((option) => option.value === value)?.label
 
-type TimelineItem = {
-  id: number
-  honours: string
-  periodFr: string
-  titleFr: string
-  placeFr: string
-  periodEn: string
-  titleEn: string
-  placeEn: string
-}
-
-type TimelineProps = {
-  timeline: TimelineItem[]
-}
+type TimelineProps = InertiaProps<{
+  timeline: Data.Pages.TimelineRow[]
+}>
 
 /**
  * Inline create/edit form for a timeline entry. It shows the fields of
@@ -53,7 +44,7 @@ function TimelineForm({
   onErrors,
   onDone,
 }: {
-  item: TimelineItem | null
+  item: Data.Pages.TimelineRow | null
   locale: Locale
   onErrors: (errors: Record<string, string>) => void
   onDone?: () => void
@@ -160,7 +151,7 @@ export default function Timeline({ timeline }: TimelineProps) {
 
   const englishValues = timeline.flatMap((item) => [item.periodEn, item.titleEn, item.placeEn])
 
-  function move(item: TimelineItem, direction: 'up' | 'down') {
+  function move(item: Data.Pages.TimelineRow, direction: 'up' | 'down') {
     router.visit(
       { route: 'admin.timeline.move', routeParams: { id: item.id } },
       { preserveScroll: true, data: { direction } }

@@ -1,15 +1,15 @@
-import { assert } from '@japa/assert'
-import { apiClient } from '@japa/api-client'
-import app from '@adonisjs/core/services/app'
-import env from '#start/env'
-import type { Config } from '@japa/runner/types'
-import { pluginAdonisJS } from '@japa/plugin-adonisjs'
-import { dbAssertions } from '@adonisjs/lucid/plugins/db'
-import testUtils from '@adonisjs/core/services/test_utils'
 import { authApiClient } from '@adonisjs/auth/plugins/api_client'
+import app from '@adonisjs/core/services/app'
+import testUtils from '@adonisjs/core/services/test_utils'
+import { inertiaApiClient } from '@adonisjs/inertia/plugins/api_client'
+import { dbAssertions } from '@adonisjs/lucid/plugins/db'
 import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
 import { shieldApiClient } from '@adonisjs/shield/plugins/api_client'
-import { inertiaApiClient } from '@adonisjs/inertia/plugins/api_client'
+import { apiClient } from '@japa/api-client'
+import { assert } from '@japa/assert'
+import { pluginAdonisJS } from '@japa/plugin-adonisjs'
+import env from '#start/env'
+import type { Config } from '@japa/runner/types'
 
 /**
  * This file is imported by the "bin/test.ts" entrypoint file
@@ -44,6 +44,7 @@ export const plugins: Config['plugins'] = [
  */
 function assertTestDatabase() {
   const database = env.get('DB_DATABASE')
+
   if (!database.endsWith('_test')) {
     throw new Error(
       `Refusing to run the suite on "${database}": copy .env.test.example to .env.test`

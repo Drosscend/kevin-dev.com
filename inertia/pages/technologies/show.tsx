@@ -1,23 +1,14 @@
+import { localePath } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import ExternalLinkList from '~/components/external_link_list'
 import { BackLink } from '~/components/page_header'
-import Seo, { type SeoMeta } from '~/components/seo'
 import ReadingLayout from '~/components/reading_layout'
-import { localePath, type Locale } from '#types/i18n'
+import Seo, { type SeoMeta } from '~/components/seo'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
-type Entry = { slug: string; title: string; summary: string; coverUrl: string | null }
-
-type TechnologyShowProps = {
-  locale: Locale
-  technology: {
-    name: string
-    logoUrl: string | null
-    docsUrl: string | null
-    description: string
-    projects: Entry[]
-    articles: Entry[]
-    talks: Entry[]
-  }
+type TechnologyShowProps = InertiaProps<{
+  technology: Data.Technologies.TechnologyDetail
   labels: {
     backToList: string
     docs: string
@@ -27,7 +18,7 @@ type TechnologyShowProps = {
     unused: string
   }
   meta: SeoMeta
-}
+}>
 
 /** Listing of the entries a technology is attached to, on either side. */
 function UsageSection({
@@ -36,7 +27,7 @@ function UsageSection({
   href,
 }: {
   title: string
-  entries: Entry[]
+  entries: Data.Technologies.TechnologyDetail['projects']
   href: (slug: string) => string
 }) {
   if (entries.length === 0) {

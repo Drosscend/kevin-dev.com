@@ -1,62 +1,44 @@
-import { type FormEvent, useRef } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
+import { type FormEvent, useRef } from 'react'
+import { PROJECT_LINK_TYPES, type ProjectLinkType, type PublicationStatus } from '#types/content'
 import { client } from '~/client'
-import { Label } from '~/components/ui/label'
-import { DateTimePicker } from '~/components/ui/date_time_picker'
-import { DatePicker } from '~/components/ui/date_picker'
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
-import FieldError from '~/components/field_error'
 import AdminPage, { AdminBackLink } from '~/components/admin/admin_page'
 import DraftBanner from '~/components/admin/draft_banner'
-import ExternalLinksCard, {
-  type LinkValues,
-  withoutEmptyLinks,
-} from '~/components/admin/external_links_card'
+import ExternalLinksCard, { withoutEmptyLinks } from '~/components/admin/external_links_card'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
+import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
 import PreviewLink from '~/components/admin/preview_link'
 import PublicationActions from '~/components/admin/publication_actions'
-import { PROJECT_LINK_TYPES, type ProjectLinkType, type PublicationStatus } from '#types/content'
 import SlugField from '~/components/admin/slug_field'
 import ToggleList, { SwitchField } from '~/components/admin/toggle_list'
 import TranslationCard from '~/components/admin/translation_card'
-import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
+import FieldError from '~/components/field_error'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { DatePicker } from '~/components/ui/date_picker'
+import { DateTimePicker } from '~/components/ui/date_time_picker'
+import { Label } from '~/components/ui/label'
 import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
-import { useDraftAutosave } from '~/lib/use_draft_autosave'
 import { formatFrDateTime } from '~/lib/dates'
-
-type ProjectData = {
-  id: number
-  slug: string
-  status: PublicationStatus
-  coverMediaId: number | null
-  startedAt: string | null
-  endedAt: string | null
-  featured: boolean
-  technologyIds: number[]
-  articleIds: number[]
-  links: LinkValues[]
-  publishedAt: string | null
-  hasBeenOnline: boolean
-  fr: TranslationValues
-  en: TranslationValues | null
-}
+import { useDraftAutosave } from '~/lib/use_draft_autosave'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
 type Option = { id: number; name: string }
 type ArticleOption = { id: number; title: string }
 
-type ProjectFormProps = {
-  project: ProjectData | null
+type ProjectFormProps = InertiaProps<{
+  project: Data.Portfolio.ProjectForm | null
   options: { technologies: Option[]; articles: ArticleOption[]; media: MediaPickerItem[] }
-}
+}>
 
-const LINK_TYPE_LABELS: Record<ProjectLinkType, string> = {
+const LINK_TYPE_LABELS = {
   github: 'GitHub',
   demo: 'Démo',
   release: 'Release',
   store: 'Store',
   paper: 'Mémoire / rapport',
   other: 'Autre',
-}
+} satisfies Record<ProjectLinkType, string>
 
 const LINK_TYPES = PROJECT_LINK_TYPES.map((value) => ({ value, label: LINK_TYPE_LABELS[value] }))
 
@@ -65,7 +47,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
 
   const form = useForm({
     slug: project?.slug ?? '',
-    status: project?.status ?? ('draft' as PublicationStatus),
+    status: project?.status ?? ('draft' satisfies PublicationStatus),
     coverMediaId: project?.coverMediaId ?? null,
     startedAt: project?.startedAt ?? null,
     endedAt: project?.endedAt ?? null,
@@ -107,6 +89,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
       onSuccess: () => draft.clearDraft(),
       onError: focusErrors,
     }
+
     if (project) {
       form.put(client.urlFor('admin.projects.update', { id: project.id }), visitOptions)
     } else {

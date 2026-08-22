@@ -1,20 +1,16 @@
 import { Link } from '@adonisjs/inertia/react'
 import { Plus, Star } from 'lucide-react'
-import { Button } from '~/components/ui/button'
 import AdminPage from '~/components/admin/admin_page'
-import { ContentList, ContentListRow, type ContentListEntry } from '~/components/admin/content_list'
+import { ContentList, ContentListRow } from '~/components/admin/content_list'
 import EmptyState from '~/components/admin/empty_state'
+import { Button } from '~/components/ui/button'
 import { plural } from '~/lib/plural'
+import { type InertiaProps } from '~/types'
+import type { Data } from '@generated/data'
 
-type ProjectRow = ContentListEntry & {
-  hasEnglish: boolean
-  featured: boolean
-  technologiesCount: number
-}
-
-type ProjectsIndexProps = {
-  projects: ProjectRow[]
-}
+type ProjectsIndexProps = InertiaProps<{
+  projects: Data.Portfolio.ProjectRow[]
+}>
 
 export default function ProjectsIndex({ projects }: ProjectsIndexProps) {
   return (

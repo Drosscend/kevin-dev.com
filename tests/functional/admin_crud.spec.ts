@@ -1,13 +1,14 @@
+import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 import { DateTime } from 'luxon'
-import testUtils from '@adonisjs/core/services/test_utils'
-import Category from '#models/category'
-import Technology from '#models/technology'
-import Article from '#models/article'
-import Project from '#models/project'
-import TimelineEntry from '#models/timeline_entry'
-import SettingsService from '#services/settings_service'
+import Article from '#blog/models/article'
+import Category from '#blog/models/category'
+import TimelineEntry from '#pages/models/timeline_entry'
+import Settings from '#pages/repositories/settings_repository'
+import Project from '#portfolio/models/project'
+import Technology from '#technologies/models/technology'
 import { admin } from '#tests/helpers/auth'
+import { adminArticleFormPage } from '#tests/helpers/pages'
 
 test.group('Admin CRUD catégories', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -209,7 +210,7 @@ test.group('Admin parcours', (group) => {
     const user = await admin()
     const created = await TimelineEntry.create({ position: 1 })
     await created.related('translations').createMany([
-      { locale: 'fr', ...{ period: entry.periodFr, title: entry.titleFr, place: entry.placeFr } },
+      { locale: 'fr', period: entry.periodFr, title: entry.titleFr, place: entry.placeFr },
       { locale: 'en', period: '2024-now', title: 'Consultant', place: 'Toulouse' },
     ])
 
@@ -435,8 +436,7 @@ test.group('Admin CRUD articles et projets (HTTP)', (group) => {
       })
 
     response.assertStatus(200)
-    response.assertInertiaComponent('admin/articles/form')
-    const errors = response.inertiaProps.errors as Record<string, unknown>
+    const { errors } = adminArticleFormPage(response)
     assert.property(errors, 'categoryId')
     assert.isNull(await Article.findBy('slug', 'avec-categorie'))
   })
@@ -671,7 +671,7 @@ test.group('Admin pages markdown', (group) => {
       .form({ fr: '## Parcours', en: '' })
     save.assertStatus(302)
 
-    assert.include(await SettingsService.get('cv_html_fr'), '<h2 id="parcours">Parcours</h2>')
+    assert.include(await Settings.get('cv_html_fr'), '<h2 id="parcours">Parcours</h2>')
 
     const clear = await client
       .put('/admin/cv')
@@ -680,7 +680,7 @@ test.group('Admin pages markdown', (group) => {
       .redirects(0)
       .form({ fr: '', en: '' })
     clear.assertStatus(302)
-    assert.equal(await SettingsService.get('cv_html_fr'), '')
+    assert.equal(await Settings.get('cv_html_fr'), '')
   })
 
   test('les mentions légales ont leur propre page', async ({ client, assert }) => {
@@ -694,10 +694,10 @@ test.group('Admin pages markdown', (group) => {
       .form({ fr: '## Éditeur', en: '## Publisher' })
     save.assertStatus(302)
 
-    assert.include(await SettingsService.get('legal_html_fr'), 'Éditeur')
-    assert.include(await SettingsService.get('legal_html_en'), 'Publisher')
+    assert.include(await Settings.get('legal_html_fr'), 'Éditeur')
+    assert.include(await Settings.get('legal_html_en'), 'Publisher')
     assert.equal(
-      await SettingsService.get('cv_markdown_fr'),
+      await Settings.get('cv_markdown_fr'),
       '',
       'enregistrer une page n’en touche pas une autre'
     )

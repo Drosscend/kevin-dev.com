@@ -1,12 +1,12 @@
-import { Button } from '~/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
-import { Tabs, TabsContent } from '~/components/ui/tabs'
-import type { FieldErrors } from '~/components/field_error'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
 import LocaleTabsList, { entryTranslationStatus } from '~/components/admin/locale_tabs'
 import TranslationFields from '~/components/admin/translation_fields'
+import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { Tabs, TabsContent } from '~/components/ui/tabs'
 import { EMPTY_TRANSLATION, type TranslationValues } from '~/lib/admin'
+import type { FieldErrors } from '~/components/field_error'
 
 /**
  * Content card of an entry translated in one or two locales: the

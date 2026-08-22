@@ -1,6 +1,6 @@
-import { indexPages } from '@adonisjs/inertia'
 import { indexEntities } from '@adonisjs/core'
 import { defineConfig } from '@adonisjs/core/app'
+import { indexPages } from '@adonisjs/inertia'
 import { generateRegistry } from '@tuyau/core/hooks'
 
 export default defineConfig({
@@ -132,7 +132,20 @@ export default defineConfig({
   hooks: {
     init: [
       indexEntities({
-        transformers: { enabled: true, withSharedProps: true },
+        controllers: {
+          enabled: true,
+          source: './app',
+          importAlias: '#app',
+          glob: ['**/controllers/**/*.ts'],
+        },
+        transformers: {
+          enabled: true,
+          withSharedProps: true,
+          source: './app',
+          importAlias: '#app',
+          glob: ['**/transformers/**/*.ts'],
+          inertiaMiddlewareImportPath: '#app/middleware/inertia_middleware',
+        },
       }),
       indexPages({ framework: 'react' }),
       generateRegistry(),

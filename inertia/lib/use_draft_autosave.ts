@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-type DraftEnvelope = { savedAt: string; data: unknown }
+type DraftEnvelope<Data> = { savedAt: string; data: Data }
 
 /**
  * Reads a stored draft and keeps it only when it differs from the
@@ -8,11 +8,13 @@ type DraftEnvelope = { savedAt: string; data: unknown }
  */
 function detectDraft(key: string, currentSerialized: string): Date | null {
   const raw = window.localStorage.getItem(key)
+
   if (raw === null) {
     return null
   }
   try {
-    const envelope = JSON.parse(raw) as DraftEnvelope
+    const envelope: DraftEnvelope<unknown> = JSON.parse(raw)
+
     if (JSON.stringify(envelope.data) === currentSerialized) {
       return null
     }
@@ -55,7 +57,7 @@ export function useDraftAutosave<T>({
       return
     }
     timerRef.current = window.setTimeout(() => {
-      const envelope: DraftEnvelope = {
+      const envelope: DraftEnvelope<T> = {
         savedAt: new Date().toISOString(),
         data: JSON.parse(serialized),
       }
@@ -70,9 +72,11 @@ export function useDraftAutosave<T>({
 
   function restoreDraft() {
     const raw = window.localStorage.getItem(key)
+
     if (raw !== null) {
       try {
-        restoreRef.current((JSON.parse(raw) as DraftEnvelope).data as T)
+        const envelope: DraftEnvelope<T> = JSON.parse(raw)
+        restoreRef.current(envelope.data)
       } catch {
         window.localStorage.removeItem(key)
       }

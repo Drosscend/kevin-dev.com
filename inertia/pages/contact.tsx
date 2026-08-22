@@ -1,15 +1,14 @@
 import { Form } from '@adonisjs/inertia/react'
+import FieldError from '~/components/field_error'
+import ReadingLayout from '~/components/reading_layout'
+import Seo, { type SeoMeta } from '~/components/seo'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Textarea } from '~/components/ui/textarea'
-import Seo, { type SeoMeta } from '~/components/seo'
-import ReadingLayout from '~/components/reading_layout'
-import FieldError from '~/components/field_error'
-import type { Locale } from '#types/i18n'
+import { type InertiaProps } from '~/types'
 
-type ContactProps = {
-  locale: Locale
+type ContactProps = InertiaProps<{
   labels: {
     title: string
     intro: string
@@ -20,7 +19,7 @@ type ContactProps = {
     privacy: string
   }
   meta: SeoMeta
-}
+}>
 
 export default function Contact({ locale, labels, meta }: ContactProps) {
   return (
