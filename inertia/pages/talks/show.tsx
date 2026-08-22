@@ -1,30 +1,20 @@
 import { localePath, type Locale } from '#types/i18n'
 import ArticleContent from '~/components/article_content'
-import ExternalLinkList, { type ExternalLinkRef } from '~/components/external_link_list'
+import ExternalLinkList from '~/components/external_link_list'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner from '~/components/preview_banner'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
-import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
+import { TechnologySection } from '~/components/technology_list'
 import type { PreviewMode } from '#types/content'
+import type { Data } from '@generated/data'
 
 type TalksShowProps = {
   locale: Locale
   preview: PreviewMode
-  talk: {
-    title: string
-    contentHtml: string
-    coverUrl: string | null
-    eventName: string
-    eventDate: string
-    city: string
-    readingTimeLabel: string
-    upcoming: boolean
-    links: ExternalLinkRef[]
-    technologies: TechnologyRef[]
-  }
+  talk: Data.Talks.TalkDetail
   hasOtherLocale: boolean
   labels: {
     backToList: string

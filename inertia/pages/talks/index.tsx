@@ -1,29 +1,16 @@
 import { localePath, type Locale } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
-import ExternalLinkList, { type ExternalLinkRef } from '~/components/external_link_list'
+import ExternalLinkList from '~/components/external_link_list'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
-import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
-
-type TalkCard = {
-  slug: string
-  title: string
-  summary: string
-  eventName: string
-  eventDate: string
-  city: string
-  readingTimeLabel: string
-  upcoming: boolean
-  links: ExternalLinkRef[]
-  technologies: TechnologyRef[]
-  coverUrl: string | null
-}
+import { TechnologyNames } from '~/components/technology_list'
+import type { Data } from '@generated/data'
 
 type TalksIndexProps = {
   locale: Locale
-  talks: TalkCard[]
+  talks: Data.Talks.TalkCard[]
   labels: { title: string; empty: string; upcoming: string }
   meta: SeoMeta
 }

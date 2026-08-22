@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/core'
 import { Exception } from '@adonisjs/core/exceptions'
+import ProjectDetailTransformer from '#app/portfolio/transformers/project_detail_transformer'
 import { monthYear } from '#app/shared/date_format'
 import { mediaUrl } from '#app/shared/media_url'
 import { previewOrFail } from '#app/shared/publication_response'
@@ -38,7 +39,7 @@ export default class ProjectController {
 
     return inertia.render('portfolio/show', {
       preview,
-      project: {
+      project: ProjectDetailTransformer.transform({
         title: project.title,
         contentHtml: project.contentHtml,
         coverUrl: mediaUrl(project.cover),
@@ -49,7 +50,7 @@ export default class ProjectController {
         links: project.links,
         technologies: project.technologies,
         articles: project.articles,
-      },
+      }),
       hasOtherLocale: project.hasOtherLocale,
       labels: {
         backToList: i18n.t('messages.portfolio.backToList'),

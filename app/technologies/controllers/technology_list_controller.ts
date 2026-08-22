@@ -1,6 +1,7 @@
 import { inject } from '@adonisjs/core'
 import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
+import TechnologyCardTransformer from '#app/technologies/transformers/technology_card_transformer'
 import { TechnologyListQuery } from '#technologies/queries/technology_list_query'
 import { localePath, type Locale } from '#types/i18n'
 import type { TechnologyListItem } from '#technologies/queries/technology_list_query'
@@ -33,15 +34,17 @@ export default class TechnologyListController {
     const technologies = await this.technologyList.execute(locale)
 
     return inertia.render('technologies/index', {
-      technologies: technologies.map((technology) => ({
-        slug: technology.slug,
-        name: technology.name,
-        category: technology.category,
-        logoUrl: mediaUrl(technology.logo, 320),
-        docsUrl: technology.docsUrl,
-        description: technology.description,
-        usageLabel: usageLabel(technology, i18n),
-      })),
+      technologies: TechnologyCardTransformer.transform(
+        technologies.map((technology) => ({
+          slug: technology.slug,
+          name: technology.name,
+          category: technology.category,
+          logoUrl: mediaUrl(technology.logo, 320),
+          docsUrl: technology.docsUrl,
+          description: technology.description,
+          usageLabel: usageLabel(technology, i18n),
+        }))
+      ),
       labels: {
         title: i18n.t('messages.technologies.title'),
         empty: i18n.t('messages.technologies.empty'),

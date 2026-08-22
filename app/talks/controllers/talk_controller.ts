@@ -4,6 +4,7 @@ import { longDate } from '#app/shared/date_format'
 import { mediaUrl } from '#app/shared/media_url'
 import { previewOrFail } from '#app/shared/publication_response'
 import SeoService from '#app/shared/seo_service'
+import TalkDetailTransformer from '#app/talks/transformers/talk_detail_transformer'
 import Llms, { MARKDOWN_CONTENT_TYPE } from '#seo/llms'
 import { visibilityOf } from '#shared/content/publication'
 import { TalkDetailQuery } from '#talks/queries/talk_detail_query'
@@ -38,7 +39,7 @@ export default class TalkController {
 
     return inertia.render('talks/show', {
       preview,
-      talk: {
+      talk: TalkDetailTransformer.transform({
         title: talk.title,
         contentHtml: talk.contentHtml,
         coverUrl: mediaUrl(talk.cover),
@@ -49,7 +50,7 @@ export default class TalkController {
         upcoming: talk.upcoming,
         links: talk.links,
         technologies: talk.technologies,
-      },
+      }),
       hasOtherLocale: talk.hasOtherLocale,
       labels: {
         backToList: i18n.t('messages.talks.backToList'),

@@ -2,7 +2,7 @@ import { Link } from '@adonisjs/inertia/react'
 import { localePath, type Locale } from '#types/i18n'
 import ArticleContent from '~/components/article_content'
 import { LinkArrow } from '~/components/content_link'
-import ExternalLinkList, { type ExternalLinkRef } from '~/components/external_link_list'
+import ExternalLinkList from '~/components/external_link_list'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner from '~/components/preview_banner'
@@ -10,24 +10,14 @@ import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import TableOfContents from '~/components/table_of_contents'
-import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
+import { TechnologySection } from '~/components/technology_list'
 import type { PreviewMode } from '#types/content'
+import type { Data } from '@generated/data'
 
 type PortfolioShowProps = {
   locale: Locale
   preview: PreviewMode
-  project: {
-    title: string
-    contentHtml: string
-    coverUrl: string | null
-    startedAt: string | null
-    endedAt: string | null
-    readingTimeLabel: string
-    ongoing: boolean
-    links: ExternalLinkRef[]
-    technologies: TechnologyRef[]
-    articles: { slug: string; title: string }[]
-  }
+  project: Data.Portfolio.ProjectDetail
   hasOtherLocale: boolean
   labels: {
     backToList: string

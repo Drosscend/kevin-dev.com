@@ -5,25 +5,16 @@ import { EmptyState } from '~/components/empty_state'
 import ExternalLinkList from '~/components/external_link_list'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-
-type TechnologyCard = {
-  slug: string
-  name: string
-  category: TechnologyCategory
-  logoUrl: string | null
-  docsUrl: string | null
-  description: string
-  usageLabel: string
-}
+import type { Data } from '@generated/data'
 
 type TechnologiesIndexProps = {
   locale: Locale
-  technologies: TechnologyCard[]
+  technologies: Data.Technologies.TechnologyCard[]
   labels: {
     title: string
     empty: string
     docs: string
-    categories: Record<TechnologyCard['category'], string>
+    categories: Record<TechnologyCategory, string>
   }
   meta: SeoMeta
 }

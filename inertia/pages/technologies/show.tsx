@@ -4,20 +4,11 @@ import ExternalLinkList from '~/components/external_link_list'
 import { BackLink } from '~/components/page_header'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
-
-type Entry = { slug: string; title: string; summary: string; coverUrl: string | null }
+import type { Data } from '@generated/data'
 
 type TechnologyShowProps = {
   locale: Locale
-  technology: {
-    name: string
-    logoUrl: string | null
-    docsUrl: string | null
-    description: string
-    projects: Entry[]
-    articles: Entry[]
-    talks: Entry[]
-  }
+  technology: Data.Technologies.TechnologyDetail
   labels: {
     backToList: string
     docs: string
@@ -36,7 +27,7 @@ function UsageSection({
   href,
 }: {
   title: string
-  entries: Entry[]
+  entries: Data.Technologies.TechnologyDetail['projects']
   href: (slug: string) => string
 }) {
   if (entries.length === 0) {

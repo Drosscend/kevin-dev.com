@@ -9,6 +9,12 @@ import type { InferSharedProps, InferFlashData } from '@adonisjs/inertia/types'
 import type BlogArticleCardTransformer from '#app/blog/transformers/article_card_transformer'
 import type BlogArticleDetailTransformer from '#app/blog/transformers/article_detail_transformer'
 import type IdentityUserTransformer from '#app/identity/transformers/user_transformer'
+import type PortfolioProjectCardTransformer from '#app/portfolio/transformers/project_card_transformer'
+import type PortfolioProjectDetailTransformer from '#app/portfolio/transformers/project_detail_transformer'
+import type TalksTalkCardTransformer from '#app/talks/transformers/talk_card_transformer'
+import type TalksTalkDetailTransformer from '#app/talks/transformers/talk_detail_transformer'
+import type TechnologiesTechnologyCardTransformer from '#app/technologies/transformers/technology_card_transformer'
+import type TechnologiesTechnologyDetailTransformer from '#app/technologies/transformers/technology_detail_transformer'
 import type InertiaMiddleware from '#app/middleware/inertia_middleware'
 
 export namespace Data {
@@ -26,6 +32,36 @@ export namespace Data {
     export type User = InferData<IdentityUserTransformer>
     export namespace User {
       export type Variants = InferVariants<IdentityUserTransformer>
+    }
+  }
+  export namespace Portfolio {
+    export type ProjectCard = InferData<PortfolioProjectCardTransformer>
+    export namespace ProjectCard {
+      export type Variants = InferVariants<PortfolioProjectCardTransformer>
+    }
+    export type ProjectDetail = InferData<PortfolioProjectDetailTransformer>
+    export namespace ProjectDetail {
+      export type Variants = InferVariants<PortfolioProjectDetailTransformer>
+    }
+  }
+  export namespace Talks {
+    export type TalkCard = InferData<TalksTalkCardTransformer>
+    export namespace TalkCard {
+      export type Variants = InferVariants<TalksTalkCardTransformer>
+    }
+    export type TalkDetail = InferData<TalksTalkDetailTransformer>
+    export namespace TalkDetail {
+      export type Variants = InferVariants<TalksTalkDetailTransformer>
+    }
+  }
+  export namespace Technologies {
+    export type TechnologyCard = InferData<TechnologiesTechnologyCardTransformer>
+    export namespace TechnologyCard {
+      export type Variants = InferVariants<TechnologiesTechnologyCardTransformer>
+    }
+    export type TechnologyDetail = InferData<TechnologiesTechnologyDetailTransformer>
+    export namespace TechnologyDetail {
+      export type Variants = InferVariants<TechnologiesTechnologyDetailTransformer>
     }
   }
   export type SharedProps = InferSharedProps<InertiaMiddleware>

@@ -4,22 +4,12 @@ import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
-import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
-
-type ProjectCard = {
-  slug: string
-  title: string
-  summary: string
-  coverUrl: string | null
-  period: string | null
-  readingTimeLabel: string
-  ongoing: boolean
-  technologies: TechnologyRef[]
-}
+import { TechnologyNames } from '~/components/technology_list'
+import type { Data } from '@generated/data'
 
 type PortfolioIndexProps = {
   locale: Locale
-  projects: ProjectCard[]
+  projects: Data.Portfolio.ProjectCard[]
   labels: { title: string; empty: string; ongoing: string }
   meta: SeoMeta
 }

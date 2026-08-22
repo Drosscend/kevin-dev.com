@@ -1,4 +1,5 @@
 import { inject } from '@adonisjs/core'
+import ProjectCardTransformer from '#app/portfolio/transformers/project_card_transformer'
 import { monthYear } from '#app/shared/date_format'
 import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
@@ -31,16 +32,18 @@ export default class ProjectListController {
     const projects = await this.projectList.execute(locale)
 
     return inertia.render('portfolio/index', {
-      projects: projects.map((project) => ({
-        slug: project.slug,
-        title: project.title,
-        summary: project.summary,
-        coverUrl: mediaUrl(project.cover),
-        period: formatPeriod(project, locale),
-        readingTimeLabel: i18n.t('messages.blog.readingTime', { minutes: project.readingTime }),
-        ongoing: project.ongoing,
-        technologies: project.technologies,
-      })),
+      projects: ProjectCardTransformer.transform(
+        projects.map((project) => ({
+          slug: project.slug,
+          title: project.title,
+          summary: project.summary,
+          coverUrl: mediaUrl(project.cover),
+          period: formatPeriod(project, locale),
+          readingTimeLabel: i18n.t('messages.blog.readingTime', { minutes: project.readingTime }),
+          ongoing: project.ongoing,
+          technologies: project.technologies,
+        }))
+      ),
       labels: {
         title: i18n.t('messages.portfolio.title'),
         empty: i18n.t('messages.portfolio.empty'),
