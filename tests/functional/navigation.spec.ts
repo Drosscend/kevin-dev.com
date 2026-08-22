@@ -6,10 +6,14 @@ import frMessages from '../../resources/lang/fr/messages.json' with { type: 'jso
 /** A translation file: nested groups down to the leaf strings. */
 type Messages = { [key: string]: string | Messages }
 
+function isGroup(value: string | Messages): value is Messages {
+  return typeof value === 'object'
+}
+
 /** Every leaf string of a translation file, keyed by its dotted path. */
 function flatten(messages: Messages, prefix = ''): [string, string][] {
   return Object.entries(messages).flatMap(([key, value]): [string, string][] =>
-    typeof value === 'object' ? flatten(value, `${prefix}${key}.`) : [[`${prefix}${key}`, value]]
+    isGroup(value) ? flatten(value, `${prefix}${key}.`) : [[`${prefix}${key}`, value]]
   )
 }
 

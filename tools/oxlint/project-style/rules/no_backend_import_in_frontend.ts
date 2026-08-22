@@ -1,4 +1,5 @@
 import { defineRule } from '@oxlint/plugins'
+import { isImportPath } from '../import_source.ts'
 
 const SHARED_PREFIX = '#types/'
 
@@ -22,7 +23,7 @@ export const noBackendImportInFrontendRule = defineRule({
       ImportDeclaration(node) {
         const source = node.source.value
 
-        if (typeof source !== 'string' || !source.startsWith('#')) {
+        if (!isImportPath(source) || !source.startsWith('#')) {
           return
         }
 

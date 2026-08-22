@@ -1,4 +1,5 @@
 import { defineRule } from '@oxlint/plugins'
+import { isImportPath } from '../import_source.ts'
 
 /**
  * Guards the direction of the dependency. Business capabilities are
@@ -20,7 +21,7 @@ export const noAppImportInCoreRule = defineRule({
       ImportDeclaration(node) {
         const source = node.source.value
 
-        if (typeof source !== 'string') {
+        if (!isImportPath(source)) {
           return
         }
 

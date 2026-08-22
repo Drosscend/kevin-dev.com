@@ -56,7 +56,7 @@ export async function uploadMediaImage(
         errors?: Record<string, string | string[]>
       } | null
       const firstError = payload?.errors ? Object.values(payload.errors).flat()[0] : null
-      return { error: typeof firstError === 'string' ? firstError : 'Téléversement impossible' }
+      return { error: firstError ?? 'Téléversement impossible' }
     }
     return { media: (await response.json()) as UploadedMedia }
   } catch {
