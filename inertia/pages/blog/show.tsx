@@ -7,20 +7,14 @@ import PreviewBanner from '~/components/preview_banner'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import TableOfContents from '~/components/table_of_contents'
-import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
+import { TechnologySection } from '~/components/technology_list'
 import type { PreviewMode } from '#types/content'
+import type { Data } from '@generated/data'
 
 type BlogShowProps = {
   locale: Locale
   preview: PreviewMode
-  article: {
-    title: string
-    contentHtml: string
-    publishedAt: string | null
-    readingTimeLabel: string
-    category: { slug: string; name: string } | null
-    technologies: TechnologyRef[]
-  }
+  article: Data.Blog.ArticleDetail
   hasOtherLocale: boolean
   labels: {
     publishedOn: string

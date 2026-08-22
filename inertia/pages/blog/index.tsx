@@ -6,23 +6,13 @@ import { LinkArrow, ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
-
-type ArticleCard = {
-  slug: string
-  title: string
-  summary: string
-  publishedAt: string | null
-  readingTimeLabel: string
-  category: { slug: string; name: string } | null
-  technologies: TechnologyRef[]
-  coverUrl: string | null
-}
+import { TechnologyNames } from '~/components/technology_list'
+import type { Data } from '@generated/data'
 
 type BlogIndexProps = {
   locale: Locale
   filters: { category: string | null }
-  articles: ArticleCard[]
+  articles: Data.Blog.ArticleCard[]
   pagination: { currentPage: number; lastPage: number }
   categories: { slug: string; name: string }[]
   labels: {

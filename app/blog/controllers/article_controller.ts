@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/core'
 import { Exception } from '@adonisjs/core/exceptions'
+import ArticleDetailTransformer from '#app/blog/transformers/article_detail_transformer'
 import { longDate } from '#app/shared/date_format'
 import { previewOrFail } from '#app/shared/publication_response'
 import SeoService from '#app/shared/seo_service'
@@ -37,14 +38,14 @@ export default class ArticleController {
 
     return inertia.render('blog/show', {
       preview,
-      article: {
+      article: ArticleDetailTransformer.transform({
         title: article.title,
         contentHtml: article.contentHtml,
         publishedAt: longDate(article.publishedAt, locale),
         readingTimeLabel: i18n.t('messages.blog.readingTime', { minutes: article.readingTime }),
         category: article.category,
         technologies: article.technologies,
-      },
+      }),
       hasOtherLocale: article.hasOtherLocale,
       labels: {
         publishedOn: i18n.t('messages.blog.publishedOn'),

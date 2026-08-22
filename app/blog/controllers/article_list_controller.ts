@@ -1,4 +1,5 @@
 import { inject } from '@adonisjs/core'
+import ArticleCardTransformer from '#app/blog/transformers/article_card_transformer'
 import { longDate } from '#app/shared/date_format'
 import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
@@ -51,16 +52,18 @@ export default class ArticleListController {
 
     return inertia.render('blog/index', {
       filters: { category: categorySlug },
-      articles: list.articles.map((article) => ({
-        slug: article.slug,
-        title: article.title,
-        summary: article.summary,
-        publishedAt: longDate(article.publishedAt, locale),
-        readingTimeLabel: i18n.t('messages.blog.readingTime', { minutes: article.readingTime }),
-        category: article.category,
-        technologies: article.technologies,
-        coverUrl: mediaUrl(article.cover),
-      })),
+      articles: ArticleCardTransformer.transform(
+        list.articles.map((article) => ({
+          slug: article.slug,
+          title: article.title,
+          summary: article.summary,
+          publishedAt: longDate(article.publishedAt, locale),
+          readingTimeLabel: i18n.t('messages.blog.readingTime', { minutes: article.readingTime }),
+          category: article.category,
+          technologies: article.technologies,
+          coverUrl: mediaUrl(article.cover),
+        }))
+      ),
       pagination: {
         currentPage: list.currentPage,
         lastPage: list.lastPage,
