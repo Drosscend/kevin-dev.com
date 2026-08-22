@@ -4,10 +4,7 @@ import { PROJECT_LINK_TYPES, type ProjectLinkType, type PublicationStatus } from
 import { client } from '~/client'
 import AdminPage, { AdminBackLink } from '~/components/admin/admin_page'
 import DraftBanner from '~/components/admin/draft_banner'
-import ExternalLinksCard, {
-  type LinkValues,
-  withoutEmptyLinks,
-} from '~/components/admin/external_links_card'
+import ExternalLinksCard, { withoutEmptyLinks } from '~/components/admin/external_links_card'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
 import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
 import PreviewLink from '~/components/admin/preview_link'
@@ -23,29 +20,13 @@ import { Label } from '~/components/ui/label'
 import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
 import { formatFrDateTime } from '~/lib/dates'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
-
-type ProjectData = {
-  id: number
-  slug: string
-  status: PublicationStatus
-  coverMediaId: number | null
-  startedAt: string | null
-  endedAt: string | null
-  featured: boolean
-  technologyIds: number[]
-  articleIds: number[]
-  links: LinkValues[]
-  publishedAt: string | null
-  hasBeenOnline: boolean
-  fr: TranslationValues
-  en: TranslationValues | null
-}
+import type { Data } from '@generated/data'
 
 type Option = { id: number; name: string }
 type ArticleOption = { id: number; title: string }
 
 type ProjectFormProps = {
-  project: ProjectData | null
+  project: Data.Portfolio.ProjectForm | null
   options: { technologies: Option[]; articles: ArticleOption[]; media: MediaPickerItem[] }
 }
 

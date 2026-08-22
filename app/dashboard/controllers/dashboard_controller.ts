@@ -1,4 +1,5 @@
 import { inject } from '@adonisjs/core'
+import DashboardStatsTransformer from '#app/dashboard/transformers/dashboard_stats_transformer'
 import { DashboardStatsQuery } from '#dashboard/queries/dashboard_stats_query'
 import Umami from '#dashboard/umami'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -16,7 +17,7 @@ export default class DashboardController {
     return inertia.render('admin/dashboard', {
       totpEnabled: auth.getUserOrFail().totpEnabled,
       umami,
-      stats,
+      stats: DashboardStatsTransformer.transform(stats),
     })
   }
 }

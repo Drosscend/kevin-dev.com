@@ -3,6 +3,7 @@ import vine from '@vinejs/vine'
 import { pickerDateTime } from '#app/shared/date_format'
 import { variantUrl } from '#app/shared/media_url'
 import { publishedAt, relationId, slug, status, translation } from '#app/shared/validators'
+import TalkFormTransformer from '#app/talks/transformers/talk_form_transformer'
 import { MediaPickerQuery } from '#media/queries/media_picker_query'
 import { SaveTalk } from '#talks/actions/save_talk'
 import { TalkFormQuery } from '#talks/queries/talk_form_query'
@@ -52,11 +53,13 @@ export default class TalkFormController {
     }
 
     return inertia.render('admin/talks/form', {
-      talk: talk && {
-        ...talk,
-        eventDate: talk.eventDate.toISODate(),
-        publishedAt: pickerDateTime(talk.publishedAt),
-      },
+      talk:
+        talk &&
+        TalkFormTransformer.transform({
+          ...talk,
+          eventDate: talk.eventDate.toISODate(),
+          publishedAt: pickerDateTime(talk.publishedAt),
+        }),
       options: await this.formOptions(),
     })
   }

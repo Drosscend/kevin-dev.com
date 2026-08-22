@@ -42,8 +42,6 @@ export default class ArticleListController {
     })
 
     if (list.total > 0 && page > list.lastPage) {
-      // The app forwards the query string on every redirect, and the
-      // target already carries the filter and the page.
       return response
         .redirect()
         .withQs(false)

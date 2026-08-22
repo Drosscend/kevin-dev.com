@@ -4,10 +4,7 @@ import { TALK_LINK_TYPES, type TalkLinkType, type PublicationStatus } from '#typ
 import { client } from '~/client'
 import AdminPage, { AdminBackLink } from '~/components/admin/admin_page'
 import DraftBanner from '~/components/admin/draft_banner'
-import ExternalLinksCard, {
-  type LinkValues,
-  withoutEmptyLinks,
-} from '~/components/admin/external_links_card'
+import ExternalLinksCard, { withoutEmptyLinks } from '~/components/admin/external_links_card'
 import { useAdminLocale } from '~/components/admin/locale_tabs'
 import { MediaPicker, type MediaPickerItem } from '~/components/admin/media_picker'
 import PreviewLink from '~/components/admin/preview_link'
@@ -24,27 +21,12 @@ import { Label } from '~/components/ui/label'
 import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
 import { formatFrDateTime } from '~/lib/dates'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
-
-type TalkData = {
-  id: number
-  slug: string
-  status: PublicationStatus
-  coverMediaId: number | null
-  eventDate: string | null
-  eventName: string
-  city: string
-  technologyIds: number[]
-  links: LinkValues[]
-  publishedAt: string | null
-  hasBeenOnline: boolean
-  fr: TranslationValues
-  en: TranslationValues | null
-}
+import type { Data } from '@generated/data'
 
 type Option = { id: number; name: string }
 
 type TalkFormProps = {
-  talk: TalkData | null
+  talk: Data.Talks.TalkForm | null
   options: { technologies: Option[]; media: MediaPickerItem[] }
 }
 

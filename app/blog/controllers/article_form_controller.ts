@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
+import ArticleFormTransformer from '#app/blog/transformers/article_form_transformer'
 import { pickerDateTime } from '#app/shared/date_format'
 import { variantUrl } from '#app/shared/media_url'
 import { publishedAt, relationId, slug, status, translation } from '#app/shared/validators'
@@ -40,10 +41,12 @@ export default class ArticleFormController {
     }
 
     return inertia.render('admin/articles/form', {
-      article: article && {
-        ...article,
-        publishedAt: pickerDateTime(article.publishedAt),
-      },
+      article:
+        article &&
+        ArticleFormTransformer.transform({
+          ...article,
+          publishedAt: pickerDateTime(article.publishedAt),
+        }),
       options: await this.formOptions(),
     })
   }

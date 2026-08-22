@@ -19,24 +19,12 @@ import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
 import { formatFrDateTime } from '~/lib/dates'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
 import type { PublicationStatus } from '#types/content'
-
-type ArticleData = {
-  id: number
-  slug: string
-  status: PublicationStatus
-  categoryId: number | null
-  coverMediaId: number | null
-  technologyIds: number[]
-  publishedAt: string | null
-  hasBeenOnline: boolean
-  fr: TranslationValues
-  en: TranslationValues | null
-}
+import type { Data } from '@generated/data'
 
 type Option = { id: number; name: string }
 
 type ArticleFormProps = {
-  article: ArticleData | null
+  article: Data.Blog.ArticleForm | null
   options: { categories: Option[]; technologies: Option[]; media: MediaPickerItem[] }
 }
 

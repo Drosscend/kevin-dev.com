@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
+import ProjectFormTransformer from '#app/portfolio/transformers/project_form_transformer'
 import { pickerDateTime } from '#app/shared/date_format'
 import { variantUrl } from '#app/shared/media_url'
 import { publishedAt, relationId, slug, status, translation } from '#app/shared/validators'
@@ -55,12 +56,14 @@ export default class ProjectFormController {
     }
 
     return inertia.render('admin/projects/form', {
-      project: project && {
-        ...project,
-        startedAt: project.startedAt?.toISODate() ?? null,
-        endedAt: project.endedAt?.toISODate() ?? null,
-        publishedAt: pickerDateTime(project.publishedAt),
-      },
+      project:
+        project &&
+        ProjectFormTransformer.transform({
+          ...project,
+          startedAt: project.startedAt?.toISODate() ?? null,
+          endedAt: project.endedAt?.toISODate() ?? null,
+          publishedAt: pickerDateTime(project.publishedAt),
+        }),
       options: await this.formOptions(),
     })
   }

@@ -8,9 +8,11 @@ import type { InferData, InferVariants } from '@adonisjs/core/types/transformers
 import type { InferSharedProps, InferFlashData } from '@adonisjs/inertia/types'
 import type BlogArticleCardTransformer from '#app/blog/transformers/article_card_transformer'
 import type BlogArticleDetailTransformer from '#app/blog/transformers/article_detail_transformer'
+import type BlogArticleFormTransformer from '#app/blog/transformers/article_form_transformer'
 import type BlogArticleRowTransformer from '#app/blog/transformers/article_row_transformer'
 import type BlogCategoryRowTransformer from '#app/blog/transformers/category_row_transformer'
 import type ContactContactMessageTransformer from '#app/contact/transformers/contact_message_transformer'
+import type DashboardDashboardStatsTransformer from '#app/dashboard/transformers/dashboard_stats_transformer'
 import type IdentityUserTransformer from '#app/identity/transformers/user_transformer'
 import type MediaMediaItemTransformer from '#app/media/transformers/media_item_transformer'
 import type PagesHomeArticleTransformer from '#app/pages/transformers/home_article_transformer'
@@ -20,9 +22,11 @@ import type PagesTimelineEntryTransformer from '#app/pages/transformers/timeline
 import type PagesTimelineRowTransformer from '#app/pages/transformers/timeline_row_transformer'
 import type PortfolioProjectCardTransformer from '#app/portfolio/transformers/project_card_transformer'
 import type PortfolioProjectDetailTransformer from '#app/portfolio/transformers/project_detail_transformer'
+import type PortfolioProjectFormTransformer from '#app/portfolio/transformers/project_form_transformer'
 import type PortfolioProjectRowTransformer from '#app/portfolio/transformers/project_row_transformer'
 import type TalksTalkCardTransformer from '#app/talks/transformers/talk_card_transformer'
 import type TalksTalkDetailTransformer from '#app/talks/transformers/talk_detail_transformer'
+import type TalksTalkFormTransformer from '#app/talks/transformers/talk_form_transformer'
 import type TalksTalkRowTransformer from '#app/talks/transformers/talk_row_transformer'
 import type TechnologiesTechnologyCardTransformer from '#app/technologies/transformers/technology_card_transformer'
 import type TechnologiesTechnologyDetailTransformer from '#app/technologies/transformers/technology_detail_transformer'
@@ -39,6 +43,10 @@ export namespace Data {
     export namespace ArticleDetail {
       export type Variants = InferVariants<BlogArticleDetailTransformer>
     }
+    export type ArticleForm = InferData<BlogArticleFormTransformer>
+    export namespace ArticleForm {
+      export type Variants = InferVariants<BlogArticleFormTransformer>
+    }
     export type ArticleRow = InferData<BlogArticleRowTransformer>
     export namespace ArticleRow {
       export type Variants = InferVariants<BlogArticleRowTransformer>
@@ -52,6 +60,12 @@ export namespace Data {
     export type ContactMessage = InferData<ContactContactMessageTransformer>
     export namespace ContactMessage {
       export type Variants = InferVariants<ContactContactMessageTransformer>
+    }
+  }
+  export namespace Dashboard {
+    export type DashboardStats = InferData<DashboardDashboardStatsTransformer>
+    export namespace DashboardStats {
+      export type Variants = InferVariants<DashboardDashboardStatsTransformer>
     }
   }
   export namespace Identity {
@@ -97,6 +111,10 @@ export namespace Data {
     export namespace ProjectDetail {
       export type Variants = InferVariants<PortfolioProjectDetailTransformer>
     }
+    export type ProjectForm = InferData<PortfolioProjectFormTransformer>
+    export namespace ProjectForm {
+      export type Variants = InferVariants<PortfolioProjectFormTransformer>
+    }
     export type ProjectRow = InferData<PortfolioProjectRowTransformer>
     export namespace ProjectRow {
       export type Variants = InferVariants<PortfolioProjectRowTransformer>
@@ -110,6 +128,10 @@ export namespace Data {
     export type TalkDetail = InferData<TalksTalkDetailTransformer>
     export namespace TalkDetail {
       export type Variants = InferVariants<TalksTalkDetailTransformer>
+    }
+    export type TalkForm = InferData<TalksTalkFormTransformer>
+    export namespace TalkForm {
+      export type Variants = InferVariants<TalksTalkFormTransformer>
     }
     export type TalkRow = InferData<TalksTalkRowTransformer>
     export namespace TalkRow {

@@ -4,6 +4,7 @@ import AdminPage from '~/components/admin/admin_page'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { plural } from '~/lib/plural'
+import type { Data } from '@generated/data'
 
 interface DashboardProps {
   totpEnabled: boolean
@@ -12,14 +13,7 @@ interface DashboardProps {
     visitors: number
     topPages: { path: string; views: number }[]
   } | null
-  stats: {
-    articlesPublished: number
-    articlesDraft: number
-    projectsPublished: number
-    projectsDraft: number
-    mediaCount: number
-    unreadMessages: number
-  }
+  stats: Data.Dashboard.DashboardStats
 }
 
 function StatCard({
