@@ -77,17 +77,17 @@ export function entryTranslationStatus(
   return translationStatus(values)
 }
 
-const STATUS_LABEL: Record<TranslationStatus, string> = {
+const STATUS_LABEL = {
   empty: 'traduction anglaise absente',
   partial: 'traduction anglaise incomplète',
   complete: 'traduction anglaise complète',
-}
+} satisfies Record<TranslationStatus, string>
 
-const STATUS_DOT: Record<TranslationStatus, string> = {
+const STATUS_DOT = {
   empty: 'border-muted-foreground size-2 rounded-full border',
   partial: 'size-2 rounded-full bg-amber-500',
   complete: 'size-2 rounded-full bg-emerald-500',
-}
+} satisfies Record<TranslationStatus, string>
 
 /**
  * The single language switch of an admin page. The dot on the English

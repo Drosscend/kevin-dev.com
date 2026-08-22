@@ -1,21 +1,21 @@
 import { useEffect, useRef } from 'react'
 
-const DOWNLOAD_EXTENSIONS: Record<string, string> = {
-  ts: 'ts',
-  tsx: 'tsx',
-  js: 'js',
-  jsx: 'jsx',
-  json: 'json',
-  sh: 'sh',
-  bash: 'sh',
-  css: 'css',
-  html: 'html',
-  sql: 'sql',
-  py: 'py',
-  yaml: 'yml',
-  yml: 'yml',
-  md: 'md',
-}
+const DOWNLOAD_EXTENSIONS = new Map([
+  ['ts', 'ts'],
+  ['tsx', 'tsx'],
+  ['js', 'js'],
+  ['jsx', 'jsx'],
+  ['json', 'json'],
+  ['sh', 'sh'],
+  ['bash', 'sh'],
+  ['css', 'css'],
+  ['html', 'html'],
+  ['sql', 'sql'],
+  ['py', 'py'],
+  ['yaml', 'yml'],
+  ['yml', 'yml'],
+  ['md', 'md'],
+])
 
 const COPY_ICON =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'
@@ -58,7 +58,7 @@ function enhanceCodeBlock(pre: HTMLPreElement) {
 
   toolbar.appendChild(
     toolbarButton(DOWNLOAD_ICON, 'Télécharger', () => {
-      const extension = DOWNLOAD_EXTENSIONS[language] ?? 'txt'
+      const extension = DOWNLOAD_EXTENSIONS.get(language) ?? 'txt'
       const blob = new Blob([code()], { type: 'text/plain;charset=utf-8' })
       const link = document.createElement('a')
       link.href = URL.createObjectURL(blob)

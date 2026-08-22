@@ -17,12 +17,12 @@ import { plural } from '~/lib/plural'
 import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-const CATEGORY_LABELS: Record<TechnologyCategory, string> = {
+const CATEGORY_LABELS = {
   langage: 'Langage',
   framework: 'Framework',
   outil: 'Outil',
   infra: 'Infra',
-}
+} satisfies Record<TechnologyCategory, string>
 
 const CATEGORIES = TECHNOLOGY_CATEGORIES.map((value) => ({ value, label: CATEGORY_LABELS[value] }))
 

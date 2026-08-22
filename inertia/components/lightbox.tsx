@@ -280,19 +280,19 @@ function Viewer({
       return
     }
 
-    const actions: Record<string, () => void> = {
-      'Escape': onClose,
-      'ArrowLeft': () => go(-1),
-      'ArrowRight': () => go(1),
-      'Home': () => goTo(0),
-      'End': () => goTo(slides.length - 1),
-      '+': () => zoomTo(applied.current.scale * ZOOM_STEP),
-      '=': () => zoomTo(applied.current.scale * ZOOM_STEP),
-      '-': () => zoomTo(applied.current.scale / ZOOM_STEP),
-      '0': () => apply(FIT),
-    }
+    const actions = new Map<string, () => void>([
+      ['Escape', onClose],
+      ['ArrowLeft', () => go(-1)],
+      ['ArrowRight', () => go(1)],
+      ['Home', () => goTo(0)],
+      ['End', () => goTo(slides.length - 1)],
+      ['+', () => zoomTo(applied.current.scale * ZOOM_STEP)],
+      ['=', () => zoomTo(applied.current.scale * ZOOM_STEP)],
+      ['-', () => zoomTo(applied.current.scale / ZOOM_STEP)],
+      ['0', () => apply(FIT)],
+    ])
 
-    const action = actions[event.key]
+    const action = actions.get(event.key)
 
     if (action) {
       event.preventDefault()

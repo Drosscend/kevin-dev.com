@@ -31,13 +31,13 @@ type TalkFormProps = InertiaProps<{
   options: { technologies: Option[]; media: MediaPickerItem[] }
 }>
 
-const LINK_TYPE_LABELS: Record<TalkLinkType, string> = {
+const LINK_TYPE_LABELS = {
   slides: 'Slides',
   video: 'Vidéo',
   event: 'Événement',
   code: 'Code',
   other: 'Autre',
-}
+} satisfies Record<TalkLinkType, string>
 
 const LINK_TYPES = TALK_LINK_TYPES.map((value) => ({ value, label: LINK_TYPE_LABELS[value] }))
 

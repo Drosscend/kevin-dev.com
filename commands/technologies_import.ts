@@ -103,10 +103,10 @@ export default class TechnologiesImport extends BaseCommand {
         }
       )
 
-      const descriptions: Record<Locale, string> = {
+      const descriptions = {
         fr: entry.descriptionFr,
         en: entry.descriptionEn,
-      }
+      } satisfies Record<Locale, string>
       for (const locale of LOCALES) {
         await TechnologyTranslation.updateOrCreate(
           { technologyId: technology.id, locale },

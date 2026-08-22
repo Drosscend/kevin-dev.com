@@ -18,12 +18,12 @@ import { type InertiaProps } from '~/types'
 import type { Locale } from '#types/i18n'
 import type { Data } from '@generated/data'
 
-const HONOURS_LABELS: Record<TimelineHonours, string> = {
+const HONOURS_LABELS = {
   none: 'Sans mention',
   fair: 'Assez bien',
   good: 'Bien',
   very_good: 'Très bien',
-}
+} satisfies Record<TimelineHonours, string>
 
 const HONOURS = TIMELINE_HONOURS.map((value) => ({ value, label: HONOURS_LABELS[value] }))
 

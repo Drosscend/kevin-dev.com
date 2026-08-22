@@ -16,14 +16,14 @@ const MINIMUM_HEADINGS = 2
 const HEADING_PATTERN = /<h([23])\s+id="([^"]*)"[^>]*>([\s\S]*?)<\/h\1>/g
 const TAG_PATTERN = /<[^>]*>/g
 const ENTITY_PATTERN = /&(#x[\da-f]+|#\d+|[a-z]+);/gi
-const NAMED_ENTITIES: Record<string, string> = {
-  amp: '&',
-  lt: '<',
-  gt: '>',
-  quot: '"',
-  apos: "'",
-  nbsp: ' ',
-}
+const NAMED_ENTITIES = new Map([
+  ['amp', '&'],
+  ['lt', '<'],
+  ['gt', '>'],
+  ['quot', '"'],
+  ['apos', "'"],
+  ['nbsp', ' '],
+])
 
 function decodeEntities(text: string) {
   return text.replace(ENTITY_PATTERN, (match, entity: string) => {
@@ -34,7 +34,7 @@ function decodeEntities(text: string) {
     if (entity.startsWith('#')) {
       return String.fromCodePoint(Number(entity.slice(1)))
     }
-    return NAMED_ENTITIES[entity.toLowerCase()] ?? match
+    return NAMED_ENTITIES.get(entity.toLowerCase()) ?? match
   })
 }
 

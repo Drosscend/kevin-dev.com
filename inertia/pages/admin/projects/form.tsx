@@ -31,14 +31,14 @@ type ProjectFormProps = InertiaProps<{
   options: { technologies: Option[]; articles: ArticleOption[]; media: MediaPickerItem[] }
 }>
 
-const LINK_TYPE_LABELS: Record<ProjectLinkType, string> = {
+const LINK_TYPE_LABELS = {
   github: 'GitHub',
   demo: 'Démo',
   release: 'Release',
   store: 'Store',
   paper: 'Mémoire / rapport',
   other: 'Autre',
-}
+} satisfies Record<ProjectLinkType, string>
 
 const LINK_TYPES = PROJECT_LINK_TYPES.map((value) => ({ value, label: LINK_TYPE_LABELS[value] }))
 
