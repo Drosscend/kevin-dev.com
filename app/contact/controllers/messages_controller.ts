@@ -13,8 +13,6 @@ export default class MessagesController {
     return inertia.render('admin/messages', {
       messages: messages.map((message) => ({
         ...message,
-        // Raw value: the admin formats every date through one helper,
-        // so a message reads like a publication date.
         createdAt: pickerDateTime(message.createdAt),
       })),
     })

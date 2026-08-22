@@ -11,7 +11,8 @@ déploiement : [README.md](README.md).
 - [CONTEXT.md](CONTEXT.md) : vocabulaire du domaine, à employer tel quel.
 - [docs/adr/](docs/adr) : les décisions déjà tranchées, à ne pas rouvrir en
   passant.
-- `app/CLAUDE.md` et `inertia/CLAUDE.md` : les règles propres à chaque couche.
+- `app/CLAUDE.md`, `src/CLAUDE.md` et `inertia/CLAUDE.md` : les règles propres
+  à chaque couche.
 
 ## Code que nous n'avons pas écrit
 
