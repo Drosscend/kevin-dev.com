@@ -1,21 +1,14 @@
 import { Link } from '@adonisjs/inertia/react'
 import { Plus } from 'lucide-react'
 import AdminPage from '~/components/admin/admin_page'
-import { ContentList, ContentListRow, type ContentListEntry } from '~/components/admin/content_list'
+import { ContentList, ContentListRow } from '~/components/admin/content_list'
 import EmptyState from '~/components/admin/empty_state'
 import AccentBadge from '~/components/status_badge'
 import { Button } from '~/components/ui/button'
-
-type TalkRow = ContentListEntry & {
-  hasEnglish: boolean
-  eventName: string
-  eventDate: string
-  city: string
-  upcoming: boolean
-}
+import type { Data } from '@generated/data'
 
 type TalksIndexProps = {
-  talks: TalkRow[]
+  talks: Data.Talks.TalkRow[]
 }
 
 export default function TalksIndex({ talks }: TalksIndexProps) {

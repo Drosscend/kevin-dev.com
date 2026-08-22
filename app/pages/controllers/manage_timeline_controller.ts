@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
+import TimelineRowTransformer from '#app/pages/transformers/timeline_row_transformer'
 import { SaveTimelineEntry } from '#pages/actions/save_timeline_entry'
 import { TimelineAdminListQuery } from '#pages/queries/timeline_admin_list_query'
 import { TIMELINE_HONOURS } from '#types/content'
@@ -29,7 +30,9 @@ export default class ManageTimelineController {
   ) {}
 
   async render({ inertia }: HttpContext) {
-    return inertia.render('admin/timeline', { timeline: await this.timelineAdminList.execute() })
+    return inertia.render('admin/timeline', {
+      timeline: TimelineRowTransformer.transform(await this.timelineAdminList.execute()),
+    })
   }
 
   async execute({ params, request, response, session }: HttpContext) {

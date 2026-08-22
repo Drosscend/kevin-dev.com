@@ -1,4 +1,5 @@
 import { inject } from '@adonisjs/core'
+import ContactMessageTransformer from '#app/contact/transformers/contact_message_transformer'
 import { pickerDateTime } from '#app/shared/date_format'
 import { ContactMessagesQuery } from '#contact/queries/contact_messages_query'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -11,10 +12,12 @@ export default class MessagesController {
     const messages = await this.contactMessages.execute()
 
     return inertia.render('admin/messages', {
-      messages: messages.map((message) => ({
-        ...message,
-        createdAt: pickerDateTime(message.createdAt),
-      })),
+      messages: ContactMessageTransformer.transform(
+        messages.map((message) => ({
+          ...message,
+          createdAt: pickerDateTime(message.createdAt),
+        }))
+      ),
     })
   }
 }

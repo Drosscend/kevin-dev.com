@@ -1,4 +1,5 @@
 import { inject } from '@adonisjs/core'
+import CategoryRowTransformer from '#app/blog/transformers/category_row_transformer'
 import { CategoryAdminListQuery } from '#blog/queries/category_admin_list_query'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -8,7 +9,7 @@ export default class ManageCategoriesController {
 
   async render({ inertia }: HttpContext) {
     return inertia.render('admin/categories', {
-      categories: await this.categoryAdminList.execute(),
+      categories: CategoryRowTransformer.transform(await this.categoryAdminList.execute()),
     })
   }
 }

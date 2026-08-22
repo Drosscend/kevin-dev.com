@@ -1,5 +1,9 @@
 import { inject } from '@adonisjs/core'
 import drive from '@adonisjs/drive/services/main'
+import HomeArticleTransformer from '#app/pages/transformers/home_article_transformer'
+import HomeProjectTransformer from '#app/pages/transformers/home_project_transformer'
+import HomeTalkTransformer from '#app/pages/transformers/home_talk_transformer'
+import TimelineEntryTransformer from '#app/pages/transformers/timeline_entry_transformer'
 import { longDate, monthYear } from '#app/shared/date_format'
 import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
@@ -28,44 +32,53 @@ export default class HomeController {
       roles: overview.roles,
       location: overview.location,
       cvPdfAvailable: await drive.use().exists(CV_PDF_KEY),
-      latestArticles: overview.articles.map((article) => ({
-        slug: article.slug,
-        title: article.title,
-        summary: article.summary,
-        publishedAt: longDate(article.publishedAt, locale),
-        coverUrl: mediaUrl(article.cover),
-      })),
+      latestArticles: HomeArticleTransformer.transform(
+        overview.articles.map((article) => ({
+          slug: article.slug,
+          title: article.title,
+          summary: article.summary,
+          publishedAt: longDate(article.publishedAt, locale),
+          coverUrl: mediaUrl(article.cover),
+        }))
+      ),
       articlesTotal: overview.articlesTotal,
-      projects: overview.projects.map((project) => ({
-        slug: project.slug,
-        title: project.title,
-        summary: project.summary,
-        coverUrl: mediaUrl(project.cover),
-        ongoing: project.ongoing,
-        technologies: project.technologies,
-      })),
+      projects: HomeProjectTransformer.transform(
+        overview.projects.map((project) => ({
+          slug: project.slug,
+          title: project.title,
+          summary: project.summary,
+          coverUrl: mediaUrl(project.cover),
+          ongoing: project.ongoing,
+          technologies: project.technologies,
+        }))
+      ),
       projectsTotal: overview.projectsTotal,
       technologies: overview.technologies,
       hiddenTechnologies: overview.hiddenTechnologies,
-      talks: overview.talks.map((talk) => ({
-        slug: talk.slug,
-        title: talk.title,
-        eventName: talk.eventName,
-        eventDate: monthYear(talk.eventDate, locale),
-        city: talk.city,
-        upcoming: talk.upcoming,
-        summary: talk.summary,
-        coverUrl: mediaUrl(talk.cover),
-      })),
+      talks: HomeTalkTransformer.transform(
+        overview.talks.map((talk) => ({
+          slug: talk.slug,
+          title: talk.title,
+          eventName: talk.eventName,
+          eventDate: monthYear(talk.eventDate, locale),
+          city: talk.city,
+          upcoming: talk.upcoming,
+          summary: talk.summary,
+          coverUrl: mediaUrl(talk.cover),
+        }))
+      ),
       talksTotal: overview.talksTotal,
-      timeline: timeline.map((entry) => ({
-        period: entry.period,
-        title: entry.title,
-        place: entry.place,
-        // The honours are stored once for both locales, only their
-        // label is translated. "none" hides the mention.
-        honours: entry.honours === 'none' ? null : i18n.t(`messages.home.honours.${entry.honours}`),
-      })),
+      timeline: TimelineEntryTransformer.transform(
+        timeline.map((entry) => ({
+          period: entry.period,
+          title: entry.title,
+          place: entry.place,
+          // The honours are stored once for both locales, only their
+          // label is translated. "none" hides the mention.
+          honours:
+            entry.honours === 'none' ? null : i18n.t(`messages.home.honours.${entry.honours}`),
+        }))
+      ),
       labels: {
         downloadCv: i18n.t('messages.home.downloadCv'),
         contactMe: i18n.t('messages.home.contactMe'),

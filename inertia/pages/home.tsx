@@ -6,6 +6,7 @@ import { LinkArrow, LinkList, LinkRow } from '~/components/content_link'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import { Button } from '~/components/ui/button'
+import type { Data } from '@generated/data'
 
 type HomeProps = {
   locale: Locale
@@ -13,37 +14,15 @@ type HomeProps = {
   roles: string[]
   location: string | null
   cvPdfAvailable: boolean
-  latestArticles: {
-    slug: string
-    title: string
-    summary: string
-    publishedAt: string | null
-    coverUrl: string | null
-  }[]
+  latestArticles: Data.Pages.HomeArticle[]
   articlesTotal: number
-  projects: {
-    slug: string
-    title: string
-    summary: string
-    coverUrl: string | null
-    ongoing: boolean
-    technologies: string[]
-  }[]
+  projects: Data.Pages.HomeProject[]
   projectsTotal: number
-  talks: {
-    slug: string
-    title: string
-    eventName: string
-    eventDate: string
-    city: string
-    upcoming: boolean
-    summary: string
-    coverUrl: string | null
-  }[]
+  talks: Data.Pages.HomeTalk[]
   talksTotal: number
   technologies: { slug: string; name: string }[]
   hiddenTechnologies: number
-  timeline: { period: string; title: string; place: string; honours: string | null }[]
+  timeline: Data.Pages.TimelineEntry[]
   labels: {
     downloadCv: string
     contactMe: string

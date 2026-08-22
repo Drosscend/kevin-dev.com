@@ -6,24 +6,16 @@ import EmptyState from '~/components/admin/empty_state'
 import { Button } from '~/components/ui/button'
 import { formatFrDateTime } from '~/lib/dates'
 import { cn } from '~/lib/utils'
-
-type Message = {
-  id: number
-  name: string
-  email: string
-  body: string
-  isRead: boolean
-  createdAt: string | null
-}
+import type { Data } from '@generated/data'
 
 type MessagesProps = {
-  messages: Message[]
+  messages: Data.Contact.ContactMessage[]
 }
 
 export default function Messages({ messages }: MessagesProps) {
   const router = useRouter()
 
-  function toggleRead(message: Message) {
+  function toggleRead(message: Data.Contact.ContactMessage) {
     router.visit(
       { route: 'admin.messages.read', routeParams: { id: message.id } },
       { preserveScroll: true }

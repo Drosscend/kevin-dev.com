@@ -14,6 +14,7 @@ import { Label } from '~/components/ui/label'
 import { Select } from '~/components/ui/select'
 import { Textarea } from '~/components/ui/textarea'
 import { plural } from '~/lib/plural'
+import type { Data } from '@generated/data'
 
 const CATEGORY_LABELS: Record<TechnologyCategory, string> = {
   langage: 'Langage',
@@ -29,23 +30,10 @@ function categoryLabel(value: string) {
   return CATEGORIES.find((category) => category.value === value)?.label ?? value
 }
 
-type TechnologyItem = {
-  id: number
-  slug: string
-  name: string
-  category: string
-  logoMediaId: number | null
-  logoUrl: string | null
-  docsUrl: string | null
-  descriptionFr: string
-  descriptionEn: string
-  projectsCount: number
-}
-
 type MediaOption = { id: number; alt: string }
 
 type TechnologiesProps = {
-  technologies: TechnologyItem[]
+  technologies: Data.Technologies.TechnologyRow[]
   mediaOptions: MediaOption[]
 }
 
@@ -54,7 +42,7 @@ function TechnologyForm({
   mediaOptions,
   onDone,
 }: {
-  item: TechnologyItem | null
+  item: Data.Technologies.TechnologyRow | null
   mediaOptions: MediaOption[]
   onDone?: () => void
 }) {

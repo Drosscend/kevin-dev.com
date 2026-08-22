@@ -10,22 +10,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { FileInput } from '~/components/ui/file_input'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-
-type MediaItem = {
-  id: number
-  alt: string
-  originalName: string
-  isDocument: boolean
-  width: number | null
-  height: number | null
-  size: number
-  url: string
-  absoluteUrl: string
-  thumbnailUrl: string | null
-}
+import type { Data } from '@generated/data'
 
 type MediaPageProps = {
-  media: MediaItem[]
+  media: Data.Media.MediaItem[]
 }
 
 function formatSize(bytes: number) {
@@ -34,7 +22,7 @@ function formatSize(bytes: number) {
     : `${(bytes / (1024 * 1024)).toFixed(1)} Mo`
 }
 
-function describe(item: MediaItem) {
+function describe(item: Data.Media.MediaItem) {
   const details = item.isDocument ? 'PDF' : `${item.width}×${item.height}`
   return `${item.originalName} · ${details} · ${formatSize(item.size)}`
 }
@@ -42,7 +30,7 @@ function describe(item: MediaItem) {
 export default function MediaPage({ media }: MediaPageProps) {
   const router = useRouter()
 
-  async function copyUrl(item: MediaItem) {
+  async function copyUrl(item: Data.Media.MediaItem) {
     await navigator.clipboard.writeText(item.absoluteUrl)
     toast.success('Lien copié')
   }

@@ -15,6 +15,7 @@ import { Label } from '~/components/ui/label'
 import { Select } from '~/components/ui/select'
 import { Tabs } from '~/components/ui/tabs'
 import type { Locale } from '#types/i18n'
+import type { Data } from '@generated/data'
 
 const HONOURS_LABELS: Record<TimelineHonours, string> = {
   none: 'Sans mention',
@@ -27,19 +28,8 @@ const HONOURS = TIMELINE_HONOURS.map((value) => ({ value, label: HONOURS_LABELS[
 
 const honoursLabel = (value: string) => HONOURS.find((option) => option.value === value)?.label
 
-type TimelineItem = {
-  id: number
-  honours: string
-  periodFr: string
-  titleFr: string
-  placeFr: string
-  periodEn: string
-  titleEn: string
-  placeEn: string
-}
-
 type TimelineProps = {
-  timeline: TimelineItem[]
+  timeline: Data.Pages.TimelineRow[]
 }
 
 /**
@@ -53,7 +43,7 @@ function TimelineForm({
   onErrors,
   onDone,
 }: {
-  item: TimelineItem | null
+  item: Data.Pages.TimelineRow | null
   locale: Locale
   onErrors: (errors: Record<string, string>) => void
   onDone?: () => void
@@ -160,7 +150,7 @@ export default function Timeline({ timeline }: TimelineProps) {
 
   const englishValues = timeline.flatMap((item) => [item.periodEn, item.titleEn, item.placeEn])
 
-  function move(item: TimelineItem, direction: 'up' | 'down') {
+  function move(item: Data.Pages.TimelineRow, direction: 'up' | 'down') {
     router.visit(
       { route: 'admin.timeline.move', routeParams: { id: item.id } },
       { preserveScroll: true, data: { direction } }
