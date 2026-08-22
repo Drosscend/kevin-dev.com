@@ -26,9 +26,9 @@ interface ContentEntry {
   publishedAt: DateTime | null
 }
 
-interface LinksRelation<Link> {
-  query(): { delete(): Promise<unknown> }
-  createMany(rows: (Link & { position: number })[]): Promise<unknown>
+interface LinksRelation<Link, Row> {
+  query(): { delete(): Promise<Row[]> }
+  createMany(rows: (Link & { position: number })[]): Promise<Row[]>
 }
 
 /**
@@ -63,7 +63,7 @@ export function applyContentFields(entry: ContentEntry, payload: ContentPayload)
 }
 
 /** External links are replaced wholesale, in the order the form sent them. */
-export async function replaceLinks<Link>(relation: LinksRelation<Link>, links: Link[]) {
+export async function replaceLinks<Link, Row>(relation: LinksRelation<Link, Row>, links: Link[]) {
   await relation.query().delete()
 
   if (links.length > 0) {

@@ -5,9 +5,9 @@ import type { Locale } from '#types/i18n'
  * structural so every translatable model can be passed regardless of
  * the columns its translation table carries.
  */
-interface TranslationsRelation<Fields extends Record<string, string>> {
-  updateOrCreate(search: { locale: Locale }, payload: { locale: Locale } & Fields): Promise<unknown>
-  query(): { where(column: 'locale', value: Locale): { delete(): Promise<unknown> } }
+interface TranslationsRelation<Fields extends Record<string, string>, Row> {
+  updateOrCreate(search: { locale: Locale }, payload: { locale: Locale } & Fields): Promise<Row>
+  query(): { where(column: 'locale', value: Locale): { delete(): Promise<Row[]> } }
 }
 
 /**
@@ -15,8 +15,8 @@ interface TranslationsRelation<Fields extends Record<string, string>> {
  * given, the EN one. A null EN payload removes the stored English
  * translation: French is the only locale a record always has.
  */
-export async function upsertTranslations<Fields extends Record<string, string>>(
-  translations: TranslationsRelation<Fields>,
+export async function upsertTranslations<Fields extends Record<string, string>, Row>(
+  translations: TranslationsRelation<Fields, Row>,
   payload: { fr: Fields; en: Fields | null }
 ) {
   await translations.updateOrCreate({ locale: 'fr' }, { locale: 'fr', ...payload.fr })
