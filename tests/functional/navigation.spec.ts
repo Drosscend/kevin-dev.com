@@ -3,12 +3,13 @@ import { test } from '@japa/runner'
 import enMessages from '../../resources/lang/en/messages.json' with { type: 'json' }
 import frMessages from '../../resources/lang/fr/messages.json' with { type: 'json' }
 
+/** A translation file: nested groups down to the leaf strings. */
+type Messages = { [key: string]: string | Messages }
+
 /** Every leaf string of a translation file, keyed by its dotted path. */
-function flatten(messages: object, prefix = ''): [string, string][] {
-  return Object.entries(messages).flatMap(([key, value]) =>
-    typeof value === 'object' && value !== null
-      ? flatten(value, `${prefix}${key}.`)
-      : [[`${prefix}${key}`, String(value)] as [string, string]]
+function flatten(messages: Messages, prefix = ''): [string, string][] {
+  return Object.entries(messages).flatMap(([key, value]): [string, string][] =>
+    typeof value === 'object' ? flatten(value, `${prefix}${key}.`) : [[`${prefix}${key}`, value]]
   )
 }
 
