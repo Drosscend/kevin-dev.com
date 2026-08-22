@@ -4,7 +4,7 @@ import ContactMessage from '#contact/models/contact_message'
 import Media from '#media/models/media'
 import Project from '#portfolio/models/project'
 
-const asTotal = (row: { $extras: Record<string, unknown> }) => Number(row.$extras.total)
+const asTotal = (row: { $extras: { total?: string | number } }) => Number(row.$extras.total)
 
 export interface DashboardStats {
   articlesPublished: number

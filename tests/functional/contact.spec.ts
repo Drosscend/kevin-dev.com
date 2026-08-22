@@ -79,7 +79,7 @@ test.group('Contact', (group) => {
 
     response.assertStatus(200)
     response.assertInertiaComponent('contact')
-    const errors = response.inertiaProps.errors as Record<string, unknown>
+    const errors = response.inertiaProps.errors as Record<string, string>
     assert.property(errors, 'message')
     assert.equal(await messagesCount(), 0)
   })

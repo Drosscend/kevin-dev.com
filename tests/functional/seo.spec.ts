@@ -3,6 +3,7 @@ import { test } from '@japa/runner'
 import env from '#start/env'
 import Technology from '#technologies/models/technology'
 import { makeArticle, makeTalk } from '#tests/helpers/content'
+import type { JsonLd } from '#types/seo'
 
 test.group('SEO', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -133,7 +134,7 @@ test.group('SEO', (group) => {
       canonical: string
       alternates: { fr: string; en: string | null } | null
       ogType: string
-      jsonLd: Record<string, unknown>[]
+      jsonLd: JsonLd[]
     }
     assert.equal(meta.title, 'Titre article-meta')
     assert.include(meta.canonical, '/blog/article-meta')
@@ -174,7 +175,7 @@ test.group('SEO', (group) => {
       articles.map((article) => article.slug),
       'accueil-article'
     )
-    const meta = response.inertiaProps.meta as { jsonLd: Record<string, unknown>[] }
+    const meta = response.inertiaProps.meta as { jsonLd: JsonLd[] }
     assert.equal(meta.jsonLd[0]['@type'], 'Person')
   })
 })

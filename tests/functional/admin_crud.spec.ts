@@ -436,7 +436,7 @@ test.group('Admin CRUD articles et projets (HTTP)', (group) => {
 
     response.assertStatus(200)
     response.assertInertiaComponent('admin/articles/form')
-    const errors = response.inertiaProps.errors as Record<string, unknown>
+    const errors = response.inertiaProps.errors as Record<string, string>
     assert.property(errors, 'categoryId')
     assert.isNull(await Article.findBy('slug', 'avec-categorie'))
   })
