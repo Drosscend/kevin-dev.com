@@ -99,6 +99,7 @@ export default function ArticleContent({ html }: { html: string }) {
 
   useEffect(() => {
     const root = container.current
+
     if (!root) {
       return
     }

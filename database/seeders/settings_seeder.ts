@@ -32,6 +32,7 @@ protection anti-CSRF) sont déposés, sans aucun suivi.
 export default class extends BaseSeeder {
   async run() {
     const existing = await Setting.findBy('key', 'legal_markdown_fr')
+
     if (existing && existing.value.trim() !== '') {
       return
     }

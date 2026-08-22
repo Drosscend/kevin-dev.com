@@ -12,7 +12,7 @@ export default class ContactMessageNotification extends BaseMail {
     return Boolean(env.get('CONTACT_NOTIFICATION_EMAIL'))
   }
 
-  constructor(private contactMessage: ContactMessage) {
+  constructor(private readonly contactMessage: ContactMessage) {
     super()
   }
 

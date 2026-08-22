@@ -47,7 +47,7 @@ export default class ArticleFormController {
           ...article,
           publishedAt: pickerDateTime(article.publishedAt),
         }),
-      options: await this.formOptions(),
+      options: await this.#formOptions(),
     })
   }
 
@@ -86,7 +86,7 @@ export default class ArticleFormController {
     return response.redirect().toRoute('admin.articles.edit', { id: result.value.id })
   }
 
-  private async formOptions() {
+  async #formOptions() {
     const [categories, technologies, media] = await Promise.all([
       this.categoryOptions.execute(),
       this.technologyOptions.execute(),

@@ -90,6 +90,7 @@ export function HoverPreviewProvider({ children }: { children: ReactNode }) {
   const api = useMemo<PreviewApi>(() => {
     function apply() {
       const card = cardRef.current
+
       if (!card) {
         return
       }

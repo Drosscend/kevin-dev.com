@@ -63,6 +63,7 @@ export default class TechnologiesImport extends BaseCommand {
 
     for (const entry of entries) {
       const logo = logoBySlug.get(entry.slug)
+
       if (!logo) {
         withoutLogo.push(entry.slug)
       }
@@ -77,6 +78,7 @@ export default class TechnologiesImport extends BaseCommand {
           known.logoMediaId = logo.id
           filled.push('logo')
         }
+
         if (entry.docsUrl && !known.docsUrl) {
           known.docsUrl = entry.docsUrl
           filled.push('docs link')

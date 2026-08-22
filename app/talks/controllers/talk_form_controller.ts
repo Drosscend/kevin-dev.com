@@ -60,7 +60,7 @@ export default class TalkFormController {
           eventDate: talk.eventDate.toISODate(),
           publishedAt: pickerDateTime(talk.publishedAt),
         }),
-      options: await this.formOptions(),
+      options: await this.#formOptions(),
     })
   }
 
@@ -102,7 +102,7 @@ export default class TalkFormController {
     return response.redirect().toRoute('admin.talks.edit', { id: result.value.id })
   }
 
-  private async formOptions() {
+  async #formOptions() {
     const [technologies, media] = await Promise.all([
       this.technologyOptions.execute(),
       this.mediaPicker.execute(),

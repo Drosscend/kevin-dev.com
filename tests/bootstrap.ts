@@ -44,6 +44,7 @@ export const plugins: Config['plugins'] = [
  */
 function assertTestDatabase() {
   const database = env.get('DB_DATABASE')
+
   if (!database.endsWith('_test')) {
     throw new Error(
       `Refusing to run the suite on "${database}": copy .env.test.example to .env.test`

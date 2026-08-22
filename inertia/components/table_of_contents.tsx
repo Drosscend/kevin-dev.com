@@ -30,6 +30,7 @@ function decodeEntities(text: string) {
     if (entity.startsWith('#x') || entity.startsWith('#X')) {
       return String.fromCodePoint(Number.parseInt(entity.slice(2), 16))
     }
+
     if (entity.startsWith('#')) {
       return String.fromCodePoint(Number(entity.slice(1)))
     }
@@ -103,6 +104,7 @@ function scrollToHeading(event: MouseEvent<HTMLAnchorElement>, id: string) {
   }
 
   const target = document.getElementById(id)
+
   if (!target) {
     return
   }

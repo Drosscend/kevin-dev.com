@@ -89,6 +89,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
       onSuccess: () => draft.clearDraft(),
       onError: focusErrors,
     }
+
     if (talk) {
       form.put(client.urlFor('admin.talks.update', { id: talk.id }), visitOptions)
     } else {

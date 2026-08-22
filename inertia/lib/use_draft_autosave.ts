@@ -8,11 +8,13 @@ type DraftEnvelope = { savedAt: string; data: unknown }
  */
 function detectDraft(key: string, currentSerialized: string): Date | null {
   const raw = window.localStorage.getItem(key)
+
   if (raw === null) {
     return null
   }
   try {
     const envelope = JSON.parse(raw) as DraftEnvelope
+
     if (JSON.stringify(envelope.data) === currentSerialized) {
       return null
     }
@@ -70,6 +72,7 @@ export function useDraftAutosave<T>({
 
   function restoreDraft() {
     const raw = window.localStorage.getItem(key)
+
     if (raw !== null) {
       try {
         restoreRef.current((JSON.parse(raw) as DraftEnvelope).data as T)

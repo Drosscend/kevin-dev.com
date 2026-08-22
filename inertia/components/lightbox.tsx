@@ -75,6 +75,7 @@ export default function Lightbox({
 
   useEffect(() => {
     const root = container.current
+
     if (!root) {
       return
     }
@@ -102,6 +103,7 @@ export default function Lightbox({
 
   function open(image: HTMLImageElement) {
     const root = container.current
+
     if (!root) {
       return
     }
@@ -118,6 +120,7 @@ export default function Lightbox({
 
   function onClick(event: ReactMouseEvent<HTMLDivElement>) {
     const image = target(event)
+
     if (image) {
       open(image)
     }
@@ -129,6 +132,7 @@ export default function Lightbox({
     }
 
     const image = target(event)
+
     if (image) {
       event.preventDefault()
       open(image)
@@ -222,6 +226,7 @@ function Viewer({
   function zoomTo(scale: number, originX?: number, originY?: number) {
     const box = stage.current?.getBoundingClientRect()
     const bounded = clamp(scale, 1, MAX_SCALE)
+
     if (!box || bounded === 1) {
       apply(FIT)
       return
@@ -263,6 +268,7 @@ function Viewer({
   function onKeyDown(event: ReactKeyboardEvent<HTMLDivElement>) {
     if (event.key === 'Tab') {
       const buttons = [...(overlay.current?.querySelectorAll<HTMLElement>('button') ?? [])]
+
       if (buttons.length === 0) {
         return
       }
@@ -287,6 +293,7 @@ function Viewer({
     }
 
     const action = actions[event.key]
+
     if (action) {
       event.preventDefault()
       action()
@@ -363,12 +370,14 @@ function Viewer({
     }
 
     const state = drag.current
+
     if (!state) {
       return
     }
 
     const dx = event.clientX - state.x
     const dy = event.clientY - state.y
+
     if (Math.abs(dx) > CLICK_SLOP || Math.abs(dy) > CLICK_SLOP) {
       state.moved = true
     }
@@ -380,6 +389,7 @@ function Viewer({
 
   function onPointerUp(event: ReactPointerEvent<HTMLDivElement>) {
     pointers.current.delete(event.pointerId)
+
     if (pointers.current.size < 2) {
       pinch.current = null
     }
@@ -387,6 +397,7 @@ function Viewer({
     const state = drag.current
     drag.current = null
     setGesturing(false)
+
     if (!state) {
       return
     }

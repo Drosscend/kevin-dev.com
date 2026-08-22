@@ -54,6 +54,7 @@ export default class Umami {
       body: JSON.stringify({ username, password }),
       signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     })
+
     if (!response.ok) {
       throw new Error(`Umami login failed (${response.status})`)
     }
@@ -65,6 +66,7 @@ export default class Umami {
 
   static async statsLast30Days(): Promise<UmamiStats | null> {
     const config = this.#config()
+
     if (!config) {
       return null
     }
@@ -86,6 +88,7 @@ export default class Umami {
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         }),
       ])
+
       if (!statsResponse.ok || !pagesResponse.ok) {
         // A stale token gets a retry on the next dashboard load
         this.#cachedToken = null

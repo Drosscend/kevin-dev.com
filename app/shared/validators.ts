@@ -41,6 +41,7 @@ export function slug(table: string) {
       const query = db.from(table).select('id').where('slug', value)
 
       const editedId = (field.meta as EditedRow).id
+
       if (editedId) {
         query.whereNot('id', editedId)
       }

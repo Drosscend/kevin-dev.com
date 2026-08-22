@@ -58,6 +58,7 @@ export default class ProjectsImport extends BaseCommand {
         !entry.fr?.contentMarkdown ||
         entry.links.some((link) => !PROJECT_LINK_TYPES.includes(link.type as ProjectLinkType))
     )
+
     if (invalid.length > 0) {
       this.exitCode = 1
       for (const entry of invalid) {
@@ -79,6 +80,7 @@ export default class ProjectsImport extends BaseCommand {
 
     for (const [index, entry] of entries.entries()) {
       const known = await Project.findBy('slug', entry.slug)
+
       if (known && !this.update) {
         skipped += 1
         this.logger.info(`${entry.slug} · already there`)
@@ -88,6 +90,7 @@ export default class ProjectsImport extends BaseCommand {
       const technologyIds: number[] = []
       for (const slug of entry.technologies) {
         const id = idBySlug.get(slug)
+
         if (id === undefined) {
           unknownTechnologies.add(slug)
           continue

@@ -71,6 +71,7 @@ export function entryTranslationStatus(
   if (!en) return 'empty'
 
   const values = [en.title, en.contentMarkdown]
+
   if (fr.summary.trim() !== '') values.push(en.summary)
 
   return translationStatus(values)

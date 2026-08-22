@@ -32,9 +32,11 @@ type BlogIndexProps = {
  */
 function pageUrl(base: string, filters: { category: string | null }, page: number) {
   const params = new URLSearchParams()
+
   if (filters.category) {
     params.set('category', filters.category)
   }
+
   if (page > 1) {
     params.set('page', String(page))
   }

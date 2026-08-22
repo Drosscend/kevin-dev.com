@@ -51,6 +51,7 @@ export default class ArticlesImport extends BaseCommand {
     const invalid = entries.filter(
       (entry) => !entry.slug || !entry.fr?.title || !entry.fr?.contentMarkdown
     )
+
     if (invalid.length > 0) {
       this.exitCode = 1
       for (const entry of invalid) {
@@ -77,6 +78,7 @@ export default class ArticlesImport extends BaseCommand {
 
     for (const [index, entry] of entries.entries()) {
       const known = await Article.findBy('slug', entry.slug)
+
       if (known && !this.update) {
         skipped += 1
         this.logger.info(`${entry.slug} · already there`)
@@ -86,6 +88,7 @@ export default class ArticlesImport extends BaseCommand {
       const technologyIds: number[] = []
       for (const slug of entry.technologies) {
         const id = technologyIdBySlug.get(slug)
+
         if (id === undefined) {
           unknownTechnologies.add(slug)
           continue
@@ -94,8 +97,10 @@ export default class ArticlesImport extends BaseCommand {
       }
 
       let categoryId = known?.categoryId ?? null
+
       if (entry.category) {
         const id = categoryIdBySlug.get(entry.category)
+
         if (id === undefined) {
           unknownCategories.add(entry.category)
         } else {
@@ -131,6 +136,7 @@ export default class ArticlesImport extends BaseCommand {
     if (unknownCategories.size > 0) {
       this.logger.warning(`Unknown categories, not linked: ${[...unknownCategories].join(', ')}`)
     }
+
     if (unknownTechnologies.size > 0) {
       this.logger.warning(
         `Unknown technologies, not linked: ${[...unknownTechnologies].join(', ')}`

@@ -24,6 +24,7 @@ export default class SecurityController {
     }
 
     let secret = session.get(TOTP_SETUP_KEY)
+
     if (!secret) {
       secret = Totp.generateSecret()
       session.put(TOTP_SETUP_KEY, secret)

@@ -49,12 +49,14 @@ export default class Llms {
 
     for (const article of articles) {
       const fr = article.translations.find((translation) => translation.locale === 'fr')
+
       if (!fr) {
         continue
       }
       const summary = fr.summary ? `: ${fr.summary}` : ''
       lines.push(`- [${fr.title}](${absoluteUrl(`/blog/${article.slug}.md`)})${summary}`)
       const en = article.translations.find((translation) => translation.locale === 'en')
+
       if (en) {
         lines.push(`- [${en.title} (EN)](${absoluteUrl(`/en/blog/${article.slug}.md`)})`)
       }
@@ -63,6 +65,7 @@ export default class Llms {
     lines.push('', '## Projets', '')
     for (const project of projects) {
       const fr = project.translations.find((translation) => translation.locale === 'fr')
+
       if (!fr) {
         continue
       }
@@ -73,6 +76,7 @@ export default class Llms {
     lines.push('', '## Interventions', '')
     for (const talk of talks) {
       const fr = talk.translations.find((translation) => translation.locale === 'fr')
+
       if (!fr) {
         continue
       }
@@ -81,9 +85,11 @@ export default class Llms {
     }
 
     lines.push('', '## Pages', '')
+
     if (settings.cv_markdown_fr) {
       lines.push(`- [CV](${absoluteUrl('/cv.md')})`)
     }
+
     if (settings.legal_markdown_fr) {
       lines.push(`- [Mentions légales](${absoluteUrl('/legal.md')})`)
     }
@@ -102,6 +108,7 @@ export default class Llms {
       .first()
 
     const translation = article?.translation(locale)
+
     if (!article || !translation) {
       return null
     }
@@ -134,6 +141,7 @@ export default class Llms {
       .first()
 
     const translation = project?.translation(locale)
+
     if (!project || !translation) {
       return null
     }
@@ -165,6 +173,7 @@ export default class Llms {
       .first()
 
     const translation = talk?.translation(locale)
+
     if (!talk || !translation) {
       return null
     }

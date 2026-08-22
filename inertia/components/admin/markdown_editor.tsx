@@ -127,6 +127,7 @@ export default function MarkdownEditor({
     if (next === '' || next === mode) {
       return
     }
+
     if (next === 'rich') {
       editor?.commands.setContent(value, { contentType: 'markdown', emitUpdate: false })
       emittedRef.current = value
@@ -140,6 +141,7 @@ export default function MarkdownEditor({
       return
     }
     const view = sourceRef.current?.view
+
     if (view) {
       view.dispatch(view.state.replaceSelection(`![${alt}](${url})`))
       view.focus()
@@ -177,6 +179,7 @@ export default function MarkdownEditor({
 
   function handlePaste(event: ClipboardEvent) {
     const file = [...event.clipboardData.files].find((item) => item.type.startsWith('image/'))
+
     if (file) {
       event.preventDefault()
       event.stopPropagation()
@@ -186,6 +189,7 @@ export default function MarkdownEditor({
 
   function handleDrop(event: DragEvent) {
     const file = [...event.dataTransfer.files].find((item) => item.type.startsWith('image/'))
+
     if (file) {
       event.preventDefault()
       event.stopPropagation()

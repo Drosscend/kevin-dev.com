@@ -88,6 +88,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
       onSuccess: () => draft.clearDraft(),
       onError: focusErrors,
     }
+
     if (project) {
       form.put(client.urlFor('admin.projects.update', { id: project.id }), visitOptions)
     } else {

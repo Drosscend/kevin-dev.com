@@ -12,6 +12,7 @@ export default class HealthChecksController {
     const report = await healthChecks.run()
 
     const secret = env.get('MONITORING_SECRET')
+
     if (secret && request.header('x-monitoring-secret') !== secret) {
       return report.isHealthy ? response.ok('ok') : response.serviceUnavailable('unhealthy')
     }

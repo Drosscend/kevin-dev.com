@@ -50,6 +50,7 @@ export async function uploadMediaImage(
       headers: { 'X-XSRF-TOKEN': xsrfToken() },
       body,
     })
+
     if (!response.ok) {
       const payload = (await response.json().catch(() => null)) as {
         errors?: Record<string, string | string[]>

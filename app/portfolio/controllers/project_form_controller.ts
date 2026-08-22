@@ -64,7 +64,7 @@ export default class ProjectFormController {
           endedAt: project.endedAt?.toISODate() ?? null,
           publishedAt: pickerDateTime(project.publishedAt),
         }),
-      options: await this.formOptions(),
+      options: await this.#formOptions(),
     })
   }
 
@@ -107,7 +107,7 @@ export default class ProjectFormController {
     return response.redirect().toRoute('admin.projects.edit', { id: result.value.id })
   }
 
-  private async formOptions() {
+  async #formOptions() {
     const [technologies, articles, media] = await Promise.all([
       this.technologyOptions.execute(),
       this.articleOptions.execute(),

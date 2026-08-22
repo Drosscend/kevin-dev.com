@@ -65,6 +65,7 @@ export function applyContentFields(entry: ContentEntry, payload: ContentPayload)
 /** External links are replaced wholesale, in the order the form sent them. */
 export async function replaceLinks<Link>(relation: LinksRelation<Link>, links: Link[]) {
   await relation.query().delete()
+
   if (links.length > 0) {
     await relation.createMany(links.map((link, index) => ({ ...link, position: index })))
   }

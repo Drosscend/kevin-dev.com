@@ -74,6 +74,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
       onSuccess: () => draft.clearDraft(),
       onError: focusErrors,
     }
+
     if (article) {
       form.put(client.urlFor('admin.articles.update', { id: article.id }), visitOptions)
     } else {

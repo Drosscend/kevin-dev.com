@@ -15,7 +15,10 @@ export default defineConfig({
   },
   rules: {
     'eqeqeq': ['error', 'always'],
+    'project-style/blank-line-after-imports': 'error',
+    'project-style/blank-line-before-if': 'error',
     'project-style/no-em-dash': 'error',
+    'project-style/no-typescript-private': 'error',
     'project-style/no-ui-arrow': 'error',
     // createInertiaApp takes its page component through a children prop.
     'react/no-children-prop': 'off',
