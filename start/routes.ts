@@ -9,6 +9,7 @@
 
 import '#app/contact/routes'
 import '#app/media/routes'
+import '#app/portfolio/routes'
 import '#app/talks/routes'
 import '#app/technologies/routes'
 import '#app/identity/routes'
@@ -48,11 +49,6 @@ router.get('/blog/:slug', [controllers.Blog, 'show']).as('blog.show')
 router.get('/en/blog', [controllers.Blog, 'index']).as('en.blog.index')
 router.get('/en/blog/:slug', [controllers.Blog, 'show']).as('en.blog.show')
 
-router.get('/projects', [controllers.Projects, 'index']).as('projects.index')
-router.get('/projects/:slug', [controllers.Projects, 'show']).as('projects.show')
-router.get('/en/projects', [controllers.Projects, 'index']).as('en.projects.index')
-router.get('/en/projects/:slug', [controllers.Projects, 'show']).as('en.projects.show')
-
 router.get('/cv', [controllers.Cv, 'show']).as('cv.show')
 router.get('/en/cv', [controllers.Cv, 'show']).as('en.cv.show')
 router.get('/cv.pdf', [controllers.Cv, 'pdf']).as('cv.pdf')
@@ -87,17 +83,6 @@ router
     router
       .delete('articles/:id', [controllers.admin.Articles, 'destroy'])
       .as('admin.articles.destroy')
-
-    router.get('projects', [controllers.admin.Projects, 'index']).as('admin.projects.index')
-    router
-      .get('projects/create', [controllers.admin.Projects, 'create'])
-      .as('admin.projects.create')
-    router.post('projects', [controllers.admin.Projects, 'store']).as('admin.projects.store')
-    router.get('projects/:id/edit', [controllers.admin.Projects, 'edit']).as('admin.projects.edit')
-    router.put('projects/:id', [controllers.admin.Projects, 'update']).as('admin.projects.update')
-    router
-      .delete('projects/:id', [controllers.admin.Projects, 'destroy'])
-      .as('admin.projects.destroy')
 
     /**
      * The site pages that are edited as a whole rather than as

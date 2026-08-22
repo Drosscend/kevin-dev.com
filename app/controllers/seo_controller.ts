@@ -1,5 +1,5 @@
 import Article from '#models/article'
-import Project from '#models/project'
+import Project from '#portfolio/models/project'
 import SeoService from '#services/seo_service'
 import SettingsService from '#services/settings_service'
 import Talk from '#talks/models/talk'

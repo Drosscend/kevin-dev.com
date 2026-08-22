@@ -1,9 +1,9 @@
 import app from '@adonisjs/core/services/app'
 import Article from '#models/article'
-import Project from '#models/project'
+import { SaveProject } from '#portfolio/actions/save_project'
 import ArticleService from '#services/article_service'
-import ProjectService from '#services/project_service'
 import { SaveTalk } from '#talks/actions/save_talk'
+import type { ProjectPayload } from '#portfolio/repositories/project_repository'
 import type { ContentTranslationPayload } from '#shared/content/content_fields'
 import type { TalkPayload } from '#talks/repositories/talk_repository'
 import type { PublicationStatus } from '#types/content'
@@ -52,12 +52,23 @@ export function makeArticle(
   })
 }
 
+async function saveProject(payload: ProjectPayload) {
+  const action = await app.container.make(SaveProject)
+  const result = await action.execute({ payload })
+
+  if (!result.ok) {
+    throw new Error('Unable to save the project fixture')
+  }
+
+  return result.value
+}
+
 export function makeProject(
   slug: string,
   status: PublicationStatus = 'published',
   options: ContentOptions = {}
 ) {
-  return ProjectService.save(new Project(), {
+  return saveProject({
     slug,
     status,
     coverMediaId: null,

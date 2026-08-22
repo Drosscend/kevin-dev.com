@@ -24,10 +24,9 @@ import {
 import { StoreImage } from '#media/actions/store_image'
 import Article from '#models/article'
 import Category from '#models/category'
-import Project from '#models/project'
 import TimelineEntry from '#models/timeline_entry'
+import { SaveProject } from '#portfolio/actions/save_project'
 import ArticleService from '#services/article_service'
-import ProjectService from '#services/project_service'
 import SettingsService from '#services/settings_service'
 import Markdown from '#shared/content/markdown'
 import { SaveTalk } from '#talks/actions/save_talk'
@@ -199,19 +198,23 @@ export default class extends BaseSeeder {
     for (const entry of PROJECTS) {
       const cover = await makeCover(entry.cover, entry.fr.title)
 
-      await ProjectService.save(new Project(), {
-        slug: entry.slug,
-        status: entry.status,
-        coverMediaId: cover?.id ?? null,
-        startedAt: entry.startedAt,
-        endedAt: entry.endedAt,
-        featured: entry.featured,
-        technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
-        articleIds: entry.articles.map((slug) => articles.get(slug)!.id),
-        links: entry.links,
-        publishedAt: entry.publishedAt,
-        fr: entry.fr,
-        en: entry.en,
+      const saveProject = await app.container.make(SaveProject)
+
+      await saveProject.execute({
+        payload: {
+          slug: entry.slug,
+          status: entry.status,
+          coverMediaId: cover?.id ?? null,
+          startedAt: entry.startedAt,
+          endedAt: entry.endedAt,
+          featured: entry.featured,
+          technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
+          articleIds: entry.articles.map((slug) => articles.get(slug)!.id),
+          links: entry.links,
+          publishedAt: entry.publishedAt,
+          fr: entry.fr,
+          en: entry.en,
+        },
       })
     }
   }

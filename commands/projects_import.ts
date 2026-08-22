@@ -2,8 +2,8 @@ import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
 import { DateTime } from 'luxon'
-import Project from '#models/project'
-import ProjectService from '#services/project_service'
+import { SaveProject } from '#portfolio/actions/save_project'
+import Project from '#portfolio/models/project'
 import Technology from '#technologies/models/technology'
 import { PROJECT_LINK_TYPES, type ProjectLinkType } from '#types/content'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
@@ -21,7 +21,7 @@ interface Entry {
 
 /**
  * Imports projects from a JSON file, for inventories prepared outside
- * the app. Everything goes through ProjectService, so translations,
+ * the app. Everything goes through the same action, so translations,
  * links and technology links are written exactly like a back office
  * save, Markdown rendering included.
  *
@@ -70,6 +70,8 @@ export default class ProjectsImport extends BaseCommand {
     const idBySlug = new Map(technologies.map((technology) => [technology.slug, technology.id]))
 
     const now = DateTime.now()
+    const saveProject = await this.app.container.make(SaveProject)
+
     let created = 0
     let updated = 0
     let skipped = 0
@@ -93,21 +95,24 @@ export default class ProjectsImport extends BaseCommand {
         technologyIds.push(id)
       }
 
-      await ProjectService.save(known ?? new Project(), {
-        slug: entry.slug,
-        status: this.publish ? 'published' : 'draft',
-        coverMediaId: known?.coverMediaId ?? null,
-        startedAt: entry.startedAt,
-        endedAt: entry.endedAt,
-        featured: entry.featured,
-        technologyIds,
-        articleIds: [],
-        links: entry.links.map((link) => ({ ...link, type: link.type as ProjectLinkType })),
-        publishedAt: this.publish
-          ? now.minus({ minutes: index }).toISO({ includeOffset: false })
-          : null,
-        fr: entry.fr,
-        en: entry.en?.title ? entry.en : null,
+      await saveProject.execute({
+        id: known?.id,
+        payload: {
+          slug: entry.slug,
+          status: this.publish ? 'published' : 'draft',
+          coverMediaId: known?.coverMediaId ?? null,
+          startedAt: entry.startedAt,
+          endedAt: entry.endedAt,
+          featured: entry.featured,
+          technologyIds,
+          articleIds: [],
+          links: entry.links.map((link) => ({ ...link, type: link.type as ProjectLinkType })),
+          publishedAt: this.publish
+            ? now.minus({ minutes: index }).toISO({ includeOffset: false })
+            : null,
+          fr: entry.fr,
+          en: entry.en?.title ? entry.en : null,
+        },
       })
 
       if (known) {

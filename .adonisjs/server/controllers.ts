@@ -17,7 +17,6 @@ export const controllers = {
     Dashboard: () => import('#app/controllers/admin/dashboard_controller'),
     Home: () => import('#app/controllers/admin/home_controller'),
     Legal: () => import('#app/controllers/admin/legal_controller'),
-    Projects: () => import('#app/controllers/admin/projects_controller'),
     Timeline: () => import('#app/controllers/admin/timeline_controller'),
   },
   Blog: () => import('#app/controllers/blog_controller'),
@@ -26,7 +25,6 @@ export const controllers = {
   Home: () => import('#app/controllers/home_controller'),
   Legal: () => import('#app/controllers/legal_controller'),
   Llms: () => import('#app/controllers/llms_controller'),
-  Projects: () => import('#app/controllers/projects_controller'),
   Seo: () => import('#app/controllers/seo_controller'),
   identity: {
     DisableTotp: () => import('#app/identity/controllers/disable_totp_controller'),
@@ -43,6 +41,13 @@ export const controllers = {
     ServeMedia: () => import('#app/media/controllers/serve_media_controller'),
     StoreMedia: () => import('#app/media/controllers/store_media_controller'),
     UploadImage: () => import('#app/media/controllers/upload_image_controller'),
+  },
+  portfolio: {
+    DeleteProject: () => import('#app/portfolio/controllers/delete_project_controller'),
+    ManageProjects: () => import('#app/portfolio/controllers/manage_projects_controller'),
+    Project: () => import('#app/portfolio/controllers/project_controller'),
+    ProjectForm: () => import('#app/portfolio/controllers/project_form_controller'),
+    ProjectList: () => import('#app/portfolio/controllers/project_list_controller'),
   },
   talks: {
     DeleteTalk: () => import('#app/talks/controllers/delete_talk_controller'),
