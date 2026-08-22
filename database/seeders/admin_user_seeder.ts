@@ -1,6 +1,6 @@
 import logger from '@adonisjs/core/services/logger'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import User from '#models/user'
+import User from '#identity/models/user'
 import env from '#start/env'
 
 /**

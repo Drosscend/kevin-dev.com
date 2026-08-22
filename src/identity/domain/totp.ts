@@ -5,7 +5,7 @@ const ISSUER = 'kevin-dev.com'
 /**
  * Generates and verifies TOTP codes (RFC 6238).
  */
-export default class TotpService {
+export default class Totp {
   static generateSecret() {
     return new Secret({ size: 20 }).base32
   }

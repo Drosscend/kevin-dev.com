@@ -8,9 +8,10 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import '#app/identity/routes'
 import { controllers } from '#generated/controllers'
 import { middleware } from '#start/kernel'
-import { contactThrottle, loginThrottle } from '#start/limiter'
+import { contactThrottle } from '#start/limiter'
 
 router.get('/', [controllers.Home, 'handle']).as('home')
 router.get('/en', [controllers.Home, 'handle']).as('en.home')
@@ -79,30 +80,9 @@ router
  */
 router.get('/uploads/:key/:file', [controllers.Uploads, 'show']).as('uploads.show')
 
-/**
- * Two-step admin login (password then TOTP).
- */
-router
-  .group(() => {
-    router.get('login', [controllers.admin.Session, 'create']).as('admin.login')
-    router
-      .post('login', [controllers.admin.Session, 'store'])
-      .as('admin.login.store')
-      .use(loginThrottle)
-
-    router.get('login/verify', [controllers.admin.Session, 'totpCreate']).as('admin.totp')
-    router
-      .post('login/verify', [controllers.admin.Session, 'totpStore'])
-      .as('admin.totp.store')
-      .use(loginThrottle)
-  })
-  .prefix('/admin')
-  .use(middleware.guest())
-
 router
   .group(() => {
     router.get('/', [controllers.admin.Dashboard, 'handle']).as('admin.dashboard')
-    router.post('logout', [controllers.admin.Session, 'destroy']).as('admin.logout')
 
     router.get('media', [controllers.admin.Media, 'index']).as('admin.media.index')
     router.post('media', [controllers.admin.Media, 'store']).as('admin.media.store')
@@ -190,13 +170,6 @@ router
     router
       .delete('messages/:id', [controllers.admin.Messages, 'destroy'])
       .as('admin.messages.destroy')
-
-    router.get('security', [controllers.admin.Security, 'show']).as('admin.security')
-    router.post('security', [controllers.admin.Security, 'store']).as('admin.security.store')
-    router.delete('security', [controllers.admin.Security, 'destroy']).as('admin.security.destroy')
-    router
-      .post('security/recovery', [controllers.admin.Security, 'regenerateRecovery'])
-      .as('admin.security.recovery.store')
   })
   .prefix('/admin')
   .use(middleware.auth())

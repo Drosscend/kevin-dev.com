@@ -1,8 +1,8 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 import { TOTP, Secret } from 'otpauth'
-import User from '#models/user'
-import TotpService from '#services/totp_service'
+import User from '#identity/models/user'
+import Totp from '#identity/domain/totp'
 import { admin } from '#tests/helpers/auth'
 
 function currentCode(secret: string, email: string) {
@@ -54,7 +54,7 @@ test.group('Admin auth', (group) => {
   })
 
   test('le login avec 2FA passe par le challenge TOTP', async ({ client }) => {
-    const secret = TotpService.generateSecret()
+    const secret = Totp.generateSecret()
     const user = await User.create({
       email: 'admin@example.com',
       password: 'motdepasse',
@@ -86,7 +86,7 @@ test.group('Admin auth', (group) => {
   })
 
   test('désactiver la 2FA exige un code TOTP valide', async ({ client, assert }) => {
-    const secret = TotpService.generateSecret()
+    const secret = Totp.generateSecret()
     const user = await User.create({
       email: 'admin@example.com',
       password: 'motdepasse',
@@ -115,7 +115,7 @@ test.group('Admin auth', (group) => {
   })
 
   test('un mauvais code TOTP ne connecte pas', async ({ client }) => {
-    const secret = TotpService.generateSecret()
+    const secret = Totp.generateSecret()
     const user = await User.create({
       email: 'admin@example.com',
       password: 'motdepasse',

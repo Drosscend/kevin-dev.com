@@ -1,4 +1,4 @@
-import User from '#models/user'
+import User from '#identity/models/user'
 
 /** The admin account the authenticated tests sign in with. */
 export function admin() {

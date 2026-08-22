@@ -1,7 +1,7 @@
 import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
+import UserTransformer from '#app/identity/transformers/user_transformer'
 import ContactMessage from '#models/contact_message'
-import UserTransformer from '#transformers/user_transformer'
 import type { Locale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
