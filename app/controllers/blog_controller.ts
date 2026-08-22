@@ -1,9 +1,9 @@
 import { Exception } from '@adonisjs/core/exceptions'
+import { mediaUrl } from '#app/shared/media_url'
 import Article from '#models/article'
 import Category from '#models/category'
 import { longDate } from '#services/date_format'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
-import MediaService from '#services/media_service'
 import PublicationService from '#services/publication_service'
 import SeoService from '#services/seo_service'
 import { localePath, type Locale } from '#types/i18n'
@@ -77,7 +77,7 @@ export default class BlogController {
             slug: technology.slug,
             name: technology.name,
           })),
-          coverUrl: MediaService.url(article.cover),
+          coverUrl: mediaUrl(article.cover),
         }
       }),
       pagination: {

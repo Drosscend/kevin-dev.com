@@ -1,11 +1,11 @@
+import { mediaUrl } from '#app/shared/media_url'
 import Technology from '#models/technology'
-import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import { localePath, type Locale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 function logoUrl(technology: Technology) {
-  return MediaService.url(technology.logo, 320)
+  return mediaUrl(technology.logo, 320)
 }
 
 /**
@@ -122,19 +122,19 @@ export default class TechnologiesController {
           slug: project.slug,
           title: project.translation(locale)!.title,
           summary: project.translation(locale)!.summary,
-          coverUrl: MediaService.url(project.cover),
+          coverUrl: mediaUrl(project.cover),
         })),
         articles: technology.articles.map((article) => ({
           slug: article.slug,
           title: article.translation(locale)!.title,
           summary: article.translation(locale)!.summary,
-          coverUrl: MediaService.url(article.cover),
+          coverUrl: mediaUrl(article.cover),
         })),
         talks: technology.talks.map((talk) => ({
           slug: talk.slug,
           title: talk.translation(locale)!.title,
           summary: talk.translation(locale)!.summary,
-          coverUrl: MediaService.url(talk.cover),
+          coverUrl: mediaUrl(talk.cover),
         })),
       },
       labels: {

@@ -1,4 +1,5 @@
 ﻿import drive from '@adonisjs/drive/services/main'
+import { mediaUrl } from '#app/shared/media_url'
 import { CV_PDF_KEY } from '#controllers/cv_controller'
 import Article from '#models/article'
 import Project from '#models/project'
@@ -6,7 +7,6 @@ import Talk from '#models/talk'
 import Technology from '#models/technology'
 import TimelineEntry from '#models/timeline_entry'
 import { longDate, monthYear } from '#services/date_format'
-import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import SettingsService from '#services/settings_service'
 import { localePath, type Locale } from '#types/i18n'
@@ -127,14 +127,14 @@ export default class HomeController {
         title: article.translation(locale)!.title,
         summary: article.translation(locale)!.summary,
         publishedAt: longDate(article.publishedAt, locale),
-        coverUrl: MediaService.url(article.cover),
+        coverUrl: mediaUrl(article.cover),
       })),
       articlesTotal,
       projects: projects.map((project) => ({
         slug: project.slug,
         title: project.translation(locale)!.title,
         summary: project.translation(locale)!.summary,
-        coverUrl: MediaService.url(project.cover),
+        coverUrl: mediaUrl(project.cover),
         ongoing: project.isOngoing,
         technologies: project.technologies.map((technology) => technology.name),
       })),
@@ -152,7 +152,7 @@ export default class HomeController {
         city: talk.city,
         upcoming: talk.isUpcoming,
         summary: talk.translation(locale)!.summary,
-        coverUrl: MediaService.url(talk.cover),
+        coverUrl: mediaUrl(talk.cover),
       })),
       talksTotal,
       timeline: timelineEntries.map((entry) => {

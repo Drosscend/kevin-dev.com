@@ -8,6 +8,7 @@
 */
 
 import '#app/contact/routes'
+import '#app/media/routes'
 import '#app/identity/routes'
 import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
@@ -70,16 +71,10 @@ router.get('/en/legal', [controllers.Legal, 'show']).as('en.legal.show')
 /**
  * Media library files (generated names, immutable).
  */
-router.get('/uploads/:key/:file', [controllers.Uploads, 'show']).as('uploads.show')
 
 router
   .group(() => {
     router.get('/', [controllers.admin.Dashboard, 'handle']).as('admin.dashboard')
-
-    router.get('media', [controllers.admin.Media, 'index']).as('admin.media.index')
-    router.post('media', [controllers.admin.Media, 'store']).as('admin.media.store')
-    router.post('media/upload', [controllers.admin.Media, 'upload']).as('admin.media.upload')
-    router.delete('media/:id', [controllers.admin.Media, 'destroy']).as('admin.media.destroy')
 
     router.get('categories', [controllers.admin.Categories, 'index']).as('admin.categories.index')
     router.post('categories', [controllers.admin.Categories, 'store']).as('admin.categories.store')

@@ -1,6 +1,7 @@
 import { rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import app from '@adonisjs/core/services/app'
 import logger from '@adonisjs/core/services/logger'
 import drive from '@adonisjs/drive/services/main'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
@@ -20,6 +21,7 @@ import {
   TIMELINE,
   type Cover,
 } from '#database/fixtures/demo_content'
+import { StoreImage } from '#media/actions/store_image'
 import Article from '#models/article'
 import Category from '#models/category'
 import Project from '#models/project'
@@ -28,11 +30,10 @@ import Technology from '#models/technology'
 import TimelineEntry from '#models/timeline_entry'
 import ArticleService from '#services/article_service'
 import MarkdownService from '#services/markdown_service'
-import MediaService from '#services/media_service'
 import ProjectService from '#services/project_service'
 import SettingsService from '#services/settings_service'
 import TalkService from '#services/talk_service'
-import type Media from '#models/media'
+import type Media from '#media/models/media'
 import type { MultipartFile } from '@adonisjs/core/bodyparser'
 
 /**
@@ -90,10 +91,17 @@ async function makeCover(cover: Cover | null, alt: string): Promise<Media | null
   await writeFile(path, await sharp(Buffer.from(svg)).png().toBuffer())
 
   try {
-    return await MediaService.store(
-      { tmpPath: path, clientName: `${cover.name}.png` } as MultipartFile,
-      alt
-    )
+    const storeImage = await app.container.make(StoreImage)
+    const result = await storeImage.execute({
+      file: { tmpPath: path, clientName: `${cover.name}.png` } as MultipartFile,
+      alt,
+    })
+
+    if (!result.ok) {
+      throw new Error(`Unreadable generated cover for ${cover.name}`)
+    }
+
+    return result.value
   } finally {
     await rm(path, { force: true })
   }

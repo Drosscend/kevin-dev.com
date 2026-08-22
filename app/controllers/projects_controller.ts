@@ -1,8 +1,8 @@
 import { Exception } from '@adonisjs/core/exceptions'
+import { mediaUrl } from '#app/shared/media_url'
 import Project from '#models/project'
 import { monthYear } from '#services/date_format'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
-import MediaService from '#services/media_service'
 import PublicationService from '#services/publication_service'
 import SeoService from '#services/seo_service'
 import { localePath, type Locale } from '#types/i18n'
@@ -44,7 +44,7 @@ export default class ProjectsController {
           slug: project.slug,
           title: translation.title,
           summary: translation.summary,
-          coverUrl: MediaService.url(project.cover),
+          coverUrl: mediaUrl(project.cover),
           period: formatPeriod(project, locale),
           readingTimeLabel: i18n.t('messages.blog.readingTime', {
             minutes: project.readingTime,
@@ -112,7 +112,7 @@ export default class ProjectsController {
       project: {
         title: translation.title,
         contentHtml: translation.contentHtml,
-        coverUrl: MediaService.url(project.cover),
+        coverUrl: mediaUrl(project.cover),
         startedAt: monthYear(project.startedAt, locale),
         endedAt: monthYear(project.endedAt, locale),
         readingTimeLabel: i18n.t('messages.blog.readingTime', {

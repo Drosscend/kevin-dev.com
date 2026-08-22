@@ -1,7 +1,9 @@
+import app from '@adonisjs/core/services/app'
+import { variantUrl } from '#app/shared/media_url'
+import { MediaPickerQuery } from '#media/queries/media_picker_query'
 import Talk from '#models/talk'
 import Technology from '#models/technology'
 import { longDate, pickerDateTime } from '#services/date_format'
-import MediaService from '#services/media_service'
 import TalkService from '#services/talk_service'
 import { talkValidator } from '#validators/portfolio'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -9,7 +11,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 async function formOptions() {
   const [technologies, media] = await Promise.all([
     Technology.query().select('id', 'name').orderBy('name'),
-    MediaService.pickerOptions(),
+    app.container.make(MediaPickerQuery).then((query) => query.execute()),
   ])
 
   return {
@@ -17,7 +19,12 @@ async function formOptions() {
       id: technology.id,
       name: technology.name,
     })),
-    media,
+    media: media.map((item) => ({
+      id: item.id,
+      alt: item.alt,
+      originalName: item.originalName,
+      thumbnailUrl: variantUrl(item, 320),
+    })),
   }
 }
 

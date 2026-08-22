@@ -1,9 +1,11 @@
+import app from '@adonisjs/core/services/app'
+import { variantUrl } from '#app/shared/media_url'
+import { MediaPickerQuery } from '#media/queries/media_picker_query'
 import Article from '#models/article'
 import Category from '#models/category'
 import Technology from '#models/technology'
 import ArticleService from '#services/article_service'
 import { longDate, pickerDateTime } from '#services/date_format'
-import MediaService from '#services/media_service'
 import { articleValidator } from '#validators/blog'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -16,7 +18,7 @@ async function formOptions() {
       )
       .orderBy('slug'),
     Technology.query().select('id', 'name').orderBy('name'),
-    MediaService.pickerOptions(),
+    app.container.make(MediaPickerQuery).then((query) => query.execute()),
   ])
 
   return {
@@ -25,7 +27,12 @@ async function formOptions() {
       id: technology.id,
       name: technology.name,
     })),
-    media,
+    media: media.map((item) => ({
+      id: item.id,
+      alt: item.alt,
+      originalName: item.originalName,
+      thumbnailUrl: variantUrl(item, 320),
+    })),
   }
 }
 

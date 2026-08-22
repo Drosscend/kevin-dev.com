@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
-import Media from '#models/media'
+import Media from '#media/models/media'
 import Technology from '#models/technology'
 import TechnologyTranslation from '#models/technology_translation'
 import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'

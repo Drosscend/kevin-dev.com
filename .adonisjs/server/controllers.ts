@@ -17,7 +17,6 @@ export const controllers = {
     Dashboard: () => import('#app/controllers/admin/dashboard_controller'),
     Home: () => import('#app/controllers/admin/home_controller'),
     Legal: () => import('#app/controllers/admin/legal_controller'),
-    Media: () => import('#app/controllers/admin/media_controller'),
     Projects: () => import('#app/controllers/admin/projects_controller'),
     Talks: () => import('#app/controllers/admin/talks_controller'),
     Technologies: () => import('#app/controllers/admin/technologies_controller'),
@@ -33,7 +32,6 @@ export const controllers = {
   Seo: () => import('#app/controllers/seo_controller'),
   Talks: () => import('#app/controllers/talks_controller'),
   Technologies: () => import('#app/controllers/technologies_controller'),
-  Uploads: () => import('#app/controllers/uploads_controller'),
   identity: {
     DisableTotp: () => import('#app/identity/controllers/disable_totp_controller'),
     EnableTotp: () => import('#app/identity/controllers/enable_totp_controller'),
@@ -42,5 +40,12 @@ export const controllers = {
     RegenerateRecoveryCodes: () => import('#app/identity/controllers/regenerate_recovery_codes_controller'),
     Security: () => import('#app/identity/controllers/security_controller'),
     TotpChallenge: () => import('#app/identity/controllers/totp_challenge_controller'),
+  },
+  media: {
+    DeleteMedia: () => import('#app/media/controllers/delete_media_controller'),
+    Media: () => import('#app/media/controllers/media_controller'),
+    ServeMedia: () => import('#app/media/controllers/serve_media_controller'),
+    StoreMedia: () => import('#app/media/controllers/store_media_controller'),
+    UploadImage: () => import('#app/media/controllers/upload_image_controller'),
   },
 }

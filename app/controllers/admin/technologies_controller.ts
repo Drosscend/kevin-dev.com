@@ -1,5 +1,5 @@
 import router from '@adonisjs/core/services/router'
-import Media from '#models/media'
+import Media from '#media/models/media'
 import Technology from '#models/technology'
 import { upsertTranslations } from '#services/translations_service'
 import { technologyValidator } from '#validators/portfolio'
