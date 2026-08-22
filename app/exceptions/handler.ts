@@ -36,6 +36,26 @@ export function violatedField(detail: string | undefined) {
   return detail?.match(/^Key \(([^)]+)\)=/)?.[1].split(', ')[0] ?? 'slug'
 }
 
+/**
+ * Status pages is a collection of error code range and a callback
+ * to return the HTML contents to send as a response.
+ *
+ * An unknown URL never reaches the router, so no i18n instance is
+ * attached to the context: the locale is read back from the path.
+ *
+ * A server error keeps its stack trace outside production, where the
+ * absent range lets the debug renderer take over.
+ */
+const STATUS_PAGES: Record<StatusPageRange, StatusPageRenderer> = {
+  '404': (_, ctx) => ctx.inertia.render('errors/not_found', errorLabels(ctx, 'notFound')),
+  '410': (_, ctx) => ctx.inertia.render('errors/gone', errorLabels(ctx, 'gone')),
+}
+
+if (app.inProduction) {
+  STATUS_PAGES['500..599'] = (_, ctx) =>
+    ctx.inertia.render('errors/server_error', errorLabels(ctx, 'server'))
+}
+
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
    * In debug mode, the exception handler will display verbose errors
@@ -50,26 +70,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    */
   protected renderStatusPages = true
 
-  /**
-   * Status pages is a collection of error code range and a callback
-   * to return the HTML contents to send as a response.
-   *
-   * An unknown URL never reaches the router, so no i18n instance is
-   * attached to the context: the locale is read back from the path.
-   *
-   * A server error keeps its stack trace outside production, where the
-   * absent range lets the debug renderer take over.
-   */
-  protected statusPages: Record<StatusPageRange, StatusPageRenderer> = {
-    '404': (_, ctx) => ctx.inertia.render('errors/not_found', errorLabels(ctx, 'notFound')),
-    '410': (_, ctx) => ctx.inertia.render('errors/gone', errorLabels(ctx, 'gone')),
-    ...(app.inProduction
-      ? {
-          '500..599': (_: unknown, ctx: HttpContext) =>
-            ctx.inertia.render('errors/server_error', errorLabels(ctx, 'server')),
-        }
-      : {}),
-  }
+  protected statusPages = STATUS_PAGES
 
   /**
    * The method is used for handling errors and returning

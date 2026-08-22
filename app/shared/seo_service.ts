@@ -91,17 +91,25 @@ export default class SeoService {
     publishedAt: string | null
     image: string | null
   }): JsonLd {
-    return {
+    const article: JsonLd = {
       '@context': 'https://schema.org',
       '@type': 'Article',
       'headline': options.title,
       'description': options.description,
       'url': this.absolute(options.path),
       'inLanguage': options.locale,
-      ...(options.publishedAt ? { datePublished: options.publishedAt } : {}),
-      ...(options.image ? { image: options.image } : {}),
       'author': { '@type': 'Person', 'name': 'Kévin Véronési', 'url': this.absolute('/') },
       'publisher': { '@type': 'Person', 'name': 'Kévin Véronési' },
     }
+
+    if (options.publishedAt) {
+      article.datePublished = options.publishedAt
+    }
+
+    if (options.image) {
+      article.image = options.image
+    }
+
+    return article
   }
 }
