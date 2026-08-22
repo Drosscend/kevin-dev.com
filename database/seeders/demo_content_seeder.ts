@@ -1,27 +1,12 @@
 import { rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import logger from '@adonisjs/core/services/logger'
+import drive from '@adonisjs/drive/services/main'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
+import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
 import sharp from 'sharp'
-import db from '@adonisjs/lucid/services/db'
-import drive from '@adonisjs/drive/services/main'
-import logger from '@adonisjs/core/services/logger'
-import type { MultipartFile } from '@adonisjs/core/bodyparser'
-import Article from '#models/article'
-import Category from '#models/category'
-import ContactMessage from '#models/contact_message'
-import Project from '#models/project'
-import Talk from '#models/talk'
-import Technology from '#models/technology'
-import TimelineEntry from '#models/timeline_entry'
-import type Media from '#models/media'
-import ArticleService from '#services/article_service'
-import MarkdownService from '#services/markdown_service'
-import MediaService from '#services/media_service'
-import ProjectService from '#services/project_service'
-import SettingsService from '#services/settings_service'
-import TalkService from '#services/talk_service'
 import {
   ARTICLES,
   CATEGORIES,
@@ -34,6 +19,21 @@ import {
   TIMELINE,
   type Cover,
 } from '#database/fixtures/demo_content'
+import Article from '#models/article'
+import Category from '#models/category'
+import ContactMessage from '#models/contact_message'
+import Project from '#models/project'
+import Talk from '#models/talk'
+import Technology from '#models/technology'
+import TimelineEntry from '#models/timeline_entry'
+import ArticleService from '#services/article_service'
+import MarkdownService from '#services/markdown_service'
+import MediaService from '#services/media_service'
+import ProjectService from '#services/project_service'
+import SettingsService from '#services/settings_service'
+import TalkService from '#services/talk_service'
+import type Media from '#models/media'
+import type { MultipartFile } from '@adonisjs/core/bodyparser'
 
 /**
  * Content tables wiped before reseeding, ordered so that the

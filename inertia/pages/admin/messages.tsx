@@ -1,9 +1,9 @@
 import { useRouter } from '@adonisjs/inertia/react'
 import { Mail, MailOpen, Trash2 } from 'lucide-react'
-import { Button } from '~/components/ui/button'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
+import { Button } from '~/components/ui/button'
 import { formatFrDateTime } from '~/lib/dates'
 import { cn } from '~/lib/utils'
 

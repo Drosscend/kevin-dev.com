@@ -1,8 +1,8 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import Technology from '#models/technology'
 import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import { localePath, type Locale } from '#types/i18n'
+import type { HttpContext } from '@adonisjs/core/http'
 
 function logoUrl(technology: Technology) {
   return MediaService.url(technology.logo, 320)

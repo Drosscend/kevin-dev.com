@@ -1,8 +1,5 @@
-import { type Data } from '@generated/data'
-import { Toaster } from 'sonner'
-import { usePage } from '@inertiajs/react'
-import { type ReactElement, type ReactNode, useState } from 'react'
 import { Form, Link } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
 import {
   type LucideIcon,
   LayoutDashboard,
@@ -22,11 +19,14 @@ import {
   Inbox,
   X,
 } from 'lucide-react'
+import { type ReactElement, type ReactNode, useState } from 'react'
+import { Toaster } from 'sonner'
+import { type Data } from '@generated/data'
 import { client } from '~/client'
-import { Button } from '~/components/ui/button'
 import ThemeToggle from '~/components/theme_toggle'
-import { cn } from '~/lib/utils'
+import { Button } from '~/components/ui/button'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
+import { cn } from '~/lib/utils'
 
 /**
  * The dashboard stands above the groups, and is the only entry

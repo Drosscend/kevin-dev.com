@@ -1,13 +1,13 @@
-import { belongsTo, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import { compose } from '@adonisjs/core/helpers'
-import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
+import { belongsTo, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import { ArticleSchema } from '#database/schema'
 import ArticleTranslation from '#models/article_translation'
 import Category from '#models/category'
-import Technology from '#models/technology'
 import Media from '#models/media'
 import { withPublication } from '#models/mixins/publishable'
+import Technology from '#models/technology'
 import type { Locale } from '#types/i18n'
+import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 
 export default class Article extends compose(ArticleSchema, withPublication) {
   @hasMany(() => ArticleTranslation)

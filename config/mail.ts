@@ -1,5 +1,5 @@
-import env from '#start/env'
 import { defineConfig, transports } from '@adonisjs/mail'
+import env from '#start/env'
 
 /**
  * Outgoing mail goes through an SMTP relay reachable on a private

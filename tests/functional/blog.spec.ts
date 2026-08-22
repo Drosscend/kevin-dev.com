@@ -1,5 +1,5 @@
-import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
+import { test } from '@japa/runner'
 import ArticleService from '#services/article_service'
 import { admin } from '#tests/helpers/auth'
 import { makeArticle } from '#tests/helpers/content'

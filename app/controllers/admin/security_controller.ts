@@ -1,8 +1,8 @@
 import { toDataURL } from 'qrcode'
-import type { HttpContext } from '@adonisjs/core/http'
-import TotpService from '#services/totp_service'
 import RecoveryCodesService from '#services/recovery_codes_service'
+import TotpService from '#services/totp_service'
 import { totpCodeValidator } from '#validators/auth'
+import type { HttpContext } from '@adonisjs/core/http'
 
 const TOTP_SETUP_KEY = 'totp_setup_secret'
 const RECOVERY_CODES_FLASH_KEY = 'recovery_codes'

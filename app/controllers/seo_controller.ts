@@ -1,10 +1,10 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import Article from '#models/article'
 import Project from '#models/project'
 import Talk from '#models/talk'
-import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
+import SettingsService from '#services/settings_service'
 import { localePath, type Locale } from '#types/i18n'
+import type { HttpContext } from '@adonisjs/core/http'
 
 function xmlEscape(value: string) {
   return value

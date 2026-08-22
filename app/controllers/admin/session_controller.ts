@@ -1,8 +1,8 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
-import TotpService from '#services/totp_service'
 import RecoveryCodesService from '#services/recovery_codes_service'
+import TotpService from '#services/totp_service'
 import { challengeCodeValidator, loginValidator } from '#validators/auth'
+import type { HttpContext } from '@adonisjs/core/http'
 
 const TOTP_PENDING_KEY = 'totp_pending_user_id'
 

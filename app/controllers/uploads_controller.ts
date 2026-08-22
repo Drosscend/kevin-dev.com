@@ -1,7 +1,7 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import drive from '@adonisjs/drive/services/main'
 import Media from '#models/media'
 import MediaService, { DOCUMENT_FILE } from '#services/media_service'
+import type { HttpContext } from '@adonisjs/core/http'
 
 /**
  * Serves media library files from the Drive disk. Both URL segments

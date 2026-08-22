@@ -1,6 +1,6 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import SettingsService from '#services/settings_service'
 import { homeSettingsValidator } from '#validators/home'
+import type { HttpContext } from '@adonisjs/core/http'
 
 export default class HomeController {
   async show({ inertia }: HttpContext) {

@@ -1,11 +1,11 @@
 import { Link } from '@adonisjs/inertia/react'
 import { Download } from 'lucide-react'
+import { localePath, type Locale } from '#types/i18n'
 import { ChipLink, ChipList } from '~/components/chip'
 import { LinkArrow, LinkList, LinkRow } from '~/components/content_link'
-import { Button } from '~/components/ui/button'
-import StatusBadge from '~/components/status_badge'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath, type Locale } from '#types/i18n'
+import StatusBadge from '~/components/status_badge'
+import { Button } from '~/components/ui/button'
 
 type HomeProps = {
   locale: Locale

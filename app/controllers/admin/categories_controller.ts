@@ -1,7 +1,7 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import Category from '#models/category'
-import { categoryValidator } from '#validators/blog'
 import { upsertTranslations } from '#services/translations_service'
+import { categoryValidator } from '#validators/blog'
+import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CategoriesController {
   async index({ inertia }: HttpContext) {

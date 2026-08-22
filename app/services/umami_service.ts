@@ -1,5 +1,5 @@
-import env from '#start/env'
 import logger from '@adonisjs/core/services/logger'
+import env from '#start/env'
 
 interface UmamiStats {
   pageviews: number

@@ -1,10 +1,10 @@
-import type { HttpContext } from '@adonisjs/core/http'
-import type { NextFn } from '@adonisjs/core/types/http'
-import UserTransformer from '#transformers/user_transformer'
+import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import ContactMessage from '#models/contact_message'
-import i18nManager from '@adonisjs/i18n/services/main'
+import UserTransformer from '#transformers/user_transformer'
 import type { Locale } from '#types/i18n'
+import type { HttpContext } from '@adonisjs/core/http'
+import type { NextFn } from '@adonisjs/core/types/http'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   share(ctx: HttpContext) {

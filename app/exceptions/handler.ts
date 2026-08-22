@@ -1,8 +1,8 @@
+import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 import i18nManager from '@adonisjs/i18n/services/main'
-import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
-import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 import { localeFromPath } from '#types/i18n'
+import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 
 function isUniqueViolation(error: unknown): error is { code: string; detail?: string } {
   return typeof error === 'object' && error !== null && 'code' in error && error.code === '23505'

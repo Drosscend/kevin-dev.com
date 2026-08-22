@@ -1,10 +1,10 @@
 import { readdir } from 'node:fs/promises'
 import { basename, extname, join, resolve } from 'node:path'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
-import type { CommandOptions } from '@adonisjs/core/types/ace'
-import type { MultipartFile } from '@adonisjs/core/bodyparser'
 import Media from '#models/media'
 import MediaService, { InvalidImageError } from '#services/media_service'
+import type { MultipartFile } from '@adonisjs/core/bodyparser'
+import type { CommandOptions } from '@adonisjs/core/types/ace'
 
 const EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif']
 

@@ -1,9 +1,9 @@
 import { hasMany } from '@adonisjs/lucid/orm'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
 import { TimelineEntrySchema } from '#database/schema'
 import TimelineEntryTranslation from '#models/timeline_entry_translation'
-import type { Locale } from '#types/i18n'
 import type { TimelineHonours } from '#types/content'
+import type { Locale } from '#types/i18n'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
 
 export default class TimelineEntry extends TimelineEntrySchema {
   declare honours: TimelineHonours

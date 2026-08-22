@@ -1,11 +1,11 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import Article from '#models/article'
 import Category from '#models/category'
 import Technology from '#models/technology'
 import ArticleService from '#services/article_service'
-import MediaService from '#services/media_service'
 import { longDate, pickerDateTime } from '#services/date_format'
+import MediaService from '#services/media_service'
 import { articleValidator } from '#validators/blog'
+import type { HttpContext } from '@adonisjs/core/http'
 
 async function formOptions() {
   const [categories, technologies, media] = await Promise.all([

@@ -1,10 +1,10 @@
+import { localePath, type Locale } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
-import { localePath, type Locale } from '#types/i18n'
 
 type ProjectCard = {
   slug: string

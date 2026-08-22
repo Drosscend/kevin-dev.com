@@ -1,6 +1,6 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
 import type { Locale } from '#types/i18n'
+import type { HttpContext } from '@adonisjs/core/http'
 
 /**
  * Markdown endpoints for LLM consumers: /llms.txt indexes the

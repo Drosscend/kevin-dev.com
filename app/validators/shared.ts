@@ -1,6 +1,6 @@
 import vine from '@vinejs/vine'
-import type { FieldContext } from '@vinejs/vine/types'
 import { PUBLICATION_STATUSES } from '#types/content'
+import type { FieldContext } from '@vinejs/vine/types'
 
 /**
  * Metadata describing the row being edited: its id, so it is excluded

@@ -1,10 +1,10 @@
 import { Link } from '@adonisjs/inertia/react'
 import { Plus } from 'lucide-react'
-import { Button } from '~/components/ui/button'
 import AdminPage from '~/components/admin/admin_page'
 import { ContentList, ContentListRow, type ContentListEntry } from '~/components/admin/content_list'
 import EmptyState from '~/components/admin/empty_state'
 import AccentBadge from '~/components/status_badge'
+import { Button } from '~/components/ui/button'
 
 type TalkRow = ContentListEntry & {
   hasEnglish: boolean

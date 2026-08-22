@@ -1,9 +1,9 @@
 import { hasMany } from '@adonisjs/lucid/orm'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
 import { CategorySchema } from '#database/schema'
-import CategoryTranslation from '#models/category_translation'
 import Article from '#models/article'
+import CategoryTranslation from '#models/category_translation'
 import type { Locale } from '#types/i18n'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
 
 export default class Category extends CategorySchema {
   @hasMany(() => CategoryTranslation)

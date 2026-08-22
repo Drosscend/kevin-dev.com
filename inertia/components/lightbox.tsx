@@ -1,4 +1,5 @@
-import { type Data } from '@generated/data'
+import { usePage } from '@inertiajs/react'
+import { ChevronLeft, ChevronRight, Minus, Plus, Scan, X } from 'lucide-react'
 import {
   useEffect,
   useRef,
@@ -10,8 +11,7 @@ import {
   type WheelEvent as ReactWheelEvent,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { usePage } from '@inertiajs/react'
-import { ChevronLeft, ChevronRight, Minus, Plus, Scan, X } from 'lucide-react'
+import { type Data } from '@generated/data'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
 

@@ -1,5 +1,5 @@
-import env from '#start/env'
 import router from '@adonisjs/core/services/router'
+import env from '#start/env'
 import type Media from '#models/media'
 import type { Locale } from '#types/i18n'
 import type { JsonLd, SeoMeta } from '#types/seo'

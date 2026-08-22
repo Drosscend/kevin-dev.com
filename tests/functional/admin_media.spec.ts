@@ -1,9 +1,9 @@
-import sharp from 'sharp'
-import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import { admin } from '#tests/helpers/auth'
+import { test } from '@japa/runner'
+import sharp from 'sharp'
 import Media from '#models/media'
 import MediaService from '#services/media_service'
+import { admin } from '#tests/helpers/auth'
 
 test.group('Admin media', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())

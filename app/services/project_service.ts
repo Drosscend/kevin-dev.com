@@ -1,7 +1,5 @@
-import { DateTime } from 'luxon'
 import db from '@adonisjs/lucid/services/db'
-import type Project from '#models/project'
-import type { ProjectLinkType } from '#types/content'
+import { DateTime } from 'luxon'
 import {
   applyContentFields,
   renderTranslations,
@@ -9,6 +7,8 @@ import {
   type ContentPayload,
 } from '#services/content_service'
 import { upsertTranslations } from '#services/translations_service'
+import type Project from '#models/project'
+import type { ProjectLinkType } from '#types/content'
 
 export interface ProjectPayload extends ContentPayload {
   startedAt: string | null

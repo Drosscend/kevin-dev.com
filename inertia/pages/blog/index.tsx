@@ -1,12 +1,12 @@
-import { router } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
+import { router } from '@inertiajs/react'
+import { localePath, type Locale } from '#types/i18n'
 import { ChipButton, ChipList } from '~/components/chip'
 import { LinkArrow, ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { TechnologyNames, type TechnologyRef } from '~/components/technology_list'
-import { localePath, type Locale } from '#types/i18n'
 
 type ArticleCard = {
   slug: string

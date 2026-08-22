@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
 import { cn } from '~/lib/utils'
+import type { ReactNode } from 'react'
 
 /**
  * Accent label marking the state of an entry next to its title or its

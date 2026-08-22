@@ -1,12 +1,12 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import { Exception } from '@adonisjs/core/exceptions'
 import Project from '#models/project'
-import MediaService from '#services/media_service'
-import SeoService from '#services/seo_service'
-import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
-import PublicationService from '#services/publication_service'
 import { monthYear } from '#services/date_format'
+import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
+import MediaService from '#services/media_service'
+import PublicationService from '#services/publication_service'
+import SeoService from '#services/seo_service'
 import { localePath, type Locale } from '#types/i18n'
+import type { HttpContext } from '@adonisjs/core/http'
 
 /**
  * Timespan shown on the listing: an open-ended project keeps only its

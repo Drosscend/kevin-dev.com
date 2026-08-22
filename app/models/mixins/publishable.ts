@@ -1,8 +1,8 @@
-import { DateTime } from 'luxon'
 import { scope } from '@adonisjs/lucid/orm'
-import type { LucidModel } from '@adonisjs/lucid/types/model'
-import type { NormalizeConstructor } from '@adonisjs/core/types/helpers'
+import { DateTime } from 'luxon'
 import type { PublicationStatus } from '#types/content'
+import type { NormalizeConstructor } from '@adonisjs/core/types/helpers'
+import type { LucidModel } from '@adonisjs/lucid/types/model'
 
 /**
  * Publication rules shared by articles, projects and talks: a status,

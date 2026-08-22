@@ -1,9 +1,9 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
-import Technology from '#models/technology'
 import Media from '#models/media'
-import { technologyValidator } from '#validators/portfolio'
+import Technology from '#models/technology'
 import { upsertTranslations } from '#services/translations_service'
+import { technologyValidator } from '#validators/portfolio'
+import type { HttpContext } from '@adonisjs/core/http'
 
 function saveTranslations(technology: Technology, descriptionFr = '', descriptionEn?: string) {
   return upsertTranslations(technology.related('translations'), {

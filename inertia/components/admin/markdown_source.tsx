@@ -1,9 +1,9 @@
-import type { Ref } from 'react'
-import CodeMirror, { EditorView, type ReactCodeMirrorRef } from '@uiw/react-codemirror'
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
-import { languages } from '@codemirror/language-data'
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language'
+import { languages } from '@codemirror/language-data'
 import { tags } from '@lezer/highlight'
+import CodeMirror, { EditorView, type ReactCodeMirrorRef } from '@uiw/react-codemirror'
+import type { Ref } from 'react'
 
 /**
  * Token classes rather than inline styles: the palette lives in

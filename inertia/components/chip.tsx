@@ -1,6 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
-import type { ReactNode } from 'react'
 import { cn } from '~/lib/utils'
+import type { ReactNode } from 'react'
 
 const CHIP = 'rounded-full border px-4 py-1.5 text-sm transition-colors'
 

@@ -1,11 +1,11 @@
-import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
 import mail from '@adonisjs/mail/services/main'
-import ContactMessage from '#models/contact_message'
+import { test } from '@japa/runner'
 import ContactMessageNotification from '#mails/contact_message_notification'
-import { admin } from '#tests/helpers/auth'
-import SettingsService from '#services/settings_service'
+import ContactMessage from '#models/contact_message'
 import MarkdownService from '#services/markdown_service'
+import SettingsService from '#services/settings_service'
+import { admin } from '#tests/helpers/auth'
 
 async function messagesCount() {
   const row = await ContactMessage.query().count('* as total').firstOrFail()

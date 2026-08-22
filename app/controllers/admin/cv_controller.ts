@@ -1,8 +1,8 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import drive from '@adonisjs/drive/services/main'
+import { CV_PDF_KEY } from '#controllers/cv_controller'
 import { readMarkdownPage, saveMarkdownPage } from '#services/markdown_page_service'
 import { markdownPageValidator } from '#validators/pages'
-import { CV_PDF_KEY } from '#controllers/cv_controller'
+import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CvController {
   async show({ inertia }: HttpContext) {

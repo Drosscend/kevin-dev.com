@@ -1,14 +1,14 @@
 import { Link } from '@adonisjs/inertia/react'
+import { localePath, type Locale } from '#types/i18n'
 import ArticleContent from '~/components/article_content'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner from '~/components/preview_banner'
-import type { PreviewMode } from '#types/content'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import TableOfContents from '~/components/table_of_contents'
 import { TechnologySection, type TechnologyRef } from '~/components/technology_list'
-import { localePath, type Locale } from '#types/i18n'
+import type { PreviewMode } from '#types/content'
 
 type BlogShowProps = {
   locale: Locale

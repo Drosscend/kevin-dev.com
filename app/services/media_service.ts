@@ -1,10 +1,10 @@
 import { randomBytes } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
-import sharp from 'sharp'
-import drive from '@adonisjs/drive/services/main'
 import router from '@adonisjs/core/services/router'
-import type { MultipartFile } from '@adonisjs/core/bodyparser'
+import drive from '@adonisjs/drive/services/main'
+import sharp from 'sharp'
 import Media, { DOCUMENT_MIME_TYPE, type MediaVariant } from '#models/media'
+import type { MultipartFile } from '@adonisjs/core/bodyparser'
 
 const VARIANT_WIDTHS = [320, 640, 1280]
 const ORIGINAL_MAX_WIDTH = 1920

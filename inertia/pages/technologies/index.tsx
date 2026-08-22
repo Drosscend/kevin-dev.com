@@ -1,10 +1,10 @@
+import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
+import { localePath, type Locale } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import ExternalLinkList from '~/components/external_link_list'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
-import { localePath, type Locale } from '#types/i18n'
-import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
 
 type TechnologyCard = {
   slug: string

@@ -1,12 +1,12 @@
-import { type FormEvent, type ReactNode } from 'react'
 import { useForm } from '@inertiajs/react'
+import { type FormEvent, type ReactNode } from 'react'
 import { client } from '~/client'
-import { Button } from '~/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import { Tabs, TabsContent } from '~/components/ui/tabs'
 import AdminPage from '~/components/admin/admin_page'
 import LocaleTabsList, { translationStatus, useAdminLocale } from '~/components/admin/locale_tabs'
 import MarkdownEditor from '~/components/admin/markdown_editor'
+import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import { Tabs, TabsContent } from '~/components/ui/tabs'
 
 const FALLBACK_HINT = 'Laissée vide, la page affiche un message d’absence de traduction.'
 

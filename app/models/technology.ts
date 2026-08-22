@@ -1,13 +1,13 @@
 import { belongsTo, hasMany, manyToMany } from '@adonisjs/lucid/orm'
-import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { TechnologySchema } from '#database/schema'
-import TechnologyTranslation from '#models/technology_translation'
+import Article from '#models/article'
 import Media from '#models/media'
 import Project from '#models/project'
-import Article from '#models/article'
 import Talk from '#models/talk'
-import type { Locale } from '#types/i18n'
+import TechnologyTranslation from '#models/technology_translation'
 import type { TechnologyCategory } from '#types/content'
+import type { Locale } from '#types/i18n'
+import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 
 export default class Technology extends TechnologySchema {
   declare category: TechnologyCategory

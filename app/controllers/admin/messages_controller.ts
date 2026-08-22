@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
+import ContactMessage from '#models/contact_message'
 import { pickerDateTime } from '#services/date_format'
 import type { HttpContext } from '@adonisjs/core/http'
-import ContactMessage from '#models/contact_message'
 
 export default class MessagesController {
   async index({ inertia }: HttpContext) {

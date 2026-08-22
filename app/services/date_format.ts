@@ -1,5 +1,5 @@
-import type { DateTime } from 'luxon'
 import type { Locale } from '#types/i18n'
+import type { DateTime } from 'luxon'
 
 /** "24 juillet 2026" / "July 24, 2026": publication and event dates. */
 export function longDate(date: DateTime, locale?: Locale): string

@@ -1,8 +1,8 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import drive from '@adonisjs/drive/services/main'
-import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
+import SettingsService from '#services/settings_service'
 import { localePath, type Locale } from '#types/i18n'
+import type { HttpContext } from '@adonisjs/core/http'
 
 export const CV_PDF_KEY = 'cv/cv.pdf'
 

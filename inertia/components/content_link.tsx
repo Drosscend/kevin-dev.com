@@ -1,8 +1,8 @@
 import { Link } from '@adonisjs/inertia/react'
-import type { ReactNode } from 'react'
 import { useHoverPreview, type PreviewContent } from '~/components/hover_preview'
 import StatusBadge from '~/components/status_badge'
 import { cn } from '~/lib/utils'
+import type { ReactNode } from 'react'
 
 /**
  * Arrow marking a block as a link. It inherits the surrounding colour and

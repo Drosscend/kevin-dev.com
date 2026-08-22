@@ -1,15 +1,15 @@
 import { Form, useRouter } from '@adonisjs/inertia/react'
 import { Copy, FileText, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button } from '~/components/ui/button'
-import { FileInput } from '~/components/ui/file_input'
-import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import FieldError from '~/components/field_error'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
+import FieldError from '~/components/field_error'
+import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import { FileInput } from '~/components/ui/file_input'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
 
 type MediaItem = {
   id: number

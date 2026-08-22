@@ -1,8 +1,8 @@
 import Article from '#models/article'
 import Project from '#models/project'
 import Talk from '#models/talk'
-import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
+import SettingsService from '#services/settings_service'
 import { localePath, type Locale } from '#types/i18n'
 
 export const MARKDOWN_CONTENT_TYPE = 'text/markdown; charset=utf-8'

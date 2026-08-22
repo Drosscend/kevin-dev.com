@@ -1,16 +1,16 @@
-import { type FormEvent } from 'react'
 import { useForm, usePage } from '@inertiajs/react'
+import { type FormEvent } from 'react'
 import { client } from '~/client'
+import AdminPage from '~/components/admin/admin_page'
+import LocaleTabsList, { translationStatus, useAdminLocale } from '~/components/admin/locale_tabs'
+import FieldError from '~/components/field_error'
 import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-import { Textarea } from '~/components/ui/textarea'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Tabs, TabsContent } from '~/components/ui/tabs'
-import AdminPage from '~/components/admin/admin_page'
-import FieldError from '~/components/field_error'
+import { Textarea } from '~/components/ui/textarea'
 import type { Locale } from '#types/i18n'
-import LocaleTabsList, { translationStatus, useAdminLocale } from '~/components/admin/locale_tabs'
 
 type HomeSettings = {
   heroRolesFr: string

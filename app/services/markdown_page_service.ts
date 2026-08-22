@@ -1,5 +1,5 @@
-import SettingsService from '#services/settings_service'
 import MarkdownService from '#services/markdown_service'
+import SettingsService from '#services/settings_service'
 
 /**
  * The pages whose whole content is a markdown blob kept in the

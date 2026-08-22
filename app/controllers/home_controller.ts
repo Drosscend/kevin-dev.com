@@ -1,16 +1,16 @@
-﻿import type { HttpContext } from '@adonisjs/core/http'
-import drive from '@adonisjs/drive/services/main'
+﻿import drive from '@adonisjs/drive/services/main'
+import { CV_PDF_KEY } from '#controllers/cv_controller'
 import Article from '#models/article'
 import Project from '#models/project'
 import Talk from '#models/talk'
 import Technology from '#models/technology'
 import TimelineEntry from '#models/timeline_entry'
+import { longDate, monthYear } from '#services/date_format'
 import MediaService from '#services/media_service'
 import SeoService from '#services/seo_service'
 import SettingsService from '#services/settings_service'
-import { longDate, monthYear } from '#services/date_format'
-import { CV_PDF_KEY } from '#controllers/cv_controller'
 import { localePath, type Locale } from '#types/i18n'
+import type { HttpContext } from '@adonisjs/core/http'
 
 /**
  * The stack section only shows the technologies carrying the most published

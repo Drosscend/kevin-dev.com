@@ -1,12 +1,12 @@
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
-import type { CommandOptions } from '@adonisjs/core/types/ace'
 import Media from '#models/media'
 import Technology from '#models/technology'
-import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
 import TechnologyTranslation from '#models/technology_translation'
+import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
 import { LOCALES, type Locale } from '#types/i18n'
+import type { CommandOptions } from '@adonisjs/core/types/ace'
 
 interface Entry {
   slug: string

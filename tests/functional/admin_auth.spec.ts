@@ -1,9 +1,9 @@
-import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
+import { test } from '@japa/runner'
 import { TOTP, Secret } from 'otpauth'
 import User from '#models/user'
-import { admin } from '#tests/helpers/auth'
 import TotpService from '#services/totp_service'
+import { admin } from '#tests/helpers/auth'
 
 function currentCode(secret: string, email: string) {
   return new TOTP({

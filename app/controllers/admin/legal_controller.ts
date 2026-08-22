@@ -1,6 +1,6 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import { readMarkdownPage, saveMarkdownPage } from '#services/markdown_page_service'
 import { markdownPageValidator } from '#validators/pages'
+import type { HttpContext } from '@adonisjs/core/http'
 
 export default class LegalController {
   async show({ inertia }: HttpContext) {

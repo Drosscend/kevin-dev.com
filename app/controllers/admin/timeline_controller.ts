@@ -1,7 +1,7 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import TimelineEntry from '#models/timeline_entry'
 import { upsertTranslations } from '#services/translations_service'
 import { timelineEntryValidator, timelineMoveValidator } from '#validators/timeline'
+import type { HttpContext } from '@adonisjs/core/http'
 
 type TimelinePayload = {
   periodFr: string

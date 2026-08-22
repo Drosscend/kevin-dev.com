@@ -1,11 +1,11 @@
 import db from '@adonisjs/lucid/services/db'
-import type Article from '#models/article'
 import {
   applyContentFields,
   renderTranslations,
   type ContentPayload,
 } from '#services/content_service'
 import { upsertTranslations } from '#services/translations_service'
+import type Article from '#models/article'
 
 export interface ArticlePayload extends ContentPayload {
   categoryId: number | null

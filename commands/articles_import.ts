@@ -1,12 +1,12 @@
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { DateTime } from 'luxon'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
-import type { CommandOptions } from '@adonisjs/core/types/ace'
+import { DateTime } from 'luxon'
 import Article from '#models/article'
 import Category from '#models/category'
 import Technology from '#models/technology'
 import ArticleService from '#services/article_service'
+import type { CommandOptions } from '@adonisjs/core/types/ace'
 
 interface Entry {
   slug: string

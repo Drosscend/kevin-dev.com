@@ -1,7 +1,7 @@
-import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import logger from '@adonisjs/core/services/logger'
-import env from '#start/env'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import User from '#models/user'
+import env from '#start/env'
 
 /**
  * Creates the single admin account (there is no public signup).

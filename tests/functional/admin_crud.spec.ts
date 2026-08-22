@@ -1,10 +1,10 @@
+import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 import { DateTime } from 'luxon'
-import testUtils from '@adonisjs/core/services/test_utils'
-import Category from '#models/category'
-import Technology from '#models/technology'
 import Article from '#models/article'
+import Category from '#models/category'
 import Project from '#models/project'
+import Technology from '#models/technology'
 import TimelineEntry from '#models/timeline_entry'
 import SettingsService from '#services/settings_service'
 import { admin } from '#tests/helpers/auth'
@@ -209,7 +209,7 @@ test.group('Admin parcours', (group) => {
     const user = await admin()
     const created = await TimelineEntry.create({ position: 1 })
     await created.related('translations').createMany([
-      { locale: 'fr', ...{ period: entry.periodFr, title: entry.titleFr, place: entry.placeFr } },
+      { locale: 'fr', period: entry.periodFr, title: entry.titleFr, place: entry.placeFr },
       { locale: 'en', period: '2024-now', title: 'Consultant', place: 'Toulouse' },
     ])
 

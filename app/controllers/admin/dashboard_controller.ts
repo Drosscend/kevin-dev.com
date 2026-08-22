@@ -1,9 +1,9 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import Article from '#models/article'
+import ContactMessage from '#models/contact_message'
 import Media from '#models/media'
 import Project from '#models/project'
-import ContactMessage from '#models/contact_message'
 import UmamiService from '#services/umami_service'
+import type { HttpContext } from '@adonisjs/core/http'
 
 const asTotal = (row: { $extras: Record<string, unknown> }) => Number(row.$extras.total)
 

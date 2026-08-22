@@ -1,10 +1,10 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import mail from '@adonisjs/mail/services/main'
-import ContactMessage from '#models/contact_message'
 import ContactMessageNotification from '#mails/contact_message_notification'
+import ContactMessage from '#models/contact_message'
 import SeoService from '#services/seo_service'
-import { contactValidator } from '#validators/contact'
 import { localePath, type Locale } from '#types/i18n'
+import { contactValidator } from '#validators/contact'
+import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ContactController {
   async show({ inertia, i18n }: HttpContext) {

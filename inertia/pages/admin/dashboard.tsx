@@ -1,8 +1,8 @@
 import { Link } from '@adonisjs/inertia/react'
 import { ExternalLink, Plus } from 'lucide-react'
+import AdminPage from '~/components/admin/admin_page'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import AdminPage from '~/components/admin/admin_page'
 import { plural } from '~/lib/plural'
 
 interface DashboardProps {
@@ -32,7 +32,10 @@ function StatCard({
   value: number
   detail: string
   route:
-    'admin.articles.index' | 'admin.projects.index' | 'admin.media.index' | 'admin.messages.index'
+    | 'admin.articles.index'
+    | 'admin.projects.index'
+    | 'admin.media.index'
+    | 'admin.messages.index'
 }) {
   return (
     <Link route={route} className="group">

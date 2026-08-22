@@ -19,10 +19,10 @@ import {
   Table,
   Undo2,
 } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { Separator } from '~/components/ui/separator'
 import { Toggle } from '~/components/ui/toggle'
+import type { LucideIcon } from 'lucide-react'
 
 type MarkState = {
   bold: boolean

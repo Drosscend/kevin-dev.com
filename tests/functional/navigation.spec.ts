@@ -1,7 +1,7 @@
-import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
-import frMessages from '../../resources/lang/fr/messages.json' with { type: 'json' }
+import { test } from '@japa/runner'
 import enMessages from '../../resources/lang/en/messages.json' with { type: 'json' }
+import frMessages from '../../resources/lang/fr/messages.json' with { type: 'json' }
 
 /** Every leaf string of a translation file, keyed by its dotted path. */
 function flatten(messages: object, prefix = ''): [string, string][] {

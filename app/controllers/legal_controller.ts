@@ -1,7 +1,7 @@
-import type { HttpContext } from '@adonisjs/core/http'
-import SettingsService from '#services/settings_service'
 import SeoService from '#services/seo_service'
+import SettingsService from '#services/settings_service'
 import { localePath, type Locale } from '#types/i18n'
+import type { HttpContext } from '@adonisjs/core/http'
 
 export default class LegalController {
   async show({ inertia, i18n }: HttpContext) {

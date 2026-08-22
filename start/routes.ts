@@ -7,10 +7,10 @@
 |
 */
 
+import router from '@adonisjs/core/services/router'
+import { controllers } from '#generated/controllers'
 import { middleware } from '#start/kernel'
 import { contactThrottle, loginThrottle } from '#start/limiter'
-import { controllers } from '#generated/controllers'
-import router from '@adonisjs/core/services/router'
 
 router.get('/', [controllers.Home, 'handle']).as('home')
 router.get('/en', [controllers.Home, 'handle']).as('en.home')

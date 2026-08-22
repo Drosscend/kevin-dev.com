@@ -1,14 +1,14 @@
-import { DateTime } from 'luxon'
-import { belongsTo, hasMany, manyToMany } from '@adonisjs/lucid/orm'
 import { compose } from '@adonisjs/core/helpers'
-import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
+import { belongsTo, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import { DateTime } from 'luxon'
 import { TalkSchema } from '#database/schema'
-import TalkTranslation from '#models/talk_translation'
-import TalkLink from '#models/talk_link'
 import Media from '#models/media'
-import Technology from '#models/technology'
 import { withPublication } from '#models/mixins/publishable'
+import TalkLink from '#models/talk_link'
+import TalkTranslation from '#models/talk_translation'
+import Technology from '#models/technology'
 import type { Locale } from '#types/i18n'
+import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 
 export default class Talk extends compose(TalkSchema, withPublication) {
   @hasMany(() => TalkTranslation)

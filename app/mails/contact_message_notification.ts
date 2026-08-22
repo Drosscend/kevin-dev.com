@@ -1,6 +1,6 @@
+import { BaseMail } from '@adonisjs/mail'
 import env from '#start/env'
 import type ContactMessage from '#models/contact_message'
-import { BaseMail } from '@adonisjs/mail'
 
 /**
  * Notifies the site owner when a contact message lands. Sending is

@@ -1,10 +1,10 @@
 import { Form } from '@adonisjs/inertia/react'
+import AdminPage from '~/components/admin/admin_page'
+import FieldError, { type FieldErrors } from '~/components/field_error'
 import { Button } from '~/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import FieldError, { type FieldErrors } from '~/components/field_error'
-import AdminPage from '~/components/admin/admin_page'
 import { plural } from '~/lib/plural'
 
 interface SecurityProps {

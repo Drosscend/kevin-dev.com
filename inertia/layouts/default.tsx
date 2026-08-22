@@ -1,17 +1,17 @@
-import { type Data } from '@generated/data'
-import { Toaster } from 'sonner'
-import { type ReactElement, useEffect, useState } from 'react'
 import { Link } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
 import { Menu, X } from 'lucide-react'
+import { type ReactElement, useEffect, useState } from 'react'
+import { Toaster } from 'sonner'
+import { localePath } from '#types/i18n'
+import { type Data } from '@generated/data'
 import { HoverPreviewProvider } from '~/components/hover_preview'
 import LanguageSuggestion from '~/components/language_suggestion'
 import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
-import { cn } from '~/lib/utils'
-import { localePath } from '#types/i18n'
 import { otherLocaleUrl } from '~/lib/locale'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
+import { cn } from '~/lib/utils'
 
 /** Order of the header and footer links; labels come from shared props. */
 const NAVIGATION = [
