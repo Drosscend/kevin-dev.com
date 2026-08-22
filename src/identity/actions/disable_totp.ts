@@ -12,10 +12,6 @@ export interface DisableTotpParams {
 
 export type DisableTotpResult = Result<null, InvalidTotpCodeError>
 
-/**
- * Removing the second factor asks for a current code, so a stolen
- * session alone cannot take it down.
- */
 @inject()
 export class DisableTotp {
   constructor(private readonly users: UserRepository) {}

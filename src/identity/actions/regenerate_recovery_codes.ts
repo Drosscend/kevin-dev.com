@@ -13,10 +13,6 @@ export interface RegenerateRecoveryCodesParams {
 
 export type RegenerateRecoveryCodesResult = Result<string[], InvalidTotpCodeError>
 
-/**
- * Issues a fresh set against a current TOTP code, and invalidates every
- * previous code.
- */
 @inject()
 export class RegenerateRecoveryCodes {
   constructor(private readonly users: UserRepository) {}

@@ -1,13 +1,21 @@
-import mail from '@adonisjs/mail/services/main'
-import ContactMessageNotification from '#mails/contact_message_notification'
-import ContactMessage from '#models/contact_message'
+import { inject } from '@adonisjs/core'
+import vine from '@vinejs/vine'
+import { SubmitContactMessage } from '#contact/actions/submit_contact_message'
 import SeoService from '#services/seo_service'
 import { localePath, type Locale } from '#types/i18n'
-import { contactValidator } from '#validators/contact'
 import type { HttpContext } from '@adonisjs/core/http'
 
+@inject()
 export default class ContactController {
-  async show({ inertia, i18n }: HttpContext) {
+  static readonly validator = vine.create({
+    name: vine.string().trim().minLength(2).maxLength(100),
+    email: vine.string().trim().email().maxLength(254),
+    message: vine.string().trim().minLength(10).maxLength(5000),
+  })
+
+  constructor(private readonly submitContactMessage: SubmitContactMessage) {}
+
+  render({ inertia, i18n }: HttpContext) {
     const locale = i18n.locale as Locale
 
     return inertia.render('contact', {
@@ -30,7 +38,7 @@ export default class ContactController {
     })
   }
 
-  async store({ request, response, session, i18n }: HttpContext) {
+  async execute({ request, response, session, i18n }: HttpContext) {
     /**
      * Honeypot: the "website" field is invisible to humans. When a
      * bot fills it, pretend everything went fine and store nothing.
@@ -40,19 +48,10 @@ export default class ContactController {
       return response.redirect().back()
     }
 
-    const { name, email, message } = await request.validateUsing(contactValidator)
-
-    const contactMessage = await ContactMessage.create({ name, email, body: message })
-
-    /**
-     * Queued: delivery must never delay or fail the response, the
-     * message is already stored at this point.
-     */
-    if (ContactMessageNotification.enabled) {
-      await mail.sendLater(new ContactMessageNotification(contactMessage))
-    }
+    const params = await request.validateUsing(ContactController.validator)
+    await this.submitContactMessage.execute(params)
 
     session.flash('success', i18n.t('messages.contact.sent'))
-    response.redirect().back()
+    return response.redirect().back()
   }
 }

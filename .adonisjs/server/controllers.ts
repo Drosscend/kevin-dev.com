@@ -4,6 +4,12 @@
  */
 
 export const controllers = {
+  contact: {
+    Contact: () => import('#app/contact/controllers/contact_controller'),
+    DeleteMessage: () => import('#app/contact/controllers/delete_message_controller'),
+    Messages: () => import('#app/contact/controllers/messages_controller'),
+    ToggleMessageRead: () => import('#app/contact/controllers/toggle_message_read_controller'),
+  },
   admin: {
     Articles: () => import('#app/controllers/admin/articles_controller'),
     Categories: () => import('#app/controllers/admin/categories_controller'),
@@ -12,14 +18,12 @@ export const controllers = {
     Home: () => import('#app/controllers/admin/home_controller'),
     Legal: () => import('#app/controllers/admin/legal_controller'),
     Media: () => import('#app/controllers/admin/media_controller'),
-    Messages: () => import('#app/controllers/admin/messages_controller'),
     Projects: () => import('#app/controllers/admin/projects_controller'),
     Talks: () => import('#app/controllers/admin/talks_controller'),
     Technologies: () => import('#app/controllers/admin/technologies_controller'),
     Timeline: () => import('#app/controllers/admin/timeline_controller'),
   },
   Blog: () => import('#app/controllers/blog_controller'),
-  Contact: () => import('#app/controllers/contact_controller'),
   Cv: () => import('#app/controllers/cv_controller'),
   HealthChecks: () => import('#app/controllers/health_checks_controller'),
   Home: () => import('#app/controllers/home_controller'),

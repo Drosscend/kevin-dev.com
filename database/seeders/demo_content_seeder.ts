@@ -7,6 +7,7 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
 import sharp from 'sharp'
+import ContactMessage from '#contact/models/contact_message'
 import {
   ARTICLES,
   CATEGORIES,
@@ -21,7 +22,6 @@ import {
 } from '#database/fixtures/demo_content'
 import Article from '#models/article'
 import Category from '#models/category'
-import ContactMessage from '#models/contact_message'
 import Project from '#models/project'
 import Talk from '#models/talk'
 import Technology from '#models/technology'

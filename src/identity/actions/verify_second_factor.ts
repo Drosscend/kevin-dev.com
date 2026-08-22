@@ -15,10 +15,6 @@ export type VerifySecondFactorResult = Result<User, VerifySecondFactorError>
 
 const TOTP_CODE = /^\d{6}$/
 
-/**
- * Second step of the admin login. Accepts a six-digit TOTP code or a
- * one-time recovery code, which is consumed on success.
- */
 @inject()
 export class VerifySecondFactor {
   constructor(private readonly users: UserRepository) {}

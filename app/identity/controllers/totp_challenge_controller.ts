@@ -6,9 +6,6 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()
 export default class TotpChallengeController {
-  /**
-   * Either a six-digit TOTP code or an XXXXX-XXXXX recovery code.
-   */
   static readonly validator = vine.create({
     code: vine.string().trim().minLength(6).maxLength(11),
   })

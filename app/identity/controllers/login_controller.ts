@@ -17,10 +17,6 @@ export default class LoginController {
     return inertia.render('auth/login', {})
   }
 
-  /**
-   * When the account carries a second factor, no session is opened yet:
-   * the pending user id waits for the challenge.
-   */
   async execute({ request, auth, response, session }: HttpContext) {
     const params = await request.validateUsing(LoginController.validator)
     const result = await this.verifyUserCredentials.execute(params)

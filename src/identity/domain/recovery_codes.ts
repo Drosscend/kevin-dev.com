@@ -33,10 +33,6 @@ export default class RecoveryCodes {
     return Array.isArray(hashed) ? hashed.length : 0
   }
 
-  /**
-   * Index of the hash the code matches, or -1. The caller drops that
-   * entry, which is what makes a code single use.
-   */
   static async match(hashed: string[] | null, code: string) {
     const codes = Array.isArray(hashed) ? hashed : []
     const normalized = code.trim().toUpperCase()

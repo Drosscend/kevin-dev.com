@@ -14,10 +14,6 @@ export interface InvalidCredentialsError {
 
 export type VerifyUserCredentialsResult = Result<User, InvalidCredentialsError>
 
-/**
- * First step of the admin login. Returns the account without opening a
- * session: whether a second factor is still owed is the caller's call.
- */
 @inject()
 export class VerifyUserCredentials {
   constructor(private readonly users: UserRepository) {}

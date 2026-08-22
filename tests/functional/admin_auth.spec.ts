@@ -1,8 +1,8 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 import { TOTP, Secret } from 'otpauth'
-import User from '#identity/models/user'
 import Totp from '#identity/domain/totp'
+import User from '#identity/models/user'
 import { admin } from '#tests/helpers/auth'
 
 function currentCode(secret: string, email: string) {

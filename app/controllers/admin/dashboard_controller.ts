@@ -1,5 +1,5 @@
+import ContactMessage from '#contact/models/contact_message'
 import Article from '#models/article'
-import ContactMessage from '#models/contact_message'
 import Media from '#models/media'
 import Project from '#models/project'
 import UmamiService from '#services/umami_service'

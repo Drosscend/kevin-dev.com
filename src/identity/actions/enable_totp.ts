@@ -17,11 +17,6 @@ export interface InvalidTotpCodeError {
 
 export type EnableTotpResult = Result<string[], InvalidTotpCodeError>
 
-/**
- * Confirms an enrollment. The candidate secret is only persisted once a
- * code proves the authenticator holds it, and the plain recovery codes
- * it returns are never readable again.
- */
 @inject()
 export class EnableTotp {
   constructor(private readonly users: UserRepository) {}

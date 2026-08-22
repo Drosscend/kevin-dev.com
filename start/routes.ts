@@ -7,11 +7,11 @@
 |
 */
 
-import router from '@adonisjs/core/services/router'
+import '#app/contact/routes'
 import '#app/identity/routes'
+import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
 import { middleware } from '#start/kernel'
-import { contactThrottle } from '#start/limiter'
 
 router.get('/', [controllers.Home, 'handle']).as('home')
 router.get('/en', [controllers.Home, 'handle']).as('en.home')
@@ -66,14 +66,6 @@ router.get('/cv.pdf', [controllers.Cv, 'pdf']).as('cv.pdf')
 
 router.get('/legal', [controllers.Legal, 'show']).as('legal.show')
 router.get('/en/legal', [controllers.Legal, 'show']).as('en.legal.show')
-
-router.get('/contact', [controllers.Contact, 'show']).as('contact.show')
-router.post('/contact', [controllers.Contact, 'store']).as('contact.store').use(contactThrottle)
-router.get('/en/contact', [controllers.Contact, 'show']).as('en.contact.show')
-router
-  .post('/en/contact', [controllers.Contact, 'store'])
-  .as('en.contact.store')
-  .use(contactThrottle)
 
 /**
  * Media library files (generated names, immutable).
@@ -162,14 +154,6 @@ router
 
     router.get('legal', [controllers.admin.Legal, 'show']).as('admin.legal.index')
     router.put('legal', [controllers.admin.Legal, 'update']).as('admin.legal.update')
-
-    router.get('messages', [controllers.admin.Messages, 'index']).as('admin.messages.index')
-    router
-      .put('messages/:id/read', [controllers.admin.Messages, 'toggleRead'])
-      .as('admin.messages.read')
-    router
-      .delete('messages/:id', [controllers.admin.Messages, 'destroy'])
-      .as('admin.messages.destroy')
   })
   .prefix('/admin')
   .use(middleware.auth())
