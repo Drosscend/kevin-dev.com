@@ -6,7 +6,7 @@ import {
   status,
   translation,
   type EditedRow,
-} from '#validators/shared'
+} from '#app/shared/validators'
 
 export const articleValidator = vine.withMetaData<EditedRow>().create({
   slug: slug('articles'),

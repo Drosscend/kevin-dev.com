@@ -1,16 +1,6 @@
 import router from '@adonisjs/core/services/router'
 import { DOCUMENT_FILE } from '#media/storage'
-import type { MediaVariant } from '#media/models/media'
-
-/**
- * What building a media URL needs, so both the models and the
- * projections of the read side satisfy it.
- */
-export interface MediaSource {
-  key: string
-  isDocument: boolean
-  variants: MediaVariant[]
-}
+import type { MediaSource } from '#media/media_source'
 
 export function variantUrl(media: MediaSource, width: number) {
   const file = media.variants.find((variant) => variant.width === width)?.file ?? 'original.webp'
@@ -40,4 +30,8 @@ export function mediaUrl(media: MediaSource | null, width = 640) {
  */
 export function thumbnailUrl(media: MediaSource) {
   return media.isDocument ? null : variantUrl(media, 320)
+}
+
+export function originalUrl(media: MediaSource) {
+  return router.makeUrl('uploads.show', { key: media.key, file: 'original.webp' })
 }

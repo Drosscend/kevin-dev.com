@@ -6,7 +6,7 @@ import Article from '#models/article'
 import { withPublication } from '#models/mixins/publishable'
 import ProjectLink from '#models/project_link'
 import ProjectTranslation from '#models/project_translation'
-import Technology from '#models/technology'
+import Technology from '#technologies/models/technology'
 import type { Locale } from '#types/i18n'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 

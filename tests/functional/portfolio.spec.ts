@@ -1,6 +1,6 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
-import Technology from '#models/technology'
+import Technology from '#technologies/models/technology'
 import { admin } from '#tests/helpers/auth'
 import { makeProject } from '#tests/helpers/content'
 

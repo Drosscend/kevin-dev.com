@@ -5,7 +5,7 @@ import Media from '#media/models/media'
 import ArticleTranslation from '#models/article_translation'
 import Category from '#models/category'
 import { withPublication } from '#models/mixins/publishable'
-import Technology from '#models/technology'
+import Technology from '#technologies/models/technology'
 import type { Locale } from '#types/i18n'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 

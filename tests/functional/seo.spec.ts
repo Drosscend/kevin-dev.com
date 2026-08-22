@@ -1,7 +1,7 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
-import Technology from '#models/technology'
 import env from '#start/env'
+import Technology from '#technologies/models/technology'
 import { makeArticle, makeTalk } from '#tests/helpers/content'
 
 test.group('SEO', (group) => {

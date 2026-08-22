@@ -6,7 +6,7 @@ import Media from '#media/models/media'
 import { withPublication } from '#models/mixins/publishable'
 import TalkLink from '#models/talk_link'
 import TalkTranslation from '#models/talk_translation'
-import Technology from '#models/technology'
+import Technology from '#technologies/models/technology'
 import type { Locale } from '#types/i18n'
 import type { BelongsTo, HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 

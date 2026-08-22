@@ -1,6 +1,6 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
-import Technology from '#models/technology'
+import Technology from '#technologies/models/technology'
 import { makeArticle, makeProject, makeTalk } from '#tests/helpers/content'
 
 test.group('Technologies publiques', (group) => {

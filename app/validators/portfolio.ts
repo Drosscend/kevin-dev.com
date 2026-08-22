@@ -1,5 +1,4 @@
 import vine from '@vinejs/vine'
-import { PROJECT_LINK_TYPES, TALK_LINK_TYPES, TECHNOLOGY_CATEGORIES } from '#types/content'
 import {
   publishedAt,
   relationId,
@@ -7,7 +6,8 @@ import {
   status,
   translation,
   type EditedRow,
-} from '#validators/shared'
+} from '#app/shared/validators'
+import { PROJECT_LINK_TYPES, TALK_LINK_TYPES } from '#types/content'
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/
 
@@ -56,14 +56,4 @@ export const talkValidator = vine.withMetaData<EditedRow>().create({
   publishedAt: publishedAt(),
   fr: translation(),
   en: translation().optional(),
-})
-
-export const technologyValidator = vine.withMetaData<EditedRow>().create({
-  slug: slug('technologies'),
-  name: vine.string().trim().minLength(1).maxLength(100),
-  category: vine.enum(TECHNOLOGY_CATEGORIES),
-  logoMediaId: relationId('media').nullable().optional(),
-  docsUrl: vine.string().trim().url().maxLength(2048).nullable().optional(),
-  descriptionFr: vine.string().trim().maxLength(1000).optional(),
-  descriptionEn: vine.string().trim().maxLength(1000).optional(),
 })

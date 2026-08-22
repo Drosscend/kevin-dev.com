@@ -9,6 +9,7 @@
 
 import '#app/contact/routes'
 import '#app/media/routes'
+import '#app/technologies/routes'
 import '#app/identity/routes'
 import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
@@ -56,11 +57,6 @@ router.get('/talks/:slug', [controllers.Talks, 'show']).as('talks.show')
 router.get('/en/talks', [controllers.Talks, 'index']).as('en.talks.index')
 router.get('/en/talks/:slug', [controllers.Talks, 'show']).as('en.talks.show')
 
-router.get('/technologies', [controllers.Technologies, 'index']).as('technologies.index')
-router.get('/technologies/:slug', [controllers.Technologies, 'show']).as('technologies.show')
-router.get('/en/technologies', [controllers.Technologies, 'index']).as('en.technologies.index')
-router.get('/en/technologies/:slug', [controllers.Technologies, 'show']).as('en.technologies.show')
-
 router.get('/cv', [controllers.Cv, 'show']).as('cv.show')
 router.get('/en/cv', [controllers.Cv, 'show']).as('en.cv.show')
 router.get('/cv.pdf', [controllers.Cv, 'pdf']).as('cv.pdf')
@@ -95,19 +91,6 @@ router
     router
       .delete('articles/:id', [controllers.admin.Articles, 'destroy'])
       .as('admin.articles.destroy')
-
-    router
-      .get('technologies', [controllers.admin.Technologies, 'index'])
-      .as('admin.technologies.index')
-    router
-      .post('technologies', [controllers.admin.Technologies, 'store'])
-      .as('admin.technologies.store')
-    router
-      .put('technologies/:id', [controllers.admin.Technologies, 'update'])
-      .as('admin.technologies.update')
-    router
-      .delete('technologies/:id', [controllers.admin.Technologies, 'destroy'])
-      .as('admin.technologies.destroy')
 
     router.get('projects', [controllers.admin.Projects, 'index']).as('admin.projects.index')
     router

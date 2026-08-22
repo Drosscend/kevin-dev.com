@@ -4,9 +4,9 @@ import { DateTime } from 'luxon'
 import Article from '#models/article'
 import Category from '#models/category'
 import Project from '#models/project'
-import Technology from '#models/technology'
 import TimelineEntry from '#models/timeline_entry'
 import SettingsService from '#services/settings_service'
+import Technology from '#technologies/models/technology'
 import { admin } from '#tests/helpers/auth'
 
 test.group('Admin CRUD catégories', (group) => {

@@ -2,7 +2,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 import { DateTime } from 'luxon'
 import Talk from '#models/talk'
-import Technology from '#models/technology'
+import Technology from '#technologies/models/technology'
 import { admin } from '#tests/helpers/auth'
 import { makeTalk } from '#tests/helpers/content'
 

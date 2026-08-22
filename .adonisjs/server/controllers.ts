@@ -19,7 +19,6 @@ export const controllers = {
     Legal: () => import('#app/controllers/admin/legal_controller'),
     Projects: () => import('#app/controllers/admin/projects_controller'),
     Talks: () => import('#app/controllers/admin/talks_controller'),
-    Technologies: () => import('#app/controllers/admin/technologies_controller'),
     Timeline: () => import('#app/controllers/admin/timeline_controller'),
   },
   Blog: () => import('#app/controllers/blog_controller'),
@@ -31,7 +30,6 @@ export const controllers = {
   Projects: () => import('#app/controllers/projects_controller'),
   Seo: () => import('#app/controllers/seo_controller'),
   Talks: () => import('#app/controllers/talks_controller'),
-  Technologies: () => import('#app/controllers/technologies_controller'),
   identity: {
     DisableTotp: () => import('#app/identity/controllers/disable_totp_controller'),
     EnableTotp: () => import('#app/identity/controllers/enable_totp_controller'),
@@ -47,5 +45,12 @@ export const controllers = {
     ServeMedia: () => import('#app/media/controllers/serve_media_controller'),
     StoreMedia: () => import('#app/media/controllers/store_media_controller'),
     UploadImage: () => import('#app/media/controllers/upload_image_controller'),
+  },
+  technologies: {
+    DeleteTechnology: () => import('#app/technologies/controllers/delete_technology_controller'),
+    ManageTechnologies: () => import('#app/technologies/controllers/manage_technologies_controller'),
+    SaveTechnology: () => import('#app/technologies/controllers/save_technology_controller'),
+    Technology: () => import('#app/technologies/controllers/technology_controller'),
+    TechnologyList: () => import('#app/technologies/controllers/technology_list_controller'),
   },
 }
