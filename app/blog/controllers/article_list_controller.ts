@@ -4,7 +4,7 @@ import { longDate } from '#app/shared/date_format'
 import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import { ArticleListQuery } from '#blog/queries/article_list_query'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 const PER_PAGE = 9
@@ -30,9 +30,9 @@ export default class ArticleListController {
   constructor(private readonly articleList: ArticleListQuery) {}
 
   async render({ inertia, request, response, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
     const page = Math.max(1, Number(request.input('page', 1)) || 1)
-    const categorySlug = request.input('category') as string | null
+    const categorySlug = String(request.input('category') ?? '') || null
 
     const list = await this.articleList.execute({
       locale,

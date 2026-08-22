@@ -5,6 +5,7 @@ import Talk from '#talks/models/talk'
 import Technology from '#technologies/models/technology'
 import { admin } from '#tests/helpers/auth'
 import { makeTalk } from '#tests/helpers/content'
+import { homePage, talkListPage, talkPage } from '#tests/helpers/pages'
 
 test.group('Interventions publiques', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -20,8 +21,7 @@ test.group('Interventions publiques', (group) => {
     const response = await client.get('/talks').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('talks/index')
-    const talks = response.inertiaProps.talks as { slug: string }[]
+    const { talks } = talkListPage(response)
     assert.deepEqual(
       talks.map((talk) => talk.slug),
       ['recente', 'ancienne']
@@ -35,7 +35,7 @@ test.group('Interventions publiques', (group) => {
     const response = await client.get('/en/talks').withInertia()
 
     response.assertStatus(200)
-    const talks = response.inertiaProps.talks as { slug: string; title: string }[]
+    const { talks } = talkListPage(response)
     assert.deepEqual(
       talks.map((talk) => talk.slug),
       ['fr-et-en']
@@ -51,7 +51,7 @@ test.group('Interventions publiques', (group) => {
 
     const response = await client.get('/talks').withInertia()
 
-    const talks = response.inertiaProps.talks as { slug: string; upcoming: boolean }[]
+    const { talks } = talkListPage(response)
     assert.isTrue(talks.find((talk) => talk.slug === 'a-venir')?.upcoming)
     assert.isFalse(talks.find((talk) => talk.slug === 'passee')?.upcoming)
   })
@@ -66,13 +66,7 @@ test.group('Interventions publiques', (group) => {
     const response = await client.get('/talks/mon-talk').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('talks/show')
-    const talk = response.inertiaProps.talk as {
-      contentHtml: string
-      eventName: string
-      links: { type: string }[]
-      technologies: { slug: string }[]
-    }
+    const { talk } = talkPage(response)
     assert.include(talk.contentHtml, '<h1 id="présentation">Présentation</h1>')
     assert.equal(talk.eventName, 'DevFest Lyon')
     assert.deepEqual(
@@ -95,11 +89,11 @@ test.group('Interventions publiques', (group) => {
     })
 
     const listing = await client.get('/talks').withInertia()
-    const talks = listing.inertiaProps.talks as { readingTimeLabel: string }[]
+    const { talks } = talkListPage(listing)
     assert.equal(talks[0].readingTimeLabel, '3 min de lecture')
 
     const detail = await client.get('/en/talks/longue-intervention').withInertia()
-    const talk = detail.inertiaProps.talk as { readingTimeLabel: string }
+    const { talk } = talkPage(detail)
     assert.equal(talk.readingTimeLabel, '3 min read')
   })
 
@@ -132,7 +126,7 @@ test.group('Interventions publiques', (group) => {
     const response = await client.get('/').withInertia()
 
     response.assertStatus(200)
-    const talks = response.inertiaProps.talks as { slug: string }[]
+    const { talks } = homePage(response)
     assert.deepEqual(
       talks.map((talk) => talk.slug),
       ['t4', 't3', 't2']

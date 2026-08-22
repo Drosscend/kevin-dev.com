@@ -3,7 +3,7 @@ import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import TechnologyCardTransformer from '#app/technologies/transformers/technology_card_transformer'
 import { TechnologyListQuery } from '#technologies/queries/technology_list_query'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { TechnologyListItem } from '#technologies/queries/technology_list_query'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -30,7 +30,7 @@ export default class TechnologyListController {
   constructor(private readonly technologyList: TechnologyListQuery) {}
 
   async render({ inertia, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
     const technologies = await this.technologyList.execute(locale)
 
     return inertia.render('technologies/index', {

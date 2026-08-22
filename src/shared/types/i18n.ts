@@ -5,6 +5,14 @@ export type Locale = (typeof LOCALES)[number]
 export const DEFAULT_LOCALE: Locale = 'fr'
 
 /**
+ * Narrows the language tag an i18n instance carries. Anything the
+ * middleware did not set falls back to the default locale.
+ */
+export function toLocale(tag: string): Locale {
+  return tag === 'en' ? 'en' : DEFAULT_LOCALE
+}
+
+/**
  * Reads the locale back from a request path. The URL is the only
  * carrier, so this works even outside the router, where no i18n
  * instance has been attached to the context yet.

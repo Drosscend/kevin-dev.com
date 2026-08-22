@@ -8,7 +8,7 @@ import SeoService from '#app/shared/seo_service'
 import { ProjectDetailQuery } from '#portfolio/queries/project_detail_query'
 import Llms, { MARKDOWN_CONTENT_TYPE } from '#seo/llms'
 import { visibilityOf } from '#shared/content/publication'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()
@@ -16,7 +16,7 @@ export default class ProjectController {
   constructor(private readonly projectDetail: ProjectDetailQuery) {}
 
   async render({ params, inertia, auth, i18n, response }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
 
     if (params.slug.endsWith('.md')) {
       const markdown = await Llms.projectMarkdown(params.slug.slice(0, -3), locale)

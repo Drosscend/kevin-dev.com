@@ -47,7 +47,7 @@ export default function ProjectForm({ project, options }: ProjectFormProps) {
 
   const form = useForm({
     slug: project?.slug ?? '',
-    status: project?.status ?? ('draft' as PublicationStatus),
+    status: project?.status ?? ('draft' satisfies PublicationStatus),
     coverMediaId: project?.coverMediaId ?? null,
     startedAt: project?.startedAt ?? null,
     endedAt: project?.endedAt ?? null,

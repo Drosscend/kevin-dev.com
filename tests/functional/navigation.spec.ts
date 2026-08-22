@@ -1,5 +1,6 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
+import { homePage, notFoundPage } from '#tests/helpers/pages'
 import enMessages from '../../resources/lang/en/messages.json' with { type: 'json' }
 import frMessages from '../../resources/lang/fr/messages.json' with { type: 'json' }
 
@@ -26,8 +27,8 @@ test.group('Chrome de navigation', (group) => {
 
     fr.assertStatus(200)
     en.assertStatus(200)
-    const french = fr.inertiaProps.chrome as Record<string, string>
-    const english = en.inertiaProps.chrome as Record<string, string>
+    const { chrome: french } = homePage(fr)
+    const { chrome: english } = homePage(en)
 
     assert.equal(french.talks, 'Interventions')
     assert.equal(french.cv, 'CV')
@@ -41,16 +42,15 @@ test.group('Chrome de navigation', (group) => {
     const response = await client.get('/en/nothing-here').withInertia()
 
     response.assertStatus(404)
-    response.assertInertiaComponent('errors/not_found')
-    const chrome = response.inertiaProps.chrome as Record<string, string>
+    const { chrome, locale } = notFoundPage(response)
     assert.equal(chrome.talks, 'Speaking')
-    assert.equal(response.inertiaProps.locale, 'en')
+    assert.equal(locale, 'en')
   })
 
   test('les libellés d’accessibilité des contrôles sont traduits', async ({ client, assert }) => {
     const response = await client.get('/en').withInertia()
 
-    const chrome = response.inertiaProps.chrome as Record<string, string>
+    const { chrome } = homePage(response)
     assert.equal(chrome.primary, 'Main navigation')
     assert.equal(chrome.secondary, 'Secondary navigation')
     assert.equal(chrome.openMenu, 'Open the menu')
@@ -77,7 +77,7 @@ test.group('Chrome de navigation', (group) => {
   test('aucun libellé de navigation ne reste introuvable', async ({ client, assert }) => {
     for (const url of ['/', '/en']) {
       const response = await client.get(url).withInertia()
-      const chrome = response.inertiaProps.chrome as Record<string, string>
+      const { chrome } = homePage(response)
 
       for (const [key, value] of Object.entries(chrome)) {
         assert.notInclude(value, 'translation missing', `messages.nav.${key} est introuvable`)

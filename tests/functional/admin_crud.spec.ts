@@ -8,6 +8,7 @@ import Settings from '#pages/repositories/settings_repository'
 import Project from '#portfolio/models/project'
 import Technology from '#technologies/models/technology'
 import { admin } from '#tests/helpers/auth'
+import { adminArticleFormPage } from '#tests/helpers/pages'
 
 test.group('Admin CRUD catégories', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -435,8 +436,7 @@ test.group('Admin CRUD articles et projets (HTTP)', (group) => {
       })
 
     response.assertStatus(200)
-    response.assertInertiaComponent('admin/articles/form')
-    const errors = response.inertiaProps.errors as Record<string, string>
+    const { errors } = adminArticleFormPage(response)
     assert.property(errors, 'categoryId')
     assert.isNull(await Article.findBy('slug', 'avec-categorie'))
   })

@@ -2,7 +2,7 @@ import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
 import SeoService from '#app/shared/seo_service'
 import { SubmitContactMessage } from '#contact/actions/submit_contact_message'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()
@@ -16,7 +16,7 @@ export default class ContactController {
   constructor(private readonly submitContactMessage: SubmitContactMessage) {}
 
   render({ inertia, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
 
     return inertia.render('contact', {
       labels: {

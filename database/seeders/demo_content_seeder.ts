@@ -32,7 +32,6 @@ import Markdown from '#shared/content/markdown'
 import { SaveTalk } from '#talks/actions/save_talk'
 import Technology from '#technologies/models/technology'
 import type Media from '#media/models/media'
-import type { MultipartFile } from '@adonisjs/core/bodyparser'
 
 /**
  * Content tables wiped before reseeding, ordered so that the
@@ -91,7 +90,7 @@ async function makeCover(cover: Cover | null, alt: string): Promise<Media | null
   try {
     const storeImage = await app.container.make(StoreImage)
     const result = await storeImage.execute({
-      file: { tmpPath: path, clientName: `${cover.name}.png` } as MultipartFile,
+      file: { tmpPath: path, clientName: `${cover.name}.png` },
       alt,
     })
 

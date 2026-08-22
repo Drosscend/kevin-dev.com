@@ -15,7 +15,7 @@ export type EditedRow = { id?: number; currentSlug?: string; wasOnline?: boolean
  * so a link published elsewhere can never end up broken.
  */
 const frozenSlug = vine.createRule((value: unknown, _options: undefined, field: FieldContext) => {
-  const { currentSlug, wasOnline } = field.meta as EditedRow
+  const { currentSlug, wasOnline }: EditedRow = field.meta
 
   if (wasOnline && value !== currentSlug) {
     field.report(
@@ -40,7 +40,7 @@ export function slug(table: string) {
     .unique(async (db, value, field) => {
       const query = db.from(table).select('id').where('slug', value)
 
-      const editedId = (field.meta as EditedRow).id
+      const { id: editedId }: EditedRow = field.meta
 
       if (editedId) {
         query.whereNot('id', editedId)
@@ -57,7 +57,7 @@ export function slug(table: string) {
  */
 const publicationTransition = vine.createRule(
   (value: unknown, _options: undefined, field: FieldContext) => {
-    const { wasOnline } = field.meta as EditedRow
+    const { wasOnline }: EditedRow = field.meta
 
     if (wasOnline && value === 'draft') {
       field.report(

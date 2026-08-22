@@ -4,6 +4,7 @@ import { test } from '@japa/runner'
 import { SaveArticle } from '#blog/actions/save_article'
 import { admin } from '#tests/helpers/auth'
 import { makeArticle } from '#tests/helpers/content'
+import { articleListPage, articlePage } from '#tests/helpers/pages'
 
 test.group('Blog public', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -15,8 +16,7 @@ test.group('Blog public', (group) => {
     const response = await client.get('/blog').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('blog/index')
-    const articles = response.inertiaProps.articles as { slug: string }[]
+    const { articles } = articleListPage(response)
     const slugs = articles.map((article) => article.slug)
     assert.include(slugs, 'article-publie')
     assert.notInclude(slugs, 'article-brouillon')
@@ -29,7 +29,7 @@ test.group('Blog public', (group) => {
     const response = await client.get('/en/blog').withInertia()
 
     response.assertStatus(200)
-    const articles = response.inertiaProps.articles as { slug: string; title: string }[]
+    const { articles } = articleListPage(response)
     assert.deepEqual(
       articles.map((article) => article.slug),
       ['fr-et-en']
@@ -52,8 +52,7 @@ test.group('Blog public', (group) => {
     const response = await client.get('/blog/mon-article').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('blog/show')
-    const article = response.inertiaProps.article as { contentHtml: string }
+    const { article } = articlePage(response)
     assert.include(article.contentHtml, '<h1 id="bonjour">Bonjour</h1>')
   })
 

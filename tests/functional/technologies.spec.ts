@@ -2,6 +2,7 @@ import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
 import Technology from '#technologies/models/technology'
 import { makeArticle, makeProject, makeTalk } from '#tests/helpers/content'
+import { technologyListPage, technologyPage } from '#tests/helpers/pages'
 
 test.group('Technologies publiques', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -24,11 +25,7 @@ test.group('Technologies publiques', (group) => {
     const response = await client.get('/technologies').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('technologies/index')
-    const technologies = response.inertiaProps.technologies as {
-      slug: string
-      usageLabel: string
-    }[]
+    const { technologies } = technologyListPage(response)
     assert.equal(
       technologies.find((item) => item.slug === 'adonisjs')?.usageLabel,
       '2 projets · 1 article · 1 intervention'
@@ -47,10 +44,7 @@ test.group('Technologies publiques', (group) => {
     const response = await client.get('/en/technologies').withInertia()
 
     response.assertStatus(200)
-    const technologies = response.inertiaProps.technologies as {
-      slug: string
-      usageLabel: string
-    }[]
+    const { technologies } = technologyListPage(response)
     assert.equal(technologies.find((item) => item.slug === 'adonisjs')?.usageLabel, '1 project')
     assert.equal(
       technologies.find((item) => item.slug === 'go')?.usageLabel,
@@ -73,12 +67,7 @@ test.group('Technologies publiques', (group) => {
     const response = await client.get('/technologies/adonisjs').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('technologies/show')
-    const technology = response.inertiaProps.technology as {
-      projects: { slug: string; coverUrl: string | null }[]
-      articles: { slug: string }[]
-      talks: { slug: string }[]
-    }
+    const { technology } = technologyPage(response)
     assert.deepEqual(
       technology.projects.map((project) => project.slug),
       ['avec-adonis']
@@ -107,10 +96,7 @@ test.group('Technologies publiques', (group) => {
     await Technology.create({ slug: 'go', name: 'Go', category: 'langage' })
 
     const list = await client.get('/technologies').withInertia()
-    const technologies = list.inertiaProps.technologies as {
-      slug: string
-      docsUrl: string | null
-    }[]
+    const { technologies } = technologyListPage(list)
     assert.equal(
       technologies.find((item) => item.slug === 'adonisjs')?.docsUrl,
       'https://docs.adonisjs.com'
@@ -118,11 +104,9 @@ test.group('Technologies publiques', (group) => {
     assert.isNull(technologies.find((item) => item.slug === 'go')?.docsUrl ?? null)
 
     const show = await client.get('/technologies/adonisjs').withInertia()
-    assert.equal(
-      (show.inertiaProps.technology as { docsUrl: string | null }).docsUrl,
-      'https://docs.adonisjs.com'
-    )
-    assert.equal((show.inertiaProps.labels as { docs: string }).docs, 'Documentation officielle')
+    const { technology, labels } = technologyPage(show)
+    assert.equal(technology.docsUrl, 'https://docs.adonisjs.com')
+    assert.equal(labels.docs, 'Documentation officielle')
   })
 
   test('la fiche reste navigable mais sort des résultats de recherche', async ({
@@ -134,8 +118,8 @@ test.group('Technologies publiques', (group) => {
     const list = await client.get('/technologies').withInertia()
     const show = await client.get('/technologies/adonisjs').withInertia()
 
-    assert.isFalse((list.inertiaProps.meta as { noindex: boolean }).noindex)
-    assert.isTrue((show.inertiaProps.meta as { noindex: boolean }).noindex)
+    assert.isFalse(technologyListPage(list).meta.noindex)
+    assert.isTrue(technologyPage(show).meta.noindex)
   })
 
   test('une technologie inconnue renvoie 404', async ({ client }) => {

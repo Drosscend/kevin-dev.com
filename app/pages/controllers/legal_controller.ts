@@ -1,11 +1,11 @@
 import SeoService from '#app/shared/seo_service'
 import Settings from '#pages/repositories/settings_repository'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class LegalController {
   async render({ inertia, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
     const settings = await Settings.getMany(['legal_html_fr', 'legal_html_en'])
 
     return inertia.render('legal', {

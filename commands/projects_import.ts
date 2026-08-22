@@ -8,6 +8,11 @@ import Technology from '#technologies/models/technology'
 import { PROJECT_LINK_TYPES, type ProjectLinkType } from '#types/content'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 
+/** An imported link type, defaulting to the catch-all one. */
+function linkType(value: string): ProjectLinkType {
+  return PROJECT_LINK_TYPES.find((type) => type === value) ?? 'other'
+}
+
 interface Entry {
   slug: string
   startedAt: string | null
@@ -56,7 +61,7 @@ export default class ProjectsImport extends BaseCommand {
         !entry.slug ||
         !entry.fr?.title ||
         !entry.fr?.contentMarkdown ||
-        entry.links.some((link) => !PROJECT_LINK_TYPES.includes(link.type as ProjectLinkType))
+        entry.links.some((link) => !PROJECT_LINK_TYPES.some((type) => type === link.type))
     )
 
     if (invalid.length > 0) {
@@ -109,7 +114,7 @@ export default class ProjectsImport extends BaseCommand {
           featured: entry.featured,
           technologyIds,
           articleIds: [],
-          links: entry.links.map((link) => ({ ...link, type: link.type as ProjectLinkType })),
+          links: entry.links.map((link) => ({ ...link, type: linkType(link.type) })),
           publishedAt: this.publish
             ? now.minus({ minutes: index }).toISO({ includeOffset: false })
             : null,

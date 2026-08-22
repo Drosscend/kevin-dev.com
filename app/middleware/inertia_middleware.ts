@@ -2,7 +2,7 @@ import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import UserTransformer from '#app/identity/transformers/user_transformer'
 import ContactMessage from '#contact/models/contact_message'
-import type { Locale } from '#types/i18n'
+import { toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 
@@ -16,7 +16,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      * In that case, we must always assume that HttpContext is not fully hydrated
      * with all the properties
      */
-    const { auth } = ctx as Partial<HttpContext>
+    const { auth }: Partial<HttpContext> = ctx
     const { i18n } = ctx
     const otherLocale = i18nManager.locale(i18n.locale === 'fr' ? 'en' : 'fr')
 
@@ -27,7 +27,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     return {
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
-      locale: ctx.inertia.always(i18n.locale as Locale),
+      locale: ctx.inertia.always(toLocale(i18n.locale)),
       /**
        * Labels of the header, footer and window controls. They live in the
        * layout, which no controller feeds, so they travel with every page.
@@ -90,12 +90,11 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
    * be hydrated on the context.
    */
   flash(ctx: HttpContext) {
-    const { session } = ctx as Partial<HttpContext>
+    const { session }: Partial<HttpContext> = ctx
+    const success: string | undefined = session?.flashMessages.get('success')
+    const error: string | undefined = session?.flashMessages.get('error')
 
-    return {
-      success: session?.flashMessages.get('success') as string | undefined,
-      error: session?.flashMessages.get('error') as string | undefined,
-    }
+    return { success, error }
   }
 
   async handle(ctx: HttpContext, next: NextFn) {

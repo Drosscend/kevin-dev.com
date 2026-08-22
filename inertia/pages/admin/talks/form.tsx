@@ -46,7 +46,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
 
   const form = useForm({
     slug: talk?.slug ?? '',
-    status: talk?.status ?? ('draft' as PublicationStatus),
+    status: talk?.status ?? ('draft' satisfies PublicationStatus),
     coverMediaId: talk?.coverMediaId ?? null,
     eventDate: talk?.eventDate ?? '',
     eventName: talk?.eventName ?? '',

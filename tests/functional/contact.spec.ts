@@ -6,6 +6,7 @@ import ContactMessage from '#contact/models/contact_message'
 import Settings from '#pages/repositories/settings_repository'
 import Markdown from '#shared/content/markdown'
 import { admin } from '#tests/helpers/auth'
+import { contactPage, cvPage, legalPage } from '#tests/helpers/pages'
 
 async function messagesCount() {
   const row = await ContactMessage.query().count('* as total').firstOrFail()
@@ -78,8 +79,7 @@ test.group('Contact', (group) => {
       .form({ name: 'Jean', email: 'jean@example.com', message: 'court' })
 
     response.assertStatus(200)
-    response.assertInertiaComponent('contact')
-    const errors = response.inertiaProps.errors as Record<string, string>
+    const { errors } = contactPage(response)
     assert.property(errors, 'message')
     assert.equal(await messagesCount(), 0)
   })
@@ -104,9 +104,8 @@ test.group('CV et mentions légales', (group) => {
     const response = await client.get('/cv').withInertia()
 
     response.assertStatus(200)
-    response.assertInertiaComponent('cv')
-    const html = response.inertiaProps.contentHtml as string
-    assert.include(html, '<h2 id="parcours">Parcours</h2>')
+    const { contentHtml } = cvPage(response)
+    assert.include(contentHtml, '<h2 id="parcours">Parcours</h2>')
   })
 
   test('le PDF absent répond 404', async ({ client }) => {
@@ -120,7 +119,7 @@ test.group('CV et mentions légales', (group) => {
     const response = await client.get('/legal').withInertia()
 
     response.assertStatus(200)
-    assert.include(response.inertiaProps.contentHtml as string, 'Contenu légal')
+    assert.include(legalPage(response).contentHtml, 'Contenu légal')
   })
 })
 

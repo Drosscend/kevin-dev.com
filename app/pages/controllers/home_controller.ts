@@ -10,7 +10,7 @@ import SeoService from '#app/shared/seo_service'
 import { CV_PDF_KEY } from '#pages/cv_document'
 import { HomeOverviewQuery } from '#pages/queries/home_overview_query'
 import { TimelineQuery } from '#pages/queries/timeline_query'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()
@@ -21,7 +21,7 @@ export default class HomeController {
   ) {}
 
   async render({ inertia, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
     const [overview, timeline] = await Promise.all([
       this.homeOverview.execute(locale),
       this.timeline.execute(locale),

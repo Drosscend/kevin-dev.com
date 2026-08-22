@@ -26,6 +26,11 @@ const CATEGORY_LABELS = {
 
 const CATEGORIES = TECHNOLOGY_CATEGORIES.map((value) => ({ value, label: CATEGORY_LABELS[value] }))
 
+/** The select only offers the known categories; anything else is the default. */
+function toCategory(value: string) {
+  return TECHNOLOGY_CATEGORIES.find((category) => category === value) ?? 'outil'
+}
+
 /** Reading name of a stored category value, for the list below the form. */
 function categoryLabel(value: string) {
   return CATEGORIES.find((category) => category.value === value)?.label ?? value
@@ -38,6 +43,17 @@ type TechnologiesProps = InertiaProps<{
   mediaOptions: MediaOption[]
 }>
 
+/** What the form edits, with the optional columns spelled out. */
+type TechnologyValues = {
+  slug: string
+  name: string
+  category: TechnologyCategory
+  logoMediaId: number | null
+  docsUrl: string
+  descriptionFr: string
+  descriptionEn: string
+}
+
 function TechnologyForm({
   item,
   mediaOptions,
@@ -49,11 +65,11 @@ function TechnologyForm({
 }) {
   const { errors } = usePage().props
   const router = useRouter()
-  const empty = {
+  const empty: TechnologyValues = {
     slug: '',
     name: '',
     category: 'outil',
-    logoMediaId: null as number | null,
+    logoMediaId: null,
     docsUrl: '',
     descriptionFr: '',
     descriptionEn: '',
@@ -115,7 +131,7 @@ function TechnologyForm({
         <Select
           id={`category-${key}`}
           value={values.category}
-          onChange={(event) => setValues({ ...values, category: event.target.value })}
+          onChange={(event) => setValues({ ...values, category: toCategory(event.target.value) })}
         >
           {CATEGORIES.map((category) => (
             <option key={category.value} value={category.value}>

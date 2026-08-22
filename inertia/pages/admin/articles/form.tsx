@@ -34,7 +34,7 @@ export default function ArticleForm({ article, options }: ArticleFormProps) {
 
   const form = useForm({
     slug: article?.slug ?? '',
-    status: article?.status ?? ('draft' as PublicationStatus),
+    status: article?.status ?? ('draft' satisfies PublicationStatus),
     categoryId: article?.categoryId ?? null,
     coverMediaId: article?.coverMediaId ?? null,
     technologyIds: article?.technologyIds ?? [],

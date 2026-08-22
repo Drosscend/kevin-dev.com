@@ -4,7 +4,7 @@ import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import TalkCardTransformer from '#app/talks/transformers/talk_card_transformer'
 import { TalkListQuery } from '#talks/queries/talk_list_query'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()
@@ -12,7 +12,7 @@ export default class TalkListController {
   constructor(private readonly talkList: TalkListQuery) {}
 
   async render({ inertia, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
     const talks = await this.talkList.execute(locale)
 
     return inertia.render('talks/index', {

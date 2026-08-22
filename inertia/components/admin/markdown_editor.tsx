@@ -131,8 +131,11 @@ export default function MarkdownEditor({
     if (next === 'rich') {
       editor?.commands.setContent(value, { contentType: 'markdown', emitUpdate: false })
       emittedRef.current = value
+      setMode('rich')
+      return
     }
-    setMode(next as Mode)
+
+    setMode('source')
   }
 
   function insertImage(alt: string, url: string) {

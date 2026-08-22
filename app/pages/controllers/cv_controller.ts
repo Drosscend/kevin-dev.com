@@ -2,12 +2,12 @@ import drive from '@adonisjs/drive/services/main'
 import SeoService from '#app/shared/seo_service'
 import { CV_PDF_KEY } from '#pages/cv_document'
 import Settings from '#pages/repositories/settings_repository'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CvController {
   async render({ inertia, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
     const settings = await Settings.getMany(['cv_html_fr', 'cv_html_en'])
 
     return inertia.render('cv', {

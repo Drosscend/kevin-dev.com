@@ -4,7 +4,7 @@ import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import TechnologyDetailTransformer from '#app/technologies/transformers/technology_detail_transformer'
 import { TechnologyDetailQuery } from '#technologies/queries/technology_detail_query'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { ContentCard } from '#shared/content/content_card'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -22,7 +22,7 @@ export default class TechnologyController {
   constructor(private readonly technologyDetail: TechnologyDetailQuery) {}
 
   async render({ params, inertia, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
     const technology = await this.technologyDetail.execute(params.slug, locale)
 
     if (!technology) {

@@ -1,4 +1,5 @@
 import logger from '@adonisjs/core/services/logger'
+import vine from '@vinejs/vine'
 import env from '#start/env'
 
 interface UmamiStats {
@@ -13,6 +14,19 @@ interface UmamiConfig {
   password: string
   websiteId: string
 }
+
+/**
+ * What the Umami API is expected to answer. It is a third party, so
+ * its payloads are validated rather than trusted: a shape change
+ * fails the dashboard panel instead of surfacing as NaN.
+ */
+const tokenPayload = vine.compile(vine.object({ token: vine.string() }))
+
+const statsPayload = vine.compile(
+  vine.object({ pageviews: vine.number(), visitors: vine.number() })
+)
+
+const pagesPayload = vine.compile(vine.array(vine.object({ x: vine.string(), y: vine.number() })))
 
 const TOKEN_TTL_MS = 50 * 60 * 1000
 const FETCH_TIMEOUT_MS = 4000
@@ -59,7 +73,7 @@ export default class Umami {
       throw new Error(`Umami login failed (${response.status})`)
     }
 
-    const { token } = (await response.json()) as { token: string }
+    const { token } = await tokenPayload.validate(await response.json())
     this.#cachedToken = { value: token, expiresAt: Date.now() + TOKEN_TTL_MS }
     return token
   }
@@ -95,11 +109,8 @@ export default class Umami {
         throw new Error(`Umami API error (${statsResponse.status}/${pagesResponse.status})`)
       }
 
-      const stats = (await statsResponse.json()) as {
-        pageviews: number
-        visitors: number
-      }
-      const pages = (await pagesResponse.json()) as { x: string; y: number }[]
+      const stats = await statsPayload.validate(await statsResponse.json())
+      const pages = await pagesPayload.validate(await pagesResponse.json())
 
       return {
         pageviews: stats.pageviews,

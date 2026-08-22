@@ -4,7 +4,7 @@ import { monthYear } from '#app/shared/date_format'
 import { mediaUrl } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import { ProjectListQuery } from '#portfolio/queries/project_list_query'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale, type Locale } from '#types/i18n'
 import type { ProjectListItem } from '#portfolio/queries/project_list_query'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -28,7 +28,7 @@ export default class ProjectListController {
   constructor(private readonly projectList: ProjectListQuery) {}
 
   async render({ inertia, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
     const projects = await this.projectList.execute(locale)
 
     return inertia.render('portfolio/index', {

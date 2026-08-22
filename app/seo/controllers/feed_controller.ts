@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core'
 import SeoService from '#app/shared/seo_service'
 import { FeedArticlesQuery } from '#seo/queries/feed_articles_query'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 function xmlEscape(value: string) {
@@ -17,7 +17,7 @@ export default class FeedController {
   constructor(private readonly feedArticles: FeedArticlesQuery) {}
 
   async execute({ response, i18n }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
     const articles = await this.feedArticles.execute(locale)
 
     const items = articles

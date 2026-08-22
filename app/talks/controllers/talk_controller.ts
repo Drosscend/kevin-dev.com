@@ -8,7 +8,7 @@ import TalkDetailTransformer from '#app/talks/transformers/talk_detail_transform
 import Llms, { MARKDOWN_CONTENT_TYPE } from '#seo/llms'
 import { visibilityOf } from '#shared/content/publication'
 import { TalkDetailQuery } from '#talks/queries/talk_detail_query'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath, toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()
@@ -16,7 +16,7 @@ export default class TalkController {
   constructor(private readonly talkDetail: TalkDetailQuery) {}
 
   async render({ params, inertia, auth, i18n, response }: HttpContext) {
-    const locale = i18n.locale as Locale
+    const locale = toLocale(i18n.locale)
 
     if (params.slug.endsWith('.md')) {
       const markdown = await Llms.talkMarkdown(params.slug.slice(0, -3), locale)

@@ -12,13 +12,14 @@ export default class SecurityController {
    */
   async render({ inertia, auth, session }: HttpContext) {
     const user = auth.getUserOrFail()
+    const recoveryCodes: string[] | undefined = session.flashMessages.get(RECOVERY_CODES_FLASH_KEY)
 
     if (user.totpEnabled) {
       return inertia.render('admin/security', {
         totpEnabled: true,
         qrCode: null,
         secret: null,
-        recoveryCodes: (session.flashMessages.get(RECOVERY_CODES_FLASH_KEY) as string[]) ?? null,
+        recoveryCodes: recoveryCodes ?? null,
         recoveryCodesRemaining: RecoveryCodes.count(user.recoveryCodes),
       })
     }

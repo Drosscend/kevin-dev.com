@@ -3,7 +3,6 @@ import { basename, extname, join, resolve } from 'node:path'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
 import { StoreImage } from '#media/actions/store_image'
 import Media from '#media/models/media'
-import type { MultipartFile } from '@adonisjs/core/bodyparser'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 
 const EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif']
@@ -58,7 +57,7 @@ export default class MediaImport extends BaseCommand {
       }
 
       const result = await storeImage.execute({
-        file: { tmpPath: join(folder, file), clientName: file } as MultipartFile,
+        file: { tmpPath: join(folder, file), clientName: file },
         alt: basename(file, extname(file)),
       })
 

@@ -23,7 +23,9 @@ const NAVIGATION = [
   { path: '/contact', label: 'contact' },
 ] as const
 
-export default function Layout({ children }: { children: ReactElement<Data.SharedProps> }) {
+type PageElement = ReactElement<Data.SharedProps & { hasOtherLocale?: boolean }>
+
+export default function Layout({ children }: { children: PageElement }) {
   const locale = children.props.locale
   const chrome = children.props.chrome
   const { url } = usePage()
@@ -34,7 +36,7 @@ export default function Layout({ children }: { children: ReactElement<Data.Share
    * Detail pages report whether the entry exists in the other locale;
    * listings always do, so the switch shows unless told otherwise.
    */
-  const translated = (children.props as { hasOtherLocale?: boolean }).hasOtherLocale ?? true
+  const translated = children.props.hasOtherLocale ?? true
 
   useFlashToasts()
 

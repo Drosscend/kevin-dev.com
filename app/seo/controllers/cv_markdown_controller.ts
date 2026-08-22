@@ -1,10 +1,10 @@
 import Llms, { MARKDOWN_CONTENT_TYPE } from '#seo/llms'
-import type { Locale } from '#types/i18n'
+import { toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CvMarkdownController {
   async execute({ response, i18n }: HttpContext) {
-    const markdown = await Llms.settingsMarkdown('cv', i18n.locale as Locale)
+    const markdown = await Llms.settingsMarkdown('cv', toLocale(i18n.locale))
 
     if (!markdown) {
       return response.notFound('Not found')

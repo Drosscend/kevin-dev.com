@@ -6,14 +6,19 @@ import { MediaRepository } from '#media/repositories/media_repository'
 import { MediaStorage } from '#media/storage'
 import type Media from '#media/models/media'
 import type { MediaVariant } from '#media/models/media'
-import type { MultipartFile } from '@adonisjs/core/bodyparser'
 
 const VARIANT_WIDTHS = [320, 640, 1280]
 const ORIGINAL_MAX_WIDTH = 1920
 const WEBP_QUALITY = 82
 
+/** What the action needs of an upload: where it landed, and its name. */
+export interface UploadedImage {
+  tmpPath?: string
+  clientName: string
+}
+
 export interface StoreImageParams {
-  file: MultipartFile
+  file: UploadedImage
   alt: string
 }
 

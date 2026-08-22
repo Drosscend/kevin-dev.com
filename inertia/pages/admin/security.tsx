@@ -1,6 +1,6 @@
 import { Form } from '@adonisjs/inertia/react'
 import AdminPage from '~/components/admin/admin_page'
-import FieldError, { type FieldErrors } from '~/components/field_error'
+import FieldError from '~/components/field_error'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
@@ -108,7 +108,7 @@ export default function Security({
                       inputMode="numeric"
                       autoComplete="one-time-code"
                       maxLength={6}
-                      aria-invalid={(errors as FieldErrors).recoveryCode ? true : undefined}
+                      aria-invalid={errors.recoveryCode ? true : undefined}
                     />
                     <FieldError errors={errors} field="recoveryCode" />
                   </div>

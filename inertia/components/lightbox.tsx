@@ -37,6 +37,12 @@ function clamp(value: number, min: number, max: number) {
 }
 
 /** A linked image keeps its link instead of zooming. */
+
+/** The closest matching ancestor of an event target, when it is one. */
+function closest(target: EventTarget | null, selector: string) {
+  return target instanceof Element ? target.closest(selector) : null
+}
+
 function zoomable(image: HTMLImageElement) {
   return !image.closest('a')
 }
@@ -114,7 +120,7 @@ export default function Lightbox({
   }
 
   function target(event: ReactMouseEvent | ReactKeyboardEvent) {
-    const image = (event.target as HTMLElement).closest('img')
+    const image = closest(event.target, 'img')
     return image instanceof HTMLImageElement && zoomable(image) ? image : null
   }
 
@@ -274,7 +280,7 @@ function Viewer({
       }
 
       event.preventDefault()
-      const position = buttons.indexOf(document.activeElement as HTMLElement)
+      const position = buttons.findIndex((button) => button === document.activeElement)
       const step = event.shiftKey ? -1 : 1
       buttons[(position + step + buttons.length) % buttons.length].focus()
       return
@@ -336,7 +342,7 @@ function Viewer({
   }, [index, slides])
 
   function onPointerDown(event: ReactPointerEvent<HTMLDivElement>) {
-    if ((event.target as HTMLElement).closest('button')) {
+    if (closest(event.target, 'button')) {
       return
     }
 
@@ -412,7 +418,7 @@ function Viewer({
     }
 
     // A plain click beside the image closes, like any modal backdrop.
-    if (!state.moved && !(event.target as HTMLElement).closest('img')) {
+    if (!state.moved && !closest(event.target, 'img')) {
       onClose()
     }
   }

@@ -122,7 +122,7 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
   const { url } = usePage()
   const [mobileOpen, setMobileOpen] = useState(false)
   const currentPath = url.split('?')[0]
-  const unread = (children.props as { unreadMessages?: number }).unreadMessages ?? 0
+  const unread = children.props.unreadMessages ?? 0
   const closeMobile = () => setMobileOpen(false)
 
   useFlashToasts()
