@@ -7,6 +7,8 @@
 |
 */
 
+import '#app/seo/routes'
+import '#app/blog/routes'
 import '#app/contact/routes'
 import '#app/media/routes'
 import '#app/portfolio/routes'
@@ -22,32 +24,17 @@ router.get('/en', [controllers.Home, 'handle']).as('en.home')
 
 router.get('/health', [controllers.HealthChecks, 'handle']).as('health')
 
-router.get('/sitemap.xml', [controllers.Seo, 'sitemap']).as('seo.sitemap')
-router.get('/robots.txt', [controllers.Seo, 'robots']).as('seo.robots')
-router.get('/.well-known/security.txt', [controllers.Seo, 'securityTxt']).as('seo.security')
-router.get('/blog/rss.xml', [controllers.Seo, 'rss']).as('seo.rss')
-router.get('/en/blog/rss.xml', [controllers.Seo, 'rss']).as('en.seo.rss')
-
 /**
  * Markdown endpoints for LLM consumers. Content pages get their .md
  * variant through the regular blog/portfolio controllers (a ".md"
  * slug suffix switches the response to the stored Markdown).
  */
-router.get('/llms.txt', [controllers.Llms, 'index']).as('llms.index')
-router.get('/cv.md', [controllers.Llms, 'cv']).as('llms.cv')
-router.get('/en/cv.md', [controllers.Llms, 'cv']).as('en.llms.cv')
-router.get('/legal.md', [controllers.Llms, 'legal']).as('llms.legal')
-router.get('/en/legal.md', [controllers.Llms, 'legal']).as('en.llms.legal')
 
 /**
  * Public blog. French lives at the root, English under /en,
  * both served by the same controller (locale comes from the URL
  * prefix through the detect-user-locale middleware).
  */
-router.get('/blog', [controllers.Blog, 'index']).as('blog.index')
-router.get('/blog/:slug', [controllers.Blog, 'show']).as('blog.show')
-router.get('/en/blog', [controllers.Blog, 'index']).as('en.blog.index')
-router.get('/en/blog/:slug', [controllers.Blog, 'show']).as('en.blog.show')
 
 router.get('/cv', [controllers.Cv, 'show']).as('cv.show')
 router.get('/en/cv', [controllers.Cv, 'show']).as('en.cv.show')
@@ -63,26 +50,6 @@ router.get('/en/legal', [controllers.Legal, 'show']).as('en.legal.show')
 router
   .group(() => {
     router.get('/', [controllers.admin.Dashboard, 'handle']).as('admin.dashboard')
-
-    router.get('categories', [controllers.admin.Categories, 'index']).as('admin.categories.index')
-    router.post('categories', [controllers.admin.Categories, 'store']).as('admin.categories.store')
-    router
-      .put('categories/:id', [controllers.admin.Categories, 'update'])
-      .as('admin.categories.update')
-    router
-      .delete('categories/:id', [controllers.admin.Categories, 'destroy'])
-      .as('admin.categories.destroy')
-
-    router.get('articles', [controllers.admin.Articles, 'index']).as('admin.articles.index')
-    router
-      .get('articles/create', [controllers.admin.Articles, 'create'])
-      .as('admin.articles.create')
-    router.post('articles', [controllers.admin.Articles, 'store']).as('admin.articles.store')
-    router.get('articles/:id/edit', [controllers.admin.Articles, 'edit']).as('admin.articles.edit')
-    router.put('articles/:id', [controllers.admin.Articles, 'update']).as('admin.articles.update')
-    router
-      .delete('articles/:id', [controllers.admin.Articles, 'destroy'])
-      .as('admin.articles.destroy')
 
     /**
      * The site pages that are edited as a whole rather than as

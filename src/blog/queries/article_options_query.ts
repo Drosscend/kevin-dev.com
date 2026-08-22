@@ -1,5 +1,5 @@
 import { inject } from '@adonisjs/core'
-import Article from '#models/article'
+import Article from '#blog/models/article'
 
 export interface ArticleOption {
   id: number

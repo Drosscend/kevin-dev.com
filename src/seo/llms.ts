@@ -1,7 +1,7 @@
-import Article from '#models/article'
+import Article from '#blog/models/article'
 import Project from '#portfolio/models/project'
-import SeoService from '#services/seo_service'
 import SettingsService from '#services/settings_service'
+import { absoluteUrl } from '#shared/site_url'
 import Talk from '#talks/models/talk'
 import { localePath, type Locale } from '#types/i18n'
 
@@ -12,7 +12,7 @@ export const MARKDOWN_CONTENT_TYPE = 'text/markdown; charset=utf-8'
  * the /llms.txt index and the .md variant of every content page
  * (raw stored Markdown with a small metadata header).
  */
-export default class LlmsService {
+export default class Llms {
   static async index() {
     const [articles, projects, talks, settings] = await Promise.all([
       Article.query()
@@ -53,10 +53,10 @@ export default class LlmsService {
         continue
       }
       const summary = fr.summary ? `: ${fr.summary}` : ''
-      lines.push(`- [${fr.title}](${SeoService.absolute(`/blog/${article.slug}.md`)})${summary}`)
+      lines.push(`- [${fr.title}](${absoluteUrl(`/blog/${article.slug}.md`)})${summary}`)
       const en = article.translations.find((translation) => translation.locale === 'en')
       if (en) {
-        lines.push(`- [${en.title} (EN)](${SeoService.absolute(`/en/blog/${article.slug}.md`)})`)
+        lines.push(`- [${en.title} (EN)](${absoluteUrl(`/en/blog/${article.slug}.md`)})`)
       }
     }
 
@@ -67,9 +67,7 @@ export default class LlmsService {
         continue
       }
       const summary = fr.summary ? `: ${fr.summary}` : ''
-      lines.push(
-        `- [${fr.title}](${SeoService.absolute(`/projects/${project.slug}.md`)})${summary}`
-      )
+      lines.push(`- [${fr.title}](${absoluteUrl(`/projects/${project.slug}.md`)})${summary}`)
     }
 
     lines.push('', '## Interventions', '')
@@ -79,17 +77,17 @@ export default class LlmsService {
         continue
       }
       const context = `${talk.eventName}, ${talk.eventDate.toISODate()}`
-      lines.push(`- [${fr.title}](${SeoService.absolute(`/talks/${talk.slug}.md`)}) · ${context}`)
+      lines.push(`- [${fr.title}](${absoluteUrl(`/talks/${talk.slug}.md`)}) · ${context}`)
     }
 
     lines.push('', '## Pages', '')
     if (settings.cv_markdown_fr) {
-      lines.push(`- [CV](${SeoService.absolute('/cv.md')})`)
+      lines.push(`- [CV](${absoluteUrl('/cv.md')})`)
     }
     if (settings.legal_markdown_fr) {
-      lines.push(`- [Mentions légales](${SeoService.absolute('/legal.md')})`)
+      lines.push(`- [Mentions légales](${absoluteUrl('/legal.md')})`)
     }
-    lines.push(`- [Flux RSS du blog](${SeoService.absolute('/blog/rss.xml')})`)
+    lines.push(`- [Flux RSS du blog](${absoluteUrl('/blog/rss.xml')})`)
 
     return lines.join('\n') + '\n'
   }
@@ -112,7 +110,7 @@ export default class LlmsService {
       `# ${translation.title}`,
       '',
       ...(translation.summary ? [`> ${translation.summary}`, ''] : []),
-      `- URL : ${SeoService.absolute(localePath(locale, `/blog/${article.slug}`))}`,
+      `- URL : ${absoluteUrl(localePath(locale, `/blog/${article.slug}`))}`,
       ...(article.publishedAt ? [`- Publié : ${article.publishedAt.toISODate()}`] : []),
       ...(article.category ? [`- Catégorie : ${article.category.name(locale)}`] : []),
       ...(article.technologies.length > 0
@@ -144,7 +142,7 @@ export default class LlmsService {
       `# ${translation.title}`,
       '',
       ...(translation.summary ? [`> ${translation.summary}`, ''] : []),
-      `- URL : ${SeoService.absolute(localePath(locale, `/projects/${project.slug}`))}`,
+      `- URL : ${absoluteUrl(localePath(locale, `/projects/${project.slug}`))}`,
       ...(project.technologies.length > 0
         ? [`- Technologies : ${project.technologies.map((item) => item.name).join(', ')}`]
         : []),
@@ -175,7 +173,7 @@ export default class LlmsService {
       `# ${translation.title}`,
       '',
       ...(translation.summary ? [`> ${translation.summary}`, ''] : []),
-      `- URL : ${SeoService.absolute(localePath(locale, `/talks/${talk.slug}`))}`,
+      `- URL : ${absoluteUrl(localePath(locale, `/talks/${talk.slug}`))}`,
       `- Événement : ${talk.eventName}${talk.city ? ` (${talk.city})` : ''}`,
       `- Date : ${talk.eventDate.toISODate()}`,
       ...(talk.technologies.length > 0

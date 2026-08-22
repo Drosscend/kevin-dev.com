@@ -2,9 +2,9 @@ import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { BaseCommand, args, flags } from '@adonisjs/core/ace'
 import { DateTime } from 'luxon'
-import Article from '#models/article'
-import Category from '#models/category'
-import ArticleService from '#services/article_service'
+import { SaveArticle } from '#blog/actions/save_article'
+import Article from '#blog/models/article'
+import Category from '#blog/models/category'
 import Technology from '#technologies/models/technology'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 
@@ -18,7 +18,7 @@ interface Entry {
 
 /**
  * Imports articles from a JSON file, for posts written outside the app.
- * Everything goes through ArticleService, so translations and
+ * Everything goes through the same action, so translations and
  * technology links are written exactly like a back office save, Markdown
  * rendering and reading time included.
  *
@@ -67,6 +67,8 @@ export default class ArticlesImport extends BaseCommand {
     const categoryIdBySlug = new Map(categories.map((category) => [category.slug, category.id]))
 
     const now = DateTime.now()
+    const saveArticle = await this.app.container.make(SaveArticle)
+
     let created = 0
     let updated = 0
     let skipped = 0
@@ -101,17 +103,20 @@ export default class ArticlesImport extends BaseCommand {
         }
       }
 
-      await ArticleService.save(known ?? new Article(), {
-        slug: entry.slug,
-        status: this.publish ? 'published' : 'draft',
-        categoryId,
-        coverMediaId: known?.coverMediaId ?? null,
-        technologyIds,
-        publishedAt: this.publish
-          ? now.minus({ minutes: index }).toISO({ includeOffset: false })
-          : null,
-        fr: entry.fr,
-        en: entry.en?.title ? entry.en : null,
+      await saveArticle.execute({
+        id: known?.id,
+        payload: {
+          slug: entry.slug,
+          status: this.publish ? 'published' : 'draft',
+          categoryId,
+          coverMediaId: known?.coverMediaId ?? null,
+          technologyIds,
+          publishedAt: this.publish
+            ? now.minus({ minutes: index }).toISO({ includeOffset: false })
+            : null,
+          fr: entry.fr,
+          en: entry.en?.title ? entry.en : null,
+        },
       })
 
       if (known) {

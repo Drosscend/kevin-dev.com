@@ -1,7 +1,7 @@
 import { hasMany } from '@adonisjs/lucid/orm'
+import Article from '#blog/models/article'
+import CategoryTranslation from '#blog/models/category_translation'
 import { CategorySchema } from '#database/schema'
-import Article from '#models/article'
-import CategoryTranslation from '#models/category_translation'
 import type { Locale } from '#types/i18n'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 

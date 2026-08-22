@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core'
 import { mediaUrl, thumbnailUrl } from '#app/shared/media_url'
+import SeoService from '#app/shared/seo_service'
 import { MediaLibraryQuery } from '#media/queries/media_library_query'
-import SeoService from '#services/seo_service'
 import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()

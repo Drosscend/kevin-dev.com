@@ -1,8 +1,8 @@
 import app from '@adonisjs/core/services/app'
-import Article from '#models/article'
+import { SaveArticle } from '#blog/actions/save_article'
 import { SaveProject } from '#portfolio/actions/save_project'
-import ArticleService from '#services/article_service'
 import { SaveTalk } from '#talks/actions/save_talk'
+import type { ArticlePayload } from '#blog/repositories/article_repository'
 import type { ProjectPayload } from '#portfolio/repositories/project_repository'
 import type { ContentTranslationPayload } from '#shared/content/content_fields'
 import type { TalkPayload } from '#talks/repositories/talk_repository'
@@ -27,12 +27,23 @@ function english(option: boolean | Translation | undefined, defaults: ContentTra
   return option === true ? defaults : { ...defaults, ...option }
 }
 
+async function saveArticle(payload: ArticlePayload) {
+  const action = await app.container.make(SaveArticle)
+  const result = await action.execute({ payload })
+
+  if (!result.ok) {
+    throw new Error('Unable to save the article fixture')
+  }
+
+  return result.value
+}
+
 export function makeArticle(
   slug: string,
   status: PublicationStatus = 'published',
   options: ContentOptions = {}
 ) {
-  return ArticleService.save(new Article(), {
+  return saveArticle({
     slug,
     status,
     categoryId: null,

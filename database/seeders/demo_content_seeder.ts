@@ -8,6 +8,9 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
 import sharp from 'sharp'
+import { SaveArticle } from '#blog/actions/save_article'
+import Article from '#blog/models/article'
+import Category from '#blog/models/category'
 import ContactMessage from '#contact/models/contact_message'
 import {
   ARTICLES,
@@ -22,11 +25,8 @@ import {
   type Cover,
 } from '#database/fixtures/demo_content'
 import { StoreImage } from '#media/actions/store_image'
-import Article from '#models/article'
-import Category from '#models/category'
 import TimelineEntry from '#models/timeline_entry'
 import { SaveProject } from '#portfolio/actions/save_project'
-import ArticleService from '#services/article_service'
 import SettingsService from '#services/settings_service'
 import Markdown from '#shared/content/markdown'
 import { SaveTalk } from '#talks/actions/save_talk'
@@ -177,18 +177,25 @@ export default class extends BaseSeeder {
     for (const entry of ARTICLES) {
       const cover = await makeCover(entry.cover, entry.fr.title)
 
-      const article = await ArticleService.save(new Article(), {
-        slug: entry.slug,
-        status: entry.status,
-        categoryId: categories.get(entry.category)?.id ?? null,
-        coverMediaId: cover?.id ?? null,
-        technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
-        publishedAt: entry.publishedAt,
-        fr: entry.fr,
-        en: entry.en,
+      const saveArticle = await app.container.make(SaveArticle)
+      const result = await saveArticle.execute({
+        payload: {
+          slug: entry.slug,
+          status: entry.status,
+          categoryId: categories.get(entry.category)?.id ?? null,
+          coverMediaId: cover?.id ?? null,
+          technologyIds: entry.technologies.map((slug) => technologies.get(slug)!.id),
+          publishedAt: entry.publishedAt,
+          fr: entry.fr,
+          en: entry.en,
+        },
       })
 
-      bySlug.set(entry.slug, article)
+      if (!result.ok) {
+        throw new Error(`Unable to seed the article ${entry.slug}`)
+      }
+
+      bySlug.set(entry.slug, result.value)
     }
 
     return bySlug

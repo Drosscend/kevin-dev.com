@@ -1,6 +1,6 @@
+import Article from '#blog/models/article'
 import ContactMessage from '#contact/models/contact_message'
 import Media from '#media/models/media'
-import Article from '#models/article'
 import Project from '#portfolio/models/project'
 import UmamiService from '#services/umami_service'
 import type { HttpContext } from '@adonisjs/core/http'

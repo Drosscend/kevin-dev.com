@@ -1,7 +1,7 @@
 import { belongsTo, hasMany, manyToMany } from '@adonisjs/lucid/orm'
+import Article from '#blog/models/article'
 import { TechnologySchema } from '#database/schema'
 import Media from '#media/models/media'
-import Article from '#models/article'
 import Project from '#portfolio/models/project'
 import Talk from '#talks/models/talk'
 import TechnologyTranslation from '#technologies/models/technology_translation'

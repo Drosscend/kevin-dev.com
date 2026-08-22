@@ -1,5 +1,5 @@
 import router from '@adonisjs/core/services/router'
-import env from '#start/env'
+import { absoluteUrl } from '#shared/site_url'
 import type { MediaSource } from '#media/media_source'
 import type { Locale } from '#types/i18n'
 import type { JsonLd, SeoMeta } from '#types/seo'
@@ -16,8 +16,7 @@ interface SeoAlternates {
  */
 export default class SeoService {
   static absolute(path: string) {
-    const base = env.get('APP_URL').replace(/\/$/, '')
-    return `${base}${path}`
+    return absoluteUrl(path)
   }
 
   static mediaUrl(media: MediaSource | null) {

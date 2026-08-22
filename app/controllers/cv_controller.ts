@@ -1,5 +1,5 @@
 import drive from '@adonisjs/drive/services/main'
-import SeoService from '#services/seo_service'
+import SeoService from '#app/shared/seo_service'
 import SettingsService from '#services/settings_service'
 import { localePath, type Locale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'

@@ -1,6 +1,6 @@
 import { inject } from '@adonisjs/core'
 import { mediaUrl } from '#app/shared/media_url'
-import SeoService from '#services/seo_service'
+import SeoService from '#app/shared/seo_service'
 import { TechnologyListQuery } from '#technologies/queries/technology_list_query'
 import { localePath, type Locale } from '#types/i18n'
 import type { TechnologyListItem } from '#technologies/queries/technology_list_query'

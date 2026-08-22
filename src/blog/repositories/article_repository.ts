@@ -1,11 +1,11 @@
 import db from '@adonisjs/lucid/services/db'
+import Article from '#blog/models/article'
 import {
   applyContentFields,
   renderTranslations,
   type ContentPayload,
 } from '#shared/content/content_fields'
 import { upsertTranslations } from '#shared/content/translations'
-import type Article from '#models/article'
 
 export interface ArticlePayload extends ContentPayload {
   categoryId: number | null
@@ -17,8 +17,16 @@ export interface ArticlePayload extends ContentPayload {
  * transaction, so a failure can never leave a published article
  * without translations or technologies.
  */
-export default class ArticleService {
-  static async save(article: Article, payload: ArticlePayload) {
+export class ArticleRepository {
+  async findById(id: number) {
+    return Article.find(id)
+  }
+
+  async delete(article: Article) {
+    await article.delete()
+  }
+
+  async save(article: Article, payload: ArticlePayload) {
     const translations = await renderTranslations(payload)
 
     return db.transaction(async (trx) => {

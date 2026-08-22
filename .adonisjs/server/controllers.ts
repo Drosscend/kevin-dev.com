@@ -4,6 +4,16 @@
  */
 
 export const controllers = {
+  blog: {
+    Article: () => import('#app/blog/controllers/article_controller'),
+    ArticleForm: () => import('#app/blog/controllers/article_form_controller'),
+    ArticleList: () => import('#app/blog/controllers/article_list_controller'),
+    DeleteArticle: () => import('#app/blog/controllers/delete_article_controller'),
+    DeleteCategory: () => import('#app/blog/controllers/delete_category_controller'),
+    ManageArticles: () => import('#app/blog/controllers/manage_articles_controller'),
+    ManageCategories: () => import('#app/blog/controllers/manage_categories_controller'),
+    SaveCategory: () => import('#app/blog/controllers/save_category_controller'),
+  },
   contact: {
     Contact: () => import('#app/contact/controllers/contact_controller'),
     DeleteMessage: () => import('#app/contact/controllers/delete_message_controller'),
@@ -11,21 +21,16 @@ export const controllers = {
     ToggleMessageRead: () => import('#app/contact/controllers/toggle_message_read_controller'),
   },
   admin: {
-    Articles: () => import('#app/controllers/admin/articles_controller'),
-    Categories: () => import('#app/controllers/admin/categories_controller'),
     Cv: () => import('#app/controllers/admin/cv_controller'),
     Dashboard: () => import('#app/controllers/admin/dashboard_controller'),
     Home: () => import('#app/controllers/admin/home_controller'),
     Legal: () => import('#app/controllers/admin/legal_controller'),
     Timeline: () => import('#app/controllers/admin/timeline_controller'),
   },
-  Blog: () => import('#app/controllers/blog_controller'),
   Cv: () => import('#app/controllers/cv_controller'),
   HealthChecks: () => import('#app/controllers/health_checks_controller'),
   Home: () => import('#app/controllers/home_controller'),
   Legal: () => import('#app/controllers/legal_controller'),
-  Llms: () => import('#app/controllers/llms_controller'),
-  Seo: () => import('#app/controllers/seo_controller'),
   identity: {
     DisableTotp: () => import('#app/identity/controllers/disable_totp_controller'),
     EnableTotp: () => import('#app/identity/controllers/enable_totp_controller'),
@@ -48,6 +53,15 @@ export const controllers = {
     Project: () => import('#app/portfolio/controllers/project_controller'),
     ProjectForm: () => import('#app/portfolio/controllers/project_form_controller'),
     ProjectList: () => import('#app/portfolio/controllers/project_list_controller'),
+  },
+  seo: {
+    CvMarkdown: () => import('#app/seo/controllers/cv_markdown_controller'),
+    Feed: () => import('#app/seo/controllers/feed_controller'),
+    LegalMarkdown: () => import('#app/seo/controllers/legal_markdown_controller'),
+    Llms: () => import('#app/seo/controllers/llms_controller'),
+    Robots: () => import('#app/seo/controllers/robots_controller'),
+    SecurityTxt: () => import('#app/seo/controllers/security_txt_controller'),
+    Sitemap: () => import('#app/seo/controllers/sitemap_controller'),
   },
   talks: {
     DeleteTalk: () => import('#app/talks/controllers/delete_talk_controller'),

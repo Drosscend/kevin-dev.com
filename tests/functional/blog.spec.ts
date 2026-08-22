@@ -1,6 +1,7 @@
+import app from '@adonisjs/core/services/app'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
-import ArticleService from '#services/article_service'
+import { SaveArticle } from '#blog/actions/save_article'
 import { admin } from '#tests/helpers/auth'
 import { makeArticle } from '#tests/helpers/content'
 
@@ -100,25 +101,36 @@ test.group('Blog public', (group) => {
     const article = await makeArticle('mon-article', 'published')
     const firstPublishedAt = article.publishedAt!.toISO()
 
-    await ArticleService.save(article, {
-      slug: 'mon-article',
-      status: 'draft',
-      categoryId: null,
-      coverMediaId: null,
-      technologyIds: [],
-      fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
-      en: null,
+    await (
+      await app.container.make(SaveArticle)
+    ).execute({
+      id: article.id,
+      payload: {
+        slug: 'mon-article',
+        status: 'draft',
+        categoryId: null,
+        coverMediaId: null,
+        technologyIds: [],
+        fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
+        en: null,
+      },
     })
-    await ArticleService.save(article, {
-      slug: 'mon-article',
-      status: 'published',
-      categoryId: null,
-      coverMediaId: null,
-      technologyIds: [],
-      fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
-      en: null,
+    await (
+      await app.container.make(SaveArticle)
+    ).execute({
+      id: article.id,
+      payload: {
+        slug: 'mon-article',
+        status: 'published',
+        categoryId: null,
+        coverMediaId: null,
+        technologyIds: [],
+        fr: { title: 'Titre', summary: '', contentMarkdown: 'Contenu' },
+        en: null,
+      },
     })
 
+    await article.refresh()
     assert.equal(article.publishedAt!.toISO(), firstPublishedAt)
   })
 })

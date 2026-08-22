@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
+import SeoService from '#app/shared/seo_service'
 import { SubmitContactMessage } from '#contact/actions/submit_contact_message'
-import SeoService from '#services/seo_service'
 import { localePath, type Locale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 

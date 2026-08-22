@@ -2,10 +2,10 @@ import { inject } from '@adonisjs/core'
 import { Exception } from '@adonisjs/core/exceptions'
 import { mediaUrl } from '#app/shared/media_url'
 import { previewOrFail } from '#app/shared/publication_response'
+import SeoService from '#app/shared/seo_service'
 import { ProjectDetailQuery } from '#portfolio/queries/project_detail_query'
+import Llms, { MARKDOWN_CONTENT_TYPE } from '#seo/llms'
 import { monthYear } from '#services/date_format'
-import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
-import SeoService from '#services/seo_service'
 import { visibilityOf } from '#shared/content/publication'
 import { localePath, type Locale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -18,7 +18,7 @@ export default class ProjectController {
     const locale = i18n.locale as Locale
 
     if (params.slug.endsWith('.md')) {
-      const markdown = await LlmsService.projectMarkdown(params.slug.slice(0, -3), locale)
+      const markdown = await Llms.projectMarkdown(params.slug.slice(0, -3), locale)
 
       if (!markdown) {
         return response.notFound('Not found')

@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core'
 import { Exception } from '@adonisjs/core/exceptions'
 import { mediaUrl } from '#app/shared/media_url'
-import SeoService from '#services/seo_service'
+import SeoService from '#app/shared/seo_service'
 import { TechnologyDetailQuery } from '#technologies/queries/technology_detail_query'
 import { localePath, type Locale } from '#types/i18n'
 import type { ContentCard } from '#shared/content/content_card'
