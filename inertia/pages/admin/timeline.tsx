@@ -14,6 +14,7 @@ import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Select } from '~/components/ui/select'
 import { Tabs } from '~/components/ui/tabs'
+import { type InertiaProps } from '~/types'
 import type { Locale } from '#types/i18n'
 import type { Data } from '@generated/data'
 
@@ -28,9 +29,9 @@ const HONOURS = TIMELINE_HONOURS.map((value) => ({ value, label: HONOURS_LABELS[
 
 const honoursLabel = (value: string) => HONOURS.find((option) => option.value === value)?.label
 
-type TimelineProps = {
+type TimelineProps = InertiaProps<{
   timeline: Data.Pages.TimelineRow[]
-}
+}>
 
 /**
  * Inline create/edit form for a timeline entry. It shows the fields of

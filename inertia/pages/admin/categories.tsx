@@ -11,11 +11,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { plural } from '~/lib/plural'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-type CategoriesProps = {
+type CategoriesProps = InertiaProps<{
   categories: Data.Blog.CategoryRow[]
-}
+}>
 
 /**
  * Creation form when `category` is null, inline edition otherwise. Both

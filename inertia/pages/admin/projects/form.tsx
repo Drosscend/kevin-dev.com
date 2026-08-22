@@ -20,15 +20,16 @@ import { Label } from '~/components/ui/label'
 import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
 import { formatFrDateTime } from '~/lib/dates'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
 type Option = { id: number; name: string }
 type ArticleOption = { id: number; title: string }
 
-type ProjectFormProps = {
+type ProjectFormProps = InertiaProps<{
   project: Data.Portfolio.ProjectForm | null
   options: { technologies: Option[]; articles: ArticleOption[]; media: MediaPickerItem[] }
-}
+}>
 
 const LINK_TYPE_LABELS: Record<ProjectLinkType, string> = {
   github: 'GitHub',

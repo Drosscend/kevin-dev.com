@@ -6,14 +6,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { plural } from '~/lib/plural'
+import { type InertiaProps } from '~/types'
 
-interface SecurityProps {
+type SecurityProps = InertiaProps<{
   totpEnabled: boolean
   qrCode: string | null
   secret: string | null
   recoveryCodes: string[] | null
   recoveryCodesRemaining: number
-}
+}>
 
 export default function Security({
   totpEnabled,

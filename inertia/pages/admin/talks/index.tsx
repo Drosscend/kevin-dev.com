@@ -5,11 +5,12 @@ import { ContentList, ContentListRow } from '~/components/admin/content_list'
 import EmptyState from '~/components/admin/empty_state'
 import AccentBadge from '~/components/status_badge'
 import { Button } from '~/components/ui/button'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-type TalksIndexProps = {
+type TalksIndexProps = InertiaProps<{
   talks: Data.Talks.TalkRow[]
-}
+}>
 
 export default function TalksIndex({ talks }: TalksIndexProps) {
   return (

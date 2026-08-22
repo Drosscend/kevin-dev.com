@@ -10,11 +10,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { FileInput } from '~/components/ui/file_input'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-type MediaPageProps = {
+type MediaPageProps = InertiaProps<{
   media: Data.Media.MediaItem[]
-}
+}>
 
 function formatSize(bytes: number) {
   return bytes < 1024 * 1024

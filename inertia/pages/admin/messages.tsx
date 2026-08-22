@@ -6,11 +6,12 @@ import EmptyState from '~/components/admin/empty_state'
 import { Button } from '~/components/ui/button'
 import { formatFrDateTime } from '~/lib/dates'
 import { cn } from '~/lib/utils'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-type MessagesProps = {
+type MessagesProps = InertiaProps<{
   messages: Data.Contact.ContactMessage[]
-}
+}>
 
 export default function Messages({ messages }: MessagesProps) {
   const router = useRouter()

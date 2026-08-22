@@ -3,15 +3,16 @@ import { EmptyState } from '~/components/empty_state'
 import Lightbox from '~/components/lightbox'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { type InertiaProps } from '~/types'
 
-type LegalProps = {
+type LegalProps = InertiaProps<{
   contentHtml: string
   labels: {
     title: string
     empty: string
   }
   meta: SeoMeta
-}
+}>
 
 export default function Legal({ contentHtml, labels, meta }: LegalProps) {
   return (

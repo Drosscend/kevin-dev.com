@@ -1,18 +1,18 @@
-import { localePath, type Locale } from '#types/i18n'
+import { localePath } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import { TechnologyNames } from '~/components/technology_list'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-type PortfolioIndexProps = {
-  locale: Locale
+type PortfolioIndexProps = InertiaProps<{
   projects: Data.Portfolio.ProjectCard[]
   labels: { title: string; empty: string; ongoing: string }
   meta: SeoMeta
-}
+}>
 
 export default function PortfolioIndex({ locale, projects, labels, meta }: PortfolioIndexProps) {
   const to = (path: string) => localePath(locale, path)

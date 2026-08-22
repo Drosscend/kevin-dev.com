@@ -121,6 +121,8 @@ consomme au lieu de redéclarer la même chose.
   imbriquée dans un objet ne l'est pas, et reste un tableau ordinaire.
 - Les listes de choix d'un formulaire n'en valent pas un : elles vivent sous
   `options` et gardent un type local.
+- Une page déclare ses props avec `InertiaProps<{ ... }>` : le helper y ajoute
+  celles que le middleware partage, qu'elle n'a donc plus à redéclarer.
 
 ## Bilinguisme
 

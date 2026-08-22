@@ -1,15 +1,15 @@
 import { Link } from '@adonisjs/inertia/react'
 import { Download } from 'lucide-react'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath } from '#types/i18n'
 import { ChipLink, ChipList } from '~/components/chip'
 import { LinkArrow, LinkList, LinkRow } from '~/components/content_link'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import { Button } from '~/components/ui/button'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-type HomeProps = {
-  locale: Locale
+type HomeProps = InertiaProps<{
   now: string | null
   roles: string[]
   location: string | null
@@ -41,7 +41,7 @@ type HomeProps = {
     ongoingProject: string
   }
   meta: SeoMeta
-}
+}>
 
 function SectionHead({
   title,

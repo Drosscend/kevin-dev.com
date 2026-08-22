@@ -5,11 +5,12 @@ import { ContentList, ContentListRow } from '~/components/admin/content_list'
 import EmptyState from '~/components/admin/empty_state'
 import { Button } from '~/components/ui/button'
 import { plural } from '~/lib/plural'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-type ProjectsIndexProps = {
+type ProjectsIndexProps = InertiaProps<{
   projects: Data.Portfolio.ProjectRow[]
-}
+}>
 
 export default function ProjectsIndex({ projects }: ProjectsIndexProps) {
   return (

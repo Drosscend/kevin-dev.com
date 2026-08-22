@@ -4,9 +4,10 @@ import AdminPage from '~/components/admin/admin_page'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { plural } from '~/lib/plural'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-interface DashboardProps {
+type DashboardProps = InertiaProps<{
   totpEnabled: boolean
   umami: {
     pageviews: number
@@ -14,7 +15,7 @@ interface DashboardProps {
     topPages: { path: string; views: number }[]
   } | null
   stats: Data.Dashboard.DashboardStats
-}
+}>
 
 function StatCard({
   label,

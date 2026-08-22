@@ -1,13 +1,13 @@
-import { localePath, type Locale } from '#types/i18n'
+import { localePath } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import ExternalLinkList from '~/components/external_link_list'
 import { BackLink } from '~/components/page_header'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-type TechnologyShowProps = {
-  locale: Locale
+type TechnologyShowProps = InertiaProps<{
   technology: Data.Technologies.TechnologyDetail
   labels: {
     backToList: string
@@ -18,7 +18,7 @@ type TechnologyShowProps = {
     unused: string
   }
   meta: SeoMeta
-}
+}>
 
 /** Listing of the entries a technology is attached to, on either side. */
 function UsageSection({

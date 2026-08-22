@@ -1,16 +1,16 @@
 import { Link } from '@adonisjs/inertia/react'
 import { router } from '@inertiajs/react'
-import { localePath, type Locale } from '#types/i18n'
+import { localePath } from '#types/i18n'
 import { ChipButton, ChipList } from '~/components/chip'
 import { LinkArrow, ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { TechnologyNames } from '~/components/technology_list'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-type BlogIndexProps = {
-  locale: Locale
+type BlogIndexProps = InertiaProps<{
   filters: { category: string | null }
   articles: Data.Blog.ArticleCard[]
   pagination: { currentPage: number; lastPage: number }
@@ -23,7 +23,7 @@ type BlogIndexProps = {
     next: string
   }
   meta: SeoMeta
-}
+}>
 
 /**
  * Listing URL carrying the active filter and page. Client-side twin

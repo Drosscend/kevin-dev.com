@@ -10,12 +10,13 @@ import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Tabs, TabsContent } from '~/components/ui/tabs'
 import { Textarea } from '~/components/ui/textarea'
+import { type InertiaProps } from '~/types'
 import type { Locale } from '#types/i18n'
 import type { Data } from '@generated/data'
 
-type HomeAdminProps = {
+type HomeAdminProps = InertiaProps<{
   settings: Data.Pages.HomeSettings
-}
+}>
 
 function SettingsTextarea({
   field,

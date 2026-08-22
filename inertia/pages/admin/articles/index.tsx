@@ -4,11 +4,12 @@ import AdminPage from '~/components/admin/admin_page'
 import { ContentList, ContentListRow } from '~/components/admin/content_list'
 import EmptyState from '~/components/admin/empty_state'
 import { Button } from '~/components/ui/button'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
-type ArticlesIndexProps = {
+type ArticlesIndexProps = InertiaProps<{
   articles: Data.Blog.ArticleRow[]
-}
+}>
 
 export default function ArticlesIndex({ articles }: ArticlesIndexProps) {
   return (

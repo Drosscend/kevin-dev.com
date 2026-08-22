@@ -1,9 +1,10 @@
 import MarkdownPageEditor from '~/components/admin/markdown_page_editor'
+import { type InertiaProps } from '~/types'
 
-type LegalProps = {
+type LegalProps = InertiaProps<{
   fr: string
   en: string
-}
+}>
 
 export default function Legal({ fr, en }: LegalProps) {
   return (

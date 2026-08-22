@@ -14,6 +14,7 @@ import { Label } from '~/components/ui/label'
 import { Select } from '~/components/ui/select'
 import { Textarea } from '~/components/ui/textarea'
 import { plural } from '~/lib/plural'
+import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
 const CATEGORY_LABELS: Record<TechnologyCategory, string> = {
@@ -32,10 +33,10 @@ function categoryLabel(value: string) {
 
 type MediaOption = { id: number; alt: string }
 
-type TechnologiesProps = {
+type TechnologiesProps = InertiaProps<{
   technologies: Data.Technologies.TechnologyRow[]
   mediaOptions: MediaOption[]
-}
+}>
 
 function TechnologyForm({
   item,

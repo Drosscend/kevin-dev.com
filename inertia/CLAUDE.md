@@ -12,7 +12,9 @@ d'ajouter une page ou d'extraire un composant.
   Admin : `admin_page`, `content_list`, `slug_field`, `external_links_card`,
   `translation_card`, `media_picker`, `publication_actions`, `confirm_button`.
 - Une page ne redéclare pas la forme de ses props : elle lit le type généré
-  `Data.<Capacité>.<Nom>` depuis `@generated/data`.
+  `Data.<Capacité>.<Nom>` depuis `@generated/data`, et compose ses propres props
+  avec `InertiaProps<{ ... }>`, qui y ajoute celles que le middleware partage
+  (`locale`, `user`, `chrome`, `lightbox`, `errors`).
 - Les flèches appartiennent à `LinkArrow`, jamais aux chaînes.
 - Le compilateur React est actif : pas de `useMemo`, `useCallback` ni `memo`.
 - `Link` et `Form` viennent de `@adonisjs/inertia/react`, pas de `@inertiajs/react`.

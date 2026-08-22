@@ -6,10 +6,9 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Textarea } from '~/components/ui/textarea'
-import type { Locale } from '#types/i18n'
+import { type InertiaProps } from '~/types'
 
-type ContactProps = {
-  locale: Locale
+type ContactProps = InertiaProps<{
   labels: {
     title: string
     intro: string
@@ -20,7 +19,7 @@ type ContactProps = {
     privacy: string
   }
   meta: SeoMeta
-}
+}>
 
 export default function Contact({ locale, labels, meta }: ContactProps) {
   return (

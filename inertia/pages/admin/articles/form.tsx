@@ -18,15 +18,16 @@ import { Select } from '~/components/ui/select'
 import { EMPTY_TRANSLATION, slugify, type TranslationValues } from '~/lib/admin'
 import { formatFrDateTime } from '~/lib/dates'
 import { useDraftAutosave } from '~/lib/use_draft_autosave'
+import { type InertiaProps } from '~/types'
 import type { PublicationStatus } from '#types/content'
 import type { Data } from '@generated/data'
 
 type Option = { id: number; name: string }
 
-type ArticleFormProps = {
+type ArticleFormProps = InertiaProps<{
   article: Data.Blog.ArticleForm | null
   options: { categories: Option[]; technologies: Option[]; media: MediaPickerItem[] }
-}
+}>
 
 export default function ArticleForm({ article, options }: ArticleFormProps) {
   const { errors } = usePage().props
