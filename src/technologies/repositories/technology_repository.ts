@@ -1,4 +1,4 @@
-import { upsertTranslations } from '#services/translations_service'
+import { upsertTranslations } from '#shared/content/translations'
 import Technology from '#technologies/models/technology'
 import type { TechnologyCategory } from '#types/content'
 

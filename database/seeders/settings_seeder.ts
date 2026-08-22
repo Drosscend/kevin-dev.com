@@ -1,7 +1,7 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import Setting from '#models/setting'
-import MarkdownService from '#services/markdown_service'
 import SettingsService from '#services/settings_service'
+import Markdown from '#shared/content/markdown'
 
 const DEFAULT_LEGAL_FR = `## Représentant
 
@@ -37,6 +37,6 @@ export default class extends BaseSeeder {
     }
 
     await SettingsService.set('legal_markdown_fr', DEFAULT_LEGAL_FR)
-    await SettingsService.set('legal_html_fr', await MarkdownService.render(DEFAULT_LEGAL_FR))
+    await SettingsService.set('legal_html_fr', await Markdown.render(DEFAULT_LEGAL_FR))
   }
 }

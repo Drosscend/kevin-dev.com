@@ -1,11 +1,12 @@
 import { Exception } from '@adonisjs/core/exceptions'
 import { mediaUrl } from '#app/shared/media_url'
+import { previewOrFail } from '#app/shared/publication_response'
 import Article from '#models/article'
 import Category from '#models/category'
 import { longDate } from '#services/date_format'
 import LlmsService, { MARKDOWN_CONTENT_TYPE } from '#services/llms_service'
-import PublicationService from '#services/publication_service'
 import SeoService from '#services/seo_service'
+import { visibilityOf } from '#shared/content/publication'
 import { localePath, type Locale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -133,7 +134,7 @@ export default class BlogController {
       throw new Exception('Not found', { status: 404 })
     }
 
-    const preview = PublicationService.preview(article, Boolean(auth.user))
+    const preview = previewOrFail(visibilityOf(article, Boolean(auth.user)))
 
     return inertia.render('blog/show', {
       preview,

@@ -1,5 +1,5 @@
-import MarkdownService from '#services/markdown_service'
 import SettingsService from '#services/settings_service'
+import Markdown from '#shared/content/markdown'
 
 /**
  * The pages whose whole content is a markdown blob kept in the
@@ -27,7 +27,7 @@ export async function saveMarkdownPage(page: MarkdownPage, contents: MarkdownPag
     await SettingsService.set(`${page}_markdown_${locale}`, markdown)
     await SettingsService.set(
       `${page}_html_${locale}`,
-      markdown.trim() === '' ? '' : await MarkdownService.render(markdown)
+      markdown.trim() === '' ? '' : await Markdown.render(markdown)
     )
   }
 }

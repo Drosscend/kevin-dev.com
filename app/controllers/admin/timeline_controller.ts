@@ -1,5 +1,5 @@
 import TimelineEntry from '#models/timeline_entry'
-import { upsertTranslations } from '#services/translations_service'
+import { upsertTranslations } from '#shared/content/translations'
 import { timelineEntryValidator, timelineMoveValidator } from '#validators/timeline'
 import type { HttpContext } from '@adonisjs/core/http'
 

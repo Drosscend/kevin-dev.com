@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import MarkdownService from '#services/markdown_service'
+import Markdown from '#shared/content/markdown'
 import type { PublicationStatus } from '#types/content'
 
 export interface ContentTranslationPayload {
@@ -37,9 +37,9 @@ interface LinksRelation<Link> {
  */
 export async function renderTranslations(payload: ContentPayload) {
   return {
-    fr: { ...payload.fr, contentHtml: await MarkdownService.render(payload.fr.contentMarkdown) },
+    fr: { ...payload.fr, contentHtml: await Markdown.render(payload.fr.contentMarkdown) },
     en: payload.en
-      ? { ...payload.en, contentHtml: await MarkdownService.render(payload.en.contentMarkdown) }
+      ? { ...payload.en, contentHtml: await Markdown.render(payload.en.contentMarkdown) }
       : null,
   }
 }
@@ -52,7 +52,7 @@ export async function renderTranslations(payload: ContentPayload) {
 export function applyContentFields(entry: ContentEntry, payload: ContentPayload) {
   entry.slug = payload.slug
   entry.coverMediaId = payload.coverMediaId
-  entry.readingTime = MarkdownService.readingTime(payload.fr.contentMarkdown)
+  entry.readingTime = Markdown.readingTime(payload.fr.contentMarkdown)
 
   if (payload.publishedAt) {
     entry.publishedAt = DateTime.fromISO(payload.publishedAt)

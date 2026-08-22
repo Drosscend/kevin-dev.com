@@ -4,7 +4,7 @@ import Talk from '#models/talk'
 import ArticleService from '#services/article_service'
 import ProjectService from '#services/project_service'
 import TalkService from '#services/talk_service'
-import type { ContentTranslationPayload } from '#services/content_service'
+import type { ContentTranslationPayload } from '#shared/content/content_fields'
 import type { PublicationStatus } from '#types/content'
 
 type Translation = Partial<ContentTranslationPayload>

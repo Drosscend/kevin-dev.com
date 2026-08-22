@@ -5,8 +5,8 @@ import {
   renderTranslations,
   replaceLinks,
   type ContentPayload,
-} from '#services/content_service'
-import { upsertTranslations } from '#services/translations_service'
+} from '#shared/content/content_fields'
+import { upsertTranslations } from '#shared/content/translations'
 import type Project from '#models/project'
 import type { ProjectLinkType } from '#types/content'
 

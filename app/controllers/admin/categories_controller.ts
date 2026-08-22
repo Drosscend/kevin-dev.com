@@ -1,5 +1,5 @@
 import Category from '#models/category'
-import { upsertTranslations } from '#services/translations_service'
+import { upsertTranslations } from '#shared/content/translations'
 import { categoryValidator } from '#validators/blog'
 import type { HttpContext } from '@adonisjs/core/http'
 

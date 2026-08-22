@@ -35,7 +35,7 @@ const sanitizeSchema: typeof defaultSchema = {
  * the resulting HTML, so nothing is rendered at request time on the
  * public site.
  */
-export default class MarkdownService {
+export default class Markdown {
   static #processor = unified()
     .use(remarkParse)
     .use(remarkGfm)

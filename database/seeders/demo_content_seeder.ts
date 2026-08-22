@@ -28,10 +28,10 @@ import Project from '#models/project'
 import Talk from '#models/talk'
 import TimelineEntry from '#models/timeline_entry'
 import ArticleService from '#services/article_service'
-import MarkdownService from '#services/markdown_service'
 import ProjectService from '#services/project_service'
 import SettingsService from '#services/settings_service'
 import TalkService from '#services/talk_service'
+import Markdown from '#shared/content/markdown'
 import Technology from '#technologies/models/technology'
 import type Media from '#media/models/media'
 import type { MultipartFile } from '@adonisjs/core/bodyparser'
@@ -266,9 +266,9 @@ export default class extends BaseSeeder {
     await SettingsService.set('hero_location', 'Lyon, France')
 
     await SettingsService.set('cv_markdown_fr', CV_FR)
-    await SettingsService.set('cv_html_fr', await MarkdownService.render(CV_FR))
+    await SettingsService.set('cv_html_fr', await Markdown.render(CV_FR))
     await SettingsService.set('cv_markdown_en', CV_EN)
-    await SettingsService.set('cv_html_en', await MarkdownService.render(CV_EN))
+    await SettingsService.set('cv_html_en', await Markdown.render(CV_EN))
   }
 
   async #seedContactMessages() {
