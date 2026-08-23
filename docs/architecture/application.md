@@ -62,9 +62,9 @@ static readonly validator = vine.create({ ... })
 ```
 
 Les dépendances arrivent par le constructeur, avec `@inject()`. Un controller
-traduit (`i18n.t`), construit ses métadonnées (`SeoService.build`), met en forme
-les dates et les URL de médias, flashe et redirige. Il ne contient ni règle
-métier ni transaction.
+construit ses métadonnées (`SeoService.build`), met en forme les dates, les URL
+de médias et les libellés qui dépendent d'une donnée, flashe et redirige. Il ne
+contient ni règle métier ni transaction.
 
 ## Actions
 
@@ -127,8 +127,12 @@ consomme au lieu de redéclarer la même chose.
 ## Bilinguisme
 
 - Les libellés publics vivent dans `resources/lang/{fr,en}/`.
-- **Le client n'appelle jamais `t()`** : il reçoit `labels` par page, plus
-  `chrome` et `lightbox` en props partagées depuis `inertia_middleware`.
+- **Le client n'appelle jamais `t()`** : il lit `messages`, le dictionnaire de
+  la langue courante, partagé par `inertia_middleware` en prop `once` et typé
+  depuis le fichier français.
+- Un libellé qui dépend d'une donnée reste résolu par le controller.
+- La bannière de l'autre langue est écrite dans la langue cible, dans le fichier
+  de la langue courante.
 - Une chaîne visible en dur dans un composant public est un bug.
 - L'administration est monolingue française.
 - Les URL passent par `localePath(locale, path)`.
@@ -162,8 +166,8 @@ dans `app/blog/controllers/` devient `controllers.blog.<Nom>`.
 ### Ajouter une page publique
 
 1. Query dans `src/<capacité>/queries/`, projection explicite.
-2. Controller `render` dans `app/<capacité>/controllers/` : libellés, `meta`,
-   mise en forme des dates et des URL.
+2. Controller `render` dans `app/<capacité>/controllers/` : `meta`, mise en
+   forme des dates et des URL.
 3. Transformer dans `app/<capacité>/transformers/` pour la ressource affichée,
    consommé par la page via `Data.<Capacité>.<Nom>`.
 4. Route dans `app/<capacité>/routes.ts`, en double, racine et `/en`.

@@ -3,9 +3,9 @@ Couche client : pages Inertia, layouts, composants React.
 Lire [l'architecture de l'application](../docs/architecture/application.md) avant
 d'ajouter une page ou d'extraire un composant.
 
-- **Aucun texte visible en dur** dans une page publique : les libellés arrivent
-  du controller en props (`labels`), et le chrome comme la lightbox en props
-  partagées. L'administration, elle, est monolingue française.
+- **Aucun texte visible en dur** dans une page publique : les libellés se lisent
+  dans la prop partagée `messages`. L'administration, elle, est monolingue
+  française.
 - Chercher le composant existant avant d'écrire un bloc, et l'étendre par une
   prop plutôt que le dupliquer. Public : `page_header`, `reading_layout`,
   `content_link`, `technology_list`, `status_badge`, `empty_state`, `seo`.
@@ -14,7 +14,7 @@ d'ajouter une page ou d'extraire un composant.
 - Une page ne redéclare pas la forme de ses props : elle lit le type généré
   `Data.<Capacité>.<Nom>` depuis `@generated/data`, et compose ses propres props
   avec `InertiaProps<{ ... }>`, qui y ajoute celles que le middleware partage
-  (`locale`, `user`, `chrome`, `lightbox`, `errors`).
+  (`locale`, `user`, `messages`, `errors`).
 - Les flèches appartiennent à `LinkArrow`, jamais aux chaînes.
 - Le compilateur React est actif : pas de `useMemo`, `useCallback` ni `memo`.
 - `Link` et `Form` viennent de `@adonisjs/inertia/react`, pas de `@inertiajs/react`.

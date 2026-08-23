@@ -10,20 +10,19 @@ import type { Data } from '@generated/data'
 
 type PortfolioIndexProps = InertiaProps<{
   projects: Data.Portfolio.ProjectCard[]
-  labels: { title: string; empty: string; ongoing: string }
   meta: SeoMeta
 }>
 
-export default function PortfolioIndex({ locale, projects, labels, meta }: PortfolioIndexProps) {
+export default function PortfolioIndex({ locale, projects, messages, meta }: PortfolioIndexProps) {
   const to = (path: string) => localePath(locale, path)
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
-      <PageHeader title={labels.title} />
+      <PageHeader title={messages.portfolio.title} />
 
       {projects.length === 0 ? (
-        <EmptyState>{labels.empty}</EmptyState>
+        <EmptyState>{messages.portfolio.empty}</EmptyState>
       ) : (
         <ListingList>
           {projects.map((project) => (
@@ -39,7 +38,7 @@ export default function PortfolioIndex({ locale, projects, labels, meta }: Portf
                     {project.period && `${project.period} · `}
                     {project.readingTimeLabel}
                   </span>
-                  {project.ongoing && <StatusBadge>{labels.ongoing}</StatusBadge>}
+                  {project.ongoing && <StatusBadge>{messages.portfolio.ongoing}</StatusBadge>}
                 </>
               }
               footer={

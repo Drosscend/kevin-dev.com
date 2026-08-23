@@ -9,25 +9,16 @@ import { Textarea } from '~/components/ui/textarea'
 import { type InertiaProps } from '~/types'
 
 type ContactProps = InertiaProps<{
-  labels: {
-    title: string
-    intro: string
-    name: string
-    email: string
-    message: string
-    submit: string
-    privacy: string
-  }
   meta: SeoMeta
 }>
 
-export default function Contact({ locale, labels, meta }: ContactProps) {
+export default function Contact({ locale, messages, meta }: ContactProps) {
   return (
     <>
       <Seo meta={meta} />
       <ReadingLayout>
-        <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
-        <p className="text-muted-foreground mt-4">{labels.intro}</p>
+        <h1 className="text-3xl font-bold md:text-4xl">{messages.contact.title}</h1>
+        <p className="text-muted-foreground mt-4">{messages.contact.intro}</p>
 
         <Form
           route={locale === 'en' ? 'en.contact.store' : 'contact.store'}
@@ -37,7 +28,7 @@ export default function Contact({ locale, labels, meta }: ContactProps) {
           {({ errors, processing }) => (
             <>
               <div className="space-y-2.5">
-                <Label htmlFor="name">{labels.name}</Label>
+                <Label htmlFor="name">{messages.contact.name}</Label>
                 <Input
                   type="text"
                   name="name"
@@ -49,7 +40,7 @@ export default function Contact({ locale, labels, meta }: ContactProps) {
               </div>
 
               <div className="space-y-2.5">
-                <Label htmlFor="email">{labels.email}</Label>
+                <Label htmlFor="email">{messages.contact.email}</Label>
                 <Input
                   type="email"
                   name="email"
@@ -61,7 +52,7 @@ export default function Contact({ locale, labels, meta }: ContactProps) {
               </div>
 
               <div className="space-y-2.5">
-                <Label htmlFor="message">{labels.message}</Label>
+                <Label htmlFor="message">{messages.contact.message}</Label>
                 <Textarea
                   name="message"
                   id="message"
@@ -79,10 +70,10 @@ export default function Contact({ locale, labels, meta }: ContactProps) {
 
               <div className="space-y-5 pt-2">
                 <Button type="submit" size="lg" disabled={processing}>
-                  {labels.submit}
+                  {messages.contact.submit}
                 </Button>
 
-                <p className="text-muted-foreground text-xs">{labels.privacy}</p>
+                <p className="text-muted-foreground text-xs">{messages.contact.privacy}</p>
               </div>
             </>
           )}

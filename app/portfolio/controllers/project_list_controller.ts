@@ -44,11 +44,6 @@ export default class ProjectListController {
           technologies: project.technologies,
         }))
       ),
-      labels: {
-        title: i18n.t('messages.portfolio.title'),
-        empty: i18n.t('messages.portfolio.empty'),
-        ongoing: i18n.t('messages.portfolio.ongoing'),
-      },
       meta: SeoService.build({
         title: i18n.t('messages.portfolio.title'),
         description: i18n.t('messages.portfolio.metaDescription'),

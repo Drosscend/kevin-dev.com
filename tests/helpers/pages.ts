@@ -59,13 +59,12 @@ export function technologyListPage(response: ApiResponse) {
 export function technologyPage(response: ApiResponse) {
   return pageProps<{
     technology: Data.Technologies.TechnologyDetail
-    labels: { docs: string }
     meta: SeoMeta
   }>(response, 'technologies/show')
 }
 
 export function notFoundPage(response: ApiResponse) {
-  return pageProps<{ labels: { title: string } }>(response, 'errors/not_found')
+  return pageProps(response, 'errors/not_found')
 }
 
 export function adminArticleFormPage(response: ApiResponse) {

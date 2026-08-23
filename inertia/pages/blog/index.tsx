@@ -15,13 +15,6 @@ type BlogIndexProps = InertiaProps<{
   articles: Data.Blog.ArticleCard[]
   pagination: { currentPage: number; lastPage: number }
   categories: { slug: string; name: string }[]
-  labels: {
-    title: string
-    empty: string
-    allCategories: string
-    previous: string
-    next: string
-  }
   meta: SeoMeta
 }>
 
@@ -50,7 +43,7 @@ export default function BlogIndex({
   articles,
   pagination,
   categories,
-  labels,
+  messages,
   meta,
 }: BlogIndexProps) {
   const base = localePath(locale, '/blog')
@@ -63,12 +56,12 @@ export default function BlogIndex({
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
 
-      <PageHeader title={labels.title} />
+      <PageHeader title={messages.blog.title} />
 
       {categories.length > 0 && (
         <ChipList className="-mt-4">
           <ChipButton onClick={() => filterByCategory(null)} active={!filters.category}>
-            {labels.allCategories}
+            {messages.blog.allCategories}
           </ChipButton>
           {categories.map((category) => (
             <ChipButton
@@ -83,7 +76,7 @@ export default function BlogIndex({
       )}
 
       {articles.length === 0 ? (
-        <EmptyState className="mt-12">{labels.empty}</EmptyState>
+        <EmptyState className="mt-12">{messages.blog.empty}</EmptyState>
       ) : (
         <div className="mt-12">
           <ListingList>
@@ -128,7 +121,7 @@ export default function BlogIndex({
               href={pageUrl(base, filters, pagination.currentPage - 1)}
               className="group hover:text-primary font-medium transition-colors"
             >
-              <LinkArrow direction="back" /> {labels.previous}
+              <LinkArrow direction="back" /> {messages.blog.previous}
             </Link>
           ) : (
             <span />
@@ -141,7 +134,7 @@ export default function BlogIndex({
               href={pageUrl(base, filters, pagination.currentPage + 1)}
               className="group hover:text-primary font-medium transition-colors"
             >
-              {labels.next} <LinkArrow />
+              {messages.blog.next} <LinkArrow />
             </Link>
           ) : (
             <span />

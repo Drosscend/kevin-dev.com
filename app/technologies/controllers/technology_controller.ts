@@ -39,14 +39,6 @@ export default class TechnologyController {
         articles: technology.articles.map(card),
         talks: technology.talks.map(card),
       }),
-      labels: {
-        backToList: i18n.t('messages.technologies.backToList'),
-        docs: i18n.t('messages.technologies.docs'),
-        usedIn: i18n.t('messages.technologies.usedIn'),
-        writtenAbout: i18n.t('messages.technologies.writtenAbout'),
-        spokenAbout: i18n.t('messages.technologies.spokenAbout'),
-        unused: i18n.t('messages.technologies.unused'),
-      },
       meta: SeoService.build({
         title: technology.name,
         description: technology.description || i18n.t('messages.technologies.metaDescription'),

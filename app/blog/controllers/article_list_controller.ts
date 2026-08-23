@@ -67,13 +67,6 @@ export default class ArticleListController {
         lastPage: list.lastPage,
       },
       categories: list.categories,
-      labels: {
-        title: i18n.t('messages.blog.title'),
-        empty: i18n.t('messages.blog.empty'),
-        allCategories: i18n.t('messages.blog.allCategories'),
-        previous: i18n.t('messages.blog.previous'),
-        next: i18n.t('messages.blog.next'),
-      },
       meta: SeoService.build({
         title: i18n.t('messages.blog.title'),
         description: i18n.t('messages.blog.metaDescription'),

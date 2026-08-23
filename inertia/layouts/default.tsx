@@ -26,8 +26,7 @@ const NAVIGATION = [
 type PageElement = ReactElement<Data.SharedProps & { hasOtherLocale?: boolean }>
 
 export default function Layout({ children }: { children: PageElement }) {
-  const locale = children.props.locale
-  const chrome = children.props.chrome
+  const { locale, messages } = children.props
   const { url } = usePage()
   const [menuOpen, setMenuOpen] = useState(false)
   const [renderedUrl, setRenderedUrl] = useState(url)
@@ -89,8 +88,8 @@ export default function Layout({ children }: { children: PageElement }) {
         <LanguageSuggestion
           targetLocale={locale === 'fr' ? 'en' : 'fr'}
           href={otherLocaleUrl(locale, url)}
-          label={chrome.otherLanguage}
-          dismissLabel={chrome.otherLanguageDismiss}
+          label={messages.nav.otherLanguage}
+          dismissLabel={messages.nav.otherLanguageDismiss}
         />
       )}
 
@@ -104,7 +103,7 @@ export default function Layout({ children }: { children: PageElement }) {
           </Link>
 
           <div className="flex items-center gap-1 md:gap-3">
-            <nav aria-label={chrome.primary} className="hidden items-center gap-5 md:flex">
+            <nav aria-label={messages.nav.primary} className="hidden items-center gap-5 md:flex">
               {NAVIGATION.map((item) => (
                 <Link
                   key={item.path}
@@ -115,7 +114,7 @@ export default function Layout({ children }: { children: PageElement }) {
                     isActive(item.path) ? 'text-primary font-medium' : 'text-muted-foreground'
                   )}
                 >
-                  {chrome[item.label]}
+                  {messages.nav[item.label]}
                 </Link>
               ))}
             </nav>
@@ -129,7 +128,7 @@ export default function Layout({ children }: { children: PageElement }) {
               </Link>
             )}
 
-            <ThemeToggle label={chrome.theme} />
+            <ThemeToggle label={messages.nav.theme} />
 
             <Button
               type="button"
@@ -138,7 +137,7 @@ export default function Layout({ children }: { children: PageElement }) {
               className="md:hidden"
               aria-controls="mobile-navigation"
               aria-expanded={menuOpen}
-              aria-label={menuOpen ? chrome.closeMenu : chrome.openMenu}
+              aria-label={menuOpen ? messages.nav.closeMenu : messages.nav.openMenu}
               onClick={() => setMenuOpen((open) => !open)}
             >
               {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -156,7 +155,7 @@ export default function Layout({ children }: { children: PageElement }) {
 
         <nav
           id="mobile-navigation"
-          aria-label={chrome.primary}
+          aria-label={messages.nav.primary}
           hidden={!menuOpen}
           className="bg-background relative z-50 border-b px-6 pt-2 pb-4 md:hidden"
         >
@@ -172,7 +171,7 @@ export default function Layout({ children }: { children: PageElement }) {
                   : 'text-muted-foreground hover:bg-accent hover:text-foreground'
               )}
             >
-              {chrome[item.label]}
+              {messages.nav[item.label]}
             </Link>
           ))}
         </nav>
@@ -183,21 +182,21 @@ export default function Layout({ children }: { children: PageElement }) {
       </HoverPreviewProvider>
       <footer className="border-t">
         <div className="text-muted-foreground mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-9 text-sm">
-          <nav aria-label={chrome.secondary} className="flex flex-wrap gap-x-5 gap-y-3">
+          <nav aria-label={messages.nav.secondary} className="flex flex-wrap gap-x-5 gap-y-3">
             {NAVIGATION.map((item) => (
               <Link
                 key={item.path}
                 href={localePath(locale, item.path)}
                 className="hover:text-primary transition-colors"
               >
-                {chrome[item.label]}
+                {messages.nav[item.label]}
               </Link>
             ))}
             <Link
               href={localePath(locale, '/legal')}
               className="hover:text-primary transition-colors"
             >
-              {chrome.legal}
+              {messages.nav.legal}
             </Link>
           </nav>
           <span>

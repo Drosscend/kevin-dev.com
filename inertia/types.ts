@@ -14,3 +14,5 @@ declare module '@inertiajs/core' {
     flashDataType: Data.FlashMessages
   }
 }
+
+export type Messages = Data.SharedProps['messages']

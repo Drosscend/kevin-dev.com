@@ -1,28 +1,9 @@
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
-import i18nManager from '@adonisjs/i18n/services/main'
-import { localeFromPath } from '#types/i18n'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 
 function isUniqueViolation(error: unknown): error is { code: string; detail?: string } {
   return typeof error === 'object' && error !== null && 'code' in error && error.code === '23505'
-}
-
-/**
- * Title and home link of an error page, in the locale the visited URL
- * asked for.
- */
-function errorLabels(ctx: HttpContext, key: 'notFound' | 'gone' | 'server') {
-  const locale = localeFromPath(ctx.request.url())
-  const i18n = ctx.i18n ?? i18nManager.locale(locale)
-
-  return {
-    locale,
-    labels: {
-      title: i18n.t(`messages.errors.${key}`),
-      backHome: i18n.t('messages.errors.backHome'),
-    },
-  }
 }
 
 /**
@@ -40,20 +21,16 @@ export function violatedField(detail: string | undefined) {
  * Status pages is a collection of error code range and a callback
  * to return the HTML contents to send as a response.
  *
- * An unknown URL never reaches the router, so no i18n instance is
- * attached to the context: the locale is read back from the path.
- *
  * A server error keeps its stack trace outside production, where the
  * absent range lets the debug renderer take over.
  */
 const STATUS_PAGES: Record<StatusPageRange, StatusPageRenderer> = {
-  '404': (_, ctx) => ctx.inertia.render('errors/not_found', errorLabels(ctx, 'notFound')),
-  '410': (_, ctx) => ctx.inertia.render('errors/gone', errorLabels(ctx, 'gone')),
+  '404': (_, ctx) => ctx.inertia.render('errors/not_found', {}),
+  '410': (_, ctx) => ctx.inertia.render('errors/gone', {}),
 }
 
 if (app.inProduction) {
-  STATUS_PAGES['500..599'] = (_, ctx) =>
-    ctx.inertia.render('errors/server_error', errorLabels(ctx, 'server'))
+  STATUS_PAGES['500..599'] = (_, ctx) => ctx.inertia.render('errors/server_error', {})
 }
 
 export default class HttpExceptionHandler extends ExceptionHandler {

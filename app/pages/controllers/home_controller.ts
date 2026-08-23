@@ -79,23 +79,6 @@ export default class HomeController {
             entry.honours === 'none' ? null : i18n.t(`messages.home.honours.${entry.honours}`),
         }))
       ),
-      labels: {
-        downloadCv: i18n.t('messages.home.downloadCv'),
-        contactMe: i18n.t('messages.home.contactMe'),
-        photoAlt: i18n.t('messages.home.photoAlt'),
-        now: i18n.t('messages.home.now'),
-        featuredProjects: i18n.t('messages.home.featuredProjects'),
-        latestArticles: i18n.t('messages.home.latestArticles'),
-        allArticles: i18n.t('messages.home.allArticles'),
-        allProjects: i18n.t('messages.home.allProjects'),
-        timeline: i18n.t('messages.home.timeline'),
-        stack: i18n.t('messages.home.stack'),
-        allTechnologies: i18n.t('messages.home.allTechnologies'),
-        talks: i18n.t('messages.home.talks'),
-        allTalks: i18n.t('messages.home.allTalks'),
-        upcomingTalk: i18n.t('messages.talks.upcoming'),
-        ongoingProject: i18n.t('messages.portfolio.ongoing'),
-      },
       meta: SeoService.build({
         title: i18n.t('messages.home.metaTitle'),
         description: i18n.t('messages.home.metaDescription'),

@@ -27,35 +27,36 @@ test.group('Chrome de navigation', (group) => {
 
     fr.assertStatus(200)
     en.assertStatus(200)
-    const { chrome: french } = homePage(fr)
-    const { chrome: english } = homePage(en)
+    const { messages: french } = homePage(fr)
+    const { messages: english } = homePage(en)
 
-    assert.equal(french.talks, 'Interventions')
-    assert.equal(french.cv, 'CV')
-    assert.equal(french.legal, 'Mentions légales')
-    assert.equal(english.talks, 'Speaking')
-    assert.equal(english.cv, 'Resume')
-    assert.equal(english.legal, 'Legal notice')
+    assert.equal(french.nav.talks, 'Interventions')
+    assert.equal(french.nav.cv, 'CV')
+    assert.equal(french.nav.legal, 'Mentions légales')
+    assert.equal(english.nav.talks, 'Speaking')
+    assert.equal(english.nav.cv, 'Resume')
+    assert.equal(english.nav.legal, 'Legal notice')
   })
 
   test('une page introuvable sous /en garde le chrome en anglais', async ({ client, assert }) => {
     const response = await client.get('/en/nothing-here').withInertia()
 
     response.assertStatus(404)
-    const { chrome, locale } = notFoundPage(response)
-    assert.equal(chrome.talks, 'Speaking')
+    const { messages, locale } = notFoundPage(response)
+    assert.equal(messages.nav.talks, 'Speaking')
+    assert.equal(messages.errors.notFound, 'Page not found')
     assert.equal(locale, 'en')
   })
 
   test('les libellés d’accessibilité des contrôles sont traduits', async ({ client, assert }) => {
     const response = await client.get('/en').withInertia()
 
-    const { chrome } = homePage(response)
-    assert.equal(chrome.primary, 'Main navigation')
-    assert.equal(chrome.secondary, 'Secondary navigation')
-    assert.equal(chrome.openMenu, 'Open the menu')
-    assert.equal(chrome.closeMenu, 'Close the menu')
-    assert.equal(chrome.theme, 'Toggle light or dark theme')
+    const { messages } = homePage(response)
+    assert.equal(messages.nav.primary, 'Main navigation')
+    assert.equal(messages.nav.secondary, 'Secondary navigation')
+    assert.equal(messages.nav.openMenu, 'Open the menu')
+    assert.equal(messages.nav.closeMenu, 'Close the menu')
+    assert.equal(messages.nav.theme, 'Toggle light or dark theme')
   })
 
   /**
@@ -74,14 +75,9 @@ test.group('Chrome de navigation', (group) => {
     }
   })
 
-  test('aucun libellé de navigation ne reste introuvable', async ({ client, assert }) => {
-    for (const url of ['/', '/en']) {
-      const response = await client.get(url).withInertia()
-      const { chrome } = homePage(response)
+  test('les deux dictionnaires ont les mêmes clés', ({ assert }) => {
+    const keysOf = (messages: Messages) => flatten(messages).map(([key]) => key)
 
-      for (const [key, value] of Object.entries(chrome)) {
-        assert.notInclude(value, 'translation missing', `messages.nav.${key} est introuvable`)
-      }
-    }
+    assert.sameMembers(keysOf(enMessages), keysOf(frMessages))
   })
 })

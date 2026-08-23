@@ -16,27 +16,20 @@ type TalksShowProps = InertiaProps<{
   preview: PreviewMode
   talk: Data.Talks.TalkDetail
   hasOtherLocale: boolean
-  labels: {
-    backToList: string
-    draft: string
-    archived: string
-    upcoming: string
-    technologies: string
-  }
   meta: SeoMeta
 }>
 
-export default function TalksShow({ locale, preview, talk, labels, meta }: TalksShowProps) {
+export default function TalksShow({ locale, preview, talk, messages, meta }: TalksShowProps) {
   const to = (path: string) => localePath(locale, path)
 
   return (
     <>
       <Seo meta={meta} />
       <ReadingLayout className="space-y-10">
-        {preview && <PreviewBanner label={labels[preview]} />}
+        {preview && <PreviewBanner label={messages.blog[preview]} />}
 
         <div className="text-sm">
-          <BackLink href={to('/talks')} label={labels.backToList} />
+          <BackLink href={to('/talks')} label={messages.talks.backToList} />
         </div>
 
         <header>
@@ -53,7 +46,7 @@ export default function TalksShow({ locale, preview, talk, labels, meta }: Talks
             )}
             <span aria-hidden>·</span>
             <span>{talk.readingTimeLabel}</span>
-            {talk.upcoming && <StatusBadge>{labels.upcoming}</StatusBadge>}
+            {talk.upcoming && <StatusBadge>{messages.talks.upcoming}</StatusBadge>}
           </p>
           <ExternalLinkList links={talk.links} className="mt-5" />
         </header>
@@ -66,7 +59,7 @@ export default function TalksShow({ locale, preview, talk, labels, meta }: Talks
 
         <TechnologySection
           locale={locale}
-          title={labels.technologies}
+          title={messages.talks.technologies}
           technologies={talk.technologies}
         />
       </ReadingLayout>

@@ -16,29 +16,23 @@ type BlogShowProps = InertiaProps<{
   preview: PreviewMode
   article: Data.Blog.ArticleDetail
   hasOtherLocale: boolean
-  labels: {
-    publishedOn: string
-    draft: string
-    archived: string
-    backToList: string
-    technologies: string
-    contents: string
-  }
   meta: SeoMeta
 }>
 
-export default function BlogShow({ locale, preview, article, labels, meta }: BlogShowProps) {
+export default function BlogShow({ locale, preview, article, messages, meta }: BlogShowProps) {
   const base = localePath(locale, '/blog')
 
   return (
     <>
       <Seo meta={meta} />
 
-      <ReadingLayout aside={<TableOfContents html={article.contentHtml} label={labels.contents} />}>
-        {preview && <PreviewBanner label={labels[preview]} className="mb-10" />}
+      <ReadingLayout
+        aside={<TableOfContents html={article.contentHtml} label={messages.toc.title} />}
+      >
+        {preview && <PreviewBanner label={messages.blog[preview]} className="mb-10" />}
 
         <div className="text-sm">
-          <BackLink href={base} label={labels.backToList} />
+          <BackLink href={base} label={messages.blog.backToList} />
         </div>
 
         <header className="mt-12">
@@ -46,7 +40,7 @@ export default function BlogShow({ locale, preview, article, labels, meta }: Blo
           <p className="text-muted-foreground mt-4 font-mono text-[13px]">
             {article.publishedAt && (
               <>
-                {labels.publishedOn} {article.publishedAt} ·{' '}
+                {messages.blog.publishedOn} {article.publishedAt} ·{' '}
               </>
             )}
             {article.readingTimeLabel}
@@ -71,7 +65,7 @@ export default function BlogShow({ locale, preview, article, labels, meta }: Blo
         <TechnologySection
           className="mt-12"
           locale={locale}
-          title={labels.technologies}
+          title={messages.blog.technologies}
           technologies={article.technologies}
         />
       </ReadingLayout>

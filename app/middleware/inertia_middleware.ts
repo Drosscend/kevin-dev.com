@@ -1,10 +1,13 @@
-import i18nManager from '@adonisjs/i18n/services/main'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import UserTransformer from '#app/identity/transformers/user_transformer'
 import ContactMessage from '#contact/models/contact_message'
-import { toLocale } from '#types/i18n'
+import { type Locale, toLocale } from '#types/i18n'
+import en from '../../resources/lang/en/messages.json' with { type: 'json' }
+import fr from '../../resources/lang/fr/messages.json' with { type: 'json' }
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
+
+const MESSAGES = { fr, en } satisfies Record<Locale, typeof fr>
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   share(ctx: HttpContext) {
@@ -17,8 +20,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
      * with all the properties
      */
     const { auth }: Partial<HttpContext> = ctx
-    const { i18n } = ctx
-    const otherLocale = i18nManager.locale(i18n.locale === 'fr' ? 'en' : 'fr')
+    const locale = toLocale(ctx.i18n.locale)
 
     /**
      * Data shared with all Inertia pages. Make sure you are using
@@ -27,46 +29,8 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
     return {
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
-      locale: ctx.inertia.always(toLocale(i18n.locale)),
-      /**
-       * Labels of the header, footer and window controls. They live in the
-       * layout, which no controller feeds, so they travel with every page.
-       */
-      chrome: ctx.inertia.always({
-        projects: i18n.t('messages.nav.projects'),
-        blog: i18n.t('messages.nav.blog'),
-        talks: i18n.t('messages.nav.talks'),
-        cv: i18n.t('messages.nav.cv'),
-        technologies: i18n.t('messages.nav.technologies'),
-        contact: i18n.t('messages.nav.contact'),
-        legal: i18n.t('messages.nav.legal'),
-        primary: i18n.t('messages.nav.primary'),
-        secondary: i18n.t('messages.nav.secondary'),
-        openMenu: i18n.t('messages.nav.openMenu'),
-        closeMenu: i18n.t('messages.nav.closeMenu'),
-        theme: i18n.t('messages.nav.theme'),
-        otherLanguage: otherLocale.t('messages.nav.otherLanguage'),
-        otherLanguageDismiss: otherLocale.t('messages.nav.otherLanguageDismiss'),
-      }),
-      /**
-       * Labels of the image viewer. It hangs off the article body, which
-       * several pages render without a controller of their own, so like
-       * the layout chrome it travels with every page.
-       */
-      lightbox: ctx.inertia.always({
-        open: i18n.t('messages.lightbox.open'),
-        viewer: i18n.t('messages.lightbox.viewer'),
-        close: i18n.t('messages.lightbox.close'),
-        previous: i18n.t('messages.lightbox.previous'),
-        next: i18n.t('messages.lightbox.next'),
-        zoomIn: i18n.t('messages.lightbox.zoomIn'),
-        zoomOut: i18n.t('messages.lightbox.zoomOut'),
-        reset: i18n.t('messages.lightbox.reset'),
-        hintClose: i18n.t('messages.lightbox.hintClose'),
-        hintNavigate: i18n.t('messages.lightbox.hintNavigate'),
-        hintZoom: i18n.t('messages.lightbox.hintZoom'),
-        hintReset: i18n.t('messages.lightbox.hintReset'),
-      }),
+      locale: ctx.inertia.always(locale),
+      messages: ctx.inertia.once(() => MESSAGES[locale], { key: `messages.${locale}` }),
       /**
        * Unread contact messages, displayed as a badge in the admin
        * sidebar. Only computed for authenticated (admin) requests.

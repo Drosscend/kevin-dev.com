@@ -11,20 +11,19 @@ import type { Data } from '@generated/data'
 
 type TalksIndexProps = InertiaProps<{
   talks: Data.Talks.TalkCard[]
-  labels: { title: string; empty: string; upcoming: string }
   meta: SeoMeta
 }>
 
-export default function TalksIndex({ locale, talks, labels, meta }: TalksIndexProps) {
+export default function TalksIndex({ locale, talks, messages, meta }: TalksIndexProps) {
   const to = (path: string) => localePath(locale, path)
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
-      <PageHeader title={labels.title} />
+      <PageHeader title={messages.talks.title} />
 
       {talks.length === 0 ? (
-        <EmptyState>{labels.empty}</EmptyState>
+        <EmptyState>{messages.talks.empty}</EmptyState>
       ) : (
         <ListingList>
           {talks.map((talk) => (
@@ -40,7 +39,7 @@ export default function TalksIndex({ locale, talks, labels, meta }: TalksIndexPr
                     {talk.eventDate} · {talk.eventName}
                     {talk.city && ` · ${talk.city}`} · {talk.readingTimeLabel}
                   </span>
-                  {talk.upcoming && <StatusBadge>{labels.upcoming}</StatusBadge>}
+                  {talk.upcoming && <StatusBadge>{messages.talks.upcoming}</StatusBadge>}
                 </>
               }
               footer={

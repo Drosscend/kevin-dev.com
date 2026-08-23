@@ -19,15 +19,6 @@ type PortfolioShowProps = InertiaProps<{
   preview: PreviewMode
   project: Data.Portfolio.ProjectDetail
   hasOtherLocale: boolean
-  labels: {
-    backToList: string
-    draft: string
-    archived: string
-    ongoing: string
-    technologies: string
-    relatedArticles: string
-    contents: string
-  }
   meta: SeoMeta
 }>
 
@@ -35,7 +26,7 @@ export default function PortfolioShow({
   locale,
   preview,
   project,
-  labels,
+  messages,
   meta,
 }: PortfolioShowProps) {
   const to = (path: string) => localePath(locale, path)
@@ -45,12 +36,12 @@ export default function PortfolioShow({
       <Seo meta={meta} />
       <ReadingLayout
         className="space-y-10"
-        aside={<TableOfContents html={project.contentHtml} label={labels.contents} />}
+        aside={<TableOfContents html={project.contentHtml} label={messages.toc.title} />}
       >
-        {preview && <PreviewBanner label={labels[preview]} />}
+        {preview && <PreviewBanner label={messages.blog[preview]} />}
 
         <div className="text-sm">
-          <BackLink href={to('/projects')} label={labels.backToList} />
+          <BackLink href={to('/projects')} label={messages.portfolio.backToList} />
         </div>
 
         <header>
@@ -67,7 +58,7 @@ export default function PortfolioShow({
               </>
             )}
             <span>{project.readingTimeLabel}</span>
-            {project.ongoing && <StatusBadge>{labels.ongoing}</StatusBadge>}
+            {project.ongoing && <StatusBadge>{messages.portfolio.ongoing}</StatusBadge>}
           </p>
           <ExternalLinkList links={project.links} className="mt-5" />
         </header>
@@ -82,14 +73,14 @@ export default function PortfolioShow({
 
         <TechnologySection
           locale={locale}
-          title={labels.technologies}
+          title={messages.portfolio.technologies}
           technologies={project.technologies}
         />
 
         {project.articles.length > 0 && (
           <section className="border-t pt-8">
             <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-              {labels.relatedArticles}
+              {messages.portfolio.relatedArticles}
             </h2>
             <ul className="mt-4 space-y-2 text-sm">
               {project.articles.map((article) => (

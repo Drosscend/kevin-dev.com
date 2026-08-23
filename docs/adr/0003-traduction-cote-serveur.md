@@ -1,7 +1,8 @@
 # La traduction se fait côté serveur
 
-Le client ne connaît aucune bibliothèque i18n : les controllers résolvent les
-libellés et les envoient en props, le middleware Inertia y ajoute ceux du chrome
-et de la lightbox. Les traductions ne partent donc pas dans le bundle, et une
-chaîne oubliée se voit tout de suite, puisqu'elle apparaît en dur dans un
-composant au lieu d'être une clé manquante à l'exécution.
+Le client ne connaît aucune bibliothèque i18n. Le middleware Inertia partage
+`messages`, le dictionnaire de la langue courante, en prop `once` : il voyage
+une fois par langue et le client le garde d'une visite à l'autre. Son type dérive
+du fichier français, donc une clé absente en anglais casse le typecheck. Les
+libellés qui dépendent d'une donnée restent résolus par le controller, et aucun
+moteur ICU ne part dans le bundle.

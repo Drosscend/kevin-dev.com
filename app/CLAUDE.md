@@ -9,9 +9,9 @@ d'ajouter un écran ou une mutation. Le vocabulaire du domaine est dans
   au plus : `render` pour une page Inertia, `execute` pour une mutation.
 - Le validator VineJS vit sur le controller, en `static readonly validator`.
 - Les dépendances arrivent par le constructeur, avec `@inject()`.
-- Un controller traduit, met en forme les dates et les URL, mappe chaque variante
-  d'erreur d'une Action, flashe et redirige. Il n'ouvre jamais de transaction et
-  ne porte aucune règle réutilisable.
+- Un controller met en forme les dates, les URL et les libellés qui dépendent
+  d'une donnée, mappe chaque variante d'erreur d'une Action, flashe et redirige.
+  Il n'ouvre jamais de transaction et ne porte aucune règle réutilisable.
 - La forme reçue par une page est déclarée par un transformer de
   `<capacité>/transformers/`, que le client lit en `Data.<Capacité>.<Nom>`.
   Seul le premier niveau des props est résolu.

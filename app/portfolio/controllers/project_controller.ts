@@ -52,15 +52,6 @@ export default class ProjectController {
         articles: project.articles,
       }),
       hasOtherLocale: project.hasOtherLocale,
-      labels: {
-        backToList: i18n.t('messages.portfolio.backToList'),
-        draft: i18n.t('messages.blog.draft'),
-        archived: i18n.t('messages.blog.archived'),
-        ongoing: i18n.t('messages.portfolio.ongoing'),
-        technologies: i18n.t('messages.portfolio.technologies'),
-        relatedArticles: i18n.t('messages.portfolio.relatedArticles'),
-        contents: i18n.t('messages.toc.title'),
-      },
       meta: SeoService.build({
         title: project.title,
         description: project.summary || i18n.t('messages.portfolio.metaDescription'),

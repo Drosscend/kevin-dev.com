@@ -9,14 +9,6 @@ import type { Data } from '@generated/data'
 
 type TechnologyShowProps = InertiaProps<{
   technology: Data.Technologies.TechnologyDetail
-  labels: {
-    backToList: string
-    docs: string
-    usedIn: string
-    writtenAbout: string
-    spokenAbout: string
-    unused: string
-  }
   meta: SeoMeta
 }>
 
@@ -55,7 +47,12 @@ function UsageSection({
   )
 }
 
-export default function TechnologyShow({ locale, technology, labels, meta }: TechnologyShowProps) {
+export default function TechnologyShow({
+  locale,
+  technology,
+  messages,
+  meta,
+}: TechnologyShowProps) {
   const to = (path: string) => localePath(locale, path)
 
   return (
@@ -63,7 +60,7 @@ export default function TechnologyShow({ locale, technology, labels, meta }: Tec
       <Seo meta={meta} />
       <ReadingLayout>
         <div className="text-sm">
-          <BackLink href={to('/technologies')} label={labels.backToList} />
+          <BackLink href={to('/technologies')} label={messages.technologies.backToList} />
         </div>
 
         <header className="mt-10 flex items-center gap-5">
@@ -81,7 +78,9 @@ export default function TechnologyShow({ locale, technology, labels, meta }: Tec
             )}
             {technology.docsUrl && (
               <ExternalLinkList
-                links={[{ label: labels.docs, url: technology.docsUrl, type: 'docs' }]}
+                links={[
+                  { label: messages.technologies.docs, url: technology.docsUrl, type: 'docs' },
+                ]}
                 className="mt-3"
               />
             )}
@@ -89,19 +88,19 @@ export default function TechnologyShow({ locale, technology, labels, meta }: Tec
         </header>
 
         <UsageSection
-          title={labels.usedIn}
+          title={messages.technologies.usedIn}
           entries={technology.projects}
           href={(slug) => to(`/projects/${slug}`)}
         />
 
         <UsageSection
-          title={labels.writtenAbout}
+          title={messages.technologies.writtenAbout}
           entries={technology.articles}
           href={(slug) => to(`/blog/${slug}`)}
         />
 
         <UsageSection
-          title={labels.spokenAbout}
+          title={messages.technologies.spokenAbout}
           entries={technology.talks}
           href={(slug) => to(`/talks/${slug}`)}
         />
@@ -109,7 +108,7 @@ export default function TechnologyShow({ locale, technology, labels, meta }: Tec
         {technology.projects.length === 0 &&
           technology.articles.length === 0 &&
           technology.talks.length === 0 && (
-            <p className="text-muted-foreground mt-14">{labels.unused}</p>
+            <p className="text-muted-foreground mt-14">{messages.technologies.unused}</p>
           )}
       </ReadingLayout>
     </>

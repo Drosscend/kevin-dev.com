@@ -12,8 +12,8 @@
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "theme": "Basculer le thème clair ou sombre",
-    "otherLanguage": "Lire cette page en français",
-    "otherLanguageDismiss": "Fermer"
+    "otherLanguage": "Read this page in English",
+    "otherLanguageDismiss": "Dismiss"
   },
   "home": {
     "metaTitle": "Kévin Véronési, développeur full-stack et consultant IA",

@@ -31,11 +31,6 @@ export default class TalkListController {
           coverUrl: mediaUrl(talk.cover),
         }))
       ),
-      labels: {
-        title: i18n.t('messages.talks.title'),
-        empty: i18n.t('messages.talks.empty'),
-        upcoming: i18n.t('messages.talks.upcoming'),
-      },
       meta: SeoService.build({
         title: i18n.t('messages.talks.title'),
         description: i18n.t('messages.talks.metaDescription'),

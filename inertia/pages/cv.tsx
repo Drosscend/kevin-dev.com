@@ -10,26 +10,21 @@ import { type InertiaProps } from '~/types'
 type CvProps = InertiaProps<{
   contentHtml: string
   pdfAvailable: boolean
-  labels: {
-    title: string
-    download: string
-    empty: string
-  }
   meta: SeoMeta
 }>
 
-export default function Cv({ contentHtml, pdfAvailable, labels, meta }: CvProps) {
+export default function Cv({ contentHtml, pdfAvailable, messages, meta }: CvProps) {
   return (
     <>
       <Seo meta={meta} />
       <ReadingLayout>
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
+          <h1 className="text-3xl font-bold md:text-4xl">{messages.cv.title}</h1>
           {pdfAvailable && (
             <Button asChild size="lg" className="w-full sm:w-auto">
               <a href="/cv.pdf" download>
                 <Download aria-hidden className="size-4" />
-                {labels.download}
+                {messages.cv.download}
               </a>
             </Button>
           )}
@@ -39,7 +34,7 @@ export default function Cv({ contentHtml, pdfAvailable, labels, meta }: CvProps)
           {contentHtml ? (
             <ArticleContent html={contentHtml} />
           ) : (
-            <EmptyState>{labels.empty}</EmptyState>
+            <EmptyState>{messages.cv.empty}</EmptyState>
           )}
         </Lightbox>
       </ReadingLayout>

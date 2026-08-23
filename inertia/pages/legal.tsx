@@ -7,25 +7,21 @@ import { type InertiaProps } from '~/types'
 
 type LegalProps = InertiaProps<{
   contentHtml: string
-  labels: {
-    title: string
-    empty: string
-  }
   meta: SeoMeta
 }>
 
-export default function Legal({ contentHtml, labels, meta }: LegalProps) {
+export default function Legal({ contentHtml, messages, meta }: LegalProps) {
   return (
     <>
       <Seo meta={meta} />
       <ReadingLayout>
-        <h1 className="text-3xl font-bold md:text-4xl">{labels.title}</h1>
+        <h1 className="text-3xl font-bold md:text-4xl">{messages.legal.title}</h1>
 
         <Lightbox className="mt-10">
           {contentHtml ? (
             <ArticleContent html={contentHtml} />
           ) : (
-            <EmptyState>{labels.empty}</EmptyState>
+            <EmptyState>{messages.legal.empty}</EmptyState>
           )}
         </Lightbox>
       </ReadingLayout>

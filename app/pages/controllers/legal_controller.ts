@@ -10,10 +10,6 @@ export default class LegalController {
 
     return inertia.render('legal', {
       contentHtml: locale === 'en' ? settings.legal_html_en : settings.legal_html_fr,
-      labels: {
-        title: i18n.t('messages.legal.title'),
-        empty: i18n.t('messages.legal.empty'),
-      },
       meta: SeoService.build({
         title: i18n.t('messages.legal.title'),
         description: i18n.t('messages.legal.title'),

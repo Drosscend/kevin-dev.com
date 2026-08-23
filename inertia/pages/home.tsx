@@ -23,23 +23,6 @@ type HomeProps = InertiaProps<{
   technologies: { slug: string; name: string }[]
   hiddenTechnologies: number
   timeline: Data.Pages.TimelineEntry[]
-  labels: {
-    downloadCv: string
-    contactMe: string
-    photoAlt: string
-    now: string
-    featuredProjects: string
-    latestArticles: string
-    allArticles: string
-    allProjects: string
-    timeline: string
-    stack: string
-    allTechnologies: string
-    talks: string
-    allTalks: string
-    upcomingTalk: string
-    ongoingProject: string
-  }
   meta: SeoMeta
 }>
 
@@ -81,7 +64,7 @@ export default function Home({
   technologies,
   hiddenTechnologies,
   timeline,
-  labels,
+  messages,
   meta,
 }: HomeProps) {
   const to = (path: string) => localePath(locale, path)
@@ -109,17 +92,17 @@ export default function Home({
               {cvPdfAvailable ? (
                 <a href="/cv.pdf">
                   <Download className="size-4" />
-                  {labels.downloadCv}
+                  {messages.home.downloadCv}
                 </a>
               ) : (
                 <Link href={to('/cv')}>
                   <Download className="size-4" />
-                  {labels.downloadCv}
+                  {messages.home.downloadCv}
                 </Link>
               )}
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href={to('/contact')}>{labels.contactMe}</Link>
+              <Link href={to('/contact')}>{messages.home.contactMe}</Link>
             </Button>
           </div>
         </div>
@@ -127,7 +110,7 @@ export default function Home({
           src="/images/portrait.webp"
           srcSet="/images/portrait-small.webp 360w, /images/portrait.webp 720w"
           sizes="(min-width: 768px) 300px, 260px"
-          alt={labels.photoAlt}
+          alt={messages.home.photoAlt}
           width={720}
           height={960}
           className="w-full max-w-[260px] rounded-lg object-cover md:max-w-[300px] md:justify-self-end"
@@ -138,7 +121,7 @@ export default function Home({
         <section className="pb-24 md:pb-28">
           <div className="border-primary max-w-[620px] border-l-2 pl-6">
             <p className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-              {labels.now}
+              {messages.home.now}
             </p>
             <p className="mt-2">{now}</p>
           </div>
@@ -148,8 +131,8 @@ export default function Home({
       {projects.length > 0 && (
         <section className="pb-24 md:pb-28">
           <SectionHead
-            title={labels.featuredProjects}
-            more={{ href: to('/projects'), label: labels.allProjects, count: projectsTotal }}
+            title={messages.home.featuredProjects}
+            more={{ href: to('/projects'), label: messages.home.allProjects, count: projectsTotal }}
           />
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
@@ -173,7 +156,7 @@ export default function Home({
                       <h3 className="group-hover:text-primary font-semibold transition-colors">
                         {project.title}
                       </h3>
-                      {project.ongoing && <StatusBadge>{labels.ongoingProject}</StatusBadge>}
+                      {project.ongoing && <StatusBadge>{messages.portfolio.ongoing}</StatusBadge>}
                     </div>
                     <p className="text-muted-foreground mt-2 line-clamp-2 flex-1 text-sm">
                       {project.summary}
@@ -194,8 +177,8 @@ export default function Home({
       {latestArticles.length > 0 && (
         <section className="pb-24 md:pb-28">
           <SectionHead
-            title={labels.latestArticles}
-            more={{ href: to('/blog'), label: labels.allArticles, count: articlesTotal }}
+            title={messages.home.latestArticles}
+            more={{ href: to('/blog'), label: messages.home.allArticles, count: articlesTotal }}
           />
           <LinkList>
             {latestArticles.map((article) => (
@@ -212,7 +195,7 @@ export default function Home({
       )}
 
       <section className="pb-24 md:pb-28">
-        <SectionHead title={labels.timeline} />
+        <SectionHead title={messages.home.timeline} />
         <ul className="max-w-2xl space-y-9">
           {timeline.map((entry) => (
             <li key={entry.period} className="grid gap-1 sm:grid-cols-[140px_1fr] sm:gap-6">
@@ -234,10 +217,10 @@ export default function Home({
       {technologies.length > 0 && (
         <section className="pb-24 md:pb-28">
           <SectionHead
-            title={labels.stack}
+            title={messages.home.stack}
             more={{
               href: to('/technologies'),
-              label: labels.allTechnologies,
+              label: messages.home.allTechnologies,
               count: technologies.length + hiddenTechnologies,
             }}
           />
@@ -251,7 +234,7 @@ export default function Home({
               <ChipLink
                 href={to('/technologies')}
                 variant="muted"
-                ariaLabel={labels.allTechnologies}
+                ariaLabel={messages.home.allTechnologies}
               >
                 +{hiddenTechnologies}
               </ChipLink>
@@ -263,8 +246,8 @@ export default function Home({
       {talks.length > 0 && (
         <section className="pb-24 md:pb-32">
           <SectionHead
-            title={labels.talks}
-            more={{ href: to('/talks'), label: labels.allTalks, count: talksTotal }}
+            title={messages.home.talks}
+            more={{ href: to('/talks'), label: messages.home.allTalks, count: talksTotal }}
           />
           <LinkList>
             {talks.map((talk) => (
@@ -272,7 +255,7 @@ export default function Home({
                 key={talk.slug}
                 href={to(`/talks/${talk.slug}`)}
                 title={talk.title}
-                badge={talk.upcoming ? labels.upcomingTalk : undefined}
+                badge={talk.upcoming ? messages.talks.upcoming : undefined}
                 meta={`${talk.eventName} · ${talk.eventDate}`}
                 preview={{
                   imageUrl: talk.coverUrl,

@@ -47,14 +47,6 @@ export default class ArticleController {
         technologies: article.technologies,
       }),
       hasOtherLocale: article.hasOtherLocale,
-      labels: {
-        publishedOn: i18n.t('messages.blog.publishedOn'),
-        draft: i18n.t('messages.blog.draft'),
-        archived: i18n.t('messages.blog.archived'),
-        backToList: i18n.t('messages.blog.backToList'),
-        technologies: i18n.t('messages.blog.technologies'),
-        contents: i18n.t('messages.toc.title'),
-      },
       meta: SeoService.build({
         title: article.title,
         description: article.summary || i18n.t('messages.blog.metaDescription'),

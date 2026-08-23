@@ -104,9 +104,8 @@ test.group('Technologies publiques', (group) => {
     assert.isNull(technologies.find((item) => item.slug === 'go')?.docsUrl ?? null)
 
     const show = await client.get('/technologies/adonisjs').withInertia()
-    const { technology, labels } = technologyPage(show)
+    const { technology } = technologyPage(show)
     assert.equal(technology.docsUrl, 'https://docs.adonisjs.com')
-    assert.equal(labels.docs, 'Documentation officielle')
   })
 
   test('la fiche reste navigable mais sort des résultats de recherche', async ({

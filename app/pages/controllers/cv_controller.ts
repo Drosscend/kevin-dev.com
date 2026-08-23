@@ -13,11 +13,6 @@ export default class CvController {
     return inertia.render('cv', {
       contentHtml: locale === 'en' ? settings.cv_html_en : settings.cv_html_fr,
       pdfAvailable: await drive.use().exists(CV_PDF_KEY),
-      labels: {
-        title: i18n.t('messages.cv.title'),
-        download: i18n.t('messages.cv.download'),
-        empty: i18n.t('messages.cv.empty'),
-      },
       meta: SeoService.build({
         title: i18n.t('messages.cv.title'),
         description: i18n.t('messages.cv.metaDescription'),

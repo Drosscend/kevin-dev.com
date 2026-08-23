@@ -45,17 +45,6 @@ export default class TechnologyListController {
           usageLabel: usageLabel(technology, i18n),
         }))
       ),
-      labels: {
-        title: i18n.t('messages.technologies.title'),
-        empty: i18n.t('messages.technologies.empty'),
-        docs: i18n.t('messages.technologies.docs'),
-        categories: {
-          langage: i18n.t('messages.technologies.categories.langage'),
-          framework: i18n.t('messages.technologies.categories.framework'),
-          outil: i18n.t('messages.technologies.categories.outil'),
-          infra: i18n.t('messages.technologies.categories.infra'),
-        },
-      },
       meta: SeoService.build({
         title: i18n.t('messages.technologies.title'),
         description: i18n.t('messages.technologies.metaDescription'),

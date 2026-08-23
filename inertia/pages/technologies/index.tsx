@@ -1,4 +1,4 @@
-import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
+import { TECHNOLOGY_CATEGORIES } from '#types/content'
 import { localePath } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
@@ -10,19 +10,13 @@ import type { Data } from '@generated/data'
 
 type TechnologiesIndexProps = InertiaProps<{
   technologies: Data.Technologies.TechnologyCard[]
-  labels: {
-    title: string
-    empty: string
-    docs: string
-    categories: Record<TechnologyCategory, string>
-  }
   meta: SeoMeta
 }>
 
 export default function TechnologiesIndex({
   locale,
   technologies,
-  labels,
+  messages,
   meta,
 }: TechnologiesIndexProps) {
   const to = (path: string) => localePath(locale, path)
@@ -34,15 +28,15 @@ export default function TechnologiesIndex({
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
-      <PageHeader title={labels.title} />
+      <PageHeader title={messages.technologies.title} />
 
-      {grouped.length === 0 && <EmptyState>{labels.empty}</EmptyState>}
+      {grouped.length === 0 && <EmptyState>{messages.technologies.empty}</EmptyState>}
 
       <div className="space-y-14">
         {grouped.map((group) => (
           <section key={group.category}>
             <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-              {labels.categories[group.category]}
+              {messages.technologies.categories[group.category]}
             </h2>
             <div className="mt-5">
               <ListingList>
@@ -59,7 +53,13 @@ export default function TechnologiesIndex({
                     footer={
                       technology.docsUrl && (
                         <ExternalLinkList
-                          links={[{ label: labels.docs, url: technology.docsUrl, type: 'docs' }]}
+                          links={[
+                            {
+                              label: messages.technologies.docs,
+                              url: technology.docsUrl,
+                              type: 'docs',
+                            },
+                          ]}
                           variant="subtle"
                         />
                       )

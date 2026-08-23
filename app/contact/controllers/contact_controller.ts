@@ -19,15 +19,6 @@ export default class ContactController {
     const locale = toLocale(i18n.locale)
 
     return inertia.render('contact', {
-      labels: {
-        title: i18n.t('messages.contact.title'),
-        intro: i18n.t('messages.contact.intro'),
-        name: i18n.t('messages.contact.name'),
-        email: i18n.t('messages.contact.email'),
-        message: i18n.t('messages.contact.message'),
-        submit: i18n.t('messages.contact.submit'),
-        privacy: i18n.t('messages.contact.privacy'),
-      },
       meta: SeoService.build({
         title: i18n.t('messages.contact.title'),
         description: i18n.t('messages.contact.intro'),

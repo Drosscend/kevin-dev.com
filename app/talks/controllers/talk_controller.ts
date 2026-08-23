@@ -52,13 +52,6 @@ export default class TalkController {
         technologies: talk.technologies,
       }),
       hasOtherLocale: talk.hasOtherLocale,
-      labels: {
-        backToList: i18n.t('messages.talks.backToList'),
-        draft: i18n.t('messages.blog.draft'),
-        archived: i18n.t('messages.blog.archived'),
-        upcoming: i18n.t('messages.talks.upcoming'),
-        technologies: i18n.t('messages.talks.technologies'),
-      },
       meta: SeoService.build({
         title: talk.title,
         description: talk.summary || i18n.t('messages.talks.metaDescription'),

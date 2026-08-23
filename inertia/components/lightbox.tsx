@@ -11,11 +11,11 @@ import {
   type WheelEvent as ReactWheelEvent,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { type Data } from '@generated/data'
 import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
+import { type Messages } from '~/types'
 
-type Labels = Data.SharedProps['lightbox']
+type Labels = Messages['lightbox']
 
 type Slide = { src: string; alt: string; caption: string }
 
@@ -74,7 +74,7 @@ export default function Lightbox({
   className?: string
   children: ReactNode
 }) {
-  const { lightbox } = usePage().props
+  const { lightbox } = usePage().props.messages
   const container = useRef<HTMLDivElement>(null)
   const opener = useRef<HTMLImageElement | null>(null)
   const [gallery, setGallery] = useState<{ slides: Slide[]; start: number } | null>(null)
