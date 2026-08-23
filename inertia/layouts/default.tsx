@@ -23,7 +23,7 @@ const NAVIGATION = [
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { url, props } = usePage<{ hasOtherLocale?: boolean }>()
-  const { locale, messages } = props
+  const { locale, messages, year } = props
   const to = useLocalePath()
   const [menuOpen, setMenuOpen] = useState(false)
   const [renderedUrl, setRenderedUrl] = useState(url)
@@ -195,7 +195,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             </Link>
           </nav>
           <span>
-            © {new Date().getFullYear()} Kévin Véronési ·{' '}
+            © {year} Kévin Véronési ·{' '}
             <a
               href="https://github.com/Drosscend"
               rel="noopener noreferrer"

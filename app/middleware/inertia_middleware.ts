@@ -5,6 +5,7 @@ import { type Locale, toLocale } from '#types/i18n'
 import en from '../../resources/lang/en/messages.json' with { type: 'json' }
 import fr from '../../resources/lang/fr/messages.json' with { type: 'json' }
 import type { HttpContext } from '@adonisjs/core/http'
+import { DateTime } from 'luxon'
 import type { NextFn } from '@adonisjs/core/types/http'
 
 const MESSAGES = { fr, en } satisfies Record<Locale, typeof fr>
@@ -30,6 +31,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
       locale: ctx.inertia.always(locale),
+      year: ctx.inertia.always(DateTime.now().year),
       messages: ctx.inertia.once(() => MESSAGES[locale], { key: `messages.${locale}` }),
       /**
        * Unread contact messages, displayed as a badge in the admin
