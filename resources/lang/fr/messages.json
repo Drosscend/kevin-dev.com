@@ -42,7 +42,9 @@
     "readingTime": "{minutes} min de lecture",
     "draft": "Brouillon, visible uniquement connecté",
     "archived": "Retiré du site, visible uniquement connecté",
-    "toc": "Sommaire"
+    "toc": "Sommaire",
+    "copy": "Copier",
+    "download": "Télécharger"
   },
   "blog": {
     "title": "Blog",
@@ -120,6 +122,7 @@
   },
   "lightbox": {
     "open": "Agrandir l'image",
+    "openNamed": "Agrandir l'image : {alt}",
     "viewer": "Visionneuse d'images",
     "close": "Fermer",
     "previous": "Image précédente",

@@ -42,7 +42,9 @@
     "readingTime": "{minutes} min read",
     "draft": "Draft, only visible while signed in",
     "archived": "Withdrawn from the site, only visible while signed in",
-    "toc": "Contents"
+    "toc": "Contents",
+    "copy": "Copy",
+    "download": "Download"
   },
   "blog": {
     "title": "Blog",
@@ -120,6 +122,7 @@
   },
   "lightbox": {
     "open": "Enlarge the image",
+    "openNamed": "Enlarge the image: {alt}",
     "viewer": "Image viewer",
     "close": "Close",
     "previous": "Previous image",

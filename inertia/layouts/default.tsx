@@ -198,7 +198,7 @@ export default function Layout({ children }: { children: PageElement }) {
             </Link>
           </nav>
           <span>
-            © 2026 Kévin Véronési ·{' '}
+            © {new Date().getFullYear()} Kévin Véronési ·{' '}
             <a
               href="https://github.com/Drosscend"
               rel="noopener noreferrer"

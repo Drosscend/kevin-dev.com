@@ -1,4 +1,8 @@
+import { usePage } from '@inertiajs/react'
 import { useEffect, useRef } from 'react'
+import { type Messages } from '~/types'
+
+type Labels = Pick<Messages['content'], 'copy' | 'download'>
 
 const DOWNLOAD_EXTENSIONS = new Map([
   ['ts', 'ts'],
@@ -35,7 +39,7 @@ function toolbarButton(icon: string, title: string, onClick: () => void) {
   return button
 }
 
-function enhanceCodeBlock(pre: HTMLPreElement) {
+function enhanceCodeBlock(pre: HTMLPreElement, labels: Labels) {
   if (pre.dataset.enhanced === 'true') {
     return
   }
@@ -47,7 +51,7 @@ function enhanceCodeBlock(pre: HTMLPreElement) {
   const toolbar = document.createElement('div')
   toolbar.className = 'absolute top-2 right-2 flex gap-1'
 
-  const copyButton = toolbarButton(COPY_ICON, 'Copier', async () => {
+  const copyButton = toolbarButton(COPY_ICON, labels.copy, async () => {
     await navigator.clipboard.writeText(code())
     copyButton.innerHTML = CHECK_ICON
     setTimeout(() => {
@@ -57,7 +61,7 @@ function enhanceCodeBlock(pre: HTMLPreElement) {
   toolbar.appendChild(copyButton)
 
   toolbar.appendChild(
-    toolbarButton(DOWNLOAD_ICON, 'Télécharger', () => {
+    toolbarButton(DOWNLOAD_ICON, labels.download, () => {
       const extension = DOWNLOAD_EXTENSIONS.get(language) ?? 'txt'
       const blob = new Blob([code()], { type: 'text/plain;charset=utf-8' })
       const link = document.createElement('a')
@@ -96,6 +100,7 @@ function enhanceTable(table: HTMLTableElement) {
  */
 export default function ArticleContent({ html }: { html: string }) {
   const container = useRef<HTMLDivElement>(null)
+  const { copy, download } = usePage().props.messages.content
 
   useEffect(() => {
     const root = container.current
@@ -104,9 +109,9 @@ export default function ArticleContent({ html }: { html: string }) {
       return
     }
 
-    root.querySelectorAll<HTMLPreElement>('pre[data-language]').forEach(enhanceCodeBlock)
+    root.querySelectorAll<HTMLPreElement>('pre[data-language]').forEach((pre) => enhanceCodeBlock(pre, { copy, download }))
     root.querySelectorAll<HTMLTableElement>('table').forEach(enhanceTable)
-  }, [html])
+  }, [html, copy, download])
 
   return <div ref={container} className="typeset" dangerouslySetInnerHTML={{ __html: html }} />
 }
