@@ -170,7 +170,8 @@ dans `app/blog/controllers/` devient `controllers.blog.<Nom>`.
    forme des dates et des URL.
 3. Transformer dans `app/<capacité>/transformers/` pour la ressource affichée,
    consommé par la page via `Data.<Capacité>.<Nom>`.
-4. Route dans `app/<capacité>/routes.ts`, en double, racine et `/en`.
+4. Route dans `app/<capacité>/routes.ts`, en double, racine et `/en`, puis
+   `npm run codegen`.
 5. Traductions ajoutées dans les deux fichiers de `resources/lang/`.
 6. Page dans `inertia/pages/`, bâtie sur les composants partagés.
 7. URL ajoutée à `SitemapController` si elle doit être indexée.
@@ -182,7 +183,8 @@ dans `app/blog/controllers/` devient `controllers.blog.<Nom>`.
 2. Écriture déléguée au repository, qui possède la transaction.
 3. Controller `execute` avec son `static readonly validator`, qui mappe chaque
    variante d'erreur vers une réponse.
-4. Route dans le fichier de la capacité.
+4. Route dans le fichier de la capacité, puis `npm run codegen` pour le
+   registre typé des routes.
 5. Test fonctionnel dans la spec de l'écran.
 
 ### Ajouter un champ traduit

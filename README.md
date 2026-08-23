@@ -29,6 +29,7 @@ Les composants shadcn s'ajoutent avec `npx shadcn@latest add <composant>`
 | Commande                          | Effet                                              |
 | --------------------------------- | -------------------------------------------------- |
 | `npm run dev`                     | Serveur de dev avec HMR                            |
+| `npm run codegen`                 | Régénère `.adonisjs/` (index, registre des routes) |
 | `npm run build`                   | Build de production (dans `build/`)                |
 | `npm run lint` / `npm run format` | oxlint / oxfmt                                     |
 | `npm run typecheck`               | TypeScript serveur + front                         |

@@ -26,8 +26,10 @@ commentaire qui semble mort, le comparer à sa source : s'il en vient tel quel, 
 - **shadcn/ui** : `inertia/components/ui/*`, `inertia/css/typeset.css` et les tokens de
   `inertia/css/app.css`. Les variantes et sous-composants inutilisés restent diffables
   avec l'upstream.
-- **Généré** : `.adonisjs/` et `database/schema.ts`, réécrits à chaque `migration:run` ou
-  démarrage du serveur de dev. Ne rien y éditer à la main.
+- **Généré** : `.adonisjs/` et `database/schema.ts`, réécrits par `npm run codegen` et
+  `migration:run`. Ne rien y éditer à la main, mais les committer : le registre des routes
+  n'est rafraîchi ni par les tests ni par le build, et un registre périmé passe le typecheck
+  (`skipLibCheck`) en cachant de vraies erreurs.
 - **anti-slop** (`dmmulroy/anti-slop`) : `tools/oxlint/anti-slop/`, vendoré tel quel et
   donc exclu du lint comme du format. Une règle se remplace en la resynchronisant avec
   l'amont, pas en l'éditant sur place.
