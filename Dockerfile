@@ -11,7 +11,7 @@ RUN npm ci
 # Production dependencies only
 FROM base AS prod-deps
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --ignore-scripts
 
 # Application build (server + Vite assets + SSR bundle)
 FROM base AS build
