@@ -1,5 +1,5 @@
 import { Link, useRouter } from '@adonisjs/inertia/react'
-import { Trash2 } from 'lucide-react'
+import { Trash2Icon } from 'lucide-react'
 import ConfirmButton from '~/components/admin/confirm_button'
 import PreviewLink, { type PreviewKind } from '~/components/admin/preview_link'
 import StatusBadge from '~/components/admin/status_badge'
@@ -77,7 +77,7 @@ export function ContentListRow({
                 className="text-destructive"
                 aria-label={`Supprimer ${entry.title}`}
               >
-                <Trash2 className="size-4" />
+                <Trash2Icon className="size-4" />
               </Button>
             }
           />

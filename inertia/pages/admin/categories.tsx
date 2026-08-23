@@ -1,6 +1,6 @@
 import { useRouter } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
-import { Pencil, Trash2, X } from 'lucide-react'
+import { PencilIcon, Trash2Icon, XIcon } from 'lucide-react'
 import { type FormEvent, useState } from 'react'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
@@ -134,9 +134,9 @@ export default function Categories({ categories }: CategoriesProps) {
                     onClick={() => setEditingId(editingId === category.id ? null : category.id)}
                   >
                     {editingId === category.id ? (
-                      <X className="size-4" />
+                      <XIcon className="size-4" />
                     ) : (
-                      <Pencil className="size-4" />
+                      <PencilIcon className="size-4" />
                     )}
                   </Button>
                   <ConfirmButton
@@ -155,7 +155,7 @@ export default function Categories({ categories }: CategoriesProps) {
                         className="text-destructive"
                         aria-label={`Supprimer ${category.nameFr}`}
                       >
-                        <Trash2 className="size-4" />
+                        <Trash2Icon className="size-4" />
                       </Button>
                     }
                   />

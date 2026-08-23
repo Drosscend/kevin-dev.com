@@ -1,6 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
-import { X } from 'lucide-react'
+import { XIcon } from 'lucide-react'
 import { useState, useSyncExternalStore } from 'react'
 import { type Locale } from '#types/i18n'
 import { Button } from '~/components/ui/button'
@@ -56,7 +56,7 @@ export default function LanguageSuggestion({
           onClick={dismiss}
           aria-label={nav.otherLanguageDismiss}
         >
-          <X className="size-4" />
+          <XIcon className="size-4" />
         </Button>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { useRouter } from '@adonisjs/inertia/react'
-import { Mail, MailOpen, Trash2 } from 'lucide-react'
+import { MailIcon, MailOpenIcon, Trash2Icon } from 'lucide-react'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
@@ -63,7 +63,11 @@ export default function Messages({ messages }: MessagesProps) {
                     title={message.isRead ? 'Marquer non lu' : 'Marquer lu'}
                     onClick={() => toggleRead(message)}
                   >
-                    {message.isRead ? <Mail className="size-4" /> : <MailOpen className="size-4" />}
+                    {message.isRead ? (
+                      <MailIcon className="size-4" />
+                    ) : (
+                      <MailOpenIcon className="size-4" />
+                    )}
                   </Button>
                   <ConfirmButton
                     description={`Supprimer le message de ${message.name} ? Cette action est définitive.`}
@@ -81,7 +85,7 @@ export default function Messages({ messages }: MessagesProps) {
                         className="text-destructive"
                         aria-label={`Supprimer le message de ${message.name}`}
                       >
-                        <Trash2 className="size-4" />
+                        <Trash2Icon className="size-4" />
                       </Button>
                     }
                   />

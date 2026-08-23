@@ -5,7 +5,7 @@ import { Placeholder } from '@tiptap/extensions'
 import { Markdown } from '@tiptap/markdown'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { Code2, Pilcrow } from 'lucide-react'
+import { Code2Icon, PilcrowIcon } from 'lucide-react'
 import { type ClipboardEvent, type DragEvent, useEffect, useRef, useState } from 'react'
 import MarkdownSource from '~/components/admin/markdown_source'
 import MarkdownToolbar from '~/components/admin/markdown_toolbar'
@@ -217,7 +217,7 @@ export default function MarkdownEditor({
             aria-label="Édition enrichie"
             title="Édition enrichie"
           >
-            <Pilcrow />
+            <PilcrowIcon />
             Texte
           </ToggleGroupItem>
           <ToggleGroupItem
@@ -226,7 +226,7 @@ export default function MarkdownEditor({
             aria-label="Source markdown"
             title="Source markdown"
           >
-            <Code2 />
+            <Code2Icon />
             Markdown
           </ToggleGroupItem>
         </ToggleGroup>

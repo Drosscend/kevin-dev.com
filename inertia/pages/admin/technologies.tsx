@@ -1,6 +1,6 @@
 import { useRouter } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
-import { BookOpen, Pencil, Trash2, X } from 'lucide-react'
+import { BookOpenIcon, PencilIcon, Trash2Icon, XIcon } from 'lucide-react'
 import { type FormEvent, useState } from 'react'
 import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
 import AdminPage from '~/components/admin/admin_page'
@@ -243,7 +243,7 @@ export default function Technologies({ technologies, mediaOptions }: Technologie
                         rel="noreferrer"
                         className="text-muted-foreground hover:text-primary mt-0.5 inline-flex items-center gap-1 text-xs"
                       >
-                        <BookOpen className="size-3" />
+                        <BookOpenIcon className="size-3" />
                         {item.docsUrl.replace(/^https?:\/\/(www\.)?/, '')}
                       </a>
                     )}
@@ -260,9 +260,9 @@ export default function Technologies({ technologies, mediaOptions }: Technologie
                     onClick={() => setEditingId(editingId === item.id ? null : item.id)}
                   >
                     {editingId === item.id ? (
-                      <X className="size-4" />
+                      <XIcon className="size-4" />
                     ) : (
-                      <Pencil className="size-4" />
+                      <PencilIcon className="size-4" />
                     )}
                   </Button>
                   <ConfirmButton
@@ -281,7 +281,7 @@ export default function Technologies({ technologies, mediaOptions }: Technologie
                         className="text-destructive"
                         aria-label={`Supprimer ${item.name}`}
                       >
-                        <Trash2 className="size-4" />
+                        <Trash2Icon className="size-4" />
                       </Button>
                     }
                   />

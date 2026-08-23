@@ -1,4 +1,4 @@
-import { Eye } from 'lucide-react'
+import { EyeIcon } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 
 const PUBLIC_BASE = {
@@ -31,7 +31,7 @@ export default function PreviewLink({ kind, slug, title, showLabel = false }: Pr
         aria-label={`Aperçu de ${title}`}
         title="Aperçu sur l’URL publique"
       >
-        <Eye className="size-4" />
+        <EyeIcon className="size-4" />
         {showLabel && 'Aperçu'}
       </a>
     </Button>

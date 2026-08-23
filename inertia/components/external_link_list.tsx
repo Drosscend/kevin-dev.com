@@ -1,15 +1,15 @@
 import {
-  BookOpen,
-  CalendarDays,
-  CodeXml,
-  ExternalLink,
-  FileText,
-  GitBranch,
-  MonitorPlay,
-  Package,
-  Presentation,
-  Store,
-  Video,
+  BookOpenIcon,
+  CalendarDaysIcon,
+  CodeXmlIcon,
+  ExternalLinkIcon,
+  FileTextIcon,
+  GitBranchIcon,
+  MonitorPlayIcon,
+  PackageIcon,
+  PresentationIcon,
+  StoreIcon,
+  VideoIcon,
   type LucideIcon,
 } from 'lucide-react'
 import { cn } from '~/lib/utils'
@@ -18,16 +18,16 @@ export type ExternalLinkRef = { label: string; url: string; type: string }
 
 /** Icon per link type, covering project, talk and technology link types. */
 const ICONS = new Map<string, LucideIcon>([
-  ['docs', BookOpen],
-  ['github', GitBranch],
-  ['demo', MonitorPlay],
-  ['release', Package],
-  ['store', Store],
-  ['paper', FileText],
-  ['slides', Presentation],
-  ['video', Video],
-  ['event', CalendarDays],
-  ['code', CodeXml],
+  ['docs', BookOpenIcon],
+  ['github', GitBranchIcon],
+  ['demo', MonitorPlayIcon],
+  ['release', PackageIcon],
+  ['store', StoreIcon],
+  ['paper', FileTextIcon],
+  ['slides', PresentationIcon],
+  ['video', VideoIcon],
+  ['event', CalendarDaysIcon],
+  ['code', CodeXmlIcon],
 ])
 
 const VARIANTS = {
@@ -56,7 +56,7 @@ export default function ExternalLinkList({
   return (
     <p className={cn('flex flex-wrap items-center gap-x-5 gap-y-2 text-sm', className)}>
       {links.map((link) => {
-        const Icon = ICONS.get(link.type) ?? ExternalLink
+        const Icon = ICONS.get(link.type) ?? ExternalLinkIcon
 
         return (
           <a

@@ -1,5 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
-import { Plus, Star } from 'lucide-react'
+import { PlusIcon, StarIcon } from 'lucide-react'
 import AdminPage from '~/components/admin/admin_page'
 import { ContentList, ContentListRow } from '~/components/admin/content_list'
 import EmptyState from '~/components/admin/empty_state'
@@ -19,7 +19,7 @@ export default function ProjectsIndex({ projects }: ProjectsIndexProps) {
       action={
         <Button asChild>
           <Link route="admin.projects.create">
-            <Plus className="size-4" />
+            <PlusIcon className="size-4" />
             Nouveau projet
           </Link>
         </Button>
@@ -34,7 +34,7 @@ export default function ProjectsIndex({ projects }: ProjectsIndexProps) {
               key={project.id}
               kind="projects"
               entry={project}
-              leading={project.featured && <Star className="size-3.5 text-amber-500" />}
+              leading={project.featured && <StarIcon className="size-3.5 text-amber-500" />}
               meta={
                 <>
                   {project.slug}

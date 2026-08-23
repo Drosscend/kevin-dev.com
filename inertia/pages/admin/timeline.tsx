@@ -1,6 +1,6 @@
 import { useRouter } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
-import { ArrowDown, ArrowUp, Pencil, Trash2, X } from 'lucide-react'
+import { ArrowDownIcon, ArrowUpIcon, PencilIcon, Trash2Icon, XIcon } from 'lucide-react'
 import { type FormEvent, useState } from 'react'
 import { TIMELINE_HONOURS, type TimelineHonours } from '#types/content'
 import AdminPage from '~/components/admin/admin_page'
@@ -201,7 +201,7 @@ export default function Timeline({ timeline }: TimelineProps) {
                       aria-label={`Monter ${item.titleFr}`}
                       onClick={() => move(item, 'up')}
                     >
-                      <ArrowUp className="size-4" />
+                      <ArrowUpIcon className="size-4" />
                     </Button>
                     <Button
                       type="button"
@@ -211,7 +211,7 @@ export default function Timeline({ timeline }: TimelineProps) {
                       aria-label={`Descendre ${item.titleFr}`}
                       onClick={() => move(item, 'down')}
                     >
-                      <ArrowDown className="size-4" />
+                      <ArrowDownIcon className="size-4" />
                     </Button>
                     <Button
                       type="button"
@@ -225,9 +225,9 @@ export default function Timeline({ timeline }: TimelineProps) {
                       onClick={() => setEditingId(editingId === item.id ? null : item.id)}
                     >
                       {editingId === item.id ? (
-                        <X className="size-4" />
+                        <XIcon className="size-4" />
                       ) : (
-                        <Pencil className="size-4" />
+                        <PencilIcon className="size-4" />
                       )}
                     </Button>
                     <ConfirmButton
@@ -246,7 +246,7 @@ export default function Timeline({ timeline }: TimelineProps) {
                           className="text-destructive"
                           aria-label={`Supprimer ${item.titleFr}`}
                         >
-                          <Trash2 className="size-4" />
+                          <Trash2Icon className="size-4" />
                         </Button>
                       }
                     />

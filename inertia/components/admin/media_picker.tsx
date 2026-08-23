@@ -1,4 +1,4 @@
-import { Check, ImageIcon, Search } from 'lucide-react'
+import { CheckIcon, ImageIcon, SearchIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '~/components/ui/button'
 import {
@@ -127,7 +127,7 @@ export function MediaPicker({ media, value, onChange, id }: MediaPickerProps) {
           </DialogHeader>
 
           <div className="relative">
-            <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+            <SearchIcon className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               autoFocus
               value={search}
@@ -159,7 +159,7 @@ export function MediaPicker({ media, value, onChange, id }: MediaPickerProps) {
                       <Thumbnail item={item} fit="contain" className="aspect-video w-full" />
                       {isActive && (
                         <span className="bg-primary text-primary-foreground absolute top-1.5 right-1.5 flex size-5 items-center justify-center rounded-full">
-                          <Check className="size-3.5" />
+                          <CheckIcon className="size-3.5" />
                         </span>
                       )}
                       <span className="block truncate px-2 py-1.5 text-xs" title={item.alt}>

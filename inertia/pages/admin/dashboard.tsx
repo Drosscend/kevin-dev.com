@@ -1,5 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
-import { ExternalLink, Plus } from 'lucide-react'
+import { ExternalLinkIcon, PlusIcon } from 'lucide-react'
 import AdminPage from '~/components/admin/admin_page'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
@@ -53,19 +53,19 @@ export default function Dashboard({ totpEnabled, umami, stats }: DashboardProps)
         <div className="flex flex-wrap gap-2">
           <Button asChild size="sm">
             <Link route="admin.articles.create">
-              <Plus className="size-4" />
+              <PlusIcon className="size-4" />
               Nouvel article
             </Link>
           </Button>
           <Button asChild size="sm" variant="outline">
             <Link route="admin.projects.create">
-              <Plus className="size-4" />
+              <PlusIcon className="size-4" />
               Nouveau projet
             </Link>
           </Button>
           <Button asChild size="sm" variant="outline">
             <a href="/" target="_blank" rel="noreferrer">
-              <ExternalLink className="size-4" />
+              <ExternalLinkIcon className="size-4" />
               Voir le site
             </a>
           </Button>

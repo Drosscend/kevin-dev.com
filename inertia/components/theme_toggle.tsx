@@ -1,5 +1,5 @@
 import { usePage } from '@inertiajs/react'
-import { Moon, Sun } from 'lucide-react'
+import { MoonIcon, SunIcon } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 
 /**
@@ -25,8 +25,8 @@ export default function ThemeToggle() {
       title={label}
       aria-label={label}
     >
-      <Sun className="size-4 dark:hidden" />
-      <Moon className="hidden size-4 dark:block" />
+      <SunIcon className="size-4 dark:hidden" />
+      <MoonIcon className="hidden size-4 dark:block" />
     </Button>
   )
 }

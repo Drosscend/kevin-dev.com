@@ -1,5 +1,12 @@
 import { usePage } from '@inertiajs/react'
-import { ChevronLeft, ChevronRight, Minus, Plus, Scan, X } from 'lucide-react'
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MinusIcon,
+  PlusIcon,
+  ScanIcon,
+  XIcon,
+} from 'lucide-react'
 import {
   useEffect,
   useRef,
@@ -448,7 +455,7 @@ function Viewer({
             disabled={view.scale <= 1}
             onClick={() => zoomTo(applied.current.scale / ZOOM_STEP)}
           >
-            <Minus />
+            <MinusIcon />
           </ViewerButton>
           <span className="w-14 text-center font-mono text-xs tabular-nums text-white/50">
             {Math.round(view.scale * 100)} %
@@ -458,13 +465,13 @@ function Viewer({
             disabled={view.scale >= MAX_SCALE}
             onClick={() => zoomTo(applied.current.scale * ZOOM_STEP)}
           >
-            <Plus />
+            <PlusIcon />
           </ViewerButton>
           <ViewerButton label={labels.reset} disabled={view.scale === 1} onClick={() => apply(FIT)}>
-            <Scan />
+            <ScanIcon />
           </ViewerButton>
           <ViewerButton label={labels.close} onClick={onClose}>
-            <X />
+            <XIcon />
           </ViewerButton>
         </div>
       </div>
@@ -501,14 +508,14 @@ function Viewer({
               onClick={() => go(-1)}
               className="absolute top-1/2 left-2 size-11 -translate-y-1/2 sm:left-4"
             >
-              <ChevronLeft className="size-6" />
+              <ChevronLeftIcon className="size-6" />
             </ViewerButton>
             <ViewerButton
               label={labels.next}
               onClick={() => go(1)}
               className="absolute top-1/2 right-2 size-11 -translate-y-1/2 sm:right-4"
             >
-              <ChevronRight className="size-6" />
+              <ChevronRightIcon className="size-6" />
             </ViewerButton>
           </>
         )}

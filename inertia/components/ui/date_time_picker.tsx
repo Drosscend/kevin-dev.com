@@ -1,4 +1,4 @@
-import { CalendarIcon, Clock } from 'lucide-react'
+import { CalendarIcon, ClockIcon } from 'lucide-react'
 import * as React from 'react'
 import { Button } from '~/components/ui/button'
 import { Calendar } from '~/components/ui/calendar'
@@ -91,7 +91,7 @@ export function DateTimePicker({ id, value, onChange }: DateTimePickerProps) {
           onSelect={selectDay}
         />
         <div className="flex items-center gap-2 border-t p-3">
-          <Clock className="text-muted-foreground size-4 shrink-0" />
+          <ClockIcon className="text-muted-foreground size-4 shrink-0" />
           <Select
             aria-label="Heures"
             className="h-8 w-auto pr-7 pl-2"

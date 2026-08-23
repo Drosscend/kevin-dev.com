@@ -1,6 +1,6 @@
 import { Link } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
-import { Menu, X } from 'lucide-react'
+import { MenuIcon, XIcon } from 'lucide-react'
 import { type ReactElement, useEffect, useState } from 'react'
 import { Toaster } from 'sonner'
 import { localePath } from '#types/i18n'
@@ -138,7 +138,7 @@ export default function Layout({ children }: { children: PageElement }) {
               aria-label={menuOpen ? messages.nav.closeMenu : messages.nav.openMenu}
               onClick={() => setMenuOpen((open) => !open)}
             >
-              {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+              {menuOpen ? <XIcon className="size-5" /> : <MenuIcon className="size-5" />}
             </Button>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
-import { Plus } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 import AdminPage from '~/components/admin/admin_page'
 import { ContentList, ContentListRow } from '~/components/admin/content_list'
 import EmptyState from '~/components/admin/empty_state'
@@ -19,7 +19,7 @@ export default function TalksIndex({ talks }: TalksIndexProps) {
       action={
         <Button asChild>
           <Link route="admin.talks.create">
-            <Plus className="size-4" />
+            <PlusIcon className="size-4" />
             Nouvelle intervention
           </Link>
         </Button>

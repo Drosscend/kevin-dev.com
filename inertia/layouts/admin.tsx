@@ -2,22 +2,22 @@ import { Form, Link } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
 import {
   type LucideIcon,
-  LayoutDashboard,
-  Home,
-  Image,
-  Menu,
-  Milestone,
-  Scale,
-  ShieldCheck,
-  LogOut,
-  Newspaper,
-  FolderOpen,
-  FolderGit2,
-  Mic,
-  Cpu,
-  FileText,
-  Inbox,
-  X,
+  LayoutDashboardIcon,
+  HomeIcon,
+  ImageIcon,
+  MenuIcon,
+  MilestoneIcon,
+  ScaleIcon,
+  ShieldCheckIcon,
+  LogOutIcon,
+  NewspaperIcon,
+  FolderOpenIcon,
+  FolderGit2Icon,
+  MicIcon,
+  CpuIcon,
+  FileTextIcon,
+  InboxIcon,
+  XIcon,
 } from 'lucide-react'
 import { type ReactElement, type ReactNode, useState } from 'react'
 import { Toaster } from 'sonner'
@@ -33,7 +33,11 @@ import { cn } from '~/lib/utils'
  * matched exactly: its path is the "/admin" prefix every other one
  * starts with.
  */
-const DASHBOARD = { route: 'admin.dashboard', label: 'Dashboard', icon: LayoutDashboard } as const
+const DASHBOARD = {
+  route: 'admin.dashboard',
+  label: 'Dashboard',
+  icon: LayoutDashboardIcon,
+} as const
 
 /**
  * The rest of the sidebar, grouped by what an entry edits: the items
@@ -45,28 +49,28 @@ const NAVIGATION = [
   {
     label: 'Contenu',
     items: [
-      { route: 'admin.articles.index', label: 'Articles', icon: Newspaper },
-      { route: 'admin.categories.index', label: 'Catégories', icon: FolderOpen },
-      { route: 'admin.projects.index', label: 'Projets', icon: FolderGit2 },
-      { route: 'admin.talks.index', label: 'Interventions', icon: Mic },
-      { route: 'admin.technologies.index', label: 'Technologies', icon: Cpu },
-      { route: 'admin.media.index', label: 'Médias', icon: Image },
+      { route: 'admin.articles.index', label: 'Articles', icon: NewspaperIcon },
+      { route: 'admin.categories.index', label: 'Catégories', icon: FolderOpenIcon },
+      { route: 'admin.projects.index', label: 'Projets', icon: FolderGit2Icon },
+      { route: 'admin.talks.index', label: 'Interventions', icon: MicIcon },
+      { route: 'admin.technologies.index', label: 'Technologies', icon: CpuIcon },
+      { route: 'admin.media.index', label: 'Médias', icon: ImageIcon },
     ],
   },
   {
     label: 'Pages du site',
     items: [
-      { route: 'admin.home.index', label: 'Accueil', icon: Home },
-      { route: 'admin.timeline.index', label: 'Parcours', icon: Milestone },
-      { route: 'admin.cv.index', label: 'CV', icon: FileText },
-      { route: 'admin.legal.index', label: 'Mentions légales', icon: Scale },
+      { route: 'admin.home.index', label: 'Accueil', icon: HomeIcon },
+      { route: 'admin.timeline.index', label: 'Parcours', icon: MilestoneIcon },
+      { route: 'admin.cv.index', label: 'CV', icon: FileTextIcon },
+      { route: 'admin.legal.index', label: 'Mentions légales', icon: ScaleIcon },
     ],
   },
   {
     label: 'Administration',
     items: [
-      { route: 'admin.messages.index', label: 'Messages', icon: Inbox },
-      { route: 'admin.security', label: 'Sécurité', icon: ShieldCheck },
+      { route: 'admin.messages.index', label: 'Messages', icon: InboxIcon },
+      { route: 'admin.security', label: 'Sécurité', icon: ShieldCheckIcon },
     ],
   },
 ] as const
@@ -141,7 +145,7 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
           aria-label="Fermer le menu"
           onClick={closeMobile}
         >
-          <X className="size-4" />
+          <XIcon className="size-4" />
         </Button>
       </div>
 
@@ -178,7 +182,7 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
         </div>
         <Form route="admin.logout">
           <Button type="submit" variant="ghost" size="sm" className="w-full justify-start gap-2">
-            <LogOut className="size-4" />
+            <LogOutIcon className="size-4" />
             Déconnexion
           </Button>
         </Form>
@@ -199,7 +203,7 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
           aria-label="Ouvrir le menu"
           onClick={() => setMobileOpen(true)}
         >
-          <Menu className="size-4" />
+          <MenuIcon className="size-4" />
           {unread > 0 && <UnreadBadge count={unread} />}
         </Button>
       </header>

@@ -1,23 +1,23 @@
 import { type Editor, useEditorState } from '@tiptap/react'
 import {
-  Bold,
-  Code,
-  CodeSquare,
-  Heading1,
-  Heading2,
-  Heading3,
-  ImagePlus,
-  Italic,
-  Link2,
-  List,
-  ListOrdered,
-  ListTodo,
-  Minus,
-  Quote,
-  Redo2,
-  Strikethrough,
-  Table,
-  Undo2,
+  BoldIcon,
+  CodeIcon,
+  CodeSquareIcon,
+  Heading1Icon,
+  Heading2Icon,
+  Heading3Icon,
+  ImagePlusIcon,
+  ItalicIcon,
+  Link2Icon,
+  ListIcon,
+  ListOrderedIcon,
+  ListTodoIcon,
+  MinusIcon,
+  QuoteIcon,
+  Redo2Icon,
+  StrikethroughIcon,
+  TableIcon,
+  Undo2Icon,
 } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { Separator } from '~/components/ui/separator'
@@ -59,28 +59,28 @@ const TOGGLE_GROUPS: ToggleItem[][] = [
       state: 'bold',
       label: 'Gras',
       shortcut: 'Ctrl+B',
-      icon: Bold,
+      icon: BoldIcon,
       run: (editor) => editor.chain().focus().toggleBold().run(),
     },
     {
       state: 'italic',
       label: 'Italique',
       shortcut: 'Ctrl+I',
-      icon: Italic,
+      icon: ItalicIcon,
       run: (editor) => editor.chain().focus().toggleItalic().run(),
     },
     {
       state: 'strike',
       label: 'Barré',
       shortcut: 'Ctrl+Maj+S',
-      icon: Strikethrough,
+      icon: StrikethroughIcon,
       run: (editor) => editor.chain().focus().toggleStrike().run(),
     },
     {
       state: 'code',
       label: 'Code en ligne',
       shortcut: 'Ctrl+E',
-      icon: Code,
+      icon: CodeIcon,
       run: (editor) => editor.chain().focus().toggleCode().run(),
     },
   ],
@@ -89,21 +89,21 @@ const TOGGLE_GROUPS: ToggleItem[][] = [
       state: 'h1',
       label: 'Titre 1',
       shortcut: 'Ctrl+Alt+1',
-      icon: Heading1,
+      icon: Heading1Icon,
       run: (editor) => editor.chain().focus().toggleHeading({ level: 1 }).run(),
     },
     {
       state: 'h2',
       label: 'Titre 2',
       shortcut: 'Ctrl+Alt+2',
-      icon: Heading2,
+      icon: Heading2Icon,
       run: (editor) => editor.chain().focus().toggleHeading({ level: 2 }).run(),
     },
     {
       state: 'h3',
       label: 'Titre 3',
       shortcut: 'Ctrl+Alt+3',
-      icon: Heading3,
+      icon: Heading3Icon,
       run: (editor) => editor.chain().focus().toggleHeading({ level: 3 }).run(),
     },
   ],
@@ -112,21 +112,21 @@ const TOGGLE_GROUPS: ToggleItem[][] = [
       state: 'bulletList',
       label: 'Liste à puces',
       shortcut: 'Ctrl+Maj+8',
-      icon: List,
+      icon: ListIcon,
       run: (editor) => editor.chain().focus().toggleBulletList().run(),
     },
     {
       state: 'orderedList',
       label: 'Liste numérotée',
       shortcut: 'Ctrl+Maj+7',
-      icon: ListOrdered,
+      icon: ListOrderedIcon,
       run: (editor) => editor.chain().focus().toggleOrderedList().run(),
     },
     {
       state: 'taskList',
       label: 'Liste de tâches',
       shortcut: 'Ctrl+Maj+9',
-      icon: ListTodo,
+      icon: ListTodoIcon,
       run: (editor) => editor.chain().focus().toggleTaskList().run(),
     },
   ],
@@ -135,14 +135,14 @@ const TOGGLE_GROUPS: ToggleItem[][] = [
       state: 'blockquote',
       label: 'Citation',
       shortcut: 'Ctrl+Maj+B',
-      icon: Quote,
+      icon: QuoteIcon,
       run: (editor) => editor.chain().focus().toggleBlockquote().run(),
     },
     {
       state: 'codeBlock',
       label: 'Bloc de code',
       shortcut: 'Ctrl+Alt+C',
-      icon: CodeSquare,
+      icon: CodeSquareIcon,
       run: (editor) => editor.chain().focus().toggleCodeBlock().run(),
     },
   ],
@@ -207,7 +207,7 @@ export default function MarkdownToolbar({
         pressed={state.link}
         onPressedChange={onLink}
       >
-        <Link2 />
+        <Link2Icon />
       </Toggle>
       <Button
         type="button"
@@ -217,7 +217,7 @@ export default function MarkdownToolbar({
         title="Insérer une image"
         onClick={onImage}
       >
-        <ImagePlus />
+        <ImagePlusIcon />
       </Button>
       <Button
         type="button"
@@ -229,7 +229,7 @@ export default function MarkdownToolbar({
           editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
         }
       >
-        <Table />
+        <TableIcon />
       </Button>
       <Button
         type="button"
@@ -239,7 +239,7 @@ export default function MarkdownToolbar({
         title="Séparateur horizontal"
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
       >
-        <Minus />
+        <MinusIcon />
       </Button>
 
       <Separator orientation="vertical" className="mx-1 h-5" />
@@ -253,7 +253,7 @@ export default function MarkdownToolbar({
         disabled={!state.canUndo}
         onClick={() => editor.chain().focus().undo().run()}
       >
-        <Undo2 />
+        <Undo2Icon />
       </Button>
       <Button
         type="button"
@@ -264,7 +264,7 @@ export default function MarkdownToolbar({
         disabled={!state.canRedo}
         onClick={() => editor.chain().focus().redo().run()}
       >
-        <Redo2 />
+        <Redo2Icon />
       </Button>
     </div>
   )

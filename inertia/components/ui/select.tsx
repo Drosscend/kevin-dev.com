@@ -1,4 +1,4 @@
-import { ChevronDown } from 'lucide-react'
+import { ChevronDownIcon } from 'lucide-react'
 import * as React from 'react'
 import { cn } from '~/lib/utils'
 
@@ -24,7 +24,7 @@ function Select({ className, ...props }: React.ComponentProps<'select'>) {
         )}
         {...props}
       />
-      <ChevronDown
+      <ChevronDownIcon
         aria-hidden
         className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2"
       />

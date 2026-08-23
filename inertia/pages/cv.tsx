@@ -1,4 +1,4 @@
-import { Download } from 'lucide-react'
+import { DownloadIcon } from 'lucide-react'
 import ArticleContent from '~/components/article_content'
 import { EmptyState } from '~/components/empty_state'
 import Lightbox from '~/components/lightbox'
@@ -23,7 +23,7 @@ export default function Cv({ contentHtml, pdfAvailable, messages, meta }: CvProp
           {pdfAvailable && (
             <Button asChild size="lg" className="w-full sm:w-auto">
               <a href="/cv.pdf" download>
-                <Download aria-hidden className="size-4" />
+                <DownloadIcon aria-hidden className="size-4" />
                 {messages.cv.download}
               </a>
             </Button>

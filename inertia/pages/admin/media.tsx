@@ -1,5 +1,5 @@
 import { Form, useRouter } from '@adonisjs/inertia/react'
-import { Copy, FileText, Trash2 } from 'lucide-react'
+import { CopyIcon, FileTextIcon, Trash2Icon } from 'lucide-react'
 import { toast } from 'sonner'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
@@ -93,7 +93,7 @@ export default function MediaPage({ media }: MediaPageProps) {
                   />
                 ) : (
                   <span className="bg-muted text-muted-foreground flex aspect-video w-full items-center justify-center">
-                    <FileText className="size-10" />
+                    <FileTextIcon className="size-10" />
                   </span>
                 )}
               </a>
@@ -113,7 +113,7 @@ export default function MediaPage({ media }: MediaPageProps) {
                       className="gap-1 px-2"
                       onClick={() => copyUrl(item)}
                     >
-                      <Copy className="size-4" />
+                      <CopyIcon className="size-4" />
                       Copier le lien
                     </Button>
                   )}
@@ -129,7 +129,7 @@ export default function MediaPage({ media }: MediaPageProps) {
                         size="sm"
                         className="text-destructive gap-1 px-2"
                       >
-                        <Trash2 className="size-4" />
+                        <Trash2Icon className="size-4" />
                         Supprimer
                       </Button>
                     }

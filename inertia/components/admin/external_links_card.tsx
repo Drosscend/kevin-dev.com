@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react'
+import { Trash2Icon } from 'lucide-react'
 import FieldError, { type FieldErrors } from '~/components/field_error'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
@@ -77,7 +77,7 @@ export default function ExternalLinksCard({
               aria-label={`Retirer le lien ${index + 1}`}
               onClick={() => onChange(links.filter((_, i) => i !== index))}
             >
-              <Trash2 className="size-4" />
+              <Trash2Icon className="size-4" />
             </Button>
           </div>
         ))}

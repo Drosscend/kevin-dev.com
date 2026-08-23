@@ -1,5 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
-import { Download } from 'lucide-react'
+import { DownloadIcon } from 'lucide-react'
 import { localePath } from '#types/i18n'
 import { ChipLink, ChipList } from '~/components/chip'
 import { LinkArrow, LinkList, LinkRow } from '~/components/content_link'
@@ -91,12 +91,12 @@ export default function Home({
             <Button asChild size="lg">
               {cvPdfAvailable ? (
                 <a href="/cv.pdf">
-                  <Download className="size-4" />
+                  <DownloadIcon className="size-4" />
                   {messages.home.downloadCv}
                 </a>
               ) : (
                 <Link href={to('/cv')}>
-                  <Download className="size-4" />
+                  <DownloadIcon className="size-4" />
                   {messages.home.downloadCv}
                 </Link>
               )}
