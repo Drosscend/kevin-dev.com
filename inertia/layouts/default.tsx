@@ -1,15 +1,13 @@
 import { Link } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
 import { MenuIcon, XIcon } from 'lucide-react'
-import { type ReactElement, useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import { Toaster } from 'sonner'
-import { localePath } from '#types/i18n'
-import { type Data } from '@generated/data'
 import { HoverPreviewProvider } from '~/components/hover_preview'
 import LanguageSuggestion from '~/components/language_suggestion'
 import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
-import { otherLocaleUrl } from '~/lib/locale'
+import { otherLocaleUrl, useLocalePath } from '~/lib/locale'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
 import { cn } from '~/lib/utils'
 
@@ -23,11 +21,10 @@ const NAVIGATION = [
   { path: '/contact', label: 'contact' },
 ] as const
 
-type PageElement = ReactElement<Data.SharedProps & { hasOtherLocale?: boolean }>
-
-export default function Layout({ children }: { children: PageElement }) {
-  const { locale, messages } = children.props
-  const { url } = usePage()
+export default function Layout({ children }: { children: ReactNode }) {
+  const { url, props } = usePage<{ hasOtherLocale?: boolean }>()
+  const { locale, messages } = props
+  const to = useLocalePath()
   const [menuOpen, setMenuOpen] = useState(false)
   const [renderedUrl, setRenderedUrl] = useState(url)
   const currentPath = url.split('?')[0]
@@ -35,7 +32,7 @@ export default function Layout({ children }: { children: PageElement }) {
    * Detail pages report whether the entry exists in the other locale;
    * listings always do, so the switch shows unless told otherwise.
    */
-  const translated = children.props.hasOtherLocale ?? true
+  const translated = props.hasOtherLocale ?? true
 
   useFlashToasts()
 
@@ -78,7 +75,7 @@ export default function Layout({ children }: { children: PageElement }) {
   }, [menuOpen])
 
   function isActive(path: string) {
-    const href = localePath(locale, path)
+    const href = to(path)
     return currentPath === href || currentPath.startsWith(`${href}/`)
   }
 
@@ -94,7 +91,7 @@ export default function Layout({ children }: { children: PageElement }) {
       <header className="bg-background/85 sticky top-0 z-40 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <Link
-            href={localePath(locale, '/')}
+            href={to('/')}
             className="font-display font-semibold tracking-tight"
           >
             Kévin Véronési
@@ -105,7 +102,7 @@ export default function Layout({ children }: { children: PageElement }) {
               {NAVIGATION.map((item) => (
                 <Link
                   key={item.path}
-                  href={localePath(locale, item.path)}
+                  href={to(item.path)}
                   aria-current={isActive(item.path) ? 'page' : undefined}
                   className={cn(
                     'hover:text-primary text-sm transition-colors',
@@ -160,7 +157,7 @@ export default function Layout({ children }: { children: PageElement }) {
           {NAVIGATION.map((item) => (
             <Link
               key={item.path}
-              href={localePath(locale, item.path)}
+              href={to(item.path)}
               aria-current={isActive(item.path) ? 'page' : undefined}
               className={cn(
                 'block rounded-md px-3 py-3 text-base transition-colors',
@@ -184,14 +181,14 @@ export default function Layout({ children }: { children: PageElement }) {
             {NAVIGATION.map((item) => (
               <Link
                 key={item.path}
-                href={localePath(locale, item.path)}
+                href={to(item.path)}
                 className="hover:text-primary transition-colors"
               >
                 {messages.nav[item.label]}
               </Link>
             ))}
             <Link
-              href={localePath(locale, '/legal')}
+              href={to('/legal')}
               className="hover:text-primary transition-colors"
             >
               {messages.nav.legal}

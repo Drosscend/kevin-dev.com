@@ -1,10 +1,10 @@
-import { localePath } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import { TechnologyNames } from '~/components/technology_list'
+import { useLocalePath } from '~/lib/locale'
 import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
@@ -13,8 +13,8 @@ type PortfolioIndexProps = InertiaProps<{
   meta: SeoMeta
 }>
 
-export default function PortfolioIndex({ locale, projects, messages, meta }: PortfolioIndexProps) {
-  const to = (path: string) => localePath(locale, path)
+export default function PortfolioIndex({ projects, messages, meta }: PortfolioIndexProps) {
+  const to = useLocalePath()
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">

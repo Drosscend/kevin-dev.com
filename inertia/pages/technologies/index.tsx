@@ -1,10 +1,10 @@
 import { TECHNOLOGY_CATEGORIES } from '#types/content'
-import { localePath } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import ExternalLinkList from '~/components/external_link_list'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { useLocalePath } from '~/lib/locale'
 import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
@@ -14,12 +14,11 @@ type TechnologiesIndexProps = InertiaProps<{
 }>
 
 export default function TechnologiesIndex({
-  locale,
   technologies,
   messages,
   meta,
 }: TechnologiesIndexProps) {
-  const to = (path: string) => localePath(locale, path)
+  const to = useLocalePath()
   const grouped = TECHNOLOGY_CATEGORIES.map((category) => ({
     category,
     items: technologies.filter((technology) => technology.category === category),

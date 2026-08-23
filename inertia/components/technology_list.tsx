@@ -1,5 +1,5 @@
-import { localePath, type Locale } from '#types/i18n'
 import { ChipLink, ChipList } from '~/components/chip'
+import { useLocalePath } from '~/lib/locale'
 import { cn } from '~/lib/utils'
 
 export type TechnologyRef = { slug: string; name: string }
@@ -26,16 +26,16 @@ export function TechnologyNames({ technologies }: { technologies: TechnologyRef[
  * page. Renders nothing when the entry carries no technology.
  */
 export function TechnologySection({
-  locale,
   title,
   technologies,
   className,
 }: {
-  locale: Locale
   title: string
   technologies: TechnologyRef[]
   className?: string
 }) {
+  const to = useLocalePath()
+
   if (technologies.length === 0) {
     return null
   }
@@ -47,7 +47,7 @@ export function TechnologySection({
         {technologies.map((technology) => (
           <ChipLink
             key={technology.slug}
-            href={localePath(locale, `/technologies/${technology.slug}`)}
+            href={to(`/technologies/${technology.slug}`)}
           >
             {technology.name}
           </ChipLink>

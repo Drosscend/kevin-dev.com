@@ -1,12 +1,12 @@
 import { Link } from '@adonisjs/inertia/react'
 import { router } from '@inertiajs/react'
-import { localePath } from '#types/i18n'
 import { ChipButton, ChipList } from '~/components/chip'
 import { LinkArrow, ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { TechnologyNames } from '~/components/technology_list'
+import { useLocalePath } from '~/lib/locale'
 import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
@@ -38,7 +38,6 @@ function pageUrl(base: string, filters: { category: string | null }, page: numbe
 }
 
 export default function BlogIndex({
-  locale,
   filters,
   articles,
   pagination,
@@ -46,7 +45,7 @@ export default function BlogIndex({
   messages,
   meta,
 }: BlogIndexProps) {
-  const base = localePath(locale, '/blog')
+  const base = useLocalePath()('/blog')
 
   function filterByCategory(slug: string | null) {
     router.get(pageUrl(base, { category: slug }, 1), {}, { preserveState: true })

@@ -1,9 +1,9 @@
-import { localePath } from '#types/i18n'
 import { ListingList, ListingRow } from '~/components/content_link'
 import ExternalLinkList from '~/components/external_link_list'
 import { BackLink } from '~/components/page_header'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
+import { useLocalePath } from '~/lib/locale'
 import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
@@ -48,12 +48,11 @@ function UsageSection({
 }
 
 export default function TechnologyShow({
-  locale,
   technology,
   messages,
   meta,
 }: TechnologyShowProps) {
-  const to = (path: string) => localePath(locale, path)
+  const to = useLocalePath()
 
   return (
     <>

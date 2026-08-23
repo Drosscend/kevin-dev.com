@@ -1,5 +1,4 @@
 import { Link } from '@adonisjs/inertia/react'
-import { localePath } from '#types/i18n'
 import ArticleContent from '~/components/article_content'
 import { LinkArrow } from '~/components/content_link'
 import ExternalLinkList from '~/components/external_link_list'
@@ -11,6 +10,7 @@ import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import TableOfContents from '~/components/table_of_contents'
 import { TechnologySection } from '~/components/technology_list'
+import { useLocalePath } from '~/lib/locale'
 import { type InertiaProps } from '~/types'
 import type { PreviewMode } from '#types/content'
 import type { Data } from '@generated/data'
@@ -23,13 +23,12 @@ type PortfolioShowProps = InertiaProps<{
 }>
 
 export default function PortfolioShow({
-  locale,
   preview,
   project,
   messages,
   meta,
 }: PortfolioShowProps) {
-  const to = (path: string) => localePath(locale, path)
+  const to = useLocalePath()
 
   return (
     <>
@@ -69,7 +68,6 @@ export default function PortfolioShow({
         </Lightbox>
 
         <TechnologySection
-          locale={locale}
           title={messages.portfolio.technologies}
           technologies={project.technologies}
         />
