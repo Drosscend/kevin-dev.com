@@ -73,10 +73,7 @@ export default class HomeController {
           period: entry.period,
           title: entry.title,
           place: entry.place,
-          // The honours are stored once for both locales, only their
-          // label is translated. "none" hides the mention.
-          honours:
-            entry.honours === 'none' ? null : i18n.t(`messages.home.honours.${entry.honours}`),
+          honours: entry.honours,
         }))
       ),
       meta: SeoService.build({

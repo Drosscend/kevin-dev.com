@@ -206,7 +206,9 @@ export default function Home({
                 <p className="font-medium">{entry.title}</p>
                 <p className="text-muted-foreground text-sm">
                   {entry.place}
-                  {entry.honours && <span className="text-primary"> · {entry.honours}</span>}
+                  {entry.honours !== 'none' && (
+                    <span className="text-primary"> · {messages.home.honours[entry.honours]}</span>
+                  )}
                 </p>
               </div>
             </li>
