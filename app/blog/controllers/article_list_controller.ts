@@ -56,7 +56,9 @@ export default class ArticleListController {
           title: article.title,
           summary: article.summary,
           publishedAt: longDate(article.publishedAt, locale),
-          readingTimeLabel: i18n.t('messages.content.readingTime', { minutes: article.readingTime }),
+          readingTimeLabel: i18n.t('messages.content.readingTime', {
+            minutes: article.readingTime,
+          }),
           category: article.category,
           technologies: article.technologies,
           coverUrl: mediaUrl(article.cover),

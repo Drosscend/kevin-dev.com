@@ -90,10 +90,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       <header className="bg-background/85 sticky top-0 z-40 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-          <Link
-            href={to('/')}
-            className="font-display font-semibold tracking-tight"
-          >
+          <Link href={to('/')} className="font-display font-semibold tracking-tight">
             Kévin Véronési
           </Link>
 
@@ -187,10 +184,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 {messages.nav[item.label]}
               </Link>
             ))}
-            <Link
-              href={to('/legal')}
-              className="hover:text-primary transition-colors"
-            >
+            <Link href={to('/legal')} className="hover:text-primary transition-colors">
               {messages.nav.legal}
             </Link>
           </nav>

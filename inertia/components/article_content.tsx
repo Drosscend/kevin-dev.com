@@ -109,7 +109,9 @@ export default function ArticleContent({ html }: { html: string }) {
       return
     }
 
-    root.querySelectorAll<HTMLPreElement>('pre[data-language]').forEach((pre) => enhanceCodeBlock(pre, { copy, download }))
+    root
+      .querySelectorAll<HTMLPreElement>('pre[data-language]')
+      .forEach((pre) => enhanceCodeBlock(pre, { copy, download }))
     root.querySelectorAll<HTMLTableElement>('table').forEach(enhanceTable)
   }, [html, copy, download])
 

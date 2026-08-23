@@ -47,11 +47,7 @@ function UsageSection({
   )
 }
 
-export default function TechnologyShow({
-  technology,
-  messages,
-  meta,
-}: TechnologyShowProps) {
+export default function TechnologyShow({ technology, messages, meta }: TechnologyShowProps) {
   const to = useLocalePath()
 
   return (

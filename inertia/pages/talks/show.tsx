@@ -57,10 +57,7 @@ export default function TalksShow({ preview, talk, messages, meta }: TalksShowPr
           <ArticleContent html={talk.contentHtml} />
         </Lightbox>
 
-        <TechnologySection
-          title={messages.talks.technologies}
-          technologies={talk.technologies}
-        />
+        <TechnologySection title={messages.talks.technologies} technologies={talk.technologies} />
       </ReadingLayout>
     </>
   )

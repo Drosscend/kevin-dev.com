@@ -45,10 +45,7 @@ export function TechnologySection({
       <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">{title}</h2>
       <ChipList className="mt-4">
         {technologies.map((technology) => (
-          <ChipLink
-            key={technology.slug}
-            href={to(`/technologies/${technology.slug}`)}
-          >
+          <ChipLink key={technology.slug} href={to(`/technologies/${technology.slug}`)}>
             {technology.name}
           </ChipLink>
         ))}

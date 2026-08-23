@@ -99,7 +99,7 @@ export default function Lightbox({
       image.setAttribute('role', 'button')
       image.setAttribute(
         'aria-label',
-        image.alt ? lightbox.openNamed.replace("{alt}", image.alt) : lightbox.open
+        image.alt ? lightbox.openNamed.replace('{alt}', image.alt) : lightbox.open
       )
       image.classList.add('cursor-zoom-in')
     })

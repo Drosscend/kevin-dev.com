@@ -22,12 +22,7 @@ type PortfolioShowProps = InertiaProps<{
   meta: SeoMeta
 }>
 
-export default function PortfolioShow({
-  preview,
-  project,
-  messages,
-  meta,
-}: PortfolioShowProps) {
+export default function PortfolioShow({ preview, project, messages, meta }: PortfolioShowProps) {
   const to = useLocalePath()
 
   return (
