@@ -52,6 +52,11 @@ mal sérialisée se voit.
 npm run lint && npm run format && npm run typecheck && npm test
 ```
 
+Un hook `pre-commit` (husky + lint-staged, installé par `npm install`) refuse déjà
+un commit dont les fichiers indexés échouent à `oxfmt --check` ou `oxlint`. Il ne
+corrige rien (`npm run format:fix`, `npm run lint:fix`) et ne couvre ni le
+typecheck ni les tests, qui restent à lancer avant de pousser.
+
 Le lint porte les conventions que ce fichier énonce : elles vivent comme règles
 dans `tools/oxlint/project-style/`, et une nouvelle convention durable s'y écrit
 plutôt que de rester en prose. À côté, `tools/oxlint/anti-slop/` refuse les
