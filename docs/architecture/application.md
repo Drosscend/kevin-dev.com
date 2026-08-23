@@ -144,7 +144,8 @@ Chaque capacité déclare ses routes dans `app/<capacité>/routes.ts`, et
 là où les préfixes se recouvrent : `seo` avant `blog`, sinon `/blog/:slug`
 avalerait `/blog/rss.xml`.
 
-Le registre `#generated/controllers` est régénéré au démarrage : un controller
+Le registre `#generated/controllers` est régénéré par `npm run dev` et
+`npm run codegen` (ni par les tests, ni par le build) : un controller
 dans `app/blog/controllers/` devient `controllers.blog.<Nom>`.
 
 ## Client Inertia

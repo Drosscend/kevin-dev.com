@@ -15,7 +15,7 @@ d'ajouter une page ou d'extraire un composant.
 - Une page ne redéclare pas la forme de ses props : elle lit le type généré
   `Data.<Capacité>.<Nom>` depuis `@generated/data`, et compose ses propres props
   avec `InertiaProps<{ ... }>`, qui y ajoute celles que le middleware partage
-  (`locale`, `user`, `messages`, `errors`).
+  (`locale`, `user`, `messages`, `errors`, `year`, `unreadMessages`).
 - Les flèches appartiennent à `LinkArrow`, jamais aux chaînes.
 - Les icônes viennent de `lucide-react` sous leur nom suffixé `Icon`, le seul qui
   ne collide pas avec un composant ou une valeur du domaine : `MenuIcon`, pas `Menu`.
