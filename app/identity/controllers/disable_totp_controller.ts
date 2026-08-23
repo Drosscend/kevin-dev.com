@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
+import { flashFieldErrors } from '#app/shared/field_errors'
 import { DisableTotp } from '#identity/actions/disable_totp'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -19,7 +20,7 @@ export default class DisableTotpController {
     const result = await this.disableTotp.execute({ user: auth.getUserOrFail(), code })
 
     if (!result.ok) {
-      session.flash('errors', { code: ['Code invalide, réessayez'] })
+      flashFieldErrors(session, { code: ['Code invalide, réessayez'] })
       return response.redirect().back()
     }
 

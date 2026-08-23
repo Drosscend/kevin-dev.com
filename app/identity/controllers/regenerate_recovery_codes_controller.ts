@@ -1,6 +1,7 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
 import { RECOVERY_CODES_FLASH_KEY } from '#app/identity/session_keys'
+import { flashFieldErrors } from '#app/shared/field_errors'
 import { RegenerateRecoveryCodes } from '#identity/actions/regenerate_recovery_codes'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -23,7 +24,7 @@ export default class RegenerateRecoveryCodesController {
     })
 
     if (!result.ok) {
-      session.flash('errors', { code: ['Code invalide, réessayez'] })
+      flashFieldErrors(session, { code: ['Code invalide, réessayez'] })
       return response.redirect().back()
     }
 

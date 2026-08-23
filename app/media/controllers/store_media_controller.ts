@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
+import { flashFieldErrors } from '#app/shared/field_errors'
 import { StoreDocument } from '#media/actions/store_document'
 import { StoreImage } from '#media/actions/store_image'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -29,7 +30,7 @@ export default class StoreMediaController {
     })
 
     if (!file || !file.isValid) {
-      session.flash('errors', {
+      flashFieldErrors(session, {
         file: file?.errors.map((error) => error.message) ?? ['Fichier requis'],
       })
       return response.redirect().back()
@@ -38,7 +39,7 @@ export default class StoreMediaController {
     const isDocument = file.extname === 'pdf'
 
     if (!isDocument && file.size > IMAGE_SIZE_LIMIT) {
-      session.flash('errors', { file: ['Une image ne peut pas dépasser 10 Mo'] })
+      flashFieldErrors(session, { file: ['Une image ne peut pas dépasser 10 Mo'] })
       return response.redirect().back()
     }
 
@@ -48,7 +49,7 @@ export default class StoreMediaController {
       : await this.storeImage.execute({ file, alt })
 
     if (!result.ok) {
-      session.flash('errors', {
+      flashFieldErrors(session, {
         file: [
           result.error.type === 'invalid_document'
             ? "Le fichier n'est pas un PDF valide"

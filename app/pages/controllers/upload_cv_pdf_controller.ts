@@ -1,3 +1,4 @@
+import { flashFieldErrors } from '#app/shared/field_errors'
 import { CV_PDF_KEY } from '#pages/cv_document'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -6,7 +7,7 @@ export default class UploadCvPdfController {
     const file = request.file('pdf', { size: '10mb', extnames: ['pdf'] })
 
     if (!file || !file.isValid) {
-      session.flash('errors', {
+      flashFieldErrors(session, {
         pdf: file?.errors.map((error) => error.message) ?? ['Fichier requis'],
       })
       return response.redirect().back()

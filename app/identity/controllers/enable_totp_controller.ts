@@ -1,6 +1,7 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
 import { RECOVERY_CODES_FLASH_KEY, TOTP_SETUP_KEY } from '#app/identity/session_keys'
+import { flashFieldErrors } from '#app/shared/field_errors'
 import { EnableTotp } from '#identity/actions/enable_totp'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -26,7 +27,7 @@ export default class EnableTotpController {
     const result = await this.enableTotp.execute({ user: auth.getUserOrFail(), secret, code })
 
     if (!result.ok) {
-      session.flash('errors', { code: ['Code invalide, réessayez'] })
+      flashFieldErrors(session, { code: ['Code invalide, réessayez'] })
       return response.redirect().back()
     }
 

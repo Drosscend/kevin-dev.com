@@ -1,6 +1,7 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
 import { TOTP_PENDING_KEY } from '#app/identity/session_keys'
+import { flashFieldErrors } from '#app/shared/field_errors'
 import { VerifySecondFactor } from '#identity/actions/verify_second_factor'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -36,7 +37,7 @@ export default class TotpChallengeController {
         return response.redirect().toRoute('admin.login')
       }
 
-      session.flash('errors', { code: ['Code invalide, réessayez'] })
+      flashFieldErrors(session, { code: ['Code invalide, réessayez'] })
       return response.redirect().back()
     }
 

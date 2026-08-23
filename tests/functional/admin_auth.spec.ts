@@ -4,6 +4,7 @@ import { TOTP, Secret } from 'otpauth'
 import Totp from '#identity/domain/totp'
 import User from '#identity/models/user'
 import { admin } from '#tests/helpers/auth'
+import { loginPage } from '#tests/helpers/pages'
 
 function currentCode(secret: string, email: string) {
   return new TOTP({
@@ -25,18 +26,19 @@ test.group('Admin auth', (group) => {
     response.assertHeader('location', '/admin/login')
   })
 
-  test('le login échoue avec un mauvais mot de passe', async ({ client }) => {
+  test('le login échoue avec un mauvais mot de passe', async ({ client, assert }) => {
     await admin()
 
     const response = await client
       .post('/admin/login')
       .header('referrer', '/admin/login')
       .withCsrfToken()
-      .redirects(0)
+      .withInertia()
       .form({ email: 'admin@example.com', password: 'mauvais-mdp' })
 
-    response.assertStatus(302)
-    response.assertHeader('location', '/admin/login')
+    response.assertStatus(200)
+    const { errors } = loginPage(response)
+    assert.property(errors, 'email')
   })
 
   test('le login sans 2FA ouvre une session directement', async ({ client }) => {

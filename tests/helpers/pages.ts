@@ -63,6 +63,10 @@ export function technologyPage(response: ApiResponse) {
   }>(response, 'technologies/show')
 }
 
+export function loginPage(response: ApiResponse) {
+  return pageProps(response, 'auth/login')
+}
+
 export function notFoundPage(response: ApiResponse) {
   return pageProps(response, 'errors/not_found')
 }

@@ -1,6 +1,7 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
 import { TOTP_PENDING_KEY } from '#app/identity/session_keys'
+import { flashFieldErrors } from '#app/shared/field_errors'
 import { VerifyUserCredentials } from '#identity/actions/verify_user_credentials'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -22,7 +23,7 @@ export default class LoginController {
     const result = await this.verifyUserCredentials.execute(params)
 
     if (!result.ok) {
-      session.flash('errors', { email: ['Identifiants invalides'] })
+      flashFieldErrors(session, { email: ['Identifiants invalides'] })
       return response.redirect().back()
     }
 

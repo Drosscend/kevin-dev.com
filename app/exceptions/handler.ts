@@ -1,5 +1,6 @@
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
+import { flashFieldErrors } from '#app/shared/field_errors'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 
 function isUniqueViolation(error: unknown): error is { code: string; detail?: string } {
@@ -65,7 +66,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       const message =
         ctx.i18n?.t('validator.shared.messages.database.unique', {}, fallback) ?? fallback
 
-      ctx.session.flash('errors', { [field]: [message] })
+      flashFieldErrors(ctx.session, { [field]: [message] })
       return ctx.response.redirect().back()
     }
 
