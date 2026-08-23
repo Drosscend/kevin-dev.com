@@ -34,10 +34,7 @@ export default function PortfolioShow({
   return (
     <>
       <Seo meta={meta} />
-      <ReadingLayout
-        className="space-y-10"
-        aside={<TableOfContents html={project.contentHtml} />}
-      >
+      <ReadingLayout className="space-y-10" aside={<TableOfContents html={project.contentHtml} />}>
         {preview && <PreviewBanner preview={preview} />}
 
         <div className="text-sm">
