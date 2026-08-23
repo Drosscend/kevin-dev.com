@@ -88,8 +88,6 @@ export default function Layout({ children }: { children: PageElement }) {
         <LanguageSuggestion
           targetLocale={locale === 'fr' ? 'en' : 'fr'}
           href={otherLocaleUrl(locale, url)}
-          label={messages.nav.otherLanguage}
-          dismissLabel={messages.nav.otherLanguageDismiss}
         />
       )}
 
@@ -128,7 +126,7 @@ export default function Layout({ children }: { children: PageElement }) {
               </Link>
             )}
 
-            <ThemeToggle label={messages.nav.theme} />
+            <ThemeToggle />
 
             <Button
               type="button"

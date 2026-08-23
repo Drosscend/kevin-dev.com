@@ -174,7 +174,7 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
       <div className="border-t p-3">
         <div className="text-muted-foreground mb-2 flex items-center justify-between px-3 text-xs">
           <span className="truncate">{children.props.user?.email}</span>
-          <ThemeToggle label={children.props.messages.nav.theme} />
+          <ThemeToggle />
         </div>
         <Form route="admin.logout">
           <Button type="submit" variant="ghost" size="sm" className="w-full justify-start gap-2">

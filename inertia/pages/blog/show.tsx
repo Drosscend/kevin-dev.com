@@ -27,9 +27,9 @@ export default function BlogShow({ locale, preview, article, messages, meta }: B
       <Seo meta={meta} />
 
       <ReadingLayout
-        aside={<TableOfContents html={article.contentHtml} label={messages.toc.title} />}
+        aside={<TableOfContents html={article.contentHtml} />}
       >
-        {preview && <PreviewBanner label={messages.blog[preview]} className="mb-10" />}
+        {preview && <PreviewBanner preview={preview} className="mb-10" />}
 
         <div className="text-sm">
           <BackLink href={base} label={messages.blog.backToList} />

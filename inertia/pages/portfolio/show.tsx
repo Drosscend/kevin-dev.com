@@ -36,9 +36,9 @@ export default function PortfolioShow({
       <Seo meta={meta} />
       <ReadingLayout
         className="space-y-10"
-        aside={<TableOfContents html={project.contentHtml} label={messages.toc.title} />}
+        aside={<TableOfContents html={project.contentHtml} />}
       >
-        {preview && <PreviewBanner label={messages.blog[preview]} />}
+        {preview && <PreviewBanner preview={preview} />}
 
         <div className="text-sm">
           <BackLink href={to('/projects')} label={messages.portfolio.backToList} />

@@ -26,7 +26,7 @@ export default function TalksShow({ locale, preview, talk, messages, meta }: Tal
     <>
       <Seo meta={meta} />
       <ReadingLayout className="space-y-10">
-        {preview && <PreviewBanner label={messages.blog[preview]} />}
+        {preview && <PreviewBanner preview={preview} />}
 
         <div className="text-sm">
           <BackLink href={to('/talks')} label={messages.talks.backToList} />

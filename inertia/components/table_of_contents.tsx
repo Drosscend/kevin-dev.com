@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react'
 import { useSyncExternalStore, type MouseEvent } from 'react'
 import { cn } from '~/lib/utils'
 
@@ -118,7 +119,8 @@ function scrollToHeading(event: MouseEvent<HTMLAnchorElement>, id: string) {
  * Summary of an article, built from its own headings. Renders nothing when
  * the content is too flat to be worth navigating.
  */
-export default function TableOfContents({ html, label }: { html: string; label: string }) {
+export default function TableOfContents({ html }: { html: string }) {
+  const label = usePage().props.messages.toc.title
   const headings = parseHeadings(html)
   const active = useActiveHeading(headings)
 

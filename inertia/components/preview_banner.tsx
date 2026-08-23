@@ -1,10 +1,19 @@
+import { usePage } from '@inertiajs/react'
 import { cn } from '~/lib/utils'
 
 /**
  * Tells the signed-in author that the page below is not what the
  * public sees: a draft, or an entry withdrawn from the site.
  */
-export default function PreviewBanner({ label, className }: { label: string; className?: string }) {
+export default function PreviewBanner({
+  preview,
+  className,
+}: {
+  preview: 'draft' | 'archived'
+  className?: string
+}) {
+  const { messages } = usePage().props
+
   return (
     <p
       className={cn(
@@ -12,7 +21,7 @@ export default function PreviewBanner({ label, className }: { label: string; cla
         className
       )}
     >
-      {label}
+      {messages.blog[preview]}
     </p>
   )
 }

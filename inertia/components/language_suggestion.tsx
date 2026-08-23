@@ -1,4 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
 import { X } from 'lucide-react'
 import { useState, useSyncExternalStore } from 'react'
 import { type Locale } from '#types/i18n'
@@ -20,14 +21,11 @@ function readPreferredLocale() {
 export default function LanguageSuggestion({
   targetLocale,
   href,
-  label,
-  dismissLabel,
 }: {
   targetLocale: Locale
   href: string
-  label: string
-  dismissLabel: string
 }) {
+  const { nav } = usePage().props.messages
   const [dismissed, setDismissed] = useState(false)
   const preferred = useSyncExternalStore(NO_SUBSCRIPTION, readPreferredLocale, () => '')
 
@@ -48,7 +46,7 @@ export default function LanguageSuggestion({
           lang={targetLocale}
           className="hover:text-primary text-sm underline underline-offset-4 transition-colors"
         >
-          {label}
+          {nav.otherLanguage}
         </Link>
         <Button
           type="button"
@@ -56,7 +54,7 @@ export default function LanguageSuggestion({
           size="icon"
           className="size-7"
           onClick={dismiss}
-          aria-label={dismissLabel}
+          aria-label={nav.otherLanguageDismiss}
         >
           <X className="size-4" />
         </Button>
