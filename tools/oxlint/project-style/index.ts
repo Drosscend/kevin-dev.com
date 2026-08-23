@@ -8,6 +8,7 @@ import { noReactCompilerHooksRule } from './rules/no_react_compiler_hooks.ts'
 import { noTypescriptPrivateRule } from './rules/no_typescript_private.ts'
 import { noUiArrowRule } from './rules/no_ui_arrow.ts'
 import { preferAdonisjsInertiaComponentRule } from './rules/prefer_adonisjs_inertia_component.ts'
+import { requireLucideIconSuffixRule } from './rules/require_lucide_icon_suffix.ts'
 
 /**
  * Project invariants that CLAUDE.md states in prose and that no shared
@@ -26,6 +27,7 @@ const projectStylePlugin = eslintCompatPlugin({
     'no-typescript-private': noTypescriptPrivateRule,
     'no-ui-arrow': noUiArrowRule,
     'prefer-adonisjs-inertia-component': preferAdonisjsInertiaComponentRule,
+    'require-lucide-icon-suffix': requireLucideIconSuffixRule,
   },
 })
 

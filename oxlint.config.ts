@@ -40,6 +40,7 @@ export default defineConfig({
     'project-style/no-em-dash': 'error',
     'project-style/no-typescript-private': 'error',
     'project-style/no-ui-arrow': 'error',
+    'project-style/require-lucide-icon-suffix': 'error',
     // createInertiaApp takes its page component through a children prop.
     'react/no-children-prop': 'off',
     'react/exhaustive-deps': 'warn',

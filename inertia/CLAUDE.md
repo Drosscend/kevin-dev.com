@@ -17,6 +17,8 @@ d'ajouter une page ou d'extraire un composant.
   avec `InertiaProps<{ ... }>`, qui y ajoute celles que le middleware partage
   (`locale`, `user`, `messages`, `errors`).
 - Les flèches appartiennent à `LinkArrow`, jamais aux chaînes.
+- Les icônes viennent de `lucide-react` sous leur nom suffixé `Icon`, le seul qui
+  ne collide pas avec un composant ou une valeur du domaine : `MenuIcon`, pas `Menu`.
 - Le compilateur React est actif : pas de `useMemo`, `useCallback` ni `memo`.
 - `Link` et `Form` viennent de `@adonisjs/inertia/react`, pas de `@inertiajs/react`.
 - Seul `#types` traverse la frontière serveur ; tout autre import `#` est refusé
