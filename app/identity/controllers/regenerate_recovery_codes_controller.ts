@@ -23,7 +23,7 @@ export default class RegenerateRecoveryCodesController {
     })
 
     if (!result.ok) {
-      session.flash('errors', { recoveryCode: ['Code invalide, réessayez'] })
+      session.flash('errors', { code: ['Code invalide, réessayez'] })
       return response.redirect().back()
     }
 

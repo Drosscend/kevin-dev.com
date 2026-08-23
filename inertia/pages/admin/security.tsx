@@ -92,12 +92,6 @@ export default function Security({
           <CardContent>
             <Form route="admin.security.recovery.store" className="space-y-4">
               {({ errors, processing }) => (
-                /**
-                 * The three forms of the page post the same "code" field, so
-                 * the controller flashes this one under "recoveryCode" to keep
-                 * the message on its own form. That key sits outside the route
-                 * body, hence the widening.
-                 */
                 <>
                   <div className="space-y-2">
                     <Label htmlFor="recovery-code">Code TOTP actuel</Label>
@@ -108,9 +102,9 @@ export default function Security({
                       inputMode="numeric"
                       autoComplete="one-time-code"
                       maxLength={6}
-                      aria-invalid={errors.recoveryCode ? true : undefined}
+                      aria-invalid={errors.code ? true : undefined}
                     />
-                    <FieldError errors={errors} field="recoveryCode" />
+                    <FieldError errors={errors} field="code" />
                   </div>
                   <Button type="submit" variant="outline" disabled={processing}>
                     Régénérer les codes de secours
