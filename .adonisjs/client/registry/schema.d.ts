@@ -7,42 +7,6 @@ import type { InferInput, SimpleError } from '@vinejs/vine/types'
 export type ParamValue = string | number | bigint | boolean
 
 export interface Registry {
-  'home': {
-    methods: ["GET","HEAD"]
-    pattern: '/'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/home_controller').default['handle']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/home_controller').default['handle']>>>
-    }
-  }
-  'en.home': {
-    methods: ["GET","HEAD"]
-    pattern: '/en'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/home_controller').default['handle']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/home_controller').default['handle']>>>
-    }
-  }
-  'health': {
-    methods: ["GET","HEAD"]
-    pattern: '/health'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['handle']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/health_checks_controller').default['handle']>>>
-    }
-  }
   'seo.sitemap': {
     methods: ["GET","HEAD"]
     pattern: '/sitemap.xml'
@@ -51,8 +15,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['sitemap']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['sitemap']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/sitemap_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/sitemap_controller').default['execute']>>>
     }
   }
   'seo.robots': {
@@ -63,8 +27,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['robots']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['robots']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/robots_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/robots_controller').default['execute']>>>
     }
   }
   'seo.security': {
@@ -75,8 +39,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['securityTxt']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['securityTxt']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/security_txt_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/security_txt_controller').default['execute']>>>
     }
   }
   'seo.rss': {
@@ -87,8 +51,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['rss']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['rss']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/feed_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/feed_controller').default['execute']>>>
     }
   }
   'en.seo.rss': {
@@ -99,8 +63,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['rss']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/seo_controller').default['rss']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/feed_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/feed_controller').default['execute']>>>
     }
   }
   'llms.index': {
@@ -111,8 +75,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['index']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/llms_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/llms_controller').default['execute']>>>
     }
   }
   'llms.cv': {
@@ -123,8 +87,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['cv']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['cv']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/cv_markdown_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/cv_markdown_controller').default['execute']>>>
     }
   }
   'en.llms.cv': {
@@ -135,8 +99,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['cv']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['cv']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/cv_markdown_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/cv_markdown_controller').default['execute']>>>
     }
   }
   'llms.legal': {
@@ -147,8 +111,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['legal']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['legal']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/legal_markdown_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/legal_markdown_controller').default['execute']>>>
     }
   }
   'en.llms.legal': {
@@ -159,200 +123,44 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['legal']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/llms_controller').default['legal']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/legal_markdown_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/legal_markdown_controller').default['execute']>>>
     }
   }
-  'blog.index': {
+  'health': {
     methods: ["GET","HEAD"]
-    pattern: '/blog'
+    pattern: '/health'
     types: {
       body: {}
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/blog_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/blog_controller').default['index']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/shared/controllers/health_checks_controller').default['handle']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/shared/controllers/health_checks_controller').default['handle']>>>
     }
   }
-  'blog.show': {
+  'home': {
     methods: ["GET","HEAD"]
-    pattern: '/blog/:slug'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { slug: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/blog_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/blog_controller').default['show']>>>
-    }
-  }
-  'en.blog.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/en/blog'
+    pattern: '/'
     types: {
       body: {}
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/blog_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/blog_controller').default['index']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/home_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/home_controller').default['render']>>>
     }
   }
-  'en.blog.show': {
+  'en.home': {
     methods: ["GET","HEAD"]
-    pattern: '/en/blog/:slug'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { slug: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/blog_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/blog_controller').default['show']>>>
-    }
-  }
-  'projects.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/projects'
+    pattern: '/en'
     types: {
       body: {}
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['index']>>>
-    }
-  }
-  'projects.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/projects/:slug'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { slug: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['show']>>>
-    }
-  }
-  'en.projects.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/en/projects'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['index']>>>
-    }
-  }
-  'en.projects.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/en/projects/:slug'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { slug: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/projects_controller').default['show']>>>
-    }
-  }
-  'talks.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/talks'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['index']>>>
-    }
-  }
-  'talks.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/talks/:slug'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { slug: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['show']>>>
-    }
-  }
-  'en.talks.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/en/talks'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['index']>>>
-    }
-  }
-  'en.talks.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/en/talks/:slug'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { slug: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/talks_controller').default['show']>>>
-    }
-  }
-  'technologies.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/technologies'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['index']>>>
-    }
-  }
-  'technologies.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/technologies/:slug'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { slug: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['show']>>>
-    }
-  }
-  'en.technologies.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/en/technologies'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['index']>>>
-    }
-  }
-  'en.technologies.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/en/technologies/:slug'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { slug: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/technologies_controller').default['show']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/home_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/home_controller').default['render']>>>
     }
   }
   'cv.show': {
@@ -363,8 +171,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['show']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/cv_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/cv_controller').default['render']>>>
     }
   }
   'en.cv.show': {
@@ -375,8 +183,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['show']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/cv_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/cv_controller').default['render']>>>
     }
   }
   'cv.pdf': {
@@ -387,8 +195,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['pdf']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/cv_controller').default['pdf']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/cv_pdf_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/cv_pdf_controller').default['execute']>>>
     }
   }
   'legal.show': {
@@ -399,8 +207,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/legal_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/legal_controller').default['render']>>>
     }
   }
   'en.legal.show': {
@@ -411,500 +219,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/legal_controller').default['show']>>>
-    }
-  }
-  'contact.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/contact'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['show']>>>
-    }
-  }
-  'contact.store': {
-    methods: ["POST"]
-    pattern: '/contact'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/contact').contactValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/contact').contactValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'en.contact.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/en/contact'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['show']>>>
-    }
-  }
-  'en.contact.store': {
-    methods: ["POST"]
-    pattern: '/en/contact'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/contact').contactValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/contact').contactValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/contact_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'uploads.show': {
-    methods: ["GET","HEAD"]
-    pattern: '/uploads/:key/:file'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue, ParamValue]
-      params: { key: ParamValue; file: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/uploads_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/uploads_controller').default['show']>>>
-    }
-  }
-  'admin.login': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/login'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['create']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['create']>>>
-    }
-  }
-  'admin.login.store': {
-    methods: ["POST"]
-    pattern: '/admin/login'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/auth').loginValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/auth').loginValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.totp': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/login/verify'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['totpCreate']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['totpCreate']>>>
-    }
-  }
-  'admin.totp.store': {
-    methods: ["POST"]
-    pattern: '/admin/login/verify'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/auth').challengeCodeValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/auth').challengeCodeValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['totpStore']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['totpStore']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.dashboard': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/dashboard_controller').default['handle']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/dashboard_controller').default['handle']>>>
-    }
-  }
-  'admin.logout': {
-    methods: ["POST"]
-    pattern: '/admin/logout'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/session_controller').default['destroy']>>>
-    }
-  }
-  'admin.media.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/media'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['index']>>>
-    }
-  }
-  'admin.media.store': {
-    methods: ["POST"]
-    pattern: '/admin/media'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/media').mediaValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/media').mediaValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.media.upload': {
-    methods: ["POST"]
-    pattern: '/admin/media/upload'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/media').mediaValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/media').mediaValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['upload']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['upload']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.media.destroy': {
-    methods: ["DELETE"]
-    pattern: '/admin/media/:id'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/media_controller').default['destroy']>>>
-    }
-  }
-  'admin.categories.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/categories'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/categories_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/categories_controller').default['index']>>>
-    }
-  }
-  'admin.categories.store': {
-    methods: ["POST"]
-    pattern: '/admin/categories'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/blog').categoryValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/blog').categoryValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/categories_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/categories_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.categories.update': {
-    methods: ["PUT"]
-    pattern: '/admin/categories/:id'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/blog').categoryValidator)>>
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#validators/blog').categoryValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/categories_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/categories_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.categories.destroy': {
-    methods: ["DELETE"]
-    pattern: '/admin/categories/:id'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/categories_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/categories_controller').default['destroy']>>>
-    }
-  }
-  'admin.articles.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/articles'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['index']>>>
-    }
-  }
-  'admin.articles.create': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/articles/create'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['create']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['create']>>>
-    }
-  }
-  'admin.articles.store': {
-    methods: ["POST"]
-    pattern: '/admin/articles'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/blog').articleValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/blog').articleValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.articles.edit': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/articles/:id/edit'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['edit']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['edit']>>>
-    }
-  }
-  'admin.articles.update': {
-    methods: ["PUT"]
-    pattern: '/admin/articles/:id'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/blog').articleValidator)>>
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#validators/blog').articleValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.articles.destroy': {
-    methods: ["DELETE"]
-    pattern: '/admin/articles/:id'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/articles_controller').default['destroy']>>>
-    }
-  }
-  'admin.technologies.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/technologies'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['index']>>>
-    }
-  }
-  'admin.technologies.store': {
-    methods: ["POST"]
-    pattern: '/admin/technologies'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').technologyValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').technologyValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.technologies.update': {
-    methods: ["PUT"]
-    pattern: '/admin/technologies/:id'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').technologyValidator)>>
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').technologyValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.technologies.destroy': {
-    methods: ["DELETE"]
-    pattern: '/admin/technologies/:id'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/technologies_controller').default['destroy']>>>
-    }
-  }
-  'admin.projects.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/projects'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['index']>>>
-    }
-  }
-  'admin.projects.create': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/projects/create'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['create']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['create']>>>
-    }
-  }
-  'admin.projects.store': {
-    methods: ["POST"]
-    pattern: '/admin/projects'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').projectValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').projectValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.projects.edit': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/projects/:id/edit'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['edit']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['edit']>>>
-    }
-  }
-  'admin.projects.update': {
-    methods: ["PUT"]
-    pattern: '/admin/projects/:id'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').projectValidator)>>
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').projectValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.projects.destroy': {
-    methods: ["DELETE"]
-    pattern: '/admin/projects/:id'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/projects_controller').default['destroy']>>>
-    }
-  }
-  'admin.talks.index': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/talks'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['index']>>>
-    }
-  }
-  'admin.talks.create': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/talks/create'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['create']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['create']>>>
-    }
-  }
-  'admin.talks.store': {
-    methods: ["POST"]
-    pattern: '/admin/talks'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').talkValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').talkValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.talks.edit': {
-    methods: ["GET","HEAD"]
-    pattern: '/admin/talks/:id/edit'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['edit']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['edit']>>>
-    }
-  }
-  'admin.talks.update': {
-    methods: ["PUT"]
-    pattern: '/admin/talks/:id'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/portfolio').talkValidator)>>
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#validators/portfolio').talkValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'admin.talks.destroy': {
-    methods: ["DELETE"]
-    pattern: '/admin/talks/:id'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/talks_controller').default['destroy']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/legal_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/legal_controller').default['render']>>>
     }
   }
   'admin.home.index': {
@@ -915,20 +231,20 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['show']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_home_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_home_controller').default['render']>>>
     }
   }
   'admin.home.update': {
     methods: ["PUT"]
     pattern: '/admin/home'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/home').homeSettingsValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/pages/controllers/manage_home_controller').default)['validator']>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/home').homeSettingsValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/home_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/pages/controllers/manage_home_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_home_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_home_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.timeline.index': {
@@ -939,44 +255,44 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/timeline_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/timeline_controller').default['index']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_timeline_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_timeline_controller').default['render']>>>
     }
   }
   'admin.timeline.store': {
     methods: ["POST"]
     pattern: '/admin/timeline'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/timeline').timelineEntryValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/pages/controllers/manage_timeline_controller').default)['validator']>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/timeline').timelineEntryValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/timeline_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/timeline_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/pages/controllers/manage_timeline_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_timeline_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_timeline_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.timeline.update': {
     methods: ["PUT"]
     pattern: '/admin/timeline/:id'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/timeline').timelineEntryValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/pages/controllers/manage_timeline_controller').default)['validator']>>
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#validators/timeline').timelineEntryValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/timeline_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/timeline_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/pages/controllers/manage_timeline_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_timeline_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_timeline_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.timeline.move': {
     methods: ["PUT"]
     pattern: '/admin/timeline/:id/move'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/timeline').timelineMoveValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/pages/controllers/move_timeline_entry_controller').default)['validator']>>
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
-      query: ExtractQuery<InferInput<(typeof import('#validators/timeline').timelineMoveValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/timeline_controller').default['move']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/timeline_controller').default['move']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/pages/controllers/move_timeline_entry_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/move_timeline_entry_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/move_timeline_entry_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.timeline.destroy': {
@@ -987,8 +303,8 @@ export interface Registry {
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/timeline_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/timeline_controller').default['destroy']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/delete_timeline_entry_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/delete_timeline_entry_controller').default['execute']>>>
     }
   }
   'admin.cv.index': {
@@ -999,20 +315,20 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/cv_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/cv_controller').default['show']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_cv_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_cv_controller').default['render']>>>
     }
   }
   'admin.cv.update': {
     methods: ["PUT"]
     pattern: '/admin/cv'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/pages').markdownPageValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/pages/controllers/manage_cv_controller').default)['validator']>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/pages').markdownPageValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/cv_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/cv_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/pages/controllers/manage_cv_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_cv_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_cv_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.cv.pdf.store': {
@@ -1023,8 +339,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/cv_controller').default['uploadPdf']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/cv_controller').default['uploadPdf']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/upload_cv_pdf_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/upload_cv_pdf_controller').default['execute']>>>
     }
   }
   'admin.legal.index': {
@@ -1035,20 +351,644 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/legal_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/legal_controller').default['show']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_legal_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_legal_controller').default['render']>>>
     }
   }
   'admin.legal.update': {
     methods: ["PUT"]
     pattern: '/admin/legal'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/pages').markdownPageValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/pages/controllers/manage_legal_controller').default)['validator']>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/pages').markdownPageValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/legal_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/legal_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/pages/controllers/manage_legal_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_legal_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/pages/controllers/manage_legal_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'blog.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/blog'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/article_list_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/article_list_controller').default['render']>>>
+    }
+  }
+  'blog.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/blog/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/article_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/article_controller').default['render']>>>
+    }
+  }
+  'en.blog.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/blog'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/article_list_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/article_list_controller').default['render']>>>
+    }
+  }
+  'en.blog.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/blog/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/article_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/article_controller').default['render']>>>
+    }
+  }
+  'admin.articles.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/articles'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/manage_articles_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/manage_articles_controller').default['render']>>>
+    }
+  }
+  'admin.articles.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/articles/create'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/article_form_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/article_form_controller').default['render']>>>
+    }
+  }
+  'admin.articles.store': {
+    methods: ["POST"]
+    pattern: '/admin/articles'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/blog/controllers/article_form_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/blog/controllers/article_form_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/article_form_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/article_form_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.articles.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/articles/:id/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/article_form_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/article_form_controller').default['render']>>>
+    }
+  }
+  'admin.articles.update': {
+    methods: ["PUT"]
+    pattern: '/admin/articles/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/blog/controllers/article_form_controller').default)['validator']>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#app/blog/controllers/article_form_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/article_form_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/article_form_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.articles.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/articles/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/delete_article_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/delete_article_controller').default['execute']>>>
+    }
+  }
+  'admin.categories.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/categories'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/manage_categories_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/manage_categories_controller').default['render']>>>
+    }
+  }
+  'admin.categories.store': {
+    methods: ["POST"]
+    pattern: '/admin/categories'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/blog/controllers/save_category_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/blog/controllers/save_category_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/save_category_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/save_category_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.categories.update': {
+    methods: ["PUT"]
+    pattern: '/admin/categories/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/blog/controllers/save_category_controller').default)['validator']>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#app/blog/controllers/save_category_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/save_category_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/save_category_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.categories.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/categories/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/blog/controllers/delete_category_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/blog/controllers/delete_category_controller').default['execute']>>>
+    }
+  }
+  'admin.dashboard': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/dashboard/controllers/dashboard_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/dashboard/controllers/dashboard_controller').default['render']>>>
+    }
+  }
+  'uploads.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/uploads/:key/:file'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { key: ParamValue; file: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/media/controllers/serve_media_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/media/controllers/serve_media_controller').default['execute']>>>
+    }
+  }
+  'admin.media.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/media'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/media/controllers/media_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/media/controllers/media_controller').default['render']>>>
+    }
+  }
+  'admin.media.store': {
+    methods: ["POST"]
+    pattern: '/admin/media'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/media/controllers/store_media_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/media/controllers/store_media_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/media/controllers/store_media_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/media/controllers/store_media_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.media.upload': {
+    methods: ["POST"]
+    pattern: '/admin/media/upload'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/media/controllers/upload_image_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/media/controllers/upload_image_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/media/controllers/upload_image_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/media/controllers/upload_image_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.media.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/media/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/media/controllers/delete_media_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/media/controllers/delete_media_controller').default['execute']>>>
+    }
+  }
+  'projects.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/projects'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_list_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_list_controller').default['render']>>>
+    }
+  }
+  'projects.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/projects/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_controller').default['render']>>>
+    }
+  }
+  'en.projects.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/projects'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_list_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_list_controller').default['render']>>>
+    }
+  }
+  'en.projects.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/projects/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_controller').default['render']>>>
+    }
+  }
+  'admin.projects.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/projects'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/portfolio/controllers/manage_projects_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/portfolio/controllers/manage_projects_controller').default['render']>>>
+    }
+  }
+  'admin.projects.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/projects/create'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_form_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_form_controller').default['render']>>>
+    }
+  }
+  'admin.projects.store': {
+    methods: ["POST"]
+    pattern: '/admin/projects'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/portfolio/controllers/project_form_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/portfolio/controllers/project_form_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_form_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_form_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.projects.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/projects/:id/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_form_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_form_controller').default['render']>>>
+    }
+  }
+  'admin.projects.update': {
+    methods: ["PUT"]
+    pattern: '/admin/projects/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/portfolio/controllers/project_form_controller').default)['validator']>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#app/portfolio/controllers/project_form_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_form_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/portfolio/controllers/project_form_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.projects.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/projects/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/portfolio/controllers/delete_project_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/portfolio/controllers/delete_project_controller').default['execute']>>>
+    }
+  }
+  'talks.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/talks'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_list_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_list_controller').default['render']>>>
+    }
+  }
+  'talks.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/talks/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_controller').default['render']>>>
+    }
+  }
+  'en.talks.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/talks'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_list_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_list_controller').default['render']>>>
+    }
+  }
+  'en.talks.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/talks/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_controller').default['render']>>>
+    }
+  }
+  'admin.talks.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/talks'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/talks/controllers/manage_talks_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/talks/controllers/manage_talks_controller').default['render']>>>
+    }
+  }
+  'admin.talks.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/talks/create'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_form_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_form_controller').default['render']>>>
+    }
+  }
+  'admin.talks.store': {
+    methods: ["POST"]
+    pattern: '/admin/talks'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/talks/controllers/talk_form_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/talks/controllers/talk_form_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_form_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_form_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.talks.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/talks/:id/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_form_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_form_controller').default['render']>>>
+    }
+  }
+  'admin.talks.update': {
+    methods: ["PUT"]
+    pattern: '/admin/talks/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/talks/controllers/talk_form_controller').default)['validator']>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#app/talks/controllers/talk_form_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_form_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/talks/controllers/talk_form_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.talks.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/talks/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/talks/controllers/delete_talk_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/talks/controllers/delete_talk_controller').default['execute']>>>
+    }
+  }
+  'technologies.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/technologies'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/technologies/controllers/technology_list_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/technologies/controllers/technology_list_controller').default['render']>>>
+    }
+  }
+  'technologies.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/technologies/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/technologies/controllers/technology_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/technologies/controllers/technology_controller').default['render']>>>
+    }
+  }
+  'en.technologies.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/technologies'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/technologies/controllers/technology_list_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/technologies/controllers/technology_list_controller').default['render']>>>
+    }
+  }
+  'en.technologies.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/technologies/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/technologies/controllers/technology_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/technologies/controllers/technology_controller').default['render']>>>
+    }
+  }
+  'admin.technologies.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/technologies'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/technologies/controllers/manage_technologies_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/technologies/controllers/manage_technologies_controller').default['render']>>>
+    }
+  }
+  'admin.technologies.store': {
+    methods: ["POST"]
+    pattern: '/admin/technologies'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/technologies/controllers/save_technology_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/technologies/controllers/save_technology_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/technologies/controllers/save_technology_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/technologies/controllers/save_technology_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.technologies.update': {
+    methods: ["PUT"]
+    pattern: '/admin/technologies/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/technologies/controllers/save_technology_controller').default)['validator']>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#app/technologies/controllers/save_technology_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/technologies/controllers/save_technology_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/technologies/controllers/save_technology_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.technologies.destroy': {
+    methods: ["DELETE"]
+    pattern: '/admin/technologies/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/technologies/controllers/delete_technology_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/technologies/controllers/delete_technology_controller').default['execute']>>>
+    }
+  }
+  'contact.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/contact'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/contact/controllers/contact_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/contact/controllers/contact_controller').default['render']>>>
+    }
+  }
+  'contact.store': {
+    methods: ["POST"]
+    pattern: '/contact'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/contact/controllers/contact_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/contact/controllers/contact_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/contact/controllers/contact_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/contact/controllers/contact_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'en.contact.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/contact'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/contact/controllers/contact_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/contact/controllers/contact_controller').default['render']>>>
+    }
+  }
+  'en.contact.store': {
+    methods: ["POST"]
+    pattern: '/en/contact'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/contact/controllers/contact_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/contact/controllers/contact_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/contact/controllers/contact_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/contact/controllers/contact_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.messages.index': {
@@ -1059,8 +999,8 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['index']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['index']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/contact/controllers/messages_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/contact/controllers/messages_controller').default['render']>>>
     }
   }
   'admin.messages.read': {
@@ -1071,8 +1011,8 @@ export interface Registry {
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['toggleRead']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['toggleRead']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/contact/controllers/toggle_message_read_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/contact/controllers/toggle_message_read_controller').default['execute']>>>
     }
   }
   'admin.messages.destroy': {
@@ -1083,8 +1023,68 @@ export interface Registry {
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/messages_controller').default['destroy']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/contact/controllers/delete_message_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/contact/controllers/delete_message_controller').default['execute']>>>
+    }
+  }
+  'admin.login': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/login'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/login_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/login_controller').default['render']>>>
+    }
+  }
+  'admin.login.store': {
+    methods: ["POST"]
+    pattern: '/admin/login'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/identity/controllers/login_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/identity/controllers/login_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/login_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/login_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.totp': {
+    methods: ["GET","HEAD"]
+    pattern: '/admin/login/verify'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/totp_challenge_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/totp_challenge_controller').default['render']>>>
+    }
+  }
+  'admin.totp.store': {
+    methods: ["POST"]
+    pattern: '/admin/login/verify'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#app/identity/controllers/totp_challenge_controller').default)['validator']>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#app/identity/controllers/totp_challenge_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/totp_challenge_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/totp_challenge_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'admin.logout': {
+    methods: ["POST"]
+    pattern: '/admin/logout'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/logout_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/logout_controller').default['execute']>>>
     }
   }
   'admin.security': {
@@ -1095,44 +1095,44 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['show']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['show']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/security_controller').default['render']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/security_controller').default['render']>>>
     }
   }
   'admin.security.store': {
     methods: ["POST"]
     pattern: '/admin/security'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/identity/controllers/enable_totp_controller').default)['validator']>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/identity/controllers/enable_totp_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/enable_totp_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/enable_totp_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.security.destroy': {
     methods: ["DELETE"]
     pattern: '/admin/security'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/identity/controllers/disable_totp_controller').default)['validator']>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['destroy']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['destroy']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/identity/controllers/disable_totp_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/disable_totp_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/disable_totp_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'admin.security.recovery.store': {
     methods: ["POST"]
     pattern: '/admin/security/recovery'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#app/identity/controllers/regenerate_recovery_codes_controller').default)['validator']>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/auth').totpCodeValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['regenerateRecovery']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/security_controller').default['regenerateRecovery']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#app/identity/controllers/regenerate_recovery_codes_controller').default)['validator']>>
+      response: ExtractResponse<Awaited<ReturnType<import('#app/identity/controllers/regenerate_recovery_codes_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/identity/controllers/regenerate_recovery_codes_controller').default['execute']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
 }
