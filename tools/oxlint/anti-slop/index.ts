@@ -39,3 +39,5 @@ const antiSlopPlugin = eslintCompatPlugin({
 });
 
 export default antiSlopPlugin;
+
+
