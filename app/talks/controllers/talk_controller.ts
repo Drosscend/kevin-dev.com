@@ -46,7 +46,7 @@ export default class TalkController {
         eventName: talk.eventName,
         eventDate: longDate(talk.eventDate, locale),
         city: talk.city,
-        readingTimeLabel: i18n.t('messages.blog.readingTime', { minutes: talk.readingTime }),
+        readingTimeLabel: i18n.t('messages.content.readingTime', { minutes: talk.readingTime }),
         upcoming: talk.upcoming,
         links: talk.links,
         technologies: talk.technologies,

@@ -45,7 +45,7 @@ export default class ProjectController {
         coverUrl: mediaUrl(project.cover),
         startedAt: monthYear(project.startedAt, locale),
         endedAt: monthYear(project.endedAt, locale),
-        readingTimeLabel: i18n.t('messages.blog.readingTime', { minutes: project.readingTime }),
+        readingTimeLabel: i18n.t('messages.content.readingTime', { minutes: project.readingTime }),
         ongoing: project.ongoing,
         links: project.links,
         technologies: project.technologies,

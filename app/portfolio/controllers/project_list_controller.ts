@@ -39,7 +39,7 @@ export default class ProjectListController {
           summary: project.summary,
           coverUrl: mediaUrl(project.cover),
           period: formatPeriod(project, locale),
-          readingTimeLabel: i18n.t('messages.blog.readingTime', { minutes: project.readingTime }),
+          readingTimeLabel: i18n.t('messages.content.readingTime', { minutes: project.readingTime }),
           ongoing: project.ongoing,
           technologies: project.technologies,
         }))

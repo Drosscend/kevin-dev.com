@@ -120,7 +120,7 @@ function scrollToHeading(event: MouseEvent<HTMLAnchorElement>, id: string) {
  * the content is too flat to be worth navigating.
  */
 export default function TableOfContents({ html }: { html: string }) {
-  const label = usePage().props.messages.toc.title
+  const label = usePage().props.messages.content.toc
   const headings = parseHeadings(html)
   const active = useActiveHeading(headings)
 

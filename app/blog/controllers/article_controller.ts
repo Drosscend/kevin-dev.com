@@ -42,7 +42,7 @@ export default class ArticleController {
         title: article.title,
         contentHtml: article.contentHtml,
         publishedAt: longDate(article.publishedAt, locale),
-        readingTimeLabel: i18n.t('messages.blog.readingTime', { minutes: article.readingTime }),
+        readingTimeLabel: i18n.t('messages.content.readingTime', { minutes: article.readingTime }),
         category: article.category,
         technologies: article.technologies,
       }),

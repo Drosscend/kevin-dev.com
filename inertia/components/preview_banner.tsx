@@ -21,7 +21,7 @@ export default function PreviewBanner({
         className
       )}
     >
-      {messages.blog[preview]}
+      {messages.content[preview]}
     </p>
   )
 }

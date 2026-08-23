@@ -38,16 +38,16 @@
       "very_good": "With highest honours"
     }
   },
-  "toc": {
-    "title": "Contents"
+  "content": {
+    "readingTime": "{minutes} min read",
+    "draft": "Draft, only visible while signed in",
+    "archived": "Withdrawn from the site, only visible while signed in",
+    "toc": "Contents"
   },
   "blog": {
     "title": "Blog",
     "metaDescription": "Technical articles about React, Next.js, TypeScript, AI and web development, by Kévin Véronési.",
-    "readingTime": "{minutes} min read",
     "publishedOn": "Published on",
-    "draft": "Draft, only visible while signed in",
-    "archived": "Withdrawn from the site, only visible while signed in",
     "empty": "No articles yet.",
     "allCategories": "All categories",
     "technologies": "Technologies covered",
