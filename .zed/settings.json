@@ -1,0 +1,66 @@
+{
+  "lsp": {
+    "oxlint": {
+      "initialization_options": { "settings": { "fixKind": "safe_fix" } }
+    }
+  },
+  "languages": {
+    "TypeScript": {
+      "language_servers": ["!eslint", "..."],
+      "formatter": [
+        { "language_server": { "name": "oxfmt" } },
+        { "code_action": "source.fixAll.oxc" }
+      ],
+      "code_actions_on_format": {
+        "source.fixAll.biome": false,
+        "source.organizeImports.biome": false
+      }
+    },
+    "TSX": {
+      "language_servers": ["!eslint", "..."],
+      "formatter": [
+        { "language_server": { "name": "oxfmt" } },
+        { "code_action": "source.fixAll.oxc" }
+      ],
+      "code_actions_on_format": {
+        "source.fixAll.biome": false,
+        "source.organizeImports.biome": false
+      }
+    },
+    "JavaScript": {
+      "language_servers": ["!eslint", "..."],
+      "formatter": [
+        { "language_server": { "name": "oxfmt" } },
+        { "code_action": "source.fixAll.oxc" }
+      ],
+      "code_actions_on_format": {
+        "source.fixAll.biome": false,
+        "source.organizeImports.biome": false
+      }
+    },
+    "JSON": {
+      "formatter": [{ "language_server": { "name": "oxfmt" } }],
+      "code_actions_on_format": {
+        "source.fixAll.biome": false,
+        "source.organizeImports.biome": false
+      }
+    },
+    "JSONC": {
+      "formatter": [{ "language_server": { "name": "oxfmt" } }],
+      "code_actions_on_format": {
+        "source.fixAll.biome": false,
+        "source.organizeImports.biome": false
+      }
+    },
+    "CSS": {
+      "formatter": [{ "language_server": { "name": "oxfmt" } }],
+      "code_actions_on_format": {
+        "source.fixAll.biome": false,
+        "source.organizeImports.biome": false
+      }
+    },
+    "Markdown": {
+      "formatter": [{ "language_server": { "name": "oxfmt" } }]
+    }
+  }
+}
