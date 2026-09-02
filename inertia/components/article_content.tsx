@@ -2,7 +2,7 @@ import { usePage } from '@inertiajs/react'
 import { useEffect, useRef } from 'react'
 import { type Messages } from '~/types'
 
-type Labels = Pick<Messages['content'], 'copy' | 'download'>
+type Labels = Pick<Messages['content'], 'copy' | 'download' | 'table'>
 
 const DOWNLOAD_EXTENSIONS = new Map([
   ['ts', 'ts'],
@@ -28,13 +28,18 @@ const CHECK_ICON =
 const DOWNLOAD_ICON =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
 
+/**
+ * The toolbar only shows while the block is hovered or holds the
+ * keyboard focus, so a tab stop never lands on an invisible control.
+ */
 function toolbarButton(icon: string, title: string, onClick: () => void) {
   const button = document.createElement('button')
   button.type = 'button'
   button.title = title
+  button.setAttribute('aria-label', title)
   button.innerHTML = icon
   button.className =
-    'rounded-md border border-neutral-300 bg-white/80 p-1.5 text-neutral-600 opacity-0 transition-opacity hover:bg-white group-hover:opacity-100 dark:border-neutral-700 dark:bg-neutral-800/80 dark:text-neutral-300'
+    'bg-card/80 text-muted-foreground hover:bg-card hover:text-foreground rounded-md border p-1.5 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100'
   button.addEventListener('click', onClick)
   return button
 }
@@ -52,7 +57,11 @@ function enhanceCodeBlock(pre: HTMLPreElement, labels: Labels) {
   toolbar.className = 'absolute top-2 right-2 flex gap-1'
 
   const copyButton = toolbarButton(COPY_ICON, labels.copy, async () => {
-    await navigator.clipboard.writeText(code())
+    try {
+      await navigator.clipboard.writeText(code())
+    } catch {
+      return
+    }
     copyButton.innerHTML = CHECK_ICON
     setTimeout(() => {
       copyButton.innerHTML = COPY_ICON
@@ -80,15 +89,19 @@ function enhanceCodeBlock(pre: HTMLPreElement, labels: Labels) {
 
 /**
  * A table wider than the reading column scrolls inside its own box
- * rather than pushing the whole page sideways on narrow screens.
+ * rather than pushing the whole page sideways on narrow screens. The
+ * box is a focusable region, so the keyboard can scroll it too.
  */
-function enhanceTable(table: HTMLTableElement) {
+function enhanceTable(table: HTMLTableElement, label: string) {
   if (table.parentElement?.classList.contains('typeset-scroll')) {
     return
   }
 
   const wrapper = document.createElement('div')
   wrapper.className = 'typeset-scroll'
+  wrapper.tabIndex = 0
+  wrapper.setAttribute('role', 'region')
+  wrapper.setAttribute('aria-label', label)
   table.replaceWith(wrapper)
   wrapper.append(table)
 }
@@ -100,7 +113,7 @@ function enhanceTable(table: HTMLTableElement) {
  */
 export default function ArticleContent({ html }: { html: string }) {
   const container = useRef<HTMLDivElement>(null)
-  const { copy, download } = usePage().props.messages.content
+  const { copy, download, table } = usePage().props.messages.content
 
   useEffect(() => {
     const root = container.current
@@ -111,9 +124,11 @@ export default function ArticleContent({ html }: { html: string }) {
 
     root
       .querySelectorAll<HTMLPreElement>('pre[data-language]')
-      .forEach((pre) => enhanceCodeBlock(pre, { copy, download }))
-    root.querySelectorAll<HTMLTableElement>('table').forEach(enhanceTable)
-  }, [html, copy, download])
+      .forEach((pre) => enhanceCodeBlock(pre, { copy, download, table }))
+    root
+      .querySelectorAll<HTMLTableElement>('table')
+      .forEach((element) => enhanceTable(element, table))
+  }, [html, copy, download, table])
 
   return <div ref={container} className="typeset" dangerouslySetInnerHTML={{ __html: html }} />
 }
