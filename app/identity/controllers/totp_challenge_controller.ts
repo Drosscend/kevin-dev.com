@@ -1,6 +1,6 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
-import { TOTP_PENDING_KEY } from '#app/identity/session_keys'
+import { TOTP_PENDING_KEY, TOTP_PENDING_UNTIL_KEY } from '#app/identity/session_keys'
 import { flashFieldErrors } from '#app/shared/field_errors'
 import { VerifySecondFactor } from '#identity/actions/verify_second_factor'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -14,7 +14,7 @@ export default class TotpChallengeController {
   constructor(private readonly verifySecondFactor: VerifySecondFactor) {}
 
   render({ inertia, session, response }: HttpContext) {
-    if (!session.has(TOTP_PENDING_KEY)) {
+    if (!pendingUserId(session)) {
       return response.redirect().toRoute('admin.login')
     }
 
@@ -22,7 +22,7 @@ export default class TotpChallengeController {
   }
 
   async execute({ request, auth, session, response }: HttpContext) {
-    const userId = session.get(TOTP_PENDING_KEY)
+    const userId = pendingUserId(session)
 
     if (!userId) {
       return response.redirect().toRoute('admin.login')
@@ -33,7 +33,7 @@ export default class TotpChallengeController {
 
     if (!result.ok) {
       if (result.error.type === 'unknown_user') {
-        session.forget(TOTP_PENDING_KEY)
+        forgetPending(session)
         return response.redirect().toRoute('admin.login')
       }
 
@@ -41,8 +41,29 @@ export default class TotpChallengeController {
       return response.redirect().back()
     }
 
-    session.forget(TOTP_PENDING_KEY)
+    forgetPending(session)
     await auth.use('web').login(result.value)
     return response.redirect().toRoute('admin.dashboard')
   }
+}
+
+/**
+ * The account waiting for its second factor, or null once the step
+ * has expired: the password then has to be typed again.
+ */
+function pendingUserId(session: HttpContext['session']): number | null {
+  const userId = session.get(TOTP_PENDING_KEY)
+  const until = Number(session.get(TOTP_PENDING_UNTIL_KEY))
+
+  if (!userId || !(until > Date.now())) {
+    forgetPending(session)
+    return null
+  }
+
+  return userId
+}
+
+function forgetPending(session: HttpContext['session']) {
+  session.forget(TOTP_PENDING_KEY)
+  session.forget(TOTP_PENDING_UNTIL_KEY)
 }

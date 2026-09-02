@@ -1,6 +1,10 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
-import { TOTP_PENDING_KEY } from '#app/identity/session_keys'
+import {
+  TOTP_PENDING_KEY,
+  TOTP_PENDING_TTL_MS,
+  TOTP_PENDING_UNTIL_KEY,
+} from '#app/identity/session_keys'
 import { flashFieldErrors } from '#app/shared/field_errors'
 import { VerifyUserCredentials } from '#identity/actions/verify_user_credentials'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -29,6 +33,7 @@ export default class LoginController {
 
     if (result.value.totpEnabled) {
       session.put(TOTP_PENDING_KEY, result.value.id)
+      session.put(TOTP_PENDING_UNTIL_KEY, Date.now() + TOTP_PENDING_TTL_MS)
       return response.redirect().toRoute('admin.totp')
     }
 

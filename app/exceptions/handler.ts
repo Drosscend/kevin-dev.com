@@ -1,5 +1,6 @@
 import { type HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
+import { errors as limiterErrors } from '@adonisjs/limiter'
 import { flashFieldErrors } from '#app/shared/field_errors'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 
@@ -67,6 +68,20 @@ export default class HttpExceptionHandler extends ExceptionHandler {
         ctx.i18n?.t('validator.shared.messages.database.unique', {}, fallback) ?? fallback
 
       flashFieldErrors(ctx.session, { [field]: [message] })
+      return ctx.response.redirect().back()
+    }
+
+    /**
+     * A throttled form submission comes back to the form with a
+     * message, instead of the bare 429 page the limiter would send.
+     */
+    if (
+      error instanceof limiterErrors.E_TOO_MANY_REQUESTS &&
+      ctx.session &&
+      ctx.request.method() !== 'GET' &&
+      ctx.request.accepts(['html', 'json']) === 'html'
+    ) {
+      ctx.session.flash('error', error.getResponseMessage(ctx))
       return ctx.response.redirect().back()
     }
 

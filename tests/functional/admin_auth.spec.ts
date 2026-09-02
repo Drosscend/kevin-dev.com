@@ -3,7 +3,7 @@ import { test } from '@japa/runner'
 import { TOTP, Secret } from 'otpauth'
 import Totp from '#identity/domain/totp'
 import User from '#identity/models/user'
-import { admin } from '#tests/helpers/auth'
+import { admin, pendingTotp } from '#tests/helpers/auth'
 import { loginPage } from '#tests/helpers/pages'
 
 function currentCode(secret: string, email: string) {
@@ -77,7 +77,7 @@ test.group('Admin auth', (group) => {
     const verify = await client
       .post('/admin/login/verify')
       .withCsrfToken()
-      .withSession({ totp_pending_user_id: user.id })
+      .withSession(pendingTotp(user))
       .redirects(0)
       .form({ code: currentCode(secret, user.email) })
 
@@ -128,12 +128,58 @@ test.group('Admin auth', (group) => {
       .post('/admin/login/verify')
       .header('referrer', '/admin/login/verify')
       .withCsrfToken()
-      .withSession({ totp_pending_user_id: user.id })
+      .withSession(pendingTotp(user))
       .redirects(0)
       .form({ code: '000000' })
 
     verify.assertStatus(302)
     verify.assertHeader('location', '/admin/login/verify')
     verify.assertSessionMissing('auth_web')
+  })
+
+  test('le challenge TOTP expiré renvoie au mot de passe', async ({ client }) => {
+    const user = await User.create({
+      email: 'admin@example.com',
+      password: 'motdepasse',
+      totpSecret: Totp.generateSecret(),
+    })
+
+    const page = await client
+      .get('/admin/login/verify')
+      .withSession(pendingTotp(user, Date.now() - 1000))
+      .redirects(0)
+
+    page.assertStatus(302)
+    page.assertHeader('location', '/admin/login')
+    page.assertSessionMissing('totp_pending_user_id')
+  })
+
+  test('le code TOTP a son propre budget de tentatives', async ({ client }) => {
+    const user = await User.create({
+      email: 'admin@example.com',
+      password: 'motdepasse',
+      totpSecret: Totp.generateSecret(),
+    })
+
+    const attempt = () =>
+      client
+        .post('/admin/login/verify')
+        .header('referrer', '/admin/login/verify')
+        .withCsrfToken()
+        .withSession(pendingTotp(user))
+        .redirects(0)
+        .form({ code: '000000' })
+
+    for (let index = 0; index < 5; index++) {
+      const verify = await attempt()
+      verify.assertStatus(302)
+      verify.assertHeader('location', '/admin/login/verify')
+    }
+
+    const blocked = await attempt()
+    blocked.assertStatus(302)
+    blocked.assertHeader('location', '/admin/login/verify')
+    blocked.assertFlashMessage('error', 'Trop de tentatives, réessayez dans quelques minutes.')
+    blocked.assertSessionMissing('auth_web')
   })
 })

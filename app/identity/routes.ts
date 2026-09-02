@@ -1,7 +1,7 @@
 import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
 import { middleware } from '#start/kernel'
-import { loginThrottle } from '#start/limiter'
+import { loginThrottle, totpThrottle } from '#start/limiter'
 
 /**
  * Two-step admin login: password, then TOTP.
@@ -18,7 +18,7 @@ router
     router
       .post('login/verify', [controllers.identity.TotpChallenge, 'execute'])
       .as('admin.totp.store')
-      .use(loginThrottle)
+      .use(totpThrottle)
   })
   .prefix('/admin')
   .use(middleware.guest())
