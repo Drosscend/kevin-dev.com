@@ -27,6 +27,13 @@ const staticServerConfig = defineConfig({
    * Policy for files starting with a dot.
    */
   dotFiles: 'ignore',
+
+  /**
+   * Vite fingerprints everything under /assets, so a file at a given
+   * URL never changes: browsers can keep it for a year without asking.
+   */
+  headers: (path) =>
+    /[\\/]assets[\\/]/.test(path) ? { 'Cache-Control': 'public, max-age=31536000, immutable' } : {},
 })
 
 export default staticServerConfig
