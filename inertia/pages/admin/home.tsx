@@ -3,7 +3,7 @@ import { type FormEvent } from 'react'
 import { client } from '~/client'
 import AdminPage from '~/components/admin/admin_page'
 import LocaleTabsList, { translationStatus, useAdminLocale } from '~/components/admin/locale_tabs'
-import FieldError from '~/components/field_error'
+import FieldError, { fieldAria } from '~/components/field_error'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
@@ -35,6 +35,7 @@ function SettingsTextarea({
     <div className="space-y-2">
       <Label htmlFor={field}>{label}</Label>
       <Textarea
+        {...fieldAria(errors, field)}
         id={field}
         rows={2}
         value={value}
@@ -131,6 +132,7 @@ export default function HomeAdmin({ settings }: HomeAdminProps) {
               <div className="max-w-sm space-y-2">
                 <Label htmlFor="heroLocation">Localisation</Label>
                 <Input
+                  {...fieldAria(errors, 'heroLocation')}
                   id="heroLocation"
                   value={form.data.heroLocation}
                   onChange={(event) => form.setData('heroLocation', event.target.value)}

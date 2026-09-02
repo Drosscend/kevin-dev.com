@@ -1,5 +1,5 @@
 import { Form } from '@adonisjs/inertia/react'
-import FieldError from '~/components/field_error'
+import FieldError, { fieldAria } from '~/components/field_error'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
@@ -24,7 +24,7 @@ export default function Login() {
                     name="email"
                     id="email"
                     autoComplete="username"
-                    aria-invalid={errors.email ? true : undefined}
+                    {...fieldAria(errors, 'email')}
                   />
                   <FieldError errors={errors} field="email" />
                 </div>
@@ -36,7 +36,7 @@ export default function Login() {
                     name="password"
                     id="password"
                     autoComplete="current-password"
-                    aria-invalid={errors.password ? true : undefined}
+                    {...fieldAria(errors, 'password')}
                   />
                   <FieldError errors={errors} field="password" />
                 </div>

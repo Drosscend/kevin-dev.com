@@ -1,5 +1,5 @@
 import { Form } from '@adonisjs/inertia/react'
-import FieldError from '~/components/field_error'
+import FieldError, { fieldAria } from '~/components/field_error'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { Button } from '~/components/ui/button'
@@ -34,7 +34,7 @@ export default function Contact({ locale, messages, meta }: ContactProps) {
                   name="name"
                   id="name"
                   autoComplete="name"
-                  aria-invalid={errors.name ? true : undefined}
+                  {...fieldAria(errors, 'name')}
                 />
                 <FieldError errors={errors} field="name" />
               </div>
@@ -46,7 +46,7 @@ export default function Contact({ locale, messages, meta }: ContactProps) {
                   name="email"
                   id="email"
                   autoComplete="email"
-                  aria-invalid={errors.email ? true : undefined}
+                  {...fieldAria(errors, 'email')}
                 />
                 <FieldError errors={errors} field="email" />
               </div>
@@ -57,7 +57,7 @@ export default function Contact({ locale, messages, meta }: ContactProps) {
                   name="message"
                   id="message"
                   className="min-h-40"
-                  aria-invalid={errors.message ? true : undefined}
+                  {...fieldAria(errors, 'message')}
                 />
                 <FieldError errors={errors} field="message" />
               </div>

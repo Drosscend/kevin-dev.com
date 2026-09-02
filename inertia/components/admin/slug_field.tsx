@@ -1,4 +1,4 @@
-import FieldError, { type FieldErrors } from '~/components/field_error'
+import FieldError, { fieldAria, type FieldErrors } from '~/components/field_error'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { SLUG_LOCKED_HINT } from '~/lib/admin'
@@ -22,6 +22,7 @@ export default function SlugField({
     <div className="space-y-2">
       <Label htmlFor="slug">Slug (partagé FR/EN)</Label>
       <Input
+        {...fieldAria(errors, 'slug')}
         id="slug"
         value={value}
         disabled={locked}

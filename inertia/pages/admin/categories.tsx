@@ -5,7 +5,7 @@ import { type FormEvent, useState } from 'react'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
-import FieldError from '~/components/field_error'
+import FieldError, { fieldAria } from '~/components/field_error'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
@@ -57,6 +57,7 @@ function CategoryForm({
       <div className="space-y-2">
         <Label htmlFor={`slug-${category?.id ?? 'new'}`}>Slug</Label>
         <Input
+          {...fieldAria(errors, 'slug')}
           id={`slug-${category?.id ?? 'new'}`}
           value={values.slug}
           onChange={(event) => setValues({ ...values, slug: event.target.value })}
@@ -66,6 +67,7 @@ function CategoryForm({
       <div className="space-y-2">
         <Label htmlFor={`nameFr-${category?.id ?? 'new'}`}>Nom (FR)</Label>
         <Input
+          {...fieldAria(errors, 'nameFr')}
           id={`nameFr-${category?.id ?? 'new'}`}
           value={values.nameFr}
           onChange={(event) => setValues({ ...values, nameFr: event.target.value })}
@@ -75,6 +77,7 @@ function CategoryForm({
       <div className="space-y-2">
         <Label htmlFor={`nameEn-${category?.id ?? 'new'}`}>Nom (EN, optionnel)</Label>
         <Input
+          {...fieldAria(errors, 'nameEn')}
           id={`nameEn-${category?.id ?? 'new'}`}
           value={values.nameEn}
           onChange={(event) => setValues({ ...values, nameEn: event.target.value })}

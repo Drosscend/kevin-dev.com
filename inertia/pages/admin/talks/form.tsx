@@ -12,7 +12,7 @@ import PublicationActions from '~/components/admin/publication_actions'
 import SlugField from '~/components/admin/slug_field'
 import ToggleList from '~/components/admin/toggle_list'
 import TranslationCard from '~/components/admin/translation_card'
-import FieldError from '~/components/field_error'
+import FieldError, { fieldAria } from '~/components/field_error'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { DatePicker } from '~/components/ui/date_picker'
 import { DateTimePicker } from '~/components/ui/date_time_picker'
@@ -161,6 +161,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
               <div className="space-y-2">
                 <Label htmlFor="eventName">Événement</Label>
                 <Input
+                  {...fieldAria(errors, 'eventName')}
                   id="eventName"
                   placeholder="Meetup Lyon JS, DevFest…"
                   value={form.data.eventName}
@@ -171,6 +172,7 @@ export default function TalkForm({ talk, options }: TalkFormProps) {
               <div className="space-y-2">
                 <Label htmlFor="city">Ville (optionnel)</Label>
                 <Input
+                  {...fieldAria(errors, 'city')}
                   id="city"
                   value={form.data.city}
                   onChange={(event) => form.setData('city', event.target.value)}

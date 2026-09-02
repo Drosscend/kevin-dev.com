@@ -1,5 +1,5 @@
 import { Form } from '@adonisjs/inertia/react'
-import FieldError from '~/components/field_error'
+import FieldError, { fieldAria } from '~/components/field_error'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
@@ -29,7 +29,7 @@ export default function Verify() {
                     autoComplete="one-time-code"
                     maxLength={11}
                     autoFocus
-                    aria-invalid={errors.code ? true : undefined}
+                    {...fieldAria(errors, 'code')}
                   />
                   <FieldError errors={errors} field="code" />
                 </div>

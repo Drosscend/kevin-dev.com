@@ -7,7 +7,7 @@ import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
 import LocaleTabsList, { translationStatus, useAdminLocale } from '~/components/admin/locale_tabs'
-import FieldError from '~/components/field_error'
+import FieldError, { fieldAria } from '~/components/field_error'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
@@ -102,6 +102,7 @@ function TimelineForm({
           <Label htmlFor={`period-${prefix}`}>Période</Label>
           <Input
             id={`period-${prefix}`}
+            {...fieldAria(errors, `period${suffix}`)}
             value={values[`period${suffix}`]}
             onChange={set(`period${suffix}`)}
           />
@@ -111,6 +112,7 @@ function TimelineForm({
           <Label htmlFor={`title-${prefix}`}>Intitulé</Label>
           <Input
             id={`title-${prefix}`}
+            {...fieldAria(errors, `title${suffix}`)}
             value={values[`title${suffix}`]}
             onChange={set(`title${suffix}`)}
           />
@@ -120,6 +122,7 @@ function TimelineForm({
           <Label htmlFor={`place-${prefix}`}>Lieu / statut</Label>
           <Input
             id={`place-${prefix}`}
+            {...fieldAria(errors, `place${suffix}`)}
             value={values[`place${suffix}`]}
             onChange={set(`place${suffix}`)}
           />

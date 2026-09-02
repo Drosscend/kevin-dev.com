@@ -41,7 +41,10 @@ export default function Messages({ messages }: MessagesProps) {
                 <div>
                   <p className="font-medium">
                     {!message.isRead && (
-                      <span className="bg-primary mr-2 inline-block size-2 rounded-full" />
+                      <>
+                        <span className="bg-primary mr-2 inline-block size-2 rounded-full" />
+                        <span className="sr-only">Non lu : </span>
+                      </>
                     )}
                     {message.name}{' '}
                     <a
@@ -61,6 +64,7 @@ export default function Messages({ messages }: MessagesProps) {
                     variant="ghost"
                     size="sm"
                     title={message.isRead ? 'Marquer non lu' : 'Marquer lu'}
+                    aria-label={message.isRead ? 'Marquer non lu' : 'Marquer lu'}
                     onClick={() => toggleRead(message)}
                   >
                     {message.isRead ? (

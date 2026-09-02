@@ -8,8 +8,24 @@ import { type ReactNode } from 'react'
 export type FieldErrors = Record<string, string | string[] | undefined>
 
 /** Standalone error message, for failures not tied to a form field. */
-export function ErrorText({ children }: { children: ReactNode }) {
-  return <p className="text-destructive text-sm">{children}</p>
+export function ErrorText({ id, children }: { id?: string; children: ReactNode }) {
+  return (
+    <p id={id} className="text-destructive text-sm">
+      {children}
+    </p>
+  )
+}
+
+function errorId(field: string) {
+  return `${field.replaceAll('.', '-')}-error`
+}
+
+/**
+ * Attributes tying a control to its FieldError: invalid state, and the
+ * message as its description, so assistive technology reads both.
+ */
+export function fieldAria(errors: FieldErrors | undefined, field: string) {
+  return errors?.[field] ? { 'aria-invalid': true, 'aria-describedby': errorId(field) } : {}
 }
 
 /**
@@ -28,5 +44,5 @@ export default function FieldError({
   if (!message) {
     return null
   }
-  return <ErrorText>{Array.isArray(message) ? message[0] : message}</ErrorText>
+  return <ErrorText id={errorId(field)}>{Array.isArray(message) ? message[0] : message}</ErrorText>
 }

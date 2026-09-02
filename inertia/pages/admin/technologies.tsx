@@ -6,7 +6,7 @@ import { TECHNOLOGY_CATEGORIES, type TechnologyCategory } from '#types/content'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
-import FieldError from '~/components/field_error'
+import FieldError, { fieldAria } from '~/components/field_error'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
@@ -111,6 +111,7 @@ function TechnologyForm({
       <div className="space-y-2">
         <Label htmlFor={`name-${key}`}>Nom</Label>
         <Input
+          {...fieldAria(errors, 'name')}
           id={`name-${key}`}
           value={values.name}
           onChange={(event) => setValues({ ...values, name: event.target.value })}
@@ -120,6 +121,7 @@ function TechnologyForm({
       <div className="space-y-2">
         <Label htmlFor={`slug-${key}`}>Slug</Label>
         <Input
+          {...fieldAria(errors, 'slug')}
           id={`slug-${key}`}
           value={values.slug}
           onChange={(event) => setValues({ ...values, slug: event.target.value })}
@@ -165,6 +167,7 @@ function TechnologyForm({
       <div className="space-y-2 sm:col-span-2">
         <Label htmlFor={`docsUrl-${key}`}>Documentation officielle (URL)</Label>
         <Input
+          {...fieldAria(errors, 'docsUrl')}
           id={`docsUrl-${key}`}
           type="url"
           inputMode="url"
@@ -177,6 +180,7 @@ function TechnologyForm({
       <div className="space-y-2">
         <Label htmlFor={`descFr-${key}`}>Description (FR)</Label>
         <Textarea
+          {...fieldAria(errors, 'descriptionFr')}
           id={`descFr-${key}`}
           value={values.descriptionFr}
           onChange={(event) => setValues({ ...values, descriptionFr: event.target.value })}
@@ -186,6 +190,7 @@ function TechnologyForm({
       <div className="space-y-2">
         <Label htmlFor={`descEn-${key}`}>Description (EN, optionnelle)</Label>
         <Textarea
+          {...fieldAria(errors, 'descriptionEn')}
           id={`descEn-${key}`}
           value={values.descriptionEn}
           onChange={(event) => setValues({ ...values, descriptionEn: event.target.value })}

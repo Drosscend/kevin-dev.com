@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 import AdminPage from '~/components/admin/admin_page'
 import ConfirmButton from '~/components/admin/confirm_button'
 import EmptyState from '~/components/admin/empty_state'
-import FieldError from '~/components/field_error'
+import FieldError, { fieldAria } from '~/components/field_error'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { FileInput } from '~/components/ui/file_input'
@@ -63,7 +63,7 @@ export default function MediaPage({ media }: MediaPageProps) {
                     name="alt"
                     id="alt"
                     placeholder="Description de l'image ou titre du document"
-                    aria-invalid={errors.alt ? true : undefined}
+                    {...fieldAria(errors, 'alt')}
                   />
                   <FieldError errors={errors} field="alt" />
                 </div>
