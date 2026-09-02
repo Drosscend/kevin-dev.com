@@ -1,5 +1,6 @@
 import { inject } from '@adonisjs/core'
 import vine from '@vinejs/vine'
+import { discardUpload } from '#app/shared/discard_upload'
 import { flashFieldErrors } from '#app/shared/field_errors'
 import { StoreDocument } from '#media/actions/store_document'
 import { StoreImage } from '#media/actions/store_image'
@@ -43,10 +44,15 @@ export default class StoreMediaController {
       return response.redirect().back()
     }
 
-    const { alt } = await request.validateUsing(StoreMediaController.validator)
-    const result = isDocument
-      ? await this.storeDocument.execute({ file, alt })
-      : await this.storeImage.execute({ file, alt })
+    let result
+    try {
+      const { alt } = await request.validateUsing(StoreMediaController.validator)
+      result = isDocument
+        ? await this.storeDocument.execute({ file, alt })
+        : await this.storeImage.execute({ file, alt })
+    } finally {
+      await discardUpload(file)
+    }
 
     if (!result.ok) {
       flashFieldErrors(session, {

@@ -1,3 +1,5 @@
+import { readdir } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
 import app from '@adonisjs/core/services/app'
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
@@ -5,6 +7,12 @@ import sharp from 'sharp'
 import { DeleteMedia } from '#media/actions/delete_media'
 import Media from '#media/models/media'
 import { admin } from '#tests/helpers/auth'
+
+/** The bodyparser names its temporary files with a bare UUID. */
+async function temporaryUploads() {
+  const entries = await readdir(tmpdir())
+  return entries.filter((name) => /^[0-9a-f-]{36}$/.test(name))
+}
 
 test.group('Admin media', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
@@ -46,6 +54,32 @@ test.group('Admin media', (group) => {
 
     const variant = await client.get(`/uploads/${media.key}/w320.webp`)
     variant.assertStatus(200)
+
+    await (await app.container.make(DeleteMedia)).execute(media.id)
+  })
+
+  test("l'upload ne laisse pas son fichier temporaire derrière lui", async ({ client, assert }) => {
+    const user = await admin()
+    const image = await sharp({
+      create: { width: 64, height: 64, channels: 3, background: { r: 10, g: 20, b: 30 } },
+    })
+      .png()
+      .toBuffer()
+    const before = await temporaryUploads()
+
+    await client
+      .post('/admin/media')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .file('file', image, { filename: 'photo-test.png' })
+      .field('alt', 'Une image de test')
+
+    const media = await Media.query().firstOrFail()
+    assert.deepEqual(
+      (await temporaryUploads()).filter((name) => !before.includes(name)),
+      []
+    )
 
     await (await app.container.make(DeleteMedia)).execute(media.id)
   })

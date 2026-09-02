@@ -1,6 +1,7 @@
 import { inject } from '@adonisjs/core'
 import router from '@adonisjs/core/services/router'
 import vine, { errors as vineErrors } from '@vinejs/vine'
+import { discardUpload } from '#app/shared/discard_upload'
 import { StoreImage } from '#media/actions/store_image'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -30,24 +31,29 @@ export default class UploadImageController {
       })
     }
 
-    let alt: string
+    let result
     try {
-      const payload = await request.validateUsing(UploadImageController.validator)
-      alt = payload.alt
-    } catch (error) {
-      if (!(error instanceof vineErrors.E_VALIDATION_ERROR)) {
-        throw error
+      let alt: string
+      try {
+        const payload = await request.validateUsing(UploadImageController.validator)
+        alt = payload.alt
+      } catch (error) {
+        if (!(error instanceof vineErrors.E_VALIDATION_ERROR)) {
+          throw error
+        }
+
+        const fieldErrors: Record<string, string[]> = {}
+        for (const message of error.messages) {
+          fieldErrors[message.field] = [...(fieldErrors[message.field] ?? []), message.message]
+        }
+
+        return response.unprocessableEntity({ errors: fieldErrors })
       }
 
-      const fieldErrors: Record<string, string[]> = {}
-      for (const message of error.messages) {
-        fieldErrors[message.field] = [...(fieldErrors[message.field] ?? []), message.message]
-      }
-
-      return response.unprocessableEntity({ errors: fieldErrors })
+      result = await this.storeImage.execute({ file, alt })
+    } finally {
+      await discardUpload(file)
     }
-
-    const result = await this.storeImage.execute({ file, alt })
 
     if (!result.ok) {
       return response.unprocessableEntity({
