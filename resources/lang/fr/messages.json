@@ -124,7 +124,6 @@
     }
   },
   "lightbox": {
-    "open": "Agrandir l'image",
     "openNamed": "Agrandir l'image : {alt}",
     "viewer": "Visionneuse d'images",
     "close": "Fermer",

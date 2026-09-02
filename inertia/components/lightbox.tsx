@@ -93,15 +93,21 @@ export default function Lightbox({
       return
     }
 
+    /**
+     * An image without alt text is decorative, and a decorative image
+     * cannot also be a control: it keeps the pointer affordance only.
+     */
     const images = imagesOf(root)
     images.forEach((image) => {
+      image.classList.add('cursor-zoom-in')
+
+      if (!image.alt) {
+        return
+      }
+
       image.tabIndex = 0
       image.setAttribute('role', 'button')
-      image.setAttribute(
-        'aria-label',
-        image.alt ? lightbox.openNamed.replace('{alt}', image.alt) : lightbox.open
-      )
-      image.classList.add('cursor-zoom-in')
+      image.setAttribute('aria-label', lightbox.openNamed.replace('{alt}', image.alt))
     })
 
     return () => {
