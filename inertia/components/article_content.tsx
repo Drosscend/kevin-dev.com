@@ -90,7 +90,8 @@ function enhanceCodeBlock(pre: HTMLPreElement, labels: Labels) {
 /**
  * A table wider than the reading column scrolls inside its own box
  * rather than pushing the whole page sideways on narrow screens. The
- * box is a focusable region, so the keyboard can scroll it too.
+ * box is a focusable region, so the keyboard can scroll it too; the
+ * label is numbered because several tables may share the page.
  */
 function enhanceTable(table: HTMLTableElement, label: string) {
   if (table.parentElement?.classList.contains('typeset-scroll')) {
@@ -127,7 +128,7 @@ export default function ArticleContent({ html }: { html: string }) {
       .forEach((pre) => enhanceCodeBlock(pre, { copy, download, table }))
     root
       .querySelectorAll<HTMLTableElement>('table')
-      .forEach((element) => enhanceTable(element, table))
+      .forEach((element, index) => enhanceTable(element, `${table} ${index + 1}`))
   }, [html, copy, download, table])
 
   return <div ref={container} className="typeset" dangerouslySetInnerHTML={{ __html: html }} />
