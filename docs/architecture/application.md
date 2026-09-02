@@ -83,7 +83,9 @@ Une Query est une lecture nommée, une par fichier, avec `execute`.
 
 - Elle renvoie une projection façonnée pour son appelant, pas un modèle brut.
 - Les dates restent des `DateTime` et les médias des `MediaSource` : leur mise en
-  forme appartient à la couche de délivrance.
+  forme appartient à la couche de délivrance. Le serveur tourne en UTC ; une
+  valeur `YYYY-MM-DDTHH:mm` saisie ou affichée dans l'admin s'entend dans
+  `SITE_ZONE` (`src/shared/site_zone.ts`), à l'écriture comme à la relecture.
 - Une lecture vraiment triviale peut rester dans le controller.
 
 ## Repositories et modèles

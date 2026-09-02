@@ -4,6 +4,7 @@ import { BaseCommand, args, flags } from '@adonisjs/core/ace'
 import { DateTime } from 'luxon'
 import { SaveProject } from '#portfolio/actions/save_project'
 import Project from '#portfolio/models/project'
+import { SITE_ZONE } from '#shared/site_zone'
 import Technology from '#technologies/models/technology'
 import { PROJECT_LINK_TYPES, type ProjectLinkType } from '#types/content'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
@@ -75,7 +76,7 @@ export default class ProjectsImport extends BaseCommand {
     const technologies = await Technology.query().select('id', 'slug')
     const idBySlug = new Map(technologies.map((technology) => [technology.slug, technology.id]))
 
-    const now = DateTime.now()
+    const now = DateTime.now().setZone(SITE_ZONE)
     const saveProject = await this.app.container.make(SaveProject)
 
     let created = 0

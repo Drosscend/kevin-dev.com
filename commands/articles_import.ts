@@ -5,6 +5,7 @@ import { DateTime } from 'luxon'
 import { SaveArticle } from '#blog/actions/save_article'
 import Article from '#blog/models/article'
 import Category from '#blog/models/category'
+import { SITE_ZONE } from '#shared/site_zone'
 import Technology from '#technologies/models/technology'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 
@@ -67,7 +68,7 @@ export default class ArticlesImport extends BaseCommand {
     const categories = await Category.query().select('id', 'slug')
     const categoryIdBySlug = new Map(categories.map((category) => [category.slug, category.id]))
 
-    const now = DateTime.now()
+    const now = DateTime.now().setZone(SITE_ZONE)
     const saveArticle = await this.app.container.make(SaveArticle)
 
     let created = 0

@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import Markdown from '#shared/content/markdown'
+import { SITE_ZONE } from '#shared/site_zone'
 import type { PublicationStatus } from '#types/content'
 
 export interface ContentTranslationPayload {
@@ -55,7 +56,7 @@ export function applyContentFields(entry: ContentEntry, payload: ContentPayload)
   entry.readingTime = Markdown.readingTime(payload.fr.contentMarkdown)
 
   if (payload.publishedAt) {
-    entry.publishedAt = DateTime.fromISO(payload.publishedAt)
+    entry.publishedAt = DateTime.fromISO(payload.publishedAt, { zone: SITE_ZONE })
   } else if (payload.status === 'published' && !entry.publishedAt) {
     entry.publishedAt = DateTime.now()
   }
