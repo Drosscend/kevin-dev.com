@@ -26,6 +26,8 @@ import { client } from '~/client'
 import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
+import { useMediaQuery } from '~/lib/use_media_query'
+import { useTheme } from '~/lib/use_theme'
 import { cn } from '~/lib/utils'
 
 /**
@@ -125,6 +127,8 @@ function NavLink({
 export default function AdminLayout({ children }: { children: ReactElement<Data.SharedProps> }) {
   const { url } = usePage()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const wide = useMediaQuery('(min-width: 64rem)')
+  const theme = useTheme()
   const currentPath = url.split('?')[0]
   const unread = children.props.unreadMessages ?? 0
   const closeMobile = () => setMobileOpen(false)
@@ -201,6 +205,8 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
           variant="ghost"
           size="sm"
           aria-label="Ouvrir le menu"
+          aria-controls="admin-sidebar"
+          aria-expanded={mobileOpen}
           onClick={() => setMobileOpen(true)}
         >
           <MenuIcon className="size-4" />
@@ -217,6 +223,8 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
       )}
 
       <aside
+        id="admin-sidebar"
+        inert={!wide && !mobileOpen}
         className={cn(
           'bg-background fixed inset-y-0 left-0 z-50 flex w-56 flex-col border-r transition-transform lg:static lg:translate-x-0 lg:transition-none',
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
@@ -226,7 +234,7 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
       </aside>
 
       <main className="flex-1 p-4 sm:p-8">{children}</main>
-      <Toaster position="top-center" richColors />
+      <Toaster position="top-center" richColors theme={theme} />
     </div>
   )
 }

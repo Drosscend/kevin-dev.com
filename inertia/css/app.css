@@ -12,6 +12,7 @@
 /* "Épure" design system: warm near-white paper, dark ink, a single
    deep-red accent taken from the curtain of the hero photo. */
 :root {
+  color-scheme: light;
   --radius: 0.625rem;
   --background: oklch(0.984 0.002 106);
   --foreground: oklch(0.24 0.005 106);
@@ -34,6 +35,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --background: oklch(0.195 0.004 106);
   --foreground: oklch(0.95 0.002 106);
   --card: oklch(0.235 0.004 106);

@@ -9,6 +9,7 @@ import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
 import { otherLocaleUrl, useLocalePath } from '~/lib/locale'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
+import { useTheme } from '~/lib/use_theme'
 import { cn } from '~/lib/utils'
 
 /** Order of the header and footer links; labels come from shared props. */
@@ -33,6 +34,7 @@ export default function Layout({ children }: { children: ReactNode }) {
    * listings always do, so the switch shows unless told otherwise.
    */
   const translated = props.hasOtherLocale ?? true
+  const theme = useTheme()
 
   useFlashToasts()
 
@@ -81,14 +83,21 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      {translated && (
-        <LanguageSuggestion
-          targetLocale={locale === 'fr' ? 'en' : 'fr'}
-          href={otherLocaleUrl(locale, url)}
-        />
-      )}
+      <a
+        href="#main"
+        className="bg-primary text-primary-foreground sr-only z-50 rounded-md px-4 py-2 font-medium focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+      >
+        {messages.nav.skipToContent}
+      </a>
 
       <header className="bg-background/85 sticky top-0 z-40 backdrop-blur-sm">
+        {translated && (
+          <LanguageSuggestion
+            targetLocale={locale === 'fr' ? 'en' : 'fr'}
+            href={otherLocaleUrl(locale, url)}
+          />
+        )}
+
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <Link href={to('/')} className="font-display font-semibold tracking-tight">
             Kévin Véronési
@@ -114,6 +123,9 @@ export default function Layout({ children }: { children: ReactNode }) {
             {translated && (
               <Link
                 href={otherLocaleUrl(locale, url)}
+                lang={locale === 'en' ? 'fr' : 'en'}
+                hrefLang={locale === 'en' ? 'fr' : 'en'}
+                aria-label={messages.nav.otherLanguage}
                 className="text-muted-foreground hover:text-primary px-1.5 font-mono text-xs tracking-wider uppercase transition-colors"
               >
                 {locale === 'en' ? 'FR' : 'EN'}
@@ -170,7 +182,9 @@ export default function Layout({ children }: { children: ReactNode }) {
       </header>
 
       <HoverPreviewProvider>
-        <main className="flex-1">{children}</main>
+        <main id="main" tabIndex={-1} className="flex-1 outline-none">
+          {children}
+        </main>
       </HoverPreviewProvider>
       <footer className="border-t">
         <div className="text-muted-foreground mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-9 text-sm">
@@ -219,7 +233,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </span>
         </div>
       </footer>
-      <Toaster position="top-center" richColors />
+      <Toaster position="top-center" richColors theme={theme} />
     </div>
   )
 }

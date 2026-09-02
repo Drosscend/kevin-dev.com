@@ -48,6 +48,24 @@ test.group('Chrome de navigation', (group) => {
     assert.equal(locale, 'en')
   })
 
+  test('le HTML servi porte un lien d’évitement vers le contenu', async ({ client, assert }) => {
+    const response = await client.get('/en')
+
+    response.assertStatus(200)
+    assert.include(response.text(), 'href="#main"')
+    assert.include(response.text(), 'Skip to content')
+    assert.include(response.text(), '<main id="main"')
+  })
+
+  test('le lien vers l’autre langue annonce sa langue cible', async ({ client, assert }) => {
+    const response = await client.get('/')
+
+    response.assertStatus(200)
+    const link = response.text().match(/<a[^>]*>EN<\/a>/)?.[0] ?? ''
+    assert.match(link, /hreflang="en"/i)
+    assert.match(link, /\slang="en"/)
+  })
+
   test('les libellés d’accessibilité des contrôles sont traduits', async ({ client, assert }) => {
     const response = await client.get('/en').withInertia()
 

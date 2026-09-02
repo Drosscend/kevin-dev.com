@@ -13,7 +13,8 @@
     "closeMenu": "Close the menu",
     "theme": "Toggle light or dark theme",
     "otherLanguage": "Lire cette page en français",
-    "otherLanguageDismiss": "Fermer"
+    "otherLanguageDismiss": "Fermer",
+    "skipToContent": "Skip to content"
   },
   "home": {
     "metaTitle": "Kévin Véronési, full-stack developer and AI consultant",
@@ -44,7 +45,8 @@
     "archived": "Withdrawn from the site, only visible while signed in",
     "toc": "Contents",
     "copy": "Copy",
-    "download": "Download"
+    "download": "Download",
+    "table": "Scrollable table"
   },
   "blog": {
     "title": "Blog",
@@ -55,7 +57,8 @@
     "technologies": "Technologies covered",
     "backToList": "All articles",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "pagination": "Article pages"
   },
   "portfolio": {
     "title": "Projects",
