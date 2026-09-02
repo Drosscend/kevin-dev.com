@@ -12,19 +12,22 @@ import { useFlashToasts } from '~/lib/use_flash_toasts'
 import { useTheme } from '~/lib/use_theme'
 import { cn } from '~/lib/utils'
 
-/** Order of the header and footer links; labels come from shared props. */
+/**
+ * Order of the header and footer links; labels come from shared props.
+ * A content section is only listed while it has something to open.
+ */
 const NAVIGATION = [
-  { path: '/projects', label: 'projects' },
-  { path: '/blog', label: 'blog' },
-  { path: '/talks', label: 'talks' },
-  { path: '/cv', label: 'cv' },
-  { path: '/technologies', label: 'technologies' },
-  { path: '/contact', label: 'contact' },
+  { path: '/projects', label: 'projects', section: 'projects' },
+  { path: '/blog', label: 'blog', section: 'blog' },
+  { path: '/talks', label: 'talks', section: 'talks' },
+  { path: '/cv', label: 'cv', section: null },
+  { path: '/technologies', label: 'technologies', section: 'technologies' },
+  { path: '/contact', label: 'contact', section: null },
 ] as const
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { url, props } = usePage<{ hasOtherLocale?: boolean }>()
-  const { locale, messages, year } = props
+  const { locale, messages, year, sections } = props
   const to = useLocalePath()
   const [menuOpen, setMenuOpen] = useState(false)
   const [renderedUrl, setRenderedUrl] = useState(url)
@@ -35,6 +38,7 @@ export default function Layout({ children }: { children: ReactNode }) {
    */
   const translated = props.hasOtherLocale ?? true
   const theme = useTheme()
+  const navigation = NAVIGATION.filter((item) => item.section === null || sections[item.section])
 
   useFlashToasts()
 
@@ -105,7 +109,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
           <div className="flex items-center gap-1 md:gap-3">
             <nav aria-label={messages.nav.primary} className="hidden items-center gap-5 md:flex">
-              {NAVIGATION.map((item) => (
+              {navigation.map((item) => (
                 <Link
                   key={item.path}
                   href={to(item.path)}
@@ -163,7 +167,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           hidden={!menuOpen}
           className="bg-background relative z-50 border-b px-6 pt-2 pb-4 md:hidden"
         >
-          {NAVIGATION.map((item) => (
+          {navigation.map((item) => (
             <Link
               key={item.path}
               href={to(item.path)}
@@ -189,7 +193,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <footer className="border-t">
         <div className="text-muted-foreground mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-9 text-sm">
           <nav aria-label={messages.nav.secondary} className="flex flex-wrap gap-x-5 gap-y-3">
-            {NAVIGATION.map((item) => (
+            {navigation.map((item) => (
               <Link
                 key={item.path}
                 href={to(item.path)}

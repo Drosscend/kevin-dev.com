@@ -2,6 +2,7 @@ import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 import { DateTime } from 'luxon'
 import UserTransformer from '#app/identity/transformers/user_transformer'
 import ContactMessage from '#contact/models/contact_message'
+import { PublishedSectionsQuery } from '#shared/content/published_sections_query'
 import { type Locale, toLocale } from '#types/i18n'
 import en from '../../resources/lang/en/messages.json' with { type: 'json' }
 import fr from '../../resources/lang/fr/messages.json' with { type: 'json' }
@@ -11,6 +12,8 @@ import type { NextFn } from '@adonisjs/core/types/http'
 const MESSAGES = { fr, en } satisfies Record<Locale, typeof fr>
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
+  #sections = new PublishedSectionsQuery()
+
   share(ctx: HttpContext) {
     /**
      * The share method is called everytime an Inertia page is rendered. In
@@ -33,6 +36,11 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
       locale: ctx.inertia.always(locale),
       year: ctx.inertia.always(DateTime.now().year),
       messages: ctx.inertia.once(() => MESSAGES[locale], { key: `messages.${locale}` }),
+      /**
+       * Content sections with something to open in this language: the
+       * public navigation lists only those.
+       */
+      sections: () => this.#sections.execute(locale),
       /**
        * Unread contact messages, displayed as a badge in the admin
        * sidebar. Only computed for authenticated (admin) requests.

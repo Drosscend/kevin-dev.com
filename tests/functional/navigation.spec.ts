@@ -1,5 +1,6 @@
 import testUtils from '@adonisjs/core/services/test_utils'
 import { test } from '@japa/runner'
+import { makeArticle } from '#tests/helpers/content'
 import { homePage, notFoundPage } from '#tests/helpers/pages'
 import enMessages from '../../resources/lang/en/messages.json' with { type: 'json' }
 import frMessages from '../../resources/lang/fr/messages.json' with { type: 'json' }
@@ -46,6 +47,33 @@ test.group('Chrome de navigation', (group) => {
     assert.equal(messages.nav.talks, 'Speaking')
     assert.equal(messages.errors.notFound, 'Page not found')
     assert.equal(locale, 'en')
+  })
+
+  test('la navigation ne liste que les sections qui ont du contenu publié', async ({
+    client,
+    assert,
+  }) => {
+    const empty = await client.get('/').withInertia()
+    assert.deepEqual(homePage(empty).sections, {
+      projects: false,
+      blog: false,
+      talks: false,
+      technologies: false,
+    })
+
+    await makeArticle('article-fr', 'published')
+    await makeArticle('article-brouillon', 'draft', { english: true })
+
+    const french = await client.get('/').withInertia()
+    assert.isTrue(homePage(french).sections.blog)
+    assert.isFalse(homePage(french).sections.projects)
+
+    const english = await client.get('/en').withInertia()
+    assert.isFalse(homePage(english).sections.blog, 'seul un brouillon existe en anglais')
+
+    const html = await client.get('/')
+    assert.include(html.text(), '>Blog</a>')
+    assert.notInclude(html.text(), '>Interventions</a>')
   })
 
   test('le HTML servi porte un lien d’évitement vers le contenu', async ({ client, assert }) => {
