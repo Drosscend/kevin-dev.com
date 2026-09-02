@@ -1,10 +1,11 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
+import type { Picture } from '#types/content'
 import type { TalkLinkType } from '#types/content'
 
 export interface TalkDetailView {
   title: string
   contentHtml: string
-  coverUrl: string | null
+  cover: Picture | null
   eventName: string
   eventDate: string
   city: string
@@ -19,7 +20,7 @@ export default class TalkDetailTransformer extends BaseTransformer<TalkDetailVie
     return this.pick(this.resource, [
       'title',
       'contentHtml',
-      'coverUrl',
+      'cover',
       'eventName',
       'eventDate',
       'city',

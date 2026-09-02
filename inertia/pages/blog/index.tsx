@@ -80,7 +80,7 @@ export default function BlogIndex({
                 href={`${base}/${article.slug}`}
                 title={article.title}
                 summary={article.summary}
-                thumbnailUrl={article.coverUrl}
+                picture={article.cover}
                 meta={
                   <span>
                     {article.publishedAt} · {article.readingTimeLabel}

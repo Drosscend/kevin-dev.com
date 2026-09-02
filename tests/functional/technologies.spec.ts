@@ -30,10 +30,7 @@ test.group('Technologies publiques', (group) => {
       technologies.find((item) => item.slug === 'adonisjs')?.usageLabel,
       '2 projets · 1 article · 1 intervention'
     )
-    assert.equal(
-      technologies.find((item) => item.slug === 'go')?.usageLabel,
-      "Rien de publié sur cette technologie pour l'instant."
-    )
+    assert.isNull(technologies.find((item) => item.slug === 'go')?.usageLabel)
   })
 
   test('le compte est traduit et accordé en anglais', async ({ client, assert }) => {
@@ -46,10 +43,7 @@ test.group('Technologies publiques', (group) => {
     response.assertStatus(200)
     const { technologies } = technologyListPage(response)
     assert.equal(technologies.find((item) => item.slug === 'adonisjs')?.usageLabel, '1 project')
-    assert.equal(
-      technologies.find((item) => item.slug === 'go')?.usageLabel,
-      'Nothing published about this technology yet.'
-    )
+    assert.isNull(technologies.find((item) => item.slug === 'go')?.usageLabel)
   })
 
   test('la fiche liste projets, articles et interventions qui portent la technologie', async ({
@@ -72,7 +66,7 @@ test.group('Technologies publiques', (group) => {
       technology.projects.map((project) => project.slug),
       ['avec-adonis']
     )
-    assert.isNull(technology.projects[0].coverUrl)
+    assert.isNull(technology.projects[0].cover)
     assert.deepEqual(
       technology.articles.map((article) => article.slug),
       ['article-adonis']
@@ -83,7 +77,7 @@ test.group('Technologies publiques', (group) => {
     )
   })
 
-  test('le lien de documentation suit la technologie sur la liste et sa fiche', async ({
+  test('le lien de documentation vit sur la fiche, pas sur la liste', async ({
     client,
     assert,
   }) => {
@@ -93,15 +87,10 @@ test.group('Technologies publiques', (group) => {
       category: 'framework',
       docsUrl: 'https://docs.adonisjs.com',
     })
-    await Technology.create({ slug: 'go', name: 'Go', category: 'langage' })
 
     const list = await client.get('/technologies').withInertia()
     const { technologies } = technologyListPage(list)
-    assert.equal(
-      technologies.find((item) => item.slug === 'adonisjs')?.docsUrl,
-      'https://docs.adonisjs.com'
-    )
-    assert.isNull(technologies.find((item) => item.slug === 'go')?.docsUrl ?? null)
+    assert.notProperty(technologies[0], 'docsUrl')
 
     const show = await client.get('/technologies/adonisjs').withInertia()
     const { technology } = technologyPage(show)

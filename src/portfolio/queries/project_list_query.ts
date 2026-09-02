@@ -18,6 +18,7 @@ export interface ProjectListItem {
   endedAt: DateTime | null
   readingTime: number
   ongoing: boolean
+  featured: boolean
   technologies: ProjectTechnologyItem[]
 }
 
@@ -47,6 +48,7 @@ export class ProjectListQuery {
         endedAt: project.endedAt,
         readingTime: project.readingTime,
         ongoing: project.isOngoing,
+        featured: project.featured,
         technologies: project.technologies.map((technology) => ({
           slug: technology.slug,
           name: technology.name,

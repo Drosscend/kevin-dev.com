@@ -1,4 +1,5 @@
 import { ChipLink, ChipList } from '~/components/chip'
+import { SectionLabel } from '~/components/section_label'
 import { useLocalePath } from '~/lib/locale'
 import { cn } from '~/lib/utils'
 
@@ -42,7 +43,7 @@ export function TechnologySection({
 
   return (
     <section className={cn('border-t pt-8', className)}>
-      <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">{title}</h2>
+      <SectionLabel as="h2">{title}</SectionLabel>
       <ChipList className="mt-4">
         {technologies.map((technology) => (
           <ChipLink key={technology.slug} href={to(`/technologies/${technology.slug}`)}>

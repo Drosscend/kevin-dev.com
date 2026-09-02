@@ -1,4 +1,5 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
+import type { Picture } from '#types/content'
 
 export interface ArticleCard {
   slug: string
@@ -8,7 +9,7 @@ export interface ArticleCard {
   readingTimeLabel: string
   category: { slug: string; name: string } | null
   technologies: { slug: string; name: string }[]
-  coverUrl: string | null
+  cover: Picture | null
 }
 
 export default class ArticleCardTransformer extends BaseTransformer<ArticleCard> {
@@ -21,7 +22,7 @@ export default class ArticleCardTransformer extends BaseTransformer<ArticleCard>
       'readingTimeLabel',
       'category',
       'technologies',
-      'coverUrl',
+      'cover',
     ])
   }
 }

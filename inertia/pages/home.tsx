@@ -2,6 +2,8 @@ import { Link } from '@adonisjs/inertia/react'
 import { DownloadIcon } from 'lucide-react'
 import { ChipLink, ChipList } from '~/components/chip'
 import { LinkArrow, LinkList, LinkRow } from '~/components/content_link'
+import { CoverImage, CoverPlaceholder } from '~/components/cover_image'
+import { SectionLabel } from '~/components/section_label'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import { Button } from '~/components/ui/button'
@@ -86,8 +88,8 @@ export default function Home({
             </ul>
           )}
           {location && <p className="text-muted-foreground mt-6 text-sm">{location}</p>}
-          <div className="mt-10 flex flex-wrap gap-3.5">
-            <Button asChild size="lg">
+          <div className="mt-10 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
+            <Button asChild size="lg" className="w-full sm:w-auto">
               {cvPdfAvailable ? (
                 <a href="/cv.pdf">
                   <DownloadIcon className="size-4" />
@@ -100,7 +102,7 @@ export default function Home({
                 </Link>
               )}
             </Button>
-            <Button asChild size="lg" variant="outline">
+            <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
               <Link href={to('/contact')}>{messages.home.contactMe}</Link>
             </Button>
           </div>
@@ -112,16 +114,14 @@ export default function Home({
           alt={messages.home.photoAlt}
           width={720}
           height={960}
-          className="w-full max-w-[260px] rounded-lg object-cover md:max-w-[300px] md:justify-self-end"
+          className="w-full max-w-[220px] rounded-lg object-cover md:max-w-[300px] md:justify-self-end"
         />
       </section>
 
       {now && (
         <section className="pb-24 md:pb-28">
           <div className="border-primary max-w-[620px] border-l-2 pl-6">
-            <p className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-              {messages.home.now}
-            </p>
+            <SectionLabel>{messages.home.now}</SectionLabel>
             <p className="mt-2">{now}</p>
           </div>
         </section>
@@ -141,13 +141,15 @@ export default function Home({
                   className="group hover:border-primary flex h-full flex-col overflow-hidden rounded-lg border transition-colors"
                 >
                   <div className="bg-muted aspect-[16/10] overflow-hidden">
-                    {project.coverUrl && (
-                      <img
-                        src={project.coverUrl}
-                        alt=""
+                    {project.cover ? (
+                      <CoverImage
+                        picture={project.cover}
+                        sizes="(min-width: 1024px) 300px, (min-width: 640px) 50vw, 100vw"
                         loading="lazy"
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transform-none"
                       />
+                    ) : (
+                      <CoverPlaceholder title={project.title} className="h-full w-full text-4xl" />
                     )}
                   </div>
                   <div className="flex flex-1 flex-col p-5">
@@ -186,7 +188,7 @@ export default function Home({
                 href={to(`/blog/${article.slug}`)}
                 title={article.title}
                 meta={article.publishedAt}
-                preview={{ imageUrl: article.coverUrl, summary: article.summary }}
+                preview={{ imageUrl: article.cover?.src, summary: article.summary }}
               />
             ))}
           </LinkList>
@@ -259,7 +261,7 @@ export default function Home({
                 badge={talk.upcoming ? messages.talks.upcoming : undefined}
                 meta={`${talk.eventName} · ${talk.eventDate}`}
                 preview={{
-                  imageUrl: talk.coverUrl,
+                  imageUrl: talk.cover?.src,
                   summary: talk.summary,
                   meta: talk.city || undefined,
                 }}

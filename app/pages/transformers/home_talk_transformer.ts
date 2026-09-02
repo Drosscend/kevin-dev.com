@@ -1,4 +1,5 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
+import type { Picture } from '#types/content'
 
 export interface HomeTalkCard {
   slug: string
@@ -8,7 +9,7 @@ export interface HomeTalkCard {
   eventDate: string
   city: string
   upcoming: boolean
-  coverUrl: string | null
+  cover: Picture | null
 }
 
 export default class HomeTalkTransformer extends BaseTransformer<HomeTalkCard> {
@@ -21,7 +22,7 @@ export default class HomeTalkTransformer extends BaseTransformer<HomeTalkCard> {
       'eventDate',
       'city',
       'upcoming',
-      'coverUrl',
+      'cover',
     ])
   }
 }

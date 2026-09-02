@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core'
 import { Exception } from '@adonisjs/core/exceptions'
 import { longDate } from '#app/shared/date_format'
-import { mediaUrl } from '#app/shared/media_url'
+import { picture } from '#app/shared/media_url'
 import { previewOrFail } from '#app/shared/publication_response'
 import SeoService from '#app/shared/seo_service'
 import TalkDetailTransformer from '#app/talks/transformers/talk_detail_transformer'
@@ -42,7 +42,7 @@ export default class TalkController {
       talk: TalkDetailTransformer.transform({
         title: talk.title,
         contentHtml: talk.contentHtml,
-        coverUrl: mediaUrl(talk.cover),
+        cover: picture(talk.cover),
         eventName: talk.eventName,
         eventDate: longDate(talk.eventDate, locale),
         city: talk.city,

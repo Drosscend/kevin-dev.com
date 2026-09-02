@@ -1,6 +1,6 @@
 import { inject } from '@adonisjs/core'
 import { longDate } from '#app/shared/date_format'
-import { mediaUrl } from '#app/shared/media_url'
+import { picture } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import TalkCardTransformer from '#app/talks/transformers/talk_card_transformer'
 import { TalkListQuery } from '#talks/queries/talk_list_query'
@@ -28,7 +28,7 @@ export default class TalkListController {
           upcoming: talk.upcoming,
           links: talk.links,
           technologies: talk.technologies,
-          coverUrl: mediaUrl(talk.cover),
+          cover: picture(talk.cover),
         }))
       ),
       meta: SeoService.build({

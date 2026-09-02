@@ -67,7 +67,9 @@
     "ongoing": "Ongoing",
     "backToList": "All projects",
     "technologies": "Technologies used",
-    "relatedArticles": "Related articles"
+    "relatedArticles": "Related articles",
+    "featured": "Featured",
+    "others": "Other projects"
   },
   "talks": {
     "title": "Speaking",

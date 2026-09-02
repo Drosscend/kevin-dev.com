@@ -2,7 +2,7 @@ import { inject } from '@adonisjs/core'
 import { Exception } from '@adonisjs/core/exceptions'
 import ProjectDetailTransformer from '#app/portfolio/transformers/project_detail_transformer'
 import { monthYear } from '#app/shared/date_format'
-import { mediaUrl } from '#app/shared/media_url'
+import { picture } from '#app/shared/media_url'
 import { previewOrFail } from '#app/shared/publication_response'
 import SeoService from '#app/shared/seo_service'
 import { ProjectDetailQuery } from '#portfolio/queries/project_detail_query'
@@ -42,7 +42,7 @@ export default class ProjectController {
       project: ProjectDetailTransformer.transform({
         title: project.title,
         contentHtml: project.contentHtml,
-        coverUrl: mediaUrl(project.cover),
+        cover: picture(project.cover),
         startedAt: monthYear(project.startedAt, locale),
         endedAt: monthYear(project.endedAt, locale),
         readingTimeLabel: i18n.t('messages.content.readingTime', { minutes: project.readingTime }),

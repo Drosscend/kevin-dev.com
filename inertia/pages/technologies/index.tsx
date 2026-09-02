@@ -1,8 +1,9 @@
+import { Link } from '@adonisjs/inertia/react'
 import { TECHNOLOGY_CATEGORIES } from '#types/content'
-import { ListingList, ListingRow } from '~/components/content_link'
+import { CoverImage, CoverPlaceholder } from '~/components/cover_image'
 import { EmptyState } from '~/components/empty_state'
-import ExternalLinkList from '~/components/external_link_list'
 import { PageHeader } from '~/components/page_header'
+import { SectionLabel } from '~/components/section_label'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { useLocalePath } from '~/lib/locale'
 import { type InertiaProps } from '~/types'
@@ -34,39 +35,41 @@ export default function TechnologiesIndex({
       <div className="space-y-14">
         {grouped.map((group) => (
           <section key={group.category}>
-            <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-              {messages.technologies.categories[group.category]}
-            </h2>
-            <div className="mt-5">
-              <ListingList>
-                {group.items.map((technology) => (
-                  <ListingRow
-                    key={technology.slug}
+            <SectionLabel as="h2">{messages.technologies.categories[group.category]}</SectionLabel>
+            <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {group.items.map((technology) => (
+                <li key={technology.slug}>
+                  <Link
                     href={to(`/technologies/${technology.slug}`)}
-                    title={technology.name}
-                    summary={technology.description}
-                    thumbnailUrl={technology.logoUrl}
-                    thumbnail="logo"
-                    meta={technology.usageLabel}
-                    heading="h3"
-                    footer={
-                      technology.docsUrl && (
-                        <ExternalLinkList
-                          links={[
-                            {
-                              label: messages.technologies.docs,
-                              url: technology.docsUrl,
-                              type: 'docs',
-                            },
-                          ]}
-                          variant="subtle"
-                        />
-                      )
-                    }
-                  />
-                ))}
-              </ListingList>
-            </div>
+                    className="group hover:border-primary bg-card flex h-full items-center gap-3 rounded-lg border p-3 transition-colors"
+                  >
+                    {technology.logo ? (
+                      <CoverImage
+                        picture={technology.logo}
+                        sizes="40px"
+                        loading="lazy"
+                        className="size-10 shrink-0 rounded object-contain"
+                      />
+                    ) : (
+                      <CoverPlaceholder
+                        title={technology.name}
+                        className="size-10 shrink-0 rounded text-base"
+                      />
+                    )}
+                    <div className="min-w-0">
+                      <h3 className="group-hover:text-primary truncate font-medium transition-colors">
+                        {technology.name}
+                      </h3>
+                      {technology.usageLabel && (
+                        <p className="text-muted-foreground font-mono text-xs">
+                          {technology.usageLabel}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
         ))}
       </div>

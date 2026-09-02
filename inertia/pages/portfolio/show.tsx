@@ -1,11 +1,13 @@
 import { Link } from '@adonisjs/inertia/react'
 import ArticleContent from '~/components/article_content'
 import { LinkArrow } from '~/components/content_link'
+import { CoverImage } from '~/components/cover_image'
 import ExternalLinkList from '~/components/external_link_list'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner from '~/components/preview_banner'
 import ReadingLayout from '~/components/reading_layout'
+import { SectionLabel } from '~/components/section_label'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import TableOfContents from '~/components/table_of_contents'
@@ -55,8 +57,12 @@ export default function PortfolioShow({ preview, project, messages, meta }: Port
         </header>
 
         <Lightbox className="space-y-10">
-          {project.coverUrl && (
-            <img src={project.coverUrl} alt="" className="w-full rounded-lg border" />
+          {project.cover && (
+            <CoverImage
+              picture={project.cover}
+              sizes="(min-width: 768px) 720px, 100vw"
+              className="w-full rounded-lg border"
+            />
           )}
 
           <ArticleContent html={project.contentHtml} />
@@ -69,9 +75,7 @@ export default function PortfolioShow({ preview, project, messages, meta }: Port
 
         {project.articles.length > 0 && (
           <section className="border-t pt-8">
-            <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-              {messages.portfolio.relatedArticles}
-            </h2>
+            <SectionLabel as="h2">{messages.portfolio.relatedArticles}</SectionLabel>
             <ul className="mt-4 space-y-2 text-sm">
               {project.articles.map((article) => (
                 <li key={article.slug}>

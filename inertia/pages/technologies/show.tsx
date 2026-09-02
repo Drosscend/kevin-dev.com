@@ -1,7 +1,9 @@
 import { ListingList, ListingRow } from '~/components/content_link'
+import { CoverImage } from '~/components/cover_image'
 import ExternalLinkList from '~/components/external_link_list'
 import { BackLink } from '~/components/page_header'
 import ReadingLayout from '~/components/reading_layout'
+import { SectionLabel } from '~/components/section_label'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { useLocalePath } from '~/lib/locale'
 import { type InertiaProps } from '~/types'
@@ -28,7 +30,7 @@ function UsageSection({
 
   return (
     <section className="mt-14">
-      <h2 className="text-muted-foreground font-mono text-xs tracking-wider uppercase">{title}</h2>
+      <SectionLabel as="h2">{title}</SectionLabel>
       <div className="mt-8">
         <ListingList>
           {entries.map((entry) => (
@@ -37,7 +39,7 @@ function UsageSection({
               href={href(entry.slug)}
               title={entry.title}
               summary={entry.summary}
-              thumbnailUrl={entry.coverUrl}
+              picture={entry.cover}
               heading="h3"
             />
           ))}
@@ -59,10 +61,10 @@ export default function TechnologyShow({ technology, messages, meta }: Technolog
         </div>
 
         <header className="mt-10 flex items-center gap-5">
-          {technology.logoUrl && (
-            <img
-              src={technology.logoUrl}
-              alt=""
+          {technology.logo && (
+            <CoverImage
+              picture={technology.logo}
+              sizes="56px"
               className="size-14 shrink-0 rounded object-contain"
             />
           )}

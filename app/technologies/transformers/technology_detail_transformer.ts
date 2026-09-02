@@ -1,15 +1,16 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
+import type { Picture } from '#types/content'
 
 export interface TechnologyEntry {
   slug: string
   title: string
   summary: string
-  coverUrl: string | null
+  cover: Picture | null
 }
 
 export interface TechnologyDetailView {
   name: string
-  logoUrl: string | null
+  logo: Picture | null
   docsUrl: string | null
   description: string
   projects: TechnologyEntry[]
@@ -21,7 +22,7 @@ export default class TechnologyDetailTransformer extends BaseTransformer<Technol
   toObject() {
     return this.pick(this.resource, [
       'name',
-      'logoUrl',
+      'logo',
       'docsUrl',
       'description',
       'projects',

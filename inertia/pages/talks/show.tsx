@@ -1,4 +1,5 @@
 import ArticleContent from '~/components/article_content'
+import { CoverImage } from '~/components/cover_image'
 import ExternalLinkList from '~/components/external_link_list'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
@@ -52,7 +53,13 @@ export default function TalksShow({ preview, talk, messages, meta }: TalksShowPr
         </header>
 
         <Lightbox className="space-y-10">
-          {talk.coverUrl && <img src={talk.coverUrl} alt="" className="w-full rounded-lg border" />}
+          {talk.cover && (
+            <CoverImage
+              picture={talk.cover}
+              sizes="(min-width: 768px) 720px, 100vw"
+              className="w-full rounded-lg border"
+            />
+          )}
 
           <ArticleContent html={talk.contentHtml} />
         </Lightbox>

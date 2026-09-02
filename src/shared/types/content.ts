@@ -21,3 +21,16 @@ export type TalkLinkType = (typeof TALK_LINK_TYPES)[number]
 
 export const TIMELINE_HONOURS = ['none', 'fair', 'good', 'very_good'] as const
 export type TimelineHonours = (typeof TIMELINE_HONOURS)[number]
+
+/**
+ * A responsive image as the client renders it: the 640 px variant as
+ * the fallback source, every generated variant as a candidate, and the
+ * fallback's dimensions so the frame is reserved before the load.
+ * An image too small for any variant has only its original.
+ */
+export interface Picture {
+  src: string
+  srcSet: string | null
+  width: number | null
+  height: number | null
+}

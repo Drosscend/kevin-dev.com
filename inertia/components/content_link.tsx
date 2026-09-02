@@ -1,7 +1,9 @@
 import { Link } from '@adonisjs/inertia/react'
+import { CoverImage, CoverPlaceholder } from '~/components/cover_image'
 import { useHoverPreview, type PreviewContent } from '~/components/hover_preview'
 import StatusBadge from '~/components/status_badge'
 import { cn } from '~/lib/utils'
+import type { Picture } from '#types/content'
 import type { ReactNode } from 'react'
 
 /**
@@ -92,14 +94,16 @@ export function ListingList({ children }: { children: ReactNode }) {
  * and the thumbnail are clickable, so the metadata and footer remain free
  * to hold links of their own.
  *
- * Passing `thumbnailUrl`, even as null, opts into the image column; null
- * renders the placeholder that keeps every row aligned. The "logo" variant
- * holds a square, letting artwork breathe instead of cropping it.
+ * Passing `picture`, even as null, opts into the image column; null
+ * renders the placeholder that keeps every row aligned. A cover sits
+ * above the text on narrow screens and beside it from `sm` up; the
+ * "logo" variant holds a small square that stays beside the text and
+ * lets artwork breathe instead of cropping it.
  */
 export function ListingRow({
   href,
   title,
-  thumbnailUrl,
+  picture,
   thumbnail = 'cover',
   meta,
   summary,
@@ -108,42 +112,30 @@ export function ListingRow({
 }: {
   href: string
   title: string
-  thumbnailUrl?: string | null
+  picture?: Picture | null
   thumbnail?: 'cover' | 'logo'
   meta?: ReactNode
   summary?: string
   footer?: ReactNode
   heading?: 'h2' | 'h3'
 }) {
-  const frame =
-    thumbnail === 'logo'
-      ? 'size-16 rounded-md border'
-      : 'aspect-video w-24 rounded-md border sm:w-32'
+  const logo = thumbnail === 'logo'
+  const frame = logo ? 'size-16 rounded-md border' : 'aspect-video w-full rounded-md border sm:w-32'
 
   return (
     <li>
-      <article className="flex gap-5 py-7">
-        {thumbnailUrl !== undefined && (
+      <article className={cn('flex gap-5 py-7', !logo && 'flex-col sm:flex-row')}>
+        {picture !== undefined && (
           <Link href={href} aria-hidden tabIndex={-1} className="shrink-0">
-            {thumbnailUrl ? (
-              <img
-                src={thumbnailUrl}
-                alt=""
+            {picture ? (
+              <CoverImage
+                picture={picture}
+                sizes={logo ? '64px' : '(min-width: 640px) 128px, 100vw'}
                 loading="lazy"
-                className={cn(frame, thumbnail === 'logo' ? 'object-contain p-2' : 'object-cover')}
+                className={cn(frame, logo ? 'object-contain p-2' : 'object-cover')}
               />
             ) : (
-              // A missing logo falls back to the initial rather than an empty square.
-              <div
-                className={cn(
-                  'bg-muted text-muted-foreground flex items-center justify-center',
-                  frame
-                )}
-              >
-                {thumbnail === 'logo' && (
-                  <span className="font-display text-xl font-semibold">{title.slice(0, 1)}</span>
-                )}
-              </div>
+              <CoverPlaceholder title={title} className={cn(frame, logo && 'text-xl')} />
             )}
           </Link>
         )}

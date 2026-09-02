@@ -63,7 +63,7 @@ test.group('Portfolio public', (group) => {
     )
   })
 
-  test('le temps de lecture vient du contenu français, en liste comme en fiche', async ({
+  test('le temps de lecture vient du contenu français, sur la fiche seulement', async ({
     client,
     assert,
   }) => {
@@ -74,7 +74,7 @@ test.group('Portfolio public', (group) => {
 
     const listing = await client.get('/projects').withInertia()
     const { projects } = projectListPage(listing)
-    assert.equal(projects[0].readingTimeLabel, '3 min de lecture')
+    assert.notProperty(projects[0], 'readingTimeLabel')
 
     const detail = await client.get('/en/projects/long-projet').withInertia()
     const { project } = projectPage(detail)

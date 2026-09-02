@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core'
 import ProjectCardTransformer from '#app/portfolio/transformers/project_card_transformer'
 import { monthYear } from '#app/shared/date_format'
-import { mediaUrl } from '#app/shared/media_url'
+import { picture } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import { ProjectListQuery } from '#portfolio/queries/project_list_query'
 import { localePath, toLocale, type Locale } from '#types/i18n'
@@ -37,12 +37,10 @@ export default class ProjectListController {
           slug: project.slug,
           title: project.title,
           summary: project.summary,
-          coverUrl: mediaUrl(project.cover),
+          cover: picture(project.cover),
           period: formatPeriod(project, locale),
-          readingTimeLabel: i18n.t('messages.content.readingTime', {
-            minutes: project.readingTime,
-          }),
           ongoing: project.ongoing,
+          featured: project.featured,
           technologies: project.technologies,
         }))
       ),

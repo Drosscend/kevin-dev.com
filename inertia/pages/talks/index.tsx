@@ -32,7 +32,7 @@ export default function TalksIndex({ talks, messages, meta }: TalksIndexProps) {
               href={to(`/talks/${talk.slug}`)}
               title={talk.title}
               summary={talk.summary}
-              thumbnailUrl={talk.coverUrl}
+              picture={talk.cover}
               meta={
                 <>
                   <span>

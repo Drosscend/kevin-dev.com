@@ -1,5 +1,5 @@
 import { inject } from '@adonisjs/core'
-import { mediaUrl } from '#app/shared/media_url'
+import { picture } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import TechnologyCardTransformer from '#app/technologies/transformers/technology_card_transformer'
 import { TechnologyListQuery } from '#technologies/queries/technology_list_query'
@@ -9,7 +9,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 /**
  * Usage line of an index card: the published counts on both sides of
- * the taxonomy, zeros omitted rather than spelled out.
+ * the taxonomy, zeros omitted; nothing at all when nothing is published.
  */
 function usageLabel(technology: TechnologyListItem, i18n: HttpContext['i18n']) {
   const counts = [
@@ -22,7 +22,7 @@ function usageLabel(technology: TechnologyListItem, i18n: HttpContext['i18n']) {
     .filter(([, count]) => count > 0)
     .map(([key, count]) => i18n.t(`messages.technologies.${key}`, { count }))
 
-  return parts.length > 0 ? parts.join(' · ') : i18n.t('messages.technologies.unused')
+  return parts.length > 0 ? parts.join(' · ') : null
 }
 
 @inject()
@@ -39,9 +39,7 @@ export default class TechnologyListController {
           slug: technology.slug,
           name: technology.name,
           category: technology.category,
-          logoUrl: mediaUrl(technology.logo, 320),
-          docsUrl: technology.docsUrl,
-          description: technology.description,
+          logo: picture(technology.logo),
           usageLabel: usageLabel(technology, i18n),
         }))
       ),

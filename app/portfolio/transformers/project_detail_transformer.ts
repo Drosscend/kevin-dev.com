@@ -1,10 +1,11 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
+import type { Picture } from '#types/content'
 import type { ProjectLinkType } from '#types/content'
 
 export interface ProjectDetailView {
   title: string
   contentHtml: string
-  coverUrl: string | null
+  cover: Picture | null
   startedAt: string | null
   endedAt: string | null
   readingTimeLabel: string
@@ -19,7 +20,7 @@ export default class ProjectDetailTransformer extends BaseTransformer<ProjectDet
     return this.pick(this.resource, [
       'title',
       'contentHtml',
-      'coverUrl',
+      'cover',
       'startedAt',
       'endedAt',
       'readingTimeLabel',

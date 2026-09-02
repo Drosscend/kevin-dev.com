@@ -1,13 +1,14 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
+import type { Picture } from '#types/content'
 
 export interface ProjectCard {
   slug: string
   title: string
   summary: string
-  coverUrl: string | null
+  cover: Picture | null
   period: string | null
-  readingTimeLabel: string
   ongoing: boolean
+  featured: boolean
   technologies: { slug: string; name: string }[]
 }
 
@@ -17,10 +18,10 @@ export default class ProjectCardTransformer extends BaseTransformer<ProjectCard>
       'slug',
       'title',
       'summary',
-      'coverUrl',
+      'cover',
       'period',
-      'readingTimeLabel',
       'ongoing',
+      'featured',
       'technologies',
     ])
   }

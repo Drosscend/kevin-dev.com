@@ -5,7 +5,7 @@ import HomeProjectTransformer from '#app/pages/transformers/home_project_transfo
 import HomeTalkTransformer from '#app/pages/transformers/home_talk_transformer'
 import TimelineEntryTransformer from '#app/pages/transformers/timeline_entry_transformer'
 import { longDate, monthYear } from '#app/shared/date_format'
-import { mediaUrl } from '#app/shared/media_url'
+import { picture } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import { CV_PDF_KEY } from '#pages/cv_document'
 import { HomeOverviewQuery } from '#pages/queries/home_overview_query'
@@ -38,7 +38,7 @@ export default class HomeController {
           title: article.title,
           summary: article.summary,
           publishedAt: longDate(article.publishedAt, locale),
-          coverUrl: mediaUrl(article.cover),
+          cover: picture(article.cover),
         }))
       ),
       articlesTotal: overview.articlesTotal,
@@ -47,7 +47,7 @@ export default class HomeController {
           slug: project.slug,
           title: project.title,
           summary: project.summary,
-          coverUrl: mediaUrl(project.cover),
+          cover: picture(project.cover),
           ongoing: project.ongoing,
           technologies: project.technologies,
         }))
@@ -64,7 +64,7 @@ export default class HomeController {
           city: talk.city,
           upcoming: talk.upcoming,
           summary: talk.summary,
-          coverUrl: mediaUrl(talk.cover),
+          cover: picture(talk.cover),
         }))
       ),
       talksTotal: overview.talksTotal,

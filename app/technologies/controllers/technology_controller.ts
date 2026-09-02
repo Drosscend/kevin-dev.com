@@ -1,6 +1,6 @@
 import { inject } from '@adonisjs/core'
 import { Exception } from '@adonisjs/core/exceptions'
-import { mediaUrl } from '#app/shared/media_url'
+import { picture } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import TechnologyDetailTransformer from '#app/technologies/transformers/technology_detail_transformer'
 import { TechnologyDetailQuery } from '#technologies/queries/technology_detail_query'
@@ -13,7 +13,7 @@ function card(entry: ContentCard) {
     slug: entry.slug,
     title: entry.title,
     summary: entry.summary,
-    coverUrl: mediaUrl(entry.cover),
+    cover: picture(entry.cover),
   }
 }
 
@@ -32,7 +32,7 @@ export default class TechnologyController {
     return inertia.render('technologies/show', {
       technology: TechnologyDetailTransformer.transform({
         name: technology.name,
-        logoUrl: mediaUrl(technology.logo, 320),
+        logo: picture(technology.logo),
         docsUrl: technology.docsUrl,
         description: technology.description,
         projects: technology.projects.map(card),

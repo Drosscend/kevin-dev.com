@@ -1,5 +1,6 @@
 import { usePage } from '@inertiajs/react'
 import { useSyncExternalStore, type MouseEvent } from 'react'
+import { SectionLabel } from '~/components/section_label'
 import { cn } from '~/lib/utils'
 
 type Heading = { id: string; text: string; level: number }
@@ -130,7 +131,7 @@ export default function TableOfContents({ html }: { html: string }) {
 
   return (
     <nav aria-label={label}>
-      <p className="text-muted-foreground font-mono text-xs tracking-wider uppercase">{label}</p>
+      <SectionLabel>{label}</SectionLabel>
       <ul className="mt-4 border-l text-[13px]">
         {headings.map((heading) => (
           <li key={heading.id}>

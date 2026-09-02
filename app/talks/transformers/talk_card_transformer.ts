@@ -1,4 +1,5 @@
 import { BaseTransformer } from '@adonisjs/core/transformers'
+import type { Picture } from '#types/content'
 import type { TalkLinkType } from '#types/content'
 
 export interface TalkCard {
@@ -12,7 +13,7 @@ export interface TalkCard {
   upcoming: boolean
   links: { label: string; url: string; type: TalkLinkType }[]
   technologies: { slug: string; name: string }[]
-  coverUrl: string | null
+  cover: Picture | null
 }
 
 export default class TalkCardTransformer extends BaseTransformer<TalkCard> {
@@ -28,7 +29,7 @@ export default class TalkCardTransformer extends BaseTransformer<TalkCard> {
       'upcoming',
       'links',
       'technologies',
-      'coverUrl',
+      'cover',
     ])
   }
 }

@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core'
 import ArticleCardTransformer from '#app/blog/transformers/article_card_transformer'
 import { longDate } from '#app/shared/date_format'
-import { mediaUrl } from '#app/shared/media_url'
+import { picture } from '#app/shared/media_url'
 import SeoService from '#app/shared/seo_service'
 import { ArticleListQuery } from '#blog/queries/article_list_query'
 import { localePath, toLocale } from '#types/i18n'
@@ -61,7 +61,7 @@ export default class ArticleListController {
           }),
           category: article.category,
           technologies: article.technologies,
-          coverUrl: mediaUrl(article.cover),
+          cover: picture(article.cover),
         }))
       ),
       pagination: {

@@ -67,7 +67,9 @@
     "ongoing": "En cours",
     "backToList": "Tous les projets",
     "technologies": "Technologies utilisées",
-    "relatedArticles": "Articles liés"
+    "relatedArticles": "Articles liés",
+    "featured": "Mis en avant",
+    "others": "Autres projets"
   },
   "talks": {
     "title": "Interventions",
