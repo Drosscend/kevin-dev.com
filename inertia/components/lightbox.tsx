@@ -445,7 +445,7 @@ function Viewer({
       className="fixed inset-0 z-50 flex flex-col bg-neutral-950/95 text-white outline-none backdrop-blur-sm"
     >
       <div className="flex items-center justify-between gap-4 px-4 py-3">
-        <span className="font-mono text-xs tabular-nums text-white/50">
+        <span aria-live="polite" className="font-mono text-xs tabular-nums text-white/50">
           {many && `${index + 1} / ${slides.length}`}
         </span>
 
@@ -527,7 +527,7 @@ function Viewer({
         )}
         <p
           aria-hidden
-          className="hidden flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-[11px] text-white/40 md:flex"
+          className="hidden flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-[11px] text-white/60 md:flex"
         >
           <Shortcut keys="Esc" label={labels.hintClose} />
           {many && <Shortcut keys="← →" label={labels.hintNavigate} />}

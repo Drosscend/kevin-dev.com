@@ -146,7 +146,7 @@ export default function Home({
                         src={project.coverUrl}
                         alt=""
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transform-none"
                       />
                     )}
                   </div>
