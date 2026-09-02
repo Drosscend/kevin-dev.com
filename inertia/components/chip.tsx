@@ -17,16 +17,19 @@ export function ChipList({ children, className }: { children: ReactNode; classNa
 
 /**
  * Chip pointing to a page. The "muted" variant marks a chip that opens a
- * longer list rather than naming a single entry.
+ * longer list rather than naming a single entry; `active` marks the
+ * page currently shown, for filter bars made of links.
  */
 export function ChipLink({
   href,
   variant = 'default',
+  active = false,
   ariaLabel,
   children,
 }: {
   href: string
   variant?: 'default' | 'muted'
+  active?: boolean
   ariaLabel?: string
   children: ReactNode
 }) {
@@ -35,7 +38,8 @@ export function ChipLink({
       <Link
         href={href}
         aria-label={ariaLabel}
-        className={cn('inline-block', CHIP, VARIANTS[variant])}
+        aria-current={active ? 'page' : undefined}
+        className={cn('inline-block', CHIP, active ? VARIANTS.active : VARIANTS[variant])}
       >
         {children}
       </Link>

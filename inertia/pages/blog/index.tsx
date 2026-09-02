@@ -1,6 +1,5 @@
 import { Link } from '@adonisjs/inertia/react'
-import { router } from '@inertiajs/react'
-import { ChipButton, ChipList } from '~/components/chip'
+import { ChipLink, ChipList } from '~/components/chip'
 import { LinkArrow, ListingList, ListingRow } from '~/components/content_link'
 import { EmptyState } from '~/components/empty_state'
 import { PageHeader } from '~/components/page_header'
@@ -47,10 +46,6 @@ export default function BlogIndex({
 }: BlogIndexProps) {
   const base = useLocalePath()('/blog')
 
-  function filterByCategory(slug: string | null) {
-    router.get(pageUrl(base, { category: slug }, 1), {}, { preserveState: true })
-  }
-
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 pb-24 md:pb-32">
       <Seo meta={meta} />
@@ -59,17 +54,17 @@ export default function BlogIndex({
 
       {categories.length > 0 && (
         <ChipList className="-mt-4">
-          <ChipButton onClick={() => filterByCategory(null)} active={!filters.category}>
+          <ChipLink href={pageUrl(base, { category: null }, 1)} active={!filters.category}>
             {messages.blog.allCategories}
-          </ChipButton>
+          </ChipLink>
           {categories.map((category) => (
-            <ChipButton
+            <ChipLink
               key={category.slug}
-              onClick={() => filterByCategory(category.slug)}
+              href={pageUrl(base, { category: category.slug }, 1)}
               active={filters.category === category.slug}
             >
               {category.name}
-            </ChipButton>
+            </ChipLink>
           ))}
         </ChipList>
       )}
@@ -114,7 +109,10 @@ export default function BlogIndex({
       )}
 
       {pagination.lastPage > 1 && (
-        <nav className="mt-12 flex max-w-[760px] items-center justify-between text-sm">
+        <nav
+          aria-label={messages.blog.pagination}
+          className="mt-12 flex max-w-[760px] items-center justify-between text-sm"
+        >
           {pagination.currentPage > 1 ? (
             <Link
               href={pageUrl(base, filters, pagination.currentPage - 1)}
