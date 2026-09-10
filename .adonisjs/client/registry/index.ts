@@ -36,6 +36,18 @@ const routes = {
     tokens: [{"old":"/en/blog/rss.xml","type":0,"val":"en","end":""},{"old":"/en/blog/rss.xml","type":0,"val":"blog","end":""},{"old":"/en/blog/rss.xml","type":0,"val":"rss.xml","end":""}],
     types: placeholder as Registry['en.seo.rss']['types'],
   },
+  'seo.ogCard': {
+    methods: ["GET","HEAD"],
+    pattern: '/og/:type/:slug',
+    tokens: [{"old":"/og/:type/:slug","type":0,"val":"og","end":""},{"old":"/og/:type/:slug","type":1,"val":"type","end":""},{"old":"/og/:type/:slug","type":1,"val":"slug","end":""}],
+    types: placeholder as Registry['seo.ogCard']['types'],
+  },
+  'en.seo.ogCard': {
+    methods: ["GET","HEAD"],
+    pattern: '/en/og/:type/:slug',
+    tokens: [{"old":"/en/og/:type/:slug","type":0,"val":"en","end":""},{"old":"/en/og/:type/:slug","type":0,"val":"og","end":""},{"old":"/en/og/:type/:slug","type":1,"val":"type","end":""},{"old":"/en/og/:type/:slug","type":1,"val":"slug","end":""}],
+    types: placeholder as Registry['en.seo.ogCard']['types'],
+  },
   'llms.index': {
     methods: ["GET","HEAD"],
     pattern: '/llms.txt',

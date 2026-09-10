@@ -9,6 +9,8 @@ export type ScannedRoutes = {
     'seo.security': { paramsTuple?: []; params?: {} }
     'seo.rss': { paramsTuple?: []; params?: {} }
     'en.seo.rss': { paramsTuple?: []; params?: {} }
+    'seo.ogCard': { paramsTuple: [ParamValue,ParamValue]; params: {'type': ParamValue,'slug': ParamValue} }
+    'en.seo.ogCard': { paramsTuple: [ParamValue,ParamValue]; params: {'type': ParamValue,'slug': ParamValue} }
     'llms.index': { paramsTuple?: []; params?: {} }
     'llms.cv': { paramsTuple?: []; params?: {} }
     'en.llms.cv': { paramsTuple?: []; params?: {} }
@@ -105,6 +107,8 @@ export type ScannedRoutes = {
     'seo.security': { paramsTuple?: []; params?: {} }
     'seo.rss': { paramsTuple?: []; params?: {} }
     'en.seo.rss': { paramsTuple?: []; params?: {} }
+    'seo.ogCard': { paramsTuple: [ParamValue,ParamValue]; params: {'type': ParamValue,'slug': ParamValue} }
+    'en.seo.ogCard': { paramsTuple: [ParamValue,ParamValue]; params: {'type': ParamValue,'slug': ParamValue} }
     'llms.index': { paramsTuple?: []; params?: {} }
     'llms.cv': { paramsTuple?: []; params?: {} }
     'en.llms.cv': { paramsTuple?: []; params?: {} }
@@ -165,6 +169,8 @@ export type ScannedRoutes = {
     'seo.security': { paramsTuple?: []; params?: {} }
     'seo.rss': { paramsTuple?: []; params?: {} }
     'en.seo.rss': { paramsTuple?: []; params?: {} }
+    'seo.ogCard': { paramsTuple: [ParamValue,ParamValue]; params: {'type': ParamValue,'slug': ParamValue} }
+    'en.seo.ogCard': { paramsTuple: [ParamValue,ParamValue]; params: {'type': ParamValue,'slug': ParamValue} }
     'llms.index': { paramsTuple?: []; params?: {} }
     'llms.cv': { paramsTuple?: []; params?: {} }
     'en.llms.cv': { paramsTuple?: []; params?: {} }

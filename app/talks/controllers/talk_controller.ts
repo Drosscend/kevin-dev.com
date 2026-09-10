@@ -36,6 +36,7 @@ export default class TalkController {
     }
 
     const preview = previewOrFail(visibilityOf(talk, Boolean(auth.user)))
+    const image = SeoService.mediaUrl(talk.cover) ?? SeoService.ogCard(locale, 'talks', talk.slug)
 
     return inertia.render('talks/show', {
       preview,
@@ -61,7 +62,7 @@ export default class TalkController {
           ? { fr: `/talks/${talk.slug}`, en: `/en/talks/${talk.slug}` }
           : null,
         ogType: 'article',
-        ogImage: SeoService.mediaUrl(talk.cover),
+        ogImage: image,
         jsonLd: [
           SeoService.breadcrumbs([
             { name: i18n.t('messages.talks.title'), path: localePath(locale, '/talks') },

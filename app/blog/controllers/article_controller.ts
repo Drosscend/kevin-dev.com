@@ -35,6 +35,8 @@ export default class ArticleController {
     }
 
     const preview = previewOrFail(visibilityOf(article, Boolean(auth.user)))
+    const image =
+      SeoService.mediaUrl(article.cover) ?? SeoService.ogCard(locale, 'blog', article.slug)
 
     return inertia.render('blog/show', {
       preview,
@@ -56,7 +58,7 @@ export default class ArticleController {
           ? { fr: `/blog/${article.slug}`, en: `/en/blog/${article.slug}` }
           : null,
         ogType: 'article',
-        ogImage: SeoService.mediaUrl(article.cover),
+        ogImage: image,
         jsonLd: [
           SeoService.article({
             title: article.title,
@@ -64,7 +66,7 @@ export default class ArticleController {
             path: localePath(locale, `/blog/${article.slug}`),
             locale,
             publishedAt: article.publishedAt?.toISODate() ?? null,
-            image: SeoService.mediaUrl(article.cover),
+            image,
           }),
           SeoService.breadcrumbs([
             { name: 'Blog', path: localePath(locale, '/blog') },

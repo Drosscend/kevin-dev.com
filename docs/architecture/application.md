@@ -101,7 +101,9 @@ Une Query est une lecture nommée, une par fichier, avec `execute`.
 
 - `content/` : rendu Markdown, champs communs aux trois familles de contenu,
   upsert des traductions, règles de publication, mixin `publishable`.
-- `types/` : valeurs sans dépendance runtime, seules importables par le client.
+- `types/` : valeurs sans dépendance runtime, seules importables par le client,
+  dont `cover_art.ts`, le dessin des contenus sans image : le client le rend en
+  SVG avec les tokens du thème, la carte sociale en PNG avec la palette claire.
 - `site_url.ts` : l'URL absolue du site.
 
 `app/shared/` contient l'équivalent côté délivrance : formats de date, URL de

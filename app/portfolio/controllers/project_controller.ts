@@ -36,6 +36,8 @@ export default class ProjectController {
     }
 
     const preview = previewOrFail(visibilityOf(project, Boolean(auth.user)))
+    const image =
+      SeoService.mediaUrl(project.cover) ?? SeoService.ogCard(locale, 'projects', project.slug)
 
     return inertia.render('portfolio/show', {
       preview,
@@ -61,7 +63,7 @@ export default class ProjectController {
           ? { fr: `/projects/${project.slug}`, en: `/en/projects/${project.slug}` }
           : null,
         ogType: 'article',
-        ogImage: SeoService.mediaUrl(project.cover),
+        ogImage: image,
         jsonLd: [
           SeoService.breadcrumbs([
             { name: i18n.t('messages.portfolio.title'), path: localePath(locale, '/projects') },

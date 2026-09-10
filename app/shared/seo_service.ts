@@ -1,7 +1,8 @@
 import router from '@adonisjs/core/services/router'
 import { absoluteUrl } from '#shared/site_url'
+import { localePath, type Locale } from '#types/i18n'
 import type { MediaSource } from '#media/media_source'
-import type { Locale } from '#types/i18n'
+import type { OgCardType } from '#seo/queries/og_card_query'
 import type { JsonLd, SeoMeta } from '#types/seo'
 
 interface SeoAlternates {
@@ -24,6 +25,14 @@ export default class SeoService {
       return null
     }
     return this.absolute(router.makeUrl('uploads.show', { key: media.key, file: 'original.webp' }))
+  }
+
+  /**
+   * Card drawn for an entry with no cover of its own, from the same
+   * generator the site draws its thumbnails with.
+   */
+  static ogCard(locale: Locale, type: OgCardType, slug: string) {
+    return this.absolute(localePath(locale, `/og/${type}/${slug}.png`))
   }
 
   static build(options: {

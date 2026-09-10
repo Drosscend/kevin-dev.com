@@ -7,10 +7,12 @@ export interface ApiDefinition {
     robots: typeof routes['seo.robots']
     security: typeof routes['seo.security']
     rss: typeof routes['seo.rss']
+    ogCard: typeof routes['seo.ogCard']
   }
   en: {
     seo: {
       rss: typeof routes['en.seo.rss']
+      ogCard: typeof routes['en.seo.ogCard']
     }
     llms: {
       cv: typeof routes['en.llms.cv']

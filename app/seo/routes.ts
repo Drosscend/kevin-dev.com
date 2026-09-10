@@ -7,6 +7,10 @@ router.get('/.well-known/security.txt', [controllers.seo.SecurityTxt, 'execute']
 router.get('/blog/rss.xml', [controllers.seo.Feed, 'execute']).as('seo.rss')
 router.get('/en/blog/rss.xml', [controllers.seo.Feed, 'execute']).as('en.seo.rss')
 
+/** Drawn social cards, for the entries that carry no cover of their own. */
+router.get('/og/:type/:slug', [controllers.seo.OgCard, 'execute']).as('seo.ogCard')
+router.get('/en/og/:type/:slug', [controllers.seo.OgCard, 'execute']).as('en.seo.ogCard')
+
 /**
  * Markdown endpoints for LLM consumers. Content pages get their .md
  * variant through the regular blog/portfolio controllers (a ".md"

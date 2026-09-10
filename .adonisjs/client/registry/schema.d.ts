@@ -67,6 +67,30 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/feed_controller').default['execute']>>>
     }
   }
+  'seo.ogCard': {
+    methods: ["GET","HEAD"]
+    pattern: '/og/:type/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { type: ParamValue; slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/og_card_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/og_card_controller').default['execute']>>>
+    }
+  }
+  'en.seo.ogCard': {
+    methods: ["GET","HEAD"]
+    pattern: '/en/og/:type/:slug'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { type: ParamValue; slug: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#app/seo/controllers/og_card_controller').default['execute']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#app/seo/controllers/og_card_controller').default['execute']>>>
+    }
+  }
   'llms.index': {
     methods: ["GET","HEAD"]
     pattern: '/llms.txt'

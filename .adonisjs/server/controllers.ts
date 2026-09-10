@@ -64,6 +64,7 @@ export const controllers = {
     Feed: () => import('#app/seo/controllers/feed_controller'),
     LegalMarkdown: () => import('#app/seo/controllers/legal_markdown_controller'),
     Llms: () => import('#app/seo/controllers/llms_controller'),
+    OgCard: () => import('#app/seo/controllers/og_card_controller'),
     Robots: () => import('#app/seo/controllers/robots_controller'),
     SecurityTxt: () => import('#app/seo/controllers/security_txt_controller'),
     Sitemap: () => import('#app/seo/controllers/sitemap_controller'),
