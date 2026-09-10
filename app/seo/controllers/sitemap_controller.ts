@@ -1,17 +1,10 @@
 import { inject } from '@adonisjs/core'
 import SeoService from '#app/shared/seo_service'
+import { xmlEscape } from '#app/shared/xml_escape'
 import Settings from '#pages/repositories/settings_repository'
 import { SitemapContentQuery } from '#seo/queries/sitemap_content_query'
 import type { SitemapEntryContent } from '#seo/queries/sitemap_content_query'
 import type { HttpContext } from '@adonisjs/core/http'
-
-function xmlEscape(value: string) {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
 
 interface SitemapEntry {
   path: string

@@ -1,16 +1,9 @@
 import { inject } from '@adonisjs/core'
 import SeoService from '#app/shared/seo_service'
+import { xmlEscape } from '#app/shared/xml_escape'
 import { FeedArticlesQuery } from '#seo/queries/feed_articles_query'
 import { localePath, toLocale } from '#types/i18n'
 import type { HttpContext } from '@adonisjs/core/http'
-
-function xmlEscape(value: string) {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
 
 @inject()
 export default class FeedController {
