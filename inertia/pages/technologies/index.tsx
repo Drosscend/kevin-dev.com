@@ -53,8 +53,7 @@ export default function TechnologiesIndex({
                     ) : (
                       <CoverPlaceholder
                         title={technology.name}
-                        seed={technology.slug}
-                        className="size-10 shrink-0 rounded"
+                        className="size-10 shrink-0 rounded border"
                       />
                     )}
                     <div className="min-w-0">

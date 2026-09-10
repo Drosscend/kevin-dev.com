@@ -26,20 +26,9 @@ function round(value: number) {
 
 function toSvg(art: CoverArt) {
   const body = art.figures
-    .map((figure, index) => {
+    .map((figure) => {
       if (figure.kind === 'rect') {
         return `<rect x="${round(figure.x)}" y="${round(figure.y)}" width="${round(figure.width)}" height="${round(figure.height)}" fill="${FILL[figure.role]}"/>`
-      }
-
-      if (figure.kind === 'hatch') {
-        const id = `hatch${index}`
-        const step = round(figure.step)
-
-        return (
-          `<defs><pattern id="${id}" width="${step}" height="${step}" patternUnits="userSpaceOnUse" patternTransform="rotate(${figure.angle})">` +
-          `<line x1="0" y1="0" x2="0" y2="${step}" stroke="${FILL[figure.role]}" stroke-width="1.2" opacity="${figure.opacity}"/>` +
-          `</pattern></defs><rect width="${art.width}" height="${art.height}" fill="url(#${id})"/>`
-        )
       }
 
       const tracking = figure.tracking ? ` letter-spacing="${round(figure.tracking)}"` : ''
@@ -56,13 +45,12 @@ function toSvg(art: CoverArt) {
  * Social card of an entry without cover: the same drawing the site
  * shows in place of its thumbnail, at the size platforms crop from.
  */
-export function ogCardPng(input: { title: string; kicker: string; seed: string }) {
+export function ogCardPng(input: { title: string; kicker: string }) {
   const art = coverArt({
     layout: 'cover',
     ...OG_FRAME,
     title: input.title,
     kicker: input.kicker,
-    seed: input.seed,
     footer: 'kevin-dev.com',
   })
 

@@ -36,7 +36,6 @@ function UsageSection({
           {entries.map((entry) => (
             <ListingRow
               key={entry.slug}
-              slug={entry.slug}
               href={href(entry.slug)}
               title={entry.title}
               summary={entry.summary}

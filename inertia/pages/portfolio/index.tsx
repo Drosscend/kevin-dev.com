@@ -48,7 +48,6 @@ export default function PortfolioIndex({ projects, messages, meta }: PortfolioIn
                   {group.items.map((project) => (
                     <ListingRow
                       key={project.slug}
-                      slug={project.slug}
                       href={to(`/projects/${project.slug}`)}
                       title={project.title}
                       summary={project.summary}

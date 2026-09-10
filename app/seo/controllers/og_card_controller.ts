@@ -32,6 +32,6 @@ export default class OgCardController {
 
     response.header('content-type', 'image/png')
     response.header('cache-control', 'public, max-age=86400')
-    return response.send(ogCardPng({ title, kicker: i18n.t(KICKER_KEY[type]), seed: slug }))
+    return response.send(ogCardPng({ title, kicker: i18n.t(KICKER_KEY[type]) }))
   }
 }

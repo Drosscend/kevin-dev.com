@@ -1,5 +1,4 @@
-import { useId } from 'react'
-import { coverArt, MARK_FRAME, type ArtRole } from '#types/cover_art'
+import { coverArt, MARK_FRAMES, type ArtRole, type MarkAspect } from '#types/cover_art'
 import { cn } from '~/lib/utils'
 import type { Picture } from '#types/content'
 
@@ -44,21 +43,20 @@ const FILL = {
 } satisfies Record<ArtRole, string>
 
 /**
- * Stand-in for an entry without cover, drawn from its slug so the
- * frame is never empty and never twice the same. Decorative: the
- * title is always readable next to it.
+ * Stand-in for an entry without cover: the social card in miniature,
+ * composed for the slot's aspect so nothing is cropped away.
+ * Decorative: the title is always readable next to it.
  */
 export function CoverPlaceholder({
   title,
-  seed,
+  aspect = 'square',
   className,
 }: {
   title: string
-  seed: string
+  aspect?: MarkAspect
   className?: string
 }) {
-  const hatchId = useId()
-  const art = coverArt({ layout: 'mark', ...MARK_FRAME, title, seed })
+  const art = coverArt({ layout: 'mark', ...MARK_FRAMES[aspect], title })
 
   return (
     <svg
@@ -67,48 +65,17 @@ export function CoverPlaceholder({
       preserveAspectRatio="xMidYMid slice"
       className={cn('block', className)}
     >
-      {art.figures.map((figure, index) => {
-        if (figure.kind === 'rect') {
-          return (
-            <rect
-              key={index}
-              x={figure.x}
-              y={figure.y}
-              width={figure.width}
-              height={figure.height}
-              fill={FILL[figure.role]}
-            />
-          )
-        }
-
-        if (figure.kind === 'hatch') {
-          return (
-            <g key={index}>
-              <defs>
-                <pattern
-                  id={hatchId}
-                  width={figure.step}
-                  height={figure.step}
-                  patternUnits="userSpaceOnUse"
-                  patternTransform={`rotate(${figure.angle})`}
-                >
-                  <line
-                    x1={0}
-                    y1={0}
-                    x2={0}
-                    y2={figure.step}
-                    stroke={FILL[figure.role]}
-                    strokeWidth={1.2}
-                    opacity={figure.opacity}
-                  />
-                </pattern>
-              </defs>
-              <rect width={art.width} height={art.height} fill={`url(#${hatchId})`} />
-            </g>
-          )
-        }
-
-        return (
+      {art.figures.map((figure, index) =>
+        figure.kind === 'rect' ? (
+          <rect
+            key={index}
+            x={figure.x}
+            y={figure.y}
+            width={figure.width}
+            height={figure.height}
+            fill={FILL[figure.role]}
+          />
+        ) : (
           <text
             key={index}
             x={figure.x}
@@ -123,7 +90,7 @@ export function CoverPlaceholder({
             {figure.value}
           </text>
         )
-      })}
+      )}
     </svg>
   )
 }

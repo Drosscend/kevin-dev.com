@@ -151,7 +151,7 @@ export default function Home({
                     ) : (
                       <CoverPlaceholder
                         title={project.title}
-                        seed={project.slug}
+                        aspect="video"
                         className="h-full w-full"
                       />
                     )}
