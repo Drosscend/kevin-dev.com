@@ -100,7 +100,7 @@
     "@lezer/highlight": "^1.2.3",
     "@resvg/resvg-js": "^2.6.2",
     "@shikijs/rehype": "^4.4.1",
-    "@tiptap/core": "^3.29.2",
+    "@tiptap/core": "^3.30.5",
     "@tiptap/extension-image": "^3.29.2",
     "@tiptap/extension-list": "^3.29.2",
     "@tiptap/extension-table": "^3.29.2",
