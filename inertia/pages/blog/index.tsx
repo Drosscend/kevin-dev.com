@@ -77,6 +77,7 @@ export default function BlogIndex({
             {articles.map((article) => (
               <ListingRow
                 key={article.slug}
+                slug={article.slug}
                 href={`${base}/${article.slug}`}
                 title={article.title}
                 summary={article.summary}

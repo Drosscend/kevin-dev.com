@@ -95,14 +95,15 @@ export function ListingList({ children }: { children: ReactNode }) {
  * to hold links of their own.
  *
  * Passing `picture`, even as null, opts into the image column; null
- * renders the placeholder that keeps every row aligned. A cover sits
- * above the text on narrow screens and beside it from `sm` up; the
- * "logo" variant holds a small square that stays beside the text and
- * lets artwork breathe instead of cropping it.
+ * renders the placeholder that keeps every row aligned, drawn from
+ * `slug`. A cover sits above the text on narrow screens and beside it
+ * from `sm` up; the "logo" variant holds a small square that stays
+ * beside the text and lets artwork breathe instead of cropping it.
  */
 export function ListingRow({
   href,
   title,
+  slug,
   picture,
   thumbnail = 'cover',
   meta,
@@ -112,6 +113,7 @@ export function ListingRow({
 }: {
   href: string
   title: string
+  slug: string
   picture?: Picture | null
   thumbnail?: 'cover' | 'logo'
   meta?: ReactNode
@@ -135,7 +137,7 @@ export function ListingRow({
                 className={cn(frame, logo ? 'object-contain p-2' : 'object-cover')}
               />
             ) : (
-              <CoverPlaceholder title={title} className={cn(frame, logo && 'text-xl')} />
+              <CoverPlaceholder title={title} seed={slug} className={frame} />
             )}
           </Link>
         )}

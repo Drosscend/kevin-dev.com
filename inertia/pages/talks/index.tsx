@@ -29,6 +29,7 @@ export default function TalksIndex({ talks, messages, meta }: TalksIndexProps) {
           {talks.map((talk) => (
             <ListingRow
               key={talk.slug}
+              slug={talk.slug}
               href={to(`/talks/${talk.slug}`)}
               title={talk.title}
               summary={talk.summary}

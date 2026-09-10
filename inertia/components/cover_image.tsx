@@ -1,3 +1,5 @@
+import { useId } from 'react'
+import { coverArt, MARK_FRAME, type ArtRole } from '#types/cover_art'
 import { cn } from '~/lib/utils'
 import type { Picture } from '#types/content'
 
@@ -33,21 +35,95 @@ export function CoverImage({
   )
 }
 
+const FILL = {
+  paper: 'var(--color-card)',
+  muted: 'var(--color-muted)',
+  ink: 'var(--color-foreground)',
+  accent: 'var(--color-primary)',
+  subtle: 'var(--color-muted-foreground)',
+} satisfies Record<ArtRole, string>
+
 /**
- * Stand-in for an entry without cover: its initial on the muted
- * ground, so the frame is never empty. Decorative, the title sits
- * next to it.
+ * Stand-in for an entry without cover, drawn from its slug so the
+ * frame is never empty and never twice the same. Decorative: the
+ * title is always readable next to it.
  */
-export function CoverPlaceholder({ title, className }: { title: string; className?: string }) {
+export function CoverPlaceholder({
+  title,
+  seed,
+  className,
+}: {
+  title: string
+  seed: string
+  className?: string
+}) {
+  const hatchId = useId()
+  const art = coverArt({ layout: 'mark', ...MARK_FRAME, title, seed })
+
   return (
-    <div
+    <svg
       aria-hidden
-      className={cn(
-        'bg-muted text-muted-foreground flex items-center justify-center text-2xl',
-        className
-      )}
+      viewBox={`0 0 ${art.width} ${art.height}`}
+      preserveAspectRatio="xMidYMid slice"
+      className={cn('block', className)}
     >
-      <span className="font-display font-semibold">{title.trim().charAt(0).toUpperCase()}</span>
-    </div>
+      {art.figures.map((figure, index) => {
+        if (figure.kind === 'rect') {
+          return (
+            <rect
+              key={index}
+              x={figure.x}
+              y={figure.y}
+              width={figure.width}
+              height={figure.height}
+              fill={FILL[figure.role]}
+            />
+          )
+        }
+
+        if (figure.kind === 'hatch') {
+          return (
+            <g key={index}>
+              <defs>
+                <pattern
+                  id={hatchId}
+                  width={figure.step}
+                  height={figure.step}
+                  patternUnits="userSpaceOnUse"
+                  patternTransform={`rotate(${figure.angle})`}
+                >
+                  <line
+                    x1={0}
+                    y1={0}
+                    x2={0}
+                    y2={figure.step}
+                    stroke={FILL[figure.role]}
+                    strokeWidth={1.2}
+                    opacity={figure.opacity}
+                  />
+                </pattern>
+              </defs>
+              <rect width={art.width} height={art.height} fill={`url(#${hatchId})`} />
+            </g>
+          )
+        }
+
+        return (
+          <text
+            key={index}
+            x={figure.x}
+            y={figure.y}
+            fontSize={figure.size}
+            textAnchor={figure.anchor}
+            letterSpacing={figure.tracking}
+            fill={FILL[figure.role]}
+            opacity={figure.opacity}
+            className={figure.family === 'display' ? 'font-display font-semibold' : 'font-mono'}
+          >
+            {figure.value}
+          </text>
+        )
+      })}
+    </svg>
   )
 }

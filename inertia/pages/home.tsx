@@ -149,7 +149,11 @@ export default function Home({
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transform-none"
                       />
                     ) : (
-                      <CoverPlaceholder title={project.title} className="h-full w-full text-4xl" />
+                      <CoverPlaceholder
+                        title={project.title}
+                        seed={project.slug}
+                        className="h-full w-full"
+                      />
                     )}
                   </div>
                   <div className="flex flex-1 flex-col p-5">
