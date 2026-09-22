@@ -1,12 +1,14 @@
 import adonisjs from '@adonisjs/vite/client'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import { cn } from 'cn/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
     react({ compiler: true }),
     tailwindcss(),
+    cn({ content: ['inertia/**/*.{ts,tsx}'], out: 'inertia/lib/cn_tables.ts' }),
     adonisjs({
       entryPoints: ['inertia/app.tsx'],
       serverEntryPoints: ['inertia/ssr.tsx'],

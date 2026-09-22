@@ -7,6 +7,7 @@ export default {
     '**/build/**',
     '**/public/assets/**',
     'database/schema.ts',
+    'inertia/lib/cn_tables.ts',
     'tools/oxlint/anti-slop/**',
   ],
   printWidth: 100,

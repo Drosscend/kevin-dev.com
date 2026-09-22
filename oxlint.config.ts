@@ -7,6 +7,7 @@ export default defineConfig({
     '**/public/assets/**',
     '**/storage/**',
     'database/schema.ts',
+    'inertia/lib/cn_tables.ts',
     // Vendored from dmmulroy/anti-slop, kept diffable with upstream.
     'tools/oxlint/anti-slop/**',
   ],
