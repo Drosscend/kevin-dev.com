@@ -60,21 +60,24 @@ test.group('Admin media', (group) => {
     await (await app.container.make(DeleteMedia)).execute(media.id)
   })
 
-  test("l'upload d'une animation garde toutes ses images", async ({ client, assert }) => {
+  test("l'upload d'une animation garde toutes ses images, sans perte", async ({
+    client,
+    assert,
+  }) => {
     const user = await admin()
+    // Close shades: a lossy encoder takes the next frame for the previous one
+    const shades = [100, 102, 104]
     const frames = await Promise.all(
-      [
-        { r: 200, g: 100, b: 50 },
-        { r: 50, g: 100, b: 200 },
-        { r: 50, g: 200, b: 100 },
-      ].map((background) =>
-        sharp({ create: { width: 800, height: 600, channels: 3, background } })
-          .png()
-          .toBuffer()
-      )
+      shades
+        .map((shade) => ({ r: shade, g: shade, b: shade }))
+        .map((background) =>
+          sharp({ create: { width: 800, height: 600, channels: 3, background } })
+            .png()
+            .toBuffer()
+        )
     )
     const animation = await sharp(frames, { join: { animated: true } })
-      .gif({ delay: [100, 100, 100] })
+      .webp({ lossless: true, delay: [100, 100, 100] })
       .toBuffer()
 
     await client
@@ -82,7 +85,7 @@ test.group('Admin media', (group) => {
       .loginAs(user)
       .withCsrfToken()
       .redirects(0)
-      .file('file', animation, { filename: 'animation-test.gif' })
+      .file('file', animation, { filename: 'animation-test.webp' })
       .field('alt', 'Une animation de test')
 
     const media = await Media.query().firstOrFail()
@@ -101,6 +104,11 @@ test.group('Admin media', (group) => {
       const stored = await drive.use().getBytes(storage.key(media.key, file))
       const { pages } = await sharp(stored, { animated: true }).metadata()
       assert.equal(pages, 3, file)
+
+      for (const [page, shade] of shades.entries()) {
+        const pixels = await sharp(stored, { page }).raw().toBuffer()
+        assert.equal(pixels[0], shade, `${file}, image ${page}`)
+      }
     }
 
     await (await app.container.make(DeleteMedia)).execute(media.id)

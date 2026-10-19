@@ -1,6 +1,6 @@
 import { randomBytes } from 'node:crypto'
 import { inject } from '@adonisjs/core'
-import sharp from 'sharp'
+import sharp, { type WebpOptions } from 'sharp'
 import { err, ok, type Result } from '#core/result'
 import { MediaRepository } from '#media/repositories/media_repository'
 import { MediaStorage } from '#media/storage'
@@ -31,7 +31,7 @@ export type StoreImageResult = Result<Media, InvalidImageError>
 /**
  * Every upload is re-encoded to webp by sharp, which neutralizes
  * crafted files, then declined into responsive variants. An animation
- * keeps all its frames.
+ * keeps all its frames, losslessly.
  */
 @inject()
 export class StoreImage {
@@ -44,11 +44,14 @@ export class StoreImage {
     const mediaKey = randomBytes(12).toString('hex')
 
     let original
+    let encoding: WebpOptions
     try {
+      const { pages = 1 } = await sharp(params.file.tmpPath!).metadata()
+      encoding = pages > 1 ? { lossless: true } : { quality: WEBP_QUALITY }
       original = await sharp(params.file.tmpPath!, { animated: true })
         .rotate()
         .resize({ width: ORIGINAL_MAX_WIDTH, withoutEnlargement: true })
-        .webp({ quality: WEBP_QUALITY })
+        .webp(encoding)
         .toBuffer({ resolveWithObject: true })
     } catch {
       return err({ type: 'invalid_image' })
@@ -66,7 +69,7 @@ export class StoreImage {
         const variant = await sharp(params.file.tmpPath!, { animated: true })
           .rotate()
           .resize({ width })
-          .webp({ quality: WEBP_QUALITY })
+          .webp(encoding)
           .toBuffer({ resolveWithObject: true })
 
         await this.storage.put(mediaKey, `w${width}.webp`, variant.data)
