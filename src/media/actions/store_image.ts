@@ -30,7 +30,8 @@ export type StoreImageResult = Result<Media, InvalidImageError>
 
 /**
  * Every upload is re-encoded to webp by sharp, which neutralizes
- * crafted files, then declined into responsive variants.
+ * crafted files, then declined into responsive variants. An animation
+ * keeps all its frames.
  */
 @inject()
 export class StoreImage {
@@ -44,7 +45,7 @@ export class StoreImage {
 
     let original
     try {
-      original = await sharp(params.file.tmpPath!)
+      original = await sharp(params.file.tmpPath!, { animated: true })
         .rotate()
         .resize({ width: ORIGINAL_MAX_WIDTH, withoutEnlargement: true })
         .webp({ quality: WEBP_QUALITY })
@@ -62,7 +63,7 @@ export class StoreImage {
           continue
         }
 
-        const variant = await sharp(params.file.tmpPath!)
+        const variant = await sharp(params.file.tmpPath!, { animated: true })
           .rotate()
           .resize({ width })
           .webp({ quality: WEBP_QUALITY })
@@ -72,7 +73,7 @@ export class StoreImage {
         variants.push({
           file: `w${width}.webp`,
           width: variant.info.width,
-          height: variant.info.height,
+          height: variant.info.pageHeight ?? variant.info.height,
           size: variant.info.size,
         })
       }
@@ -84,7 +85,7 @@ export class StoreImage {
           alt: params.alt,
           mimeType: 'image/webp',
           width: original.info.width,
-          height: original.info.height,
+          height: original.info.pageHeight ?? original.info.height,
           size: original.info.size,
           variants,
         })

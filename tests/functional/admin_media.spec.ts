@@ -2,10 +2,12 @@ import { readdir } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import app from '@adonisjs/core/services/app'
 import testUtils from '@adonisjs/core/services/test_utils'
+import drive from '@adonisjs/drive/services/main'
 import { test } from '@japa/runner'
 import sharp from 'sharp'
 import { DeleteMedia } from '#media/actions/delete_media'
 import Media from '#media/models/media'
+import { MediaStorage } from '#media/storage'
 import { admin } from '#tests/helpers/auth'
 
 /** The bodyparser names its temporary files with a bare UUID. */
@@ -54,6 +56,52 @@ test.group('Admin media', (group) => {
 
     const variant = await client.get(`/uploads/${media.key}/w320.webp`)
     variant.assertStatus(200)
+
+    await (await app.container.make(DeleteMedia)).execute(media.id)
+  })
+
+  test("l'upload d'une animation garde toutes ses images", async ({ client, assert }) => {
+    const user = await admin()
+    const frames = await Promise.all(
+      [
+        { r: 200, g: 100, b: 50 },
+        { r: 50, g: 100, b: 200 },
+        { r: 50, g: 200, b: 100 },
+      ].map((background) =>
+        sharp({ create: { width: 800, height: 600, channels: 3, background } })
+          .png()
+          .toBuffer()
+      )
+    )
+    const animation = await sharp(frames, { join: { animated: true } })
+      .gif({ delay: [100, 100, 100] })
+      .toBuffer()
+
+    await client
+      .post('/admin/media')
+      .loginAs(user)
+      .withCsrfToken()
+      .redirects(0)
+      .file('file', animation, { filename: 'animation-test.gif' })
+      .field('alt', 'Une animation de test')
+
+    const media = await Media.query().firstOrFail()
+    assert.equal(media.width, 800)
+    assert.equal(media.height, 600)
+    assert.deepEqual(
+      media.variants.map((variant) => [variant.width, variant.height]),
+      [
+        [320, 240],
+        [640, 480],
+      ]
+    )
+
+    const storage = await app.container.make(MediaStorage)
+    for (const file of ['original.webp', 'w320.webp', 'w640.webp']) {
+      const stored = await drive.use().getBytes(storage.key(media.key, file))
+      const { pages } = await sharp(stored, { animated: true }).metadata()
+      assert.equal(pages, 3, file)
+    }
 
     await (await app.container.make(DeleteMedia)).execute(media.id)
   })
