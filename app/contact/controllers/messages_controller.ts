@@ -12,7 +12,7 @@ export default class MessagesController {
     const messages = await this.contactMessages.execute()
 
     return inertia.render('admin/messages', {
-      messages: ContactMessageTransformer.transform(
+      contactMessages: ContactMessageTransformer.transform(
         messages.map((message) => ({
           ...message,
           createdAt: pickerDateTime(message.createdAt),

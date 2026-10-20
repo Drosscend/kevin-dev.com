@@ -126,6 +126,17 @@ test.group('CV et mentions légales', (group) => {
 test.group('Admin messages', (group) => {
   group.each.setup(() => testUtils.db().withGlobalTransaction())
 
+  test('la liste garde les traductions partagées', async ({ client, assert }) => {
+    const user = await admin()
+    await ContactMessage.create({ name: 'Jean', email: 'jean@example.com', body: 'Message' })
+
+    const response = await client.get('/admin/messages').loginAs(user).withInertia()
+
+    response.assertInertiaComponent('admin/messages')
+    assert.lengthOf(response.inertiaProps.contactMessages, 1)
+    assert.isString(response.inertiaProps.messages.nav.theme)
+  })
+
   test('marquer lu puis supprimer un message', async ({ client, assert }) => {
     const user = await admin()
     const message = await ContactMessage.create({

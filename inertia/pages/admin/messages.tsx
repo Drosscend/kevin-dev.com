@@ -10,10 +10,10 @@ import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
 
 type MessagesProps = InertiaProps<{
-  messages: Data.Contact.ContactMessage[]
+  contactMessages: Data.Contact.ContactMessage[]
 }>
 
-export default function Messages({ messages }: MessagesProps) {
+export default function Messages({ contactMessages }: MessagesProps) {
   const router = useRouter()
 
   function toggleRead(message: Data.Contact.ContactMessage) {
@@ -25,11 +25,11 @@ export default function Messages({ messages }: MessagesProps) {
 
   return (
     <AdminPage title="Messages" className="max-w-3xl">
-      {messages.length === 0 ? (
+      {contactMessages.length === 0 ? (
         <EmptyState>Aucun message pour l’instant.</EmptyState>
       ) : (
         <ul className="divide-y border-y">
-          {messages.map((message) => (
+          {contactMessages.map((message) => (
             <li
               key={message.id}
               className={cn(
