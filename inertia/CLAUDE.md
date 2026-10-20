@@ -8,20 +8,5 @@ d'ajouter une page ou d'extraire un composant.
   varie pas selon l'appelant, et reçoit en prop celui qui en dépend.
   L'administration, elle, est monolingue française.
 - Chercher le composant existant avant d'écrire un bloc, et l'étendre par une
-  prop plutôt que le dupliquer. Public : `page_header`, `reading_layout`,
-  `content_link`, `technology_list`, `status_badge`, `empty_state`, `seo`.
-  Admin : `admin_page`, `content_list`, `slug_field`, `external_links_card`,
-  `translation_card`, `media_picker`, `publication_actions`, `confirm_button`.
-- Une page ne redéclare pas la forme de ses props : elle lit le type généré
-  `Data.<Capacité>.<Nom>` depuis `@generated/data`, et compose ses propres props
-  avec `InertiaProps<{ ... }>`, qui y ajoute celles que le middleware partage
-  (`locale`, `user`, `messages`, `errors`, `year`, `unreadMessages`).
-- Les flèches appartiennent à `LinkArrow`, jamais aux chaînes.
-- Les icônes viennent de `lucide-react` sous leur nom suffixé `Icon`, le seul qui
-  ne collide pas avec un composant ou une valeur du domaine : `MenuIcon`, pas `Menu`.
-- Le compilateur React est actif : pas de `useMemo`, `useCallback` ni `memo`.
-- `Link` et `Form` viennent de `@adonisjs/inertia/react`, pas de `@inertiajs/react`.
-- Seul `#types` traverse la frontière serveur ; tout autre import `#` est refusé
-  par le lint.
-- `components/ui/` vient de shadcn : ne pas le ranger comme notre code.
+  prop plutôt que le dupliquer.
 - Les pages `admin/*` sont hors SSR, donc `window` y est toujours défini.
