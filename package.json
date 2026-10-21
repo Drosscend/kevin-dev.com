@@ -153,5 +153,8 @@
       "oxfmt --check --no-error-on-unmatched-pattern",
       "oxlint --no-error-on-unmatched-pattern"
     ]
+  },
+  "overrides": {
+    "nodemailer": "^10.2.0"
   }
 }
