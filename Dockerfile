@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24.19-alpine AS base
+FROM node:24.22-alpine AS base
 WORKDIR /app
 
 # All dependencies (build stage)
