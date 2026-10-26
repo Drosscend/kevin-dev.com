@@ -2,7 +2,7 @@
 # In production the database ships in docker-compose.yml (`db` service).
 services:
   postgres:
-    image: postgres:17-alpine
+    image: postgres:17.11-alpine3.24
     environment:
       POSTGRES_USER: kevin_dev
       POSTGRES_PASSWORD: password

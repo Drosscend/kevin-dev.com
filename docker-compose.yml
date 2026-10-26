@@ -68,7 +68,7 @@ services:
       - storage:/app/storage
 
   db:
-    image: postgres:17-alpine
+    image: postgres:17.11-alpine3.24
     restart: always
     networks:
       - internal
