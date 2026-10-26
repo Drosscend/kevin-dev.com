@@ -157,6 +157,19 @@ test.group('SEO', (group) => {
     assert.notMatch(head, /<Symbol\(|<function/)
   })
 
+  test('le head annonce les flux RSS seulement quand le blog a du contenu', async ({
+    client,
+    assert,
+  }) => {
+    const empty = await client.get('/')
+    assert.notInclude(empty.text().split('</head>')[0], 'application/rss+xml')
+
+    await makeArticle('article-flux', 'published')
+
+    const filled = await client.get('/')
+    assert.include(filled.text().split('</head>')[0], 'href="/blog/rss.xml"')
+  })
+
   test("l'accueil liste les derniers articles avec ses métadonnées", async ({ client, assert }) => {
     await makeArticle('accueil-article', 'published')
 
