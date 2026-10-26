@@ -5,7 +5,7 @@
   "type": "module",
   "license": "UNLICENSED",
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=26.0.0"
   },
   "scripts": {
     "start": "node bin/server.js",
@@ -56,7 +56,7 @@
     "@poppinss/ts-exec": "^1.5.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/luxon": "^3.7.6",
-    "@types/node": "~26.2.0",
+    "@types/node": "~26.6.5",
     "@types/proxy-addr": "^2.0.3",
     "@types/qrcode": "^1.5.6",
     "@types/react": "^19.3.0",
