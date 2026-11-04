@@ -4,6 +4,7 @@ import ExternalLinkList from '~/components/external_link_list'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner from '~/components/preview_banner'
+import ReadMarker from '~/components/read_marker'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
@@ -63,6 +64,7 @@ export default function TalksShow({ preview, talk, messages, meta }: TalksShowPr
 
           <ArticleContent html={talk.contentHtml} />
         </Lightbox>
+        <ReadMarker />
 
         <TechnologySection title={messages.talks.technologies} technologies={talk.technologies} />
       </ReadingLayout>
