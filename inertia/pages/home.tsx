@@ -7,6 +7,7 @@ import { SectionLabel } from '~/components/section_label'
 import Seo, { type SeoMeta } from '~/components/seo'
 import StatusBadge from '~/components/status_badge'
 import { Button } from '~/components/ui/button'
+import { trackEvent } from '~/lib/analytics'
 import { useLocalePath } from '~/lib/locale'
 import { type InertiaProps } from '~/types'
 import type { Data } from '@generated/data'
@@ -91,7 +92,7 @@ export default function Home({
           <div className="mt-10 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
             <Button asChild size="lg" className="w-full sm:w-auto">
               {cvPdfAvailable ? (
-                <a href="/cv.pdf">
+                <a href="/cv.pdf" onClick={() => trackEvent('cv-download', { placement: 'home' })}>
                   <DownloadIcon className="size-4" />
                   {messages.home.downloadCv}
                 </a>

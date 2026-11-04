@@ -6,6 +6,7 @@ import ExternalLinkList from '~/components/external_link_list'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner from '~/components/preview_banner'
+import ReadMarker from '~/components/read_marker'
 import ReadingLayout from '~/components/reading_layout'
 import { SectionLabel } from '~/components/section_label'
 import Seo, { type SeoMeta } from '~/components/seo'
@@ -53,7 +54,7 @@ export default function PortfolioShow({ preview, project, messages, meta }: Port
             <span>{project.readingTimeLabel}</span>
             {project.ongoing && <StatusBadge>{messages.portfolio.ongoing}</StatusBadge>}
           </p>
-          <ExternalLinkList links={project.links} className="mt-5" />
+          <ExternalLinkList links={project.links} placement="project" className="mt-5" />
         </header>
 
         <Lightbox className="space-y-10">
@@ -67,6 +68,7 @@ export default function PortfolioShow({ preview, project, messages, meta }: Port
 
           <ArticleContent html={project.contentHtml} />
         </Lightbox>
+        <ReadMarker />
 
         <TechnologySection
           title={messages.portfolio.technologies}

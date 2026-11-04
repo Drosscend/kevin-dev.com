@@ -12,6 +12,7 @@ import {
   VideoIcon,
   type LucideIcon,
 } from 'lucide-react'
+import { trackEvent } from '~/lib/analytics'
 import { cn } from '~/lib/utils'
 
 export type ExternalLinkRef = { label: string; url: string; type: string }
@@ -42,10 +43,12 @@ const VARIANTS = {
  */
 export default function ExternalLinkList({
   links,
+  placement,
   variant = 'prominent',
   className,
 }: {
   links: ExternalLinkRef[]
+  placement: 'project' | 'talk' | 'technology'
   variant?: keyof typeof VARIANTS
   className?: string
 }) {
@@ -64,6 +67,7 @@ export default function ExternalLinkList({
             href={link.url}
             target="_blank"
             rel="noreferrer"
+            onClick={() => trackEvent('external-link', { type: link.type, placement })}
             className={cn('inline-flex items-center gap-1.5', VARIANTS[variant])}
           >
             <Icon className="size-3.5 shrink-0" />

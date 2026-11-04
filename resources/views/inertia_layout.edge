@@ -29,7 +29,7 @@
     @stack('dumper')
 
     @if(umamiScriptUrl && umamiWebsiteId)
-      <script defer src="{{ umamiScriptUrl }}" data-website-id="{{ umamiWebsiteId }}"></script>
+      <script defer src="{{ umamiScriptUrl }}" data-website-id="{{ umamiWebsiteId }}" data-exclude-hash="true"></script>
     @end
   </head>
 

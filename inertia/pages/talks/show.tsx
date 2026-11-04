@@ -49,7 +49,7 @@ export default function TalksShow({ preview, talk, messages, meta }: TalksShowPr
             <span>{talk.readingTimeLabel}</span>
             {talk.upcoming && <StatusBadge>{messages.talks.upcoming}</StatusBadge>}
           </p>
-          <ExternalLinkList links={talk.links} className="mt-5" />
+          <ExternalLinkList links={talk.links} placement="talk" className="mt-5" />
         </header>
 
         <Lightbox className="space-y-10">

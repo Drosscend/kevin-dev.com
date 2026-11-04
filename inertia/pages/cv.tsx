@@ -5,6 +5,7 @@ import Lightbox from '~/components/lightbox'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import { Button } from '~/components/ui/button'
+import { trackEvent } from '~/lib/analytics'
 import { type InertiaProps } from '~/types'
 
 type CvProps = InertiaProps<{
@@ -22,7 +23,11 @@ export default function Cv({ contentHtml, pdfAvailable, messages, meta }: CvProp
           <h1 className="text-3xl font-bold md:text-4xl">{messages.cv.title}</h1>
           {pdfAvailable && (
             <Button asChild size="lg" className="w-full sm:w-auto">
-              <a href="/cv.pdf" download>
+              <a
+                href="/cv.pdf"
+                download
+                onClick={() => trackEvent('cv-download', { placement: 'cv' })}
+              >
                 <DownloadIcon aria-hidden className="size-4" />
                 {messages.cv.download}
               </a>

@@ -45,7 +45,12 @@ export default function TalksIndex({ talks, messages, meta }: TalksIndexProps) {
               footer={
                 <>
                   <TechnologyNames technologies={talk.technologies} />
-                  <ExternalLinkList links={talk.links} variant="subtle" className="mt-3" />
+                  <ExternalLinkList
+                    links={talk.links}
+                    placement="talk"
+                    variant="subtle"
+                    className="mt-3"
+                  />
                 </>
               }
             />

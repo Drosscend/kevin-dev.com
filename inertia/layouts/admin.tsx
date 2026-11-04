@@ -19,12 +19,13 @@ import {
   InboxIcon,
   XIcon,
 } from 'lucide-react'
-import { type ReactElement, type ReactNode, useState } from 'react'
+import { type ReactElement, type ReactNode, useEffect, useState } from 'react'
 import { Toaster } from 'sonner'
 import { type Data } from '@generated/data'
 import { client } from '~/client'
 import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
+import { excludeThisBrowser } from '~/lib/analytics'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
 import { useMediaQuery } from '~/lib/use_media_query'
 import { useTheme } from '~/lib/use_theme'
@@ -134,6 +135,7 @@ export default function AdminLayout({ children }: { children: ReactElement<Data.
   const closeMobile = () => setMobileOpen(false)
 
   useFlashToasts()
+  useEffect(excludeThisBrowser, [])
 
   const sidebar = (
     <>

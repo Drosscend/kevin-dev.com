@@ -6,6 +6,7 @@ import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Textarea } from '~/components/ui/textarea'
+import { trackEvent } from '~/lib/analytics'
 import { type InertiaProps } from '~/types'
 
 type ContactProps = InertiaProps<{
@@ -24,6 +25,7 @@ export default function Contact({ locale, messages, meta }: ContactProps) {
           route={locale === 'en' ? 'en.contact.store' : 'contact.store'}
           className="mt-12 space-y-7"
           resetOnSuccess
+          onSuccess={() => trackEvent('contact-submit')}
         >
           {({ errors, processing }) => (
             <>

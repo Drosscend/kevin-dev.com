@@ -78,6 +78,7 @@ export default function TechnologyShow({ technology, messages, meta }: Technolog
                 links={[
                   { label: messages.technologies.docs, url: technology.docsUrl, type: 'docs' },
                 ]}
+                placement="technology"
                 className="mt-3"
               />
             )}

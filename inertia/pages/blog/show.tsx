@@ -3,6 +3,7 @@ import ArticleContent from '~/components/article_content'
 import Lightbox from '~/components/lightbox'
 import { BackLink } from '~/components/page_header'
 import PreviewBanner from '~/components/preview_banner'
+import ReadMarker from '~/components/read_marker'
 import ReadingLayout from '~/components/reading_layout'
 import Seo, { type SeoMeta } from '~/components/seo'
 import TableOfContents from '~/components/table_of_contents'
@@ -59,6 +60,7 @@ export default function BlogShow({ preview, article, messages, meta }: BlogShowP
         <Lightbox className="mt-10">
           <ArticleContent html={article.contentHtml} />
         </Lightbox>
+        <ReadMarker />
 
         <TechnologySection
           className="mt-12"

@@ -7,6 +7,7 @@ import { HoverPreviewProvider } from '~/components/hover_preview'
 import LanguageSuggestion from '~/components/language_suggestion'
 import ThemeToggle from '~/components/theme_toggle'
 import { Button } from '~/components/ui/button'
+import { trackEvent } from '~/lib/analytics'
 import { otherLocaleUrl, useLocalePath } from '~/lib/locale'
 import { useFlashToasts } from '~/lib/use_flash_toasts'
 import { useTheme } from '~/lib/use_theme'
@@ -210,6 +211,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             © {year} Kévin Véronési ·{' '}
             <a
               href="https://github.com/Drosscend"
+              onClick={() => trackEvent('profile-link', { network: 'github' })}
               rel="noopener noreferrer"
               target="_blank"
               className="hover:text-primary transition-colors"
@@ -219,6 +221,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             ·{' '}
             <a
               href="https://www.linkedin.com/in/kveronesi/"
+              onClick={() => trackEvent('profile-link', { network: 'linkedin' })}
               rel="noopener noreferrer"
               target="_blank"
               className="hover:text-primary transition-colors"
@@ -228,6 +231,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             ·{' '}
             <a
               href="https://labs.kevin-dev.com"
+              onClick={() => trackEvent('profile-link', { network: 'labs' })}
               rel="noopener noreferrer"
               target="_blank"
               className="hover:text-primary transition-colors"
