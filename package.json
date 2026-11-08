@@ -155,6 +155,9 @@
     ]
   },
   "overrides": {
+    "@ts-morph/common": {
+      "minimatch": "^11.0.5"
+    },
     "nodemailer": "^10.2.0"
   }
 }
