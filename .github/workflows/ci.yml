@@ -11,7 +11,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:17.11-alpine3.24
+        image: postgres:17.12-alpine3.24
         env:
           POSTGRES_USER: kevin_dev
           POSTGRES_PASSWORD: password
@@ -46,7 +46,7 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version: 26.12.1
+          node-version: 26.13.1
           cache: npm
 
       - name: Install dependencies
